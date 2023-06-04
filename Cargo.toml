@@ -7,6 +7,7 @@ edition = "2021"
 crate-type = ["cdylib"]
 
 [dependencies]
+fltk = "1.4.4"
 wry = { version = "0.28.3", default-fratures = false }
 
 
