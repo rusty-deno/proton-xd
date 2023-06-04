@@ -10,7 +10,7 @@ const ext=(): "dll"|"so"|"dylib"=> {
   }
 }
 
-const lib=Deno.dlopen(new URL(`../target/release/xd.${ext()}`,import.meta.url),{
+const rust=Deno.dlopen(new URL(`../target/release/xd.${ext()}`,import.meta.url),{
   init: {
     parameters: ["buffer","buffer","u16","u16","buffer"],
     result: "void"
@@ -21,7 +21,7 @@ const lib=Deno.dlopen(new URL(`../target/release/xd.${ext()}`,import.meta.url),{
 const encoder=new TextEncoder;
 const toBuffer=(str: string)=> encoder.encode(str+"\0");
 
-export default lib;
+export default rust;
 export {
   toBuffer,
   encoder

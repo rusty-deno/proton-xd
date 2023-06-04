@@ -1,9 +1,9 @@
-import lib,{toBuffer} from "./bindings.ts";
+import rust,{toBuffer} from "./bindings.ts";
 
 export default class XD {
   private lib;
   constructor() {
-    this.lib=lib.symbols;
+    this.lib=rust.symbols;
   }
   
 
@@ -17,7 +17,7 @@ export default class XD {
   
 
   public close=()=> {
-    lib.close();
+    rust.close();
     Deno.exit(0);
   };
 }
