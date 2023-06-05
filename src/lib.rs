@@ -3,6 +3,7 @@ mod webview;
 
 use ffi::get_str;
 use wry::application::window::Theme;
+use fltk::dialog;
 
 
 #[no_mangle]
@@ -13,7 +14,7 @@ pub extern "C" fn init(title: *const i8,url: *const i8,width: u16,height: u16,_i
         width,
         height,
         get_str(_icon),
-        match u8 {
+        match theme {
             0=> Theme::Light,
             _=> Theme::Dark
         }
@@ -21,8 +22,13 @@ pub extern "C" fn init(title: *const i8,url: *const i8,width: u16,height: u16,_i
 }
 
 
+
 #[no_mangle]
-pub extern "C" fn fltk_init() {
-    
+pub extern "C" fn message(x: i32,y: i32,txt: *const i8) {
+    dialog::message(x,y,get_str(txt))
 }
 
+#[no_mangle]
+pub extern "C" fn message_default(txt: *const i8) {
+    dialog::message_default(get_str(txt))
+}
