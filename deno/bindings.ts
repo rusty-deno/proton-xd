@@ -42,6 +42,10 @@ const rust=Deno.dlopen(new URL(`../target/release/xd.${ext()}`,import.meta.url),
   message_title: {
     parameters: ["buffer"],
     result: "void"
+  },
+  message_title_default: {
+    parameters: ["buffer"],
+    result: "void"
   }
 });
 /**
