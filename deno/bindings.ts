@@ -18,6 +18,7 @@ const rust=Deno.dlopen(new URL(`../target/release/xd.${ext()}`,import.meta.url),
 });
 
 
+
 const encoder=new TextEncoder;
 const toBuffer=(str: string)=> encoder.encode(str+"\0");
 

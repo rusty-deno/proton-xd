@@ -3,7 +3,7 @@ mod webview;
 
 use ffi::get_str;
 use wry::application::window::Theme;
-use fltk::dialog;
+use fltk::{dialog, enums::Font};
 
 
 #[no_mangle]
@@ -39,6 +39,27 @@ pub extern "C" fn message_hotspot()-> bool {
 }
 
 #[no_mangle]
+pub extern "C" fn message_icon_label(label: *const i8) {
+    dialog::message_icon_label(get_str(label));
+}
+
+#[no_mangle]
+pub extern "C" fn message_set_font(idx: usize,sz: i32) {
+    dialog::message_set_font(Font::by_index(idx),sz)
+}
+
+#[no_mangle]
 pub extern "C" fn message_set_hotspot(enabled: bool) {
     dialog::message_set_hotspot(enabled)
 }
+
+#[no_mangle]
+pub extern "C" fn message_title(title: *const i8) {
+    dialog::message_title(get_str(title))
+}
+
+#[no_mangle]
+pub extern "C" fn message_title_default(title: *const i8) {
+    dialog::message_title_default(get_str(title))
+}
+
