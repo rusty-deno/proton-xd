@@ -26,17 +26,25 @@ const rust=Deno.dlopen(new URL(`../target/release/xd.${ext()}`,import.meta.url),
   hotspot: {
     parameters: [],
     result: "bool"
+  },
+  message_icon_label: {
+    parameters: ["buffer"],
+    result: "void"
+  },
+  message_set_font: {
+    parameters: ["usize","i32"],
+    result: "void"
+  },
+  message_set_hotspot: {
+    parameters: ["bool"],
+    result: "void"
+  },
+  message_title: {
+    parameters: ["buffer"],
+    result: "void"
   }
 });
 /**
- * message(x: i32,y: i32,txt: *const i8)
- * 
- * message_default(txt: *const i8)
- * 
- * message_hotspot()-> bool
- * 
- * message_icon_label(label: *const i8)
- * 
  * message_set_font(idx: usize,sz: i32)
  * 
  * message_set_hotspot(enabled: bool)
