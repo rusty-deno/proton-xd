@@ -30,5 +30,15 @@ pub extern "C" fn message(x: i32,y: i32,txt: *const i8) {
 
 #[no_mangle]
 pub extern "C" fn message_default(txt: *const i8) {
-    dialog::message_default(get_str(txt))
+    dialog::message_default(get_str(txt));
+}
+
+#[no_mangle]
+pub extern "C" fn message_hotspot()-> bool {
+    dialog::message_hotspot()
+}
+
+#[no_mangle]
+pub extern "C" fn message_set_hotspot(enabled: bool) {
+    dialog::message_set_hotspot(enabled)
 }
