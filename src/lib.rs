@@ -3,7 +3,7 @@ mod webview;
 
 use ffi::get_str;
 use wry::application::window::Theme;
-use fltk::{dialog, enums::Font};
+use fltk::{dialog::{self, BeepType}, enums::Font};
 
 
 #[no_mangle]
@@ -22,7 +22,7 @@ pub extern "C" fn init(title: *const i8,url: *const i8,width: u16,height: u16,_i
 }
 
 
-
+///message
 #[no_mangle]
 pub extern "C" fn message(x: i32,y: i32,txt: *const i8) {
     dialog::message(x,y,get_str(txt))
@@ -61,5 +61,32 @@ pub extern "C" fn message_title(title: *const i8) {
 #[no_mangle]
 pub extern "C" fn message_title_default(title: *const i8) {
     dialog::message_title_default(get_str(title))
+}
+
+///alert
+#[no_mangle]
+pub extern "C" fn alert(x: i32,y: i32,txt: *const i8) {
+    dialog::alert(x,y,get_str(txt))
+}
+
+#[no_mangle]
+pub extern "C" fn alert_default(txt: *const i8) {
+    dialog::alert_default(get_str(txt))
+}
+
+///beep
+#[no_mangle]
+pub extern "C" fn beep(tp: u8) {
+    let beep_type_from_u8=|| {
+        match tp {
+            1=> BeepType::Message,
+            2=> BeepType::Error,
+            3=> BeepType::Question,
+            4=> BeepType::Password,
+            5=> BeepType::Notification,
+            _=> BeepType::Default
+        }
+    };
+    dialog::beep(beep_type_from_u8())
 }
 

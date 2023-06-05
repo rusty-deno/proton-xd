@@ -1,4 +1,4 @@
-# dialog { showCertificateTrustDialog,error,message,open,save }
+# dialog { showCertificateTrustDialog,error,open,save }
 # clipboard
 # screen
 # desktop capturer

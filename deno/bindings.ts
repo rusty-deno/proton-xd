@@ -46,17 +46,28 @@ const rust=Deno.dlopen(new URL(`../target/release/xd.${ext()}`,import.meta.url),
   message_title_default: {
     parameters: ["buffer"],
     result: "void"
+  },
+  alert: {
+    parameters: ["i32","i32","buffer"],
+    result: "void"
+  },
+  alert_default: {
+    parameters: ["buffer"],
+    result: "void"
+  },
+  beep: {
+    parameters: ["u8"],
+    result: "void"
   }
 });
 /**
- * message_set_font(idx: usize,sz: i32)
+ * alert(x: i32,y: i32,txt: *const i8)
  * 
- * message_set_hotspot(enabled: bool)
+ * alert_default(txt: *const i8)
  * 
- * message_title(title: *const i8)
- * 
- * message_title_default(title: *const i8)
+ * beep(tp: u8)
  */
+
 
 
 const encoder=new TextEncoder;

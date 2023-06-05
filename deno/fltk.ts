@@ -4,6 +4,7 @@ import rust,{toBuffer} from './bindings.ts';
 namespace fltk {
   const lib=rust.symbols;
   export class Dialog {
+    //message
     public static message=(x: number,y: number,txt: string)=> lib.message(x,y,toBuffer(txt));
 
     public static messageDefault=(txt: string)=> lib.message_default(toBuffer(txt));
@@ -19,25 +20,49 @@ namespace fltk {
     public static messageTitle=(title: string)=> lib.message_title(toBuffer(title));
 
     public static messageTitleDefault=(title: string)=> lib.message_title_default(toBuffer(title));
+
+    // alert
+
+    public static alert=(x: number,y: number,txt: string)=> lib.alert(x,y,toBuffer(txt));
+
+    public static alertDefault=(txt: string)=> lib.alert_default(toBuffer(txt));
+
+    //beep
+
+    public static beep=(tp: BeepType)=> lib.beep(tp);
+
+    
+
+
+
   }
   
   export enum Font {
-    Helvetica=0,
-    HelveticaBold=1,
-    HelveticaItalic=2,
-    HelveticaBoldItalic=3,
-    Courier=4,
-    CourierBold=5,
-    CourierItalic=6,
-    CourierBoldItalic=7,
-    Times=8,
-    TimesBold=9,
-    TimesItalic=10,
-    TimesBoldItalic=11,
-    Symbol=12,
-    Screen=13,
-    ScreenBold=14,
-    Zapfdingbats=15,
+    Helvetica,
+    HelveticaBold,
+    HelveticaItalic,
+    HelveticaBoldItalic,
+    Courier,
+    CourierBold,
+    CourierItalic,
+    CourierBoldItalic,
+    Times,
+    TimesBold,
+    TimesItalic,
+    TimesBoldItalic,
+    Symbol,
+    Screen,
+    ScreenBold,
+    Zapfdingbats,
+  }
+
+  export enum BeepType {
+    Default,
+    Message,
+    Error,
+    Question,
+    Password,
+    Notification,
   }
 
   export const close=rust.close;
