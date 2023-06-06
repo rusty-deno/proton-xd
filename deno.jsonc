@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "dev": "deno run --allow-ffi --unstable deno/main.ts",
+    "dev": "deno run --allow-ffi --unstable ./main.ts",
     "build": "cargo b --release"
   }
 }

@@ -17,7 +17,8 @@ const rust=Deno.dlopen(new URL(`../target/release/xd.${ext()}`,import.meta.url),
   },
   message: {
     parameters: ["i32","i32","buffer"],
-    result: "void"
+    result: "void",
+    name: "xd",
   },
   message_default: {
     parameters: ["buffer"],
@@ -60,13 +61,6 @@ const rust=Deno.dlopen(new URL(`../target/release/xd.${ext()}`,import.meta.url),
     result: "void"
   }
 });
-/**
- * alert(x: i32,y: i32,txt: *const i8)
- * 
- * alert_default(txt: *const i8)
- * 
- * beep(tp: u8)
- */
 
 
 

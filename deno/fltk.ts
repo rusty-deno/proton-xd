@@ -1,35 +1,34 @@
 import rust,{toBuffer} from './bindings.ts';
 
-
 namespace fltk {
-  const lib=rust.symbols;
+  const libSync=rust.symbols;
   export class Dialog {
     //message
-    public static message=(x: number,y: number,txt: string)=> lib.message(x,y,toBuffer(txt));
+    public static messageSync=(x: number,y: number,txt: string)=> libSync.message(x,y,toBuffer(txt));
 
-    public static messageDefault=(txt: string)=> lib.message_default(toBuffer(txt));
+    public static messageDefaultSync=(txt: string)=> libSync.message_default(toBuffer(txt));
 
-    public static hotspot=lib.hotspot;
+    public static hotspot=libSync.hotspot;
 
-    public static messageIconLabel=(label: string)=> lib.message_icon_label(toBuffer(label));
+    public static messageIconLabelSync=(label: string)=> libSync.message_icon_label(toBuffer(label));
 
-    public static messageSetFont=(idx: Font,sz: number)=> lib.message_set_font(idx,sz);
+    public static messageSetFontSync=(idx: Font,sz: number)=> libSync.message_set_font(idx,sz);
 
-    public static messageSetHotspot=(enabled: boolean)=> lib.message_set_hotspot(enabled);
+    public static messageSetHotspotSync=(enabled: boolean)=> libSync.message_set_hotspot(enabled);
 
-    public static messageTitle=(title: string)=> lib.message_title(toBuffer(title));
+    public static messageTitleSync=(title: string)=> libSync.message_title(toBuffer(title));
 
-    public static messageTitleDefault=(title: string)=> lib.message_title_default(toBuffer(title));
+    public static messageTitleDefaultSync=(title: string)=> libSync.message_title_default(toBuffer(title));
 
     // alert
 
-    public static alert=(x: number,y: number,txt: string)=> lib.alert(x,y,toBuffer(txt));
+    public static alertSync=(x: number,y: number,txt: string)=> libSync.alert(x,y,toBuffer(txt));
 
-    public static alertDefault=(txt: string)=> lib.alert_default(toBuffer(txt));
+    public static alertDefaultSync=(txt: string)=> libSync.alert_default(toBuffer(txt));
 
     //beep
 
-    public static beep=(tp: BeepType)=> lib.beep(tp);
+    public static beepSync=(tp: BeepType)=> libSync.beep(tp);
 
     
 
@@ -64,8 +63,6 @@ namespace fltk {
     Password,
     Notification,
   }
-
-  export const close=rust.close;
 }
 
 export default fltk;

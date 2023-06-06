@@ -90,3 +90,7 @@ pub extern "C" fn beep(tp: u8) {
     dialog::beep(beep_type_from_u8())
 }
 
+#[no_mangle]
+pub extern "C" fn error() {
+    
+}
