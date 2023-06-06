@@ -18,13 +18,12 @@ const rust=Deno.dlopen(new URL(`../target/release/xd.${ext()}`,import.meta.url),
   message: {
     parameters: ["i32","i32","buffer"],
     result: "void",
-    name: "xd",
   },
   message_default: {
     parameters: ["buffer"],
     result: "void"
   },
-  hotspot: {
+  message_hotspot: {
     parameters: [],
     result: "bool"
   },

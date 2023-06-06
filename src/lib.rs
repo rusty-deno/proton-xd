@@ -90,7 +90,20 @@ pub extern "C" fn beep(tp: u8) {
     dialog::beep(beep_type_from_u8())
 }
 
+//choice
 #[no_mangle]
-pub extern "C" fn error() {
-    
+pub extern "C" fn choice2(x: i32,y: i32,txt: *const i8,b0: *const i8,b1: *const i8,b2: *const i8)-> i32 {
+    dialog::choice2(x,y,get_str(txt),get_str(b0),get_str(b1),get_str(b2)).unwrap()
 }
+
+#[no_mangle]
+pub extern "C" fn choice2_default(txt: *const i8,b0: *const i8,b1: *const i8,b2: *const i8)-> i32 {
+    dialog::choice2_default(get_str(txt),get_str(b0),get_str(b1),get_str(b2)).unwrap()
+}
+
+#[no_mangle]
+pub extern "C" fn color_chooser(name: *const i8,cmode: u8) {
+    let color=dialog::color_chooser(name,1).unwrap();
+}
+
+
