@@ -58,6 +58,10 @@ const rust=Deno.dlopen(new URL(`../target/release/xd.${ext()}`,import.meta.url),
   beep: {
     parameters: ["u8"],
     result: "void"
+  },
+  color_chooser: {
+    parameters: ["buffer","u8"],
+    result: "void"
   }
 });
 

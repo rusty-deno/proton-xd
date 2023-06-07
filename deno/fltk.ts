@@ -8,7 +8,7 @@ namespace fltk {
 
     public static messageDefaultSync=(txt: string)=> libSync.message_default(toBuffer(txt));
 
-    public static hotspot=libSync.hotspot;
+    public static hotspot=libSync.message_hotspot;
 
     public static messageIconLabelSync=(label: string)=> libSync.message_icon_label(toBuffer(label));
 
@@ -30,7 +30,14 @@ namespace fltk {
 
     public static beepSync=(tp: BeepType)=> libSync.beep(tp);
 
-    
+    //color chooser
+    public static colorChooserSync=(name: string,format: number)=>{
+      const ptr=libSync.color_chooser(toBuffer(name),format);
+      
+
+
+
+    };
 
 
 
