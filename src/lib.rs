@@ -20,4 +20,11 @@ pub extern "C" fn init(title: *const i8,url: *const i8,width: u16,height: u16,_i
 }
 
 
+#[no_mangle]
+pub extern "C" fn xd() {
+    
+
+
+}
+
 
