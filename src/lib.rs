@@ -36,8 +36,8 @@ pub extern "C" fn write_to_clipboard(str: *const i8) {
 }
 
 #[no_mangle]
-pub extern "C" fn read_clipboard()-> &'static str {
+pub extern "C" fn read_clipboard()-> *const u8 {
     unsafe {
-        CLIPBOARD.read_text().unwrap_or_default().as_str()
+        CLIPBOARD.read_text().unwrap_or_default().as_ptr()
     }
 }
