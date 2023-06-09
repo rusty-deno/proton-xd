@@ -6,6 +6,7 @@ use wry::application::{
     window::Theme,
     clipboard::Clipboard
 };
+
 use once_cell::sync::Lazy;
 
 #[no_mangle]
@@ -42,3 +43,13 @@ pub extern "C" fn read_clipboard()-> *const u8 {
     }
 }
 
+#[no_mangle]
+pub extern "C" fn screenshot() {
+
+}
+
+
+#[no_mangle]
+pub extern "C" fn screenshot_of_area() {
+    
+}

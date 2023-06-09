@@ -1,4 +1,4 @@
 # dialog { showCertificateTrustDialog,error,open,save }
-# clipboard
+# clipboard//
 # screen
 # desktop capturer
