@@ -41,3 +41,4 @@ pub extern "C" fn read_clipboard()-> *const u8 {
         CLIPBOARD.read_text().unwrap_or_default().as_ptr()
     }
 }
+
