@@ -34,3 +34,10 @@ pub extern "C" fn write_to_clipboard(str: *const i8) {
         CLIPBOARD.write_text(get_str(str))
     }
 }
+
+#[no_mangle]
+pub extern "C" fn read_clipboard()-> &'static str {
+    unsafe {
+        CLIPBOARD.read_text().unwrap_or_default().as_str()
+    }
+}
