@@ -89,32 +89,32 @@ fn todo() {
 
 #[deno_bindgen]
 pub fn calender(title: &str)-> String {
-    todo();
+    todo()
 }
 
 #[deno_bindgen]
 pub fn error(error_message: &str)-> String {
-    todo();
+    todo()
 }
 
 #[deno_bindgen]
 pub fn information(info: &str)-> String {
-    todo();
+    todo()
 }
 
 #[deno_bindgen]
 pub fn progress()-> String {
-    todo();
+    todo()
 }
 
 #[deno_bindgen]
 pub fn question(question: &str)-> String {
-    todo();
+    todo()
 }
 
 #[deno_bindgen]
 pub fn warning(message: &str)-> String {
-    todo();
+    todo()
 }
 
 #[deno_bindgen]
