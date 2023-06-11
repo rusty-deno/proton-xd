@@ -1,6 +1,3 @@
-mod webview;
-
-
 use wry::{
     application::{
         event::{
@@ -12,11 +9,9 @@ use wry::{
             ControlFlow,
             EventLoop
         },
-        window::{
-            WindowBuilder,
-            Theme
-        },
+        window::{WindowBuilder,Theme},
         dpi::PhysicalSize,
+        clipboard::Clipboard,
     },
     webview::WebViewBuilder
 };
@@ -25,91 +20,126 @@ use once_cell::sync::Lazy;
 use deno_bindgen::deno_bindgen;
 
 #[deno_bindgen]
-pub fn init(title: &str,url: &str,width: u16,height: u16,_icon: &str,theme: Theme) {
-  let event_loop=EventLoop::new();
-  let window=WindowBuilder::new()
-  .with_title(title)
-  .with_inner_size(PhysicalSize::new(width,height))
-  .with_theme(Some(theme))
-  .build(&event_loop).unwrap();
+pub fn init(title: &str,url: &str,width: u16,height: u16,_icon: &str,theme: u8) {
+    let get_theme=move || {
+        Some(match theme {
+            0=> Theme::Light,
+            _=> Theme::Dark
+        })
+    };
 
-  let _webview=WebViewBuilder::new(window).unwrap()
-  .with_url(url).unwrap()
-  .build().unwrap();
+    let event_loop=EventLoop::new();
+    let window=WindowBuilder::new()
+    .with_title(title)
+    .with_inner_size(PhysicalSize::new(width,height))
+    .with_theme(get_theme())
+    .build(&event_loop).unwrap();
 
-  event_loop.run(move |event, _, control_flow| {
-  *control_flow=ControlFlow::Wait;
-  match event {
-    Event::NewEvents(StartCause::Init)=> println!(""),
-    Event::WindowEvent {
-      event: WindowEvent::CloseRequested,
-      ..
-      }=> *control_flow=ControlFlow::Exit,
-      _=> (),
-    }
-  });
+    let _webview=WebViewBuilder::new(window).unwrap()
+    .with_url(url).unwrap()
+    .build().unwrap();
+
+    event_loop.run(move |event, _, control_flow| {
+        *control_flow=ControlFlow::Wait;
+        match event {
+            Event::NewEvents(StartCause::Init)=> println!(""),
+            Event::WindowEvent {
+                event: WindowEvent::CloseRequested,
+                ..
+            }=> *control_flow=ControlFlow::Exit,
+            _=> (),
+        }
+    });
 }
-
-  
 
 
 static mut CLIPBOARD: Lazy<Clipboard>=Lazy::new(||{
     Clipboard::new()
 });
 
-#[no_mangle]
-pub extern "C" fn write_to_clipboard(str: &str) {
+
+#[deno_bindgen]
+pub fn write_to_clipboard(str: &str) {
     unsafe {
         CLIPBOARD.write_text(str)
     }
 }
 
-#[no_mangle]
-pub extern "C" fn read_clipboard()-> String {
+#[deno_bindgen]
+pub fn read_clipboard()-> String {
     unsafe {
-        CLIPBOARD.read_text().unwrap_or_default().as_ptr()
+        CLIPBOARD.read_text().unwrap_or_default()
     }
 }
 
-#[no_mangle]
-pub extern "C" fn screenshot() {
+#[deno_bindgen]
+pub fn screenshot() {
     todo!()
 }
 
 
-#[no_mangle]
-pub extern "C" fn screenshot_of_area() {
+#[deno_bindgen]
+pub fn screenshot_of_area() {
     todo!()
 }
 
-
-#[no_mangle]
-pub extern "C" fn calender(title: &str)-> String {
-    dialog_box::calender(title).as_ptr()
+fn todo() {
+    todo!("i didnt check before using that lib as it was so smoll.. that idiot wrote horrible machine dependant code..")
 }
 
-#[no_mangle]
-pub extern "C" fn error(error_message: &str)-> String {
-    dialog_box::error(error_message).as_ptr()
+#[deno_bindgen]
+pub fn calender(title: &str)-> String {
+    todo();
 }
 
-#[no_mangle]
-pub extern "C" fn information(info: &str)-> String {
-    dialog_box::information(info).as_ptr()
+#[deno_bindgen]
+pub fn error(error_message: &str)-> String {
+    todo();
 }
 
-#[no_mangle]
-pub extern "C" fn progress()-> String {
-    dialog_box::progress().as_ptr()
+#[deno_bindgen]
+pub fn information(info: &str)-> String {
+    todo();
 }
 
-#[no_mangle]
-pub extern "C" fn question(question: &str)-> String {
-    dialog_box::question(question).as_ptr()
+#[deno_bindgen]
+pub fn progress()-> String {
+    todo();
 }
 
-#[no_mangle]
-pub extern "C" fn warning(message: &str)-> String {
-    dialog_box::warning(message).as_ptr()
+#[deno_bindgen]
+pub fn question(question: &str)-> String {
+    todo();
+}
+
+#[deno_bindgen]
+pub fn warning(message: &str)-> String {
+    todo();
+}
+
+#[deno_bindgen
+todo();
+    let event_loop=EventLoop::new();
+
+    let dialog=WindowBuilder::new()
+    .with_title(title)
+    .build(&event_loop)
+    .unwrap();
+
+    let _webview=WebViewBuilder::new(dialog).unwrap()
+    .with_html(html)
+    .unwrap();
+
+    event_loop.run(move |event, _, control_flow| {
+        *control_flow=ControlFlow::Wait;
+        match event {
+            Event::NewEvents(StartCause::Init)=> println!(""),
+            Event::WindowEvent {
+                event: WindowEvent::CloseRequested,
+                ..
+            }=> *control_flow=ControlFlow::Exit,
+            _=> (),
+        }
+    });
 }
 
