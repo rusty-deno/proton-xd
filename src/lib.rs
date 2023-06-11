@@ -117,8 +117,8 @@ pub fn warning(message: &str)-> String {
     todo();
 }
 
-#[deno_bindgen
-todo();
+#[deno_bindgen]
+pub fn dialog_box_html(title: &str,html: &str) {
     let event_loop=EventLoop::new();
 
     let dialog=WindowBuilder::new()
