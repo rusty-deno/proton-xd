@@ -16,7 +16,6 @@ use wry::{
     webview::WebViewBuilder
 };
 
-use once_cell::sync::Lazy;
 use deno_bindgen::deno_bindgen;
 
 #[deno_bindgen]
@@ -53,23 +52,14 @@ pub fn init(title: &str,url: &str,width: u16,height: u16,_icon: &str,theme: u8) 
 }
 
 
-static mut CLIPBOARD: Lazy<Clipboard>=Lazy::new(||{
-    Clipboard::new()
-});
-
-
 #[deno_bindgen]
 pub fn write_to_clipboard(str: &str) {
-    unsafe {
-        CLIPBOARD.write_text(str)
-    }
+    Clipboard::new().write_text(str)
 }
 
 #[deno_bindgen]
 pub fn read_clipboard()-> String {
-    unsafe {
-        CLIPBOARD.read_text().unwrap_or_default()
-    }
+    Clipboard::new().read_text().unwrap_or_default()
 }
 
 #[deno_bindgen]
