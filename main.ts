@@ -1,7 +1,8 @@
-import * as xd from "./bindings/bindings.ts";
+import ProtonXD from './lib/mod.ts';
 
 
 
-xd.write_to_clipboard("gg");
-console.log(xd.read_clipboard());
+ProtonXD.XD.write_to_clipboard("gg");
+
+console.log(ProtonXD.XD.read_clipboard());
 

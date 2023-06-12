@@ -83,22 +83,22 @@ pub fn screenshot_of_area() {
     todo!()
 }
 
-fn todo() {
+fn todo()-> String {
     todo!("i didnt check before using that lib as it was so smoll.. that idiot wrote horrible machine dependant code..")
 }
 
 #[deno_bindgen]
-pub fn calender(title: &str)-> String {
+pub fn calender(_title: &str)-> String {
     todo()
 }
 
 #[deno_bindgen]
-pub fn error(error_message: &str)-> String {
+pub fn error(_error_message: &str)-> String {
     todo()
 }
 
 #[deno_bindgen]
-pub fn information(info: &str)-> String {
+pub fn information(_info: &str)-> String {
     todo()
 }
 
@@ -108,12 +108,12 @@ pub fn progress()-> String {
 }
 
 #[deno_bindgen]
-pub fn question(question: &str)-> String {
+pub fn question(_question: &str)-> String {
     todo()
 }
 
 #[deno_bindgen]
-pub fn warning(message: &str)-> String {
+pub fn warning(_message: &str)-> String {
     todo()
 }
 
