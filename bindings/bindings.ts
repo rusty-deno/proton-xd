@@ -1,14 +1,11 @@
 // Auto-generated with deno_bindgen
-const encoder=new TextEncoder;
-const decoder=new TextDecoder;
-
-
 function encode(v: string | Uint8Array): Uint8Array {
-  return (typeof v !== "string")?v:encoder.encode(v)
+  if (typeof v !== "string") return v
+  return new TextEncoder().encode(v)
 }
 
 function decode(v: Uint8Array): string {
-  return decoder.decode(v)
+  return new TextDecoder().decode(v)
 }
 
 // deno-lint-ignore no-explicit-any
@@ -90,7 +87,11 @@ const { symbols } = Deno.dlopen(
       nonblocking: false,
     },
     read_clipboard: { parameters: [], result: "buffer", nonblocking: false },
-    screenshot: { parameters: [], result: "void", nonblocking: false },
+    screenshot: {
+      parameters: ["i32", "i32"],
+      result: "void",
+      nonblocking: false,
+    },
     screenshot_of_area: { parameters: [], result: "void", nonblocking: false },
     warning: {
       parameters: ["buffer", "usize"],
@@ -182,8 +183,8 @@ export function read_clipboard() {
   const result = readPointer(rawResult)
   return decode(result)
 }
-export function screenshot() {
-  const rawResult = symbols.screenshot()
+export function screenshot(a0: number, a1: number) {
+  const rawResult = symbols.screenshot(a0, a1)
   const result = rawResult
   return result
 }

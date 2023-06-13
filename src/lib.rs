@@ -69,7 +69,8 @@ pub fn read_clipboard()-> String {
 
 #[deno_bindgen]
 pub fn screenshot(x: i32,y: i32) {
-    Screen::new(&DisplayInfo::from_point(x,y).unwrap());
+    let img=Screen::new(&DisplayInfo::from_point(x,y).unwrap()).capture().unwrap();
+    std::fs::write("xd.png",img.to_png().unwrap()).unwrap();
 }
 
 

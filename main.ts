@@ -2,7 +2,6 @@ import ProtonXD from './lib/mod.ts';
 
 
 
-ProtonXD.XD.write_to_clipboard("gg");
 
-console.log(ProtonXD.XD.read_clipboard());
+ProtonXD.XD.screenshot(10,10);
 
