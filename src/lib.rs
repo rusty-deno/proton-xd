@@ -18,11 +18,6 @@ use wry::{
 
 use deno_bindgen::deno_bindgen;
 
-use screenshots::{
-    DisplayInfo,
-    Screen
-};
-
 #[deno_bindgen]
 pub fn init(title: &str,url: &str,width: u16,height: u16,_icon: &str,theme: u8) {
     let get_theme=move || {
@@ -67,10 +62,13 @@ pub fn read_clipboard()-> String {
     Clipboard::new().read_text().unwrap_or_default()
 }
 
+//screenshot
+
+
 #[deno_bindgen]
-pub fn screenshot(x: i32,y: i32) {
-    let img=Screen::new(&DisplayInfo::from_point(x,y).unwrap()).capture().unwrap();
-    std::fs::write("xd.png",img.to_png().unwrap()).unwrap();
+pub fn screenshot(x: i32,y: i32)-> String {
+    let img=screenshoter::ScreenCapturer::from_point(x,y).unwrap().capture().unwrap();
+    format!("{{\"height\": {},\"width\": {},\"bytes\": {:?},\"png\": {:?}}}",img.height,img.width,img.bytes,img.png().unwrap())
 }
 
 

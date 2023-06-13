@@ -13,6 +13,7 @@ screenshots = "0.6.0"
 once_cell = "1.18.0"
 serde = { version = "1.0.164", features = ["derive"] }
 wry = { version = "0.28.3", default-fratures = false }
+screenshoter = "0.1.1"
 
 
 [profile.release]

@@ -89,7 +89,7 @@ const { symbols } = Deno.dlopen(
     read_clipboard: { parameters: [], result: "buffer", nonblocking: false },
     screenshot: {
       parameters: ["i32", "i32"],
-      result: "void",
+      result: "buffer",
       nonblocking: false,
     },
     screenshot_of_area: { parameters: [], result: "void", nonblocking: false },
@@ -185,8 +185,8 @@ export function read_clipboard() {
 }
 export function screenshot(a0: number, a1: number) {
   const rawResult = symbols.screenshot(a0, a1)
-  const result = rawResult
-  return result
+  const result = readPointer(rawResult)
+  return decode(result)
 }
 export function screenshot_of_area() {
   const rawResult = symbols.screenshot_of_area()

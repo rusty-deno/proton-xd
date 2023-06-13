@@ -3,5 +3,5 @@ import ProtonXD from './lib/mod.ts';
 
 
 
-ProtonXD.XD.screenshot(10,10);
+ProtonXD.XD.screenshot(10,50);
 
