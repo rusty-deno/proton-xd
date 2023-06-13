@@ -18,6 +18,11 @@ use wry::{
 
 use deno_bindgen::deno_bindgen;
 
+use screenshots::{
+    DisplayInfo,
+    Screen
+};
+
 #[deno_bindgen]
 pub fn init(title: &str,url: &str,width: u16,height: u16,_icon: &str,theme: u8) {
     let get_theme=move || {
@@ -63,8 +68,8 @@ pub fn read_clipboard()-> String {
 }
 
 #[deno_bindgen]
-pub fn screenshot() {
-    todo!()
+pub fn screenshot(x: i32,y: i32) {
+    Screen::new(&DisplayInfo::from_point(x,y).unwrap());
 }
 
 

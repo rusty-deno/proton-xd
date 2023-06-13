@@ -1,11 +1,14 @@
 // Auto-generated with deno_bindgen
+const encoder=new TextEncoder;
+const decoder=new TextDecoder;
+
+
 function encode(v: string | Uint8Array): Uint8Array {
-  if (typeof v !== "string") return v
-  return new TextEncoder().encode(v)
+  return (typeof v !== "string")?v:encoder.encode(v)
 }
 
 function decode(v: Uint8Array): string {
-  return new TextDecoder().decode(v)
+  return decoder.decode(v)
 }
 
 // deno-lint-ignore no-explicit-any
