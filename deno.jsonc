@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "dev": "deno run --allow-ffi --unstable ./main.ts",
+    "dev": "deno run --allow-ffi --allow-write=./ --unstable ./main.ts",
     "build": "deno_bindgen"
   }
 }

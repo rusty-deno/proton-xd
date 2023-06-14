@@ -64,11 +64,17 @@ pub fn read_clipboard()-> String {
 
 //screenshot
 
+#[deno_bindgen]
+pub struct Img {
+  pub width: u32,
+  pub height: u32,
+  pub bytes: Vec<u8>,
+}
 
 #[deno_bindgen]
 pub fn screenshot(x: i32,y: i32)-> String {
     let img=screenshoter::ScreenCapturer::from_point(x,y).unwrap().capture().unwrap();
-    format!("{{\"height\": {},\"width\": {},\"bytes\": {:?},\"png\": {:?}}}",img.height,img.width,img.bytes,img.png().unwrap())
+    format!("{{\"height\": {},\"width\": {},\"bytes\": {:?}}}",img.height,img.width,img.bytes)
 }
 
 

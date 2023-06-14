@@ -105,7 +105,11 @@ const { symbols } = Deno.dlopen(
     },
   },
 )
-
+export type Img = {
+  width: number
+  height: number
+  bytes: Array<number>
+}
 export function calender(a0: string) {
   const a0_buf = encode(a0)
 

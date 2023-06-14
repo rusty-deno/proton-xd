@@ -3,5 +3,6 @@ import ProtonXD from './lib/mod.ts';
 
 
 
-ProtonXD.XD.screenshot(10,50);
+const img=ProtonXD.ScreenCapturer.screenshot(10,10);
+
 

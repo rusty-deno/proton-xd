@@ -1,0 +1,1 @@
+{"name":"xd","littleEndian":true,"symbols":{"screenshot":{"parameters":["i32","i32"],"result":"str","nonBlocking":false}},"typeDefs":{},"tsTypes":{}}
