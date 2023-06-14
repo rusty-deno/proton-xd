@@ -18,6 +18,7 @@ use wry::{
 
 use deno_bindgen::deno_bindgen;
 
+
 use std::{
     time::Duration,
     thread
@@ -84,7 +85,12 @@ pub fn screenshot(x: i32,y: i32,delay: u32)-> String {
     format!("{{\"height\": {},\"width\": {},\"bytes\": {:?}}}",img.height,img.width,img.bytes)
 }
 
+//screenrecorder
 
+
+
+
+//dialogs
 fn todo()-> String {
     todo!("i didnt check before using that lib as it was so smoll.. that idiot wrote horrible machine dependant code..")
 }
