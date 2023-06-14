@@ -90,6 +90,11 @@ const { symbols } = Deno.dlopen(
     screenshot: {
       parameters: ["i32", "i32", "u32"],
       result: "buffer",
+      nonblocking: true,
+    },
+    screenshot_sync: {
+      parameters: ["i32", "i32", "u32"],
+      result: "buffer",
       nonblocking: false,
     },
     warning: {
@@ -184,6 +189,11 @@ export function read_clipboard() {
 }
 export function screenshot(a0: number, a1: number, a2: number) {
   const rawResult = symbols.screenshot(a0, a1, a2)
+  const result = rawResult.then(readPointer)
+  return result.then(decode)
+}
+export function screenshot_sync(a0: number, a1: number, a2: number) {
+  const rawResult = symbols.screenshot_sync(a0, a1, a2)
   const result = readPointer(rawResult)
   return decode(result)
 }

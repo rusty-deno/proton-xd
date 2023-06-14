@@ -4,8 +4,8 @@ import * as lib from "../bindings/bindings.ts";
 
 export default class ScreenCapturer {
   
-
-  public static screenshot=(x: number,y: number,delay=0)=> new Image(JSON.parse(lib.screenshot(x,y,delay)));
+  public static screenshot=async (x: number,y: number,delay=0)=> new Image(JSON.parse(await lib.screenshot(x,y,delay)));
+  public static screenshotSync=(x: number,y: number,delay=0)=> new Image(JSON.parse(lib.screenshot_sync(x,y,delay)));
 }
 
 export class Image {
