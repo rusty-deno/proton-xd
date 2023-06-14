@@ -5,7 +5,7 @@ import * as lib from "../bindings/bindings.ts";
 export default class ScreenCapturer {
   
 
-  public static screenshot=(x: number,y: number)=> new Image(JSON.parse(lib.screenshot(x,y)));
+  public static screenshot=(x: number,y: number,delay=0)=> new Image(JSON.parse(lib.screenshot(x,y,delay)));
 }
 
 export class Image {
@@ -17,15 +17,6 @@ export class Image {
     this.height=img.height;
     this.width=img.width;
     this.bytes=img.bytes;
-
-    for(let i=0;i<this.bytes.length;i+=4) {
-      const b=this.bytes[i];
-      const r=this.bytes[i+2];
-
-      this.bytes[i]=r;
-      this.bytes[i+2]=b;
-      this.bytes[i+3]=255;
-    }
   }
 
   public png=()=> png.encode(this.bytes,this.width,this.height,{

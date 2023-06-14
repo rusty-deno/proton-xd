@@ -18,6 +18,11 @@ use wry::{
 
 use deno_bindgen::deno_bindgen;
 
+use std::{
+    time::Duration,
+    thread
+};
+
 #[deno_bindgen]
 pub fn init(title: &str,url: &str,width: u16,height: u16,_icon: &str,theme: u8) {
     let get_theme=move || {
@@ -63,25 +68,22 @@ pub fn read_clipboard()-> String {
 }
 
 //screenshot
-
 #[deno_bindgen]
-pub struct Img {
-  pub width: u32,
-  pub height: u32,
-  pub bytes: Vec<u8>,
-}
+pub fn screenshot(x: i32,y: i32,delay: u32)-> String {
+    thread::sleep(Duration::from_millis(delay as u64));
 
-#[deno_bindgen]
-pub fn screenshot(x: i32,y: i32)-> String {
-    let img=screenshoter::ScreenCapturer::from_point(x,y).unwrap().capture().unwrap();
+    let mut img=screenshoter::ScreenCapturer::from_point(x,y).unwrap().capture().unwrap();
+
+    for i in (0..img.bytes.len()).step_by(4) {
+        let b=img.bytes[i];//temp var for swaping
+        img.bytes[i]=img.bytes[i+2];
+        img.bytes[i+2]=b;
+        img.bytes[i+3]=255;
+    }
+    
     format!("{{\"height\": {},\"width\": {},\"bytes\": {:?}}}",img.height,img.width,img.bytes)
 }
 
-
-#[deno_bindgen]
-pub fn screenshot_of_area() {
-    todo!()
-}
 
 fn todo()-> String {
     todo!("i didnt check before using that lib as it was so smoll.. that idiot wrote horrible machine dependant code..")
