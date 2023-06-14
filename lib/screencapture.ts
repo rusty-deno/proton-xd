@@ -7,11 +7,9 @@ import * as lib from "../bindings/bindings.ts";
 export default class ScreenCapturer {
   
 
-  public static screenshot(x: number,y: number) {
-    const buffer: ImageBuffer=JSON.parse(lib.screenshot(x,y));
-    const img=new Image(buffer);
-    img.toPng();
-  }
+  public static screenshot=(x: number,y: number)=> new Image(JSON.parse(lib.screenshot(x,y)));
+
+  
 }
 
 export class Image {
@@ -25,12 +23,12 @@ export class Image {
     this.bytes=img.bytes;
   }
 
-  public toPng=()=> png.encode(this.bytes,this.width,this.height,{
+  public png=()=> png.encode(this.bytes,this.width,this.height,{
     depth: png.BitDepth.Eight,
     color: png.ColorType.RGBA
   });
 
-  public toJpeg=()=> new Uint8Array(JPEG.encode({data: this.bytes,width: this.width,height: this.height}).data);
+  public jpeg=()=> new Uint8Array(JPEG.encode({data: this.bytes,width: this.width,height: this.height}).data);
 }
 
 export interface ImageBuffer {
