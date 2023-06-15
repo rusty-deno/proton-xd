@@ -2,19 +2,20 @@ use wry::{
     application::{
         event::{
             Event,
-        StartCause,
-        WindowEvent
-    },
+            StartCause,
+            WindowEvent
+        },
         event_loop::{
             ControlFlow,
             EventLoop
         },
-        window::{WindowBuilder,Theme},
-        dpi::PhysicalSize,
+        window::WindowBuilder,
         clipboard::Clipboard,
     },
     webview::WebViewBuilder
 };
+
+use once_cell::sync::Lazy;
 
 use deno_bindgen::deno_bindgen;
 
@@ -24,40 +25,109 @@ use std::{
     thread
 };
 
+
+static mut _EVENT_LOOP: Lazy<EventLoop<()>>=Lazy::new(||{
+    EventLoop::new()
+});
+static mut _WINDOW: Lazy<WindowBuilder>=Lazy::new(|| {
+    WindowBuilder::new()
+});
+
+
+/*/
 #[deno_bindgen]
-pub fn init(title: &str,url: &str,width: u16,height: u16,_icon: &str,theme: u8) {
-    let get_theme=move || {
-        Some(match theme {
-            0=> Theme::Light,
-            _=> Theme::Dark
-        })
-    };
+pub fn init() {
+    // let _get_theme=move || {
+    //     Some(match theme {
+    //         0=> Theme::Light,
+    //         _=> Theme::Dark
+    //     })
+    // };
 
-    let event_loop=EventLoop::new();
-    let window=WindowBuilder::new()
-    .with_title(title)
-    .with_inner_size(PhysicalSize::new(width,height))
-    .with_theme(get_theme())
-    .build(&event_loop).unwrap();
 
-    let _webview=WebViewBuilder::new(window).unwrap()
-    .with_url(url).unwrap()
-    .build().unwrap();
 
-    event_loop.run(move |event, _, control_flow| {
-        *control_flow=ControlFlow::Wait;
-        match event {
-            Event::NewEvents(StartCause::Init)=> println!(""),
-            Event::WindowEvent {
-                event: WindowEvent::CloseRequested,
-                ..
-            }=> *control_flow=ControlFlow::Exit,
-            _=> (),
-        }
-    });
+
+    // let window=WindowBuilder::new()
+    // .with_title(title)
+    // .with_inner_size(PhysicalSize::new(width,height))
+    // .with_theme(get_theme())
+    // .build(unsafe {&EVENT_LOOP}).unwrap();
+    
+
+
+    // let _webview=WebViewBuilder::new(window).unwrap()
+    // .with_url(url).unwrap()
+    // .build().unwrap();
+
+    // EVENT_LOOP.run(move |event, _, control_flow| {
+    //     *control_flow=ControlFlow::Wait;
+    //     match event {
+    //         Event::NewEvents(StartCause::Init)=> println!(""),
+    //         Event::WindowEvent {
+    //             event: WindowEvent::CloseRequested,
+    //             ..
+    //         }=> *control_flow=ControlFlow::Exit,
+    //         _=> (),
+    //     }
+    // });
+}
+*/
+
+#[deno_bindgen]
+pub struct Size {
+    height: u16,
+    width: u16
+}
+
+#[deno_bindgen]
+pub struct WindowAttrs {
+    inner_size: Size,
+    min_inner_size: Size,
+    max_inner_size: Size,
+    resizable: bool,
+    minimizable: bool,
+    maximizable: bool,
+    closable: bool,
+    fullscreen: bool,
+    title: String,
+    maximized: bool,
+    visible: bool,
+    transparent: bool,
+    decorations: bool,
+    always_on_top: bool,
+    always_on_bottom: bool,
+    window_icon: String,
+    // window_menu: platform_impl::Menu,
+    preferred_theme: u8,
+    focused: bool,
+    content_protection: bool,
+    visible_on_all_workspaces: bool,
+}
+
+#[deno_bindgen]
+pub fn init() {
+    let _event_loop=EventLoop::new();
+    let _window_builder=WindowBuilder::new();
+    
+
+    // window_attrs;
+
+
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+//clipboard
 #[deno_bindgen]
 pub fn write_to_clipboard(str: &str) {
     Clipboard::new().write_text(str)
@@ -90,7 +160,6 @@ fn ss(x: i32,y: i32,delay: u32)-> String {
         img.bytes[i+2]=b;
         img.bytes[i+3]=255;
     }
-    
     format!("{{\"height\": {},\"width\": {},\"bytes\": {:?}}}",img.height,img.width,img.bytes)
 }
 
@@ -160,3 +229,4 @@ pub fn dialog_box_html(title: &str,html: &str) {
     });
 }
 
+//open
