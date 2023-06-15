@@ -20,7 +20,7 @@ use deno_bindgen::deno_bindgen;
 
 use std::{
     time::Duration,
-    thread, collections::HashMap
+    thread
 };
 
 
