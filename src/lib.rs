@@ -112,10 +112,13 @@ pub enum Content {
     }
 }
 
+#[deno_bindgen]
+pub fn init() {
+    
+}
 
 
-
-pub fn init(attrs: WindowAttrs,webview_atters: WebViewAttrs,scripts: Vec<String>,content: Content) {
+fn _init_webview(attrs: WindowAttrs,webview_atters: WebViewAttrs,scripts: Vec<String>,content: Content) {
     let event_loop=EventLoop::new();
     let window_builder=WindowBuilder::new();
     
