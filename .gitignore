@@ -1,5 +1,4 @@
 /target
-/Cargo.lock
-/*.png
-/*.jpeg
-/main.ts
+./xd.png
+./xd.jpeg
+./main.ts

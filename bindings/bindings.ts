@@ -95,9 +95,36 @@ const { symbols } = Deno.dlopen(
     },
   },
 )
+export type Content =
+  | {
+    Html: {
+      html: string
+    }
+  }
+  | {
+    Url: {
+      url: string
+    }
+  }
 export type Size = {
   height: number
   width: number
+}
+export type Theme =
+  | "Light"
+  | "Dark"
+export type WebViewAttrs = {
+  user_agent: string
+  visible: boolean
+  transparent: boolean
+  zoom_hotkeys_enabled: boolean
+  initialization_script: Array<string>
+  clipboard: boolean
+  devtools: boolean
+  accept_first_mouse: boolean
+  back_forward_navigation_gestures: boolean
+  incognito: boolean
+  autoplay: boolean
 }
 export type WindowAttrs = {
   inner_size: Size
@@ -107,7 +134,6 @@ export type WindowAttrs = {
   minimizable: boolean
   maximizable: boolean
   closable: boolean
-  fullscreen: boolean
   title: string
   maximized: boolean
   visible: boolean
@@ -116,7 +142,7 @@ export type WindowAttrs = {
   always_on_top: boolean
   always_on_bottom: boolean
   window_icon: string
-  preferred_theme: number
+  preferred_theme: Theme
   focused: boolean
   content_protection: boolean
   visible_on_all_workspaces: boolean
