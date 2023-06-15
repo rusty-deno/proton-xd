@@ -65,21 +65,7 @@ const { symbols } = Deno.dlopen(
       result: "buffer",
       nonblocking: false,
     },
-    init: {
-      parameters: [
-        "buffer",
-        "usize",
-        "buffer",
-        "usize",
-        "u16",
-        "u16",
-        "buffer",
-        "usize",
-        "u8",
-      ],
-      result: "void",
-      nonblocking: false,
-    },
+    init: { parameters: [], result: "void", nonblocking: false },
     progress: { parameters: [], result: "buffer", nonblocking: false },
     question: {
       parameters: ["buffer", "usize"],
@@ -109,7 +95,32 @@ const { symbols } = Deno.dlopen(
     },
   },
 )
-
+export type Size = {
+  height: number
+  width: number
+}
+export type WindowAttrs = {
+  inner_size: Size
+  min_inner_size: Size
+  max_inner_size: Size
+  resizable: boolean
+  minimizable: boolean
+  maximizable: boolean
+  closable: boolean
+  fullscreen: boolean
+  title: string
+  maximized: boolean
+  visible: boolean
+  transparent: boolean
+  decorations: boolean
+  always_on_top: boolean
+  always_on_bottom: boolean
+  window_icon: string
+  preferred_theme: number
+  focused: boolean
+  content_protection: boolean
+  visible_on_all_workspaces: boolean
+}
 export function calender(a0: string) {
   const a0_buf = encode(a0)
 
@@ -144,29 +155,8 @@ export function information(a0: string) {
   const result = readPointer(rawResult)
   return decode(result)
 }
-export function init(
-  a0: string,
-  a1: string,
-  a2: number,
-  a3: number,
-  a4: string,
-  a5: number,
-) {
-  const a0_buf = encode(a0)
-  const a1_buf = encode(a1)
-  const a4_buf = encode(a4)
-
-  const rawResult = symbols.init(
-    a0_buf,
-    a0_buf.byteLength,
-    a1_buf,
-    a1_buf.byteLength,
-    a2,
-    a3,
-    a4_buf,
-    a4_buf.byteLength,
-    a5,
-  )
+export function init() {
+  const rawResult = symbols.init()
   const result = rawResult
   return result
 }
