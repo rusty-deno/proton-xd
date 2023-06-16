@@ -10,9 +10,11 @@ use wry::{
             EventLoop
         },
         window::{WindowBuilder,self},
-        clipboard::Clipboard, dpi::PhysicalSize,
+        clipboard::Clipboard,
+        dpi::PhysicalSize,
     },
-    webview::WebViewBuilder
+    webview::WebViewBuilder,
+    http::{HeaderMap, HeaderValue, HeaderName}
 };
 
 use deno_bindgen::deno_bindgen;
@@ -20,7 +22,7 @@ use deno_bindgen::deno_bindgen;
 
 use std::{
     time::Duration,
-    thread
+    thread, collections::HashMap, str::FromStr
 };
 
 
@@ -109,11 +111,16 @@ pub enum Content {
     },
     Url {
         url: String
+    },
+    UrlAndHeaders {
+        url: String,
+        headers: HashMap<String,String>
     }
 }
 
 #[deno_bindgen]
-pub fn init() {
+pub fn init(webview_atters: &str) {
+    let _webview_atters: WebViewAttrs=serde_json::from_str(webview_atters).unwrap();
     
 }
 
@@ -160,6 +167,13 @@ fn _init_webview(attrs: WindowAttrs,webview_atters: WebViewAttrs,scripts: Vec<St
     match content {
         Content::Html { html }=> webview_builder.with_html(html),
         Content::Url { url }=> webview_builder.with_url(&url),
+        Content::UrlAndHeaders { url,headers }=> {
+            let mut header_map=HeaderMap::new();
+            for (k,v) in headers {
+                header_map.insert(HeaderName::from_str(&k).unwrap(),HeaderValue::from_str(&v).unwrap()).unwrap();
+            }
+            webview_builder.with_url_and_headers(&url,header_map)
+        },
     }.unwrap();
 
     event_loop.run(move |event, _, control_flow| {
@@ -174,8 +188,6 @@ fn _init_webview(attrs: WindowAttrs,webview_atters: WebViewAttrs,scripts: Vec<St
         }
     });
 }
-
-
 
 
 
