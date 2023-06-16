@@ -17,7 +17,10 @@ use wry::{
     clipboard::Clipboard,
     dpi::PhysicalSize,
   },
-  webview::WebViewBuilder,
+  webview::{
+    WebViewBuilder,
+    RGBA
+  },
   http::{
     HeaderMap,
     HeaderValue,
@@ -80,29 +83,31 @@ impl Theme {
 }
 
 #[deno_bindgen]
+pub struct Rgba {
+  r: u8,
+  g: u8,
+  b: u8,
+  a: u8
+}
+
+impl Rgba {
+  pub fn to_touple(&self)-> RGBA {
+    (self.r,self.g,self.b,self.a)
+  }
+}
+
+#[deno_bindgen]
 pub struct WebViewAttrs {
   pub user_agent: String,
   pub visible: bool,
   pub transparent: bool,
-  // pub background_color: RGBA>,
-  // pub headers: http::HeaderMap>,
+  pub background_color: Rgba,
   pub zoom_hotkeys_enabled: bool,
   pub initialization_script: Vec<String>,
-  // pub custom_protocols: Vec<(
-  //   String,
-  //   Box<dyn Fn(&Request<Vec<u8>>) -> Result<Response<Cow<'static, [u8]>>>>,
-  // )>,
-  // pub ipc_handler: Box<dyn Fn(&Window, String)>>,
-  // file_drop_handler: Box<dyn Fn(&Window, FileDropEvent) -> bool>>,
-  // pub navigation_handler: Box<dyn Fn(String)-> bool>,
-  // pub download_started_handler: Box<dyn FnMut(String, &mut PathBuf) -> bool>>,
-  // pub download_completed_handler: Rc<dyn Fn(String, PathBuf>, bool) + 'static>>,
-  // pub new_window_req_handler: Box<dyn Fn(String)-> bool>,
   pub clipboard: bool,
   pub devtools: bool,
   pub accept_first_mouse: bool,
   pub back_forward_navigation_gestures: bool,
-  // pub document_title_changed_handler: Box<dyn Fn(&Window, String)>>,
   pub incognito: bool,
   pub autoplay: bool,
 }
@@ -142,7 +147,7 @@ impl Header {
 #[deno_bindgen]
 pub fn init(webview_atters: &str) {
   let _webview_atters: WebViewAttrs=serde_json::from_str(webview_atters).unwrap();
-  
+
 }
 
 
@@ -180,7 +185,11 @@ fn _init_webview(attrs: WindowAttrs,webview_atters: WebViewAttrs,scripts: Vec<St
   .with_accept_first_mouse(webview_atters.accept_first_mouse)
   .with_back_forward_navigation_gestures(webview_atters.back_forward_navigation_gestures)
   .with_incognito(webview_atters.incognito)
-  .with_autoplay(webview_atters.autoplay);
+  .with_autoplay(webview_atters.autoplay)
+  .with_background_color(webview_atters.background_color.to_touple());
+
+
+
 
   for script in &scripts {
     webview_builder=webview_builder.with_initialization_script(&script);
