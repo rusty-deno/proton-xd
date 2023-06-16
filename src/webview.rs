@@ -60,7 +60,6 @@ pub struct WindowAttrs {
   always_on_top: bool,
   always_on_bottom: bool,
   window_icon: String,
-  // window_menu: platform_impl::Menu,
   preferred_theme: Theme,
   focused: bool,
   content_protection: bool,
@@ -190,7 +189,6 @@ fn _init_webview(attrs: WindowAttrs,webview_atters: WebViewAttrs,scripts: Vec<St
 
 
 
-
   for script in &scripts {
     webview_builder=webview_builder.with_initialization_script(&script);
   }
@@ -222,7 +220,8 @@ fn _init_webview(attrs: WindowAttrs,webview_atters: WebViewAttrs,scripts: Vec<St
   });
 }
 
-//clipboard
+
+///@param {string} str
 #[deno_bindgen]
 pub fn write_to_clipboard(str: &str) {
   Clipboard::new().write_text(str)

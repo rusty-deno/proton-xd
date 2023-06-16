@@ -1,15 +1,4 @@
-// import ProtonXD from './lib/mod.ts';
-
-
-
-// const img=await ProtonXD.ScreenCapturer.screenshot(10,10);
-
-
-// Deno.writeFileSync("./xd.png",img.png());
-const map=new Map([
-  ["gg","xd"],
-  ["xd","gg"]
-]);
+import ProtonXD from './lib/mod.ts';
 
 
 
