@@ -65,7 +65,11 @@ const { symbols } = Deno.dlopen(
       result: "buffer",
       nonblocking: false,
     },
-    init: { parameters: [], result: "void", nonblocking: false },
+    init: {
+      parameters: ["buffer", "usize"],
+      result: "void",
+      nonblocking: false,
+    },
     progress: { parameters: [], result: "buffer", nonblocking: false },
     question: {
       parameters: ["buffer", "usize"],
@@ -93,6 +97,7 @@ const { symbols } = Deno.dlopen(
       result: "void",
       nonblocking: false,
     },
+    xd: { parameters: [], result: "void", nonblocking: false },
   },
 )
 export type Content =
@@ -106,6 +111,16 @@ export type Content =
       url: string
     }
   }
+  | {
+    UrlAndHeaders: {
+      url: string
+      headers: Array<Header>
+    }
+  }
+export type Header = {
+  name: string
+  value: string
+}
 export type Size = {
   height: number
   width: number
@@ -181,8 +196,10 @@ export function information(a0: string) {
   const result = readPointer(rawResult)
   return decode(result)
 }
-export function init() {
-  const rawResult = symbols.init()
+export function init(a0: string) {
+  const a0_buf = encode(a0)
+
+  const rawResult = symbols.init(a0_buf, a0_buf.byteLength)
   const result = rawResult
   return result
 }
@@ -224,6 +241,11 @@ export function write_to_clipboard(a0: string) {
   const a0_buf = encode(a0)
 
   const rawResult = symbols.write_to_clipboard(a0_buf, a0_buf.byteLength)
+  const result = rawResult
+  return result
+}
+export function xd() {
+  const rawResult = symbols.xd()
   const result = rawResult
   return result
 }
