@@ -30,6 +30,7 @@ use wry::{
 
 use deno_bindgen::deno_bindgen;
 use std::str::FromStr;
+use serde_json::from_str;
 
 
 #[deno_bindgen]
@@ -144,9 +145,12 @@ impl Header {
 
 
 #[deno_bindgen]
-pub fn init(webview_atters: &str) {
-  let _webview_atters: WebViewAttrs=serde_json::from_str(webview_atters).unwrap();
-
+pub fn init(window_atters: &str,webview_atters: &str,scripts: &str,content: &str) {
+  let _window_atters: WindowAttrs=from_str(window_atters).unwrap();
+  let _webview_atters: WebViewAttrs=from_str(webview_atters).unwrap();
+  let _scripts: Vec<String>=from_str(scripts).unwrap();
+  let _content: Content=from_str(content).unwrap();
+  _init_webview(_window_atters,_webview_atters,_scripts,_content)
 }
 
 

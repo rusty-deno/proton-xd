@@ -1,4 +1,6 @@
 import * as lib from "../bindings/bindings.ts";
+import { WebViewAttrs,Content,Header,Size,Theme as theme,WindowAttrs } from "../bindings/bindings.ts";
+
 
 export default class XD {
   // public static init=(
@@ -16,6 +18,12 @@ export default class XD {
   //   icon.toString(),
   //   theme
   // );
+  public static init(windowAttrs: WindowAttrs,webViewAttrs: WebViewAttrs,scripts: string[],content: Content) {
+    
+
+
+
+  }
 
   public static write_to_clipboard=(str: string)=> lib.write_to_clipboard(str);
 
@@ -25,6 +33,6 @@ export default class XD {
 
 
 export enum Theme {
-  LIGHT,
-  DARK
+  LIGHT="Light",
+  DARK="Dark"
 }

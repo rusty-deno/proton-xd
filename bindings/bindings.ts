@@ -50,11 +50,6 @@ const { symbols } = Deno.dlopen(
       result: "buffer",
       nonblocking: false,
     },
-    dialog_box_html: {
-      parameters: ["buffer", "usize", "buffer", "usize"],
-      result: "void",
-      nonblocking: false,
-    },
     error: {
       parameters: ["buffer", "usize"],
       result: "buffer",
@@ -97,7 +92,6 @@ const { symbols } = Deno.dlopen(
       result: "void",
       nonblocking: false,
     },
-    xd: { parameters: [], result: "void", nonblocking: false },
   },
 )
 export type Content =
@@ -121,6 +115,12 @@ export type Header = {
   name: string
   value: string
 }
+export type Rgba = {
+  r: number
+  g: number
+  b: number
+  a: number
+}
 export type Size = {
   height: number
   width: number
@@ -132,6 +132,7 @@ export type WebViewAttrs = {
   user_agent: string
   visible: boolean
   transparent: boolean
+  background_color: Rgba
   zoom_hotkeys_enabled: boolean
   initialization_script: Array<string>
   clipboard: boolean
@@ -168,19 +169,6 @@ export function calender(a0: string) {
   const rawResult = symbols.calender(a0_buf, a0_buf.byteLength)
   const result = readPointer(rawResult)
   return decode(result)
-}
-export function dialog_box_html(a0: string, a1: string) {
-  const a0_buf = encode(a0)
-  const a1_buf = encode(a1)
-
-  const rawResult = symbols.dialog_box_html(
-    a0_buf,
-    a0_buf.byteLength,
-    a1_buf,
-    a1_buf.byteLength,
-  )
-  const result = rawResult
-  return result
 }
 export function error(a0: string) {
   const a0_buf = encode(a0)
@@ -241,11 +229,6 @@ export function write_to_clipboard(a0: string) {
   const a0_buf = encode(a0)
 
   const rawResult = symbols.write_to_clipboard(a0_buf, a0_buf.byteLength)
-  const result = rawResult
-  return result
-}
-export function xd() {
-  const rawResult = symbols.xd()
   const result = rawResult
   return result
 }
