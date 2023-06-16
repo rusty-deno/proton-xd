@@ -61,7 +61,16 @@ const { symbols } = Deno.dlopen(
       nonblocking: false,
     },
     init: {
-      parameters: ["buffer", "usize"],
+      parameters: [
+        "buffer",
+        "usize",
+        "buffer",
+        "usize",
+        "buffer",
+        "usize",
+        "buffer",
+        "usize",
+      ],
       result: "void",
       nonblocking: false,
     },
@@ -184,10 +193,22 @@ export function information(a0: string) {
   const result = readPointer(rawResult)
   return decode(result)
 }
-export function init(a0: string) {
+export function init(a0: string, a1: string, a2: string, a3: string) {
   const a0_buf = encode(a0)
+  const a1_buf = encode(a1)
+  const a2_buf = encode(a2)
+  const a3_buf = encode(a3)
 
-  const rawResult = symbols.init(a0_buf, a0_buf.byteLength)
+  const rawResult = symbols.init(
+    a0_buf,
+    a0_buf.byteLength,
+    a1_buf,
+    a1_buf.byteLength,
+    a2_buf,
+    a2_buf.byteLength,
+    a3_buf,
+    a3_buf.byteLength,
+  )
   const result = rawResult
   return result
 }
