@@ -61,16 +61,7 @@ const { symbols } = Deno.dlopen(
       nonblocking: false,
     },
     init: {
-      parameters: [
-        "buffer",
-        "usize",
-        "buffer",
-        "usize",
-        "buffer",
-        "usize",
-        "buffer",
-        "usize",
-      ],
+      parameters: ["buffer", "usize", "buffer", "usize", "buffer", "usize"],
       result: "void",
       nonblocking: false,
     },
@@ -143,7 +134,7 @@ export type WebViewAttrs = {
   transparent: boolean
   background_color: Rgba
   zoom_hotkeys_enabled: boolean
-  initialization_script: Array<string>
+  initialization_scripts: Array<string>
   clipboard: boolean
   devtools: boolean
   accept_first_mouse: boolean
@@ -193,11 +184,10 @@ export function information(a0: string) {
   const result = readPointer(rawResult)
   return decode(result)
 }
-export function init(a0: string, a1: string, a2: string, a3: string) {
+export function init(a0: string, a1: string, a2: string) {
   const a0_buf = encode(a0)
   const a1_buf = encode(a1)
   const a2_buf = encode(a2)
-  const a3_buf = encode(a3)
 
   const rawResult = symbols.init(
     a0_buf,
@@ -206,8 +196,6 @@ export function init(a0: string, a1: string, a2: string, a3: string) {
     a1_buf.byteLength,
     a2_buf,
     a2_buf.byteLength,
-    a3_buf,
-    a3_buf.byteLength,
   )
   const result = rawResult
   return result

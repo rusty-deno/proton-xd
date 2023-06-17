@@ -103,7 +103,7 @@ pub struct WebViewAttrs {
   pub transparent: bool,
   pub background_color: Rgba,
   pub zoom_hotkeys_enabled: bool,
-  pub initialization_script: Vec<String>,
+  pub initialization_scripts: Vec<String>,
   pub clipboard: bool,
   pub devtools: bool,
   pub accept_first_mouse: bool,
@@ -145,16 +145,15 @@ impl Header {
 
 
 #[deno_bindgen]
-pub fn init(window_atters: &str,webview_atters: &str,scripts: &str,content: &str) {
+pub fn init(window_atters: &str,webview_atters: &str,content: &str) {
   let _window_atters: WindowAttrs=from_str(window_atters).unwrap();
   let _webview_atters: WebViewAttrs=from_str(webview_atters).unwrap();
-  let _scripts: Vec<String>=from_str(scripts).unwrap();
   let _content: Content=from_str(content).unwrap();
-  _init_webview(_window_atters,_webview_atters,_scripts,_content)
+  _init_webview(_window_atters,_webview_atters,_content)
 }
 
 
-fn _init_webview(attrs: WindowAttrs,webview_atters: WebViewAttrs,scripts: Vec<String>,content: Content) {
+fn _init_webview(attrs: WindowAttrs,webview_atters: WebViewAttrs,content: Content) {
   let event_loop=EventLoop::new();
   let window_builder=WindowBuilder::new();
   
@@ -193,7 +192,7 @@ fn _init_webview(attrs: WindowAttrs,webview_atters: WebViewAttrs,scripts: Vec<St
 
 
 
-  for script in &scripts {
+  for script in &webview_atters.initialization_scripts {
     webview_builder=webview_builder.with_initialization_script(&script);
   }
 
@@ -205,11 +204,13 @@ fn _init_webview(attrs: WindowAttrs,webview_atters: WebViewAttrs,scripts: Vec<St
     header_map
   }
 
-  match content {
+  webview_builder=match content {
     Content::Html { html }=> webview_builder.with_html(html),
     Content::Url { url }=> webview_builder.with_url(&url),
     Content::UrlAndHeaders { url,headers }=> webview_builder.with_url_and_headers(&url,to_header_map(headers))
   }.unwrap();
+  
+  webview_builder.build().unwrap();
 
   event_loop.run(move |event, _, control_flow| {
     *control_flow=ControlFlow::Wait;

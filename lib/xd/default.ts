@@ -1,4 +1,3 @@
-import { Theme } from "./xd.ts";
 
 export const defaultWindowAttrs={
   innerSize: {height: 480,width: 1080},
@@ -16,8 +15,28 @@ export const defaultWindowAttrs={
   alwaysOnTop: false,
   alwaysOnBottom: false,
   windowIcon: "",
-  preferredTheme: Theme.DARK,
+  preferredTheme: "Dark",
   focused: true,
   contentProtection: false,
   visibleOnAllWorkspaces: false,
+};
+
+export const defaultWebViewAttrs={
+  userAgent: "None",
+  visible: true,
+  transparent: false,
+  backgroundColor: {
+    r: 0,
+    g: 0,
+    b: 0,
+    a: 0
+  },
+  zoomHotkeysEnabled: false,
+  initializationScripts: [],
+  clipboard: false,
+  devtools: false,
+  acceptFirstMouse: false,
+  backForwardNavigationGestures: false,
+  incognito: false,
+  autoplay: true,
 };
