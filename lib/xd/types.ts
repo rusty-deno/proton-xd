@@ -20,21 +20,23 @@ export interface WindowAttributes {
   contentProtection?: boolean;
   visibleOnAllWorkspaces?: boolean;
   windowIcon?: string;
+  [key: string]: unknown;
 }
 
 export default interface WebViewAttributes {
-  userAgent?: string
-  visible?: boolean
-  transparent?: boolean
-  backgroundColor?: Rgba
-  zoomHotkeysEnabled?: boolean
-  initializationScripts?: Array<string>
-  clipboard?: boolean
-  devtools?: boolean
-  acceptFirstMouse?: boolean
-  backForwardNavigationGestures?: boolean
-  incognito?: boolean
-  autoplay?: boolean
+  userAgent?: string;
+  visible?: boolean;
+  transparent?: boolean;
+  backgroundColor?: Rgba;
+  zoomHotkeysEnabled?: boolean;
+  initializationScripts?: Array<string>;
+  clipboard?: boolean;
+  devtools?: boolean;
+  acceptFirstMouse?: boolean;
+  backForwardNavigationGestures?: boolean;
+  incognito?: boolean;
+  autoplay?: boolean;
+  [key: string]: unknown;
 }
 
 export type Content=string|URL|UrlAndHeaders;
