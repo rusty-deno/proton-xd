@@ -1,7 +1,7 @@
 
 export const defaultWindowAttrs={
   innerSize: {height: 480,width: 1080},
-  minInnerSize: {height: 480,width: 1080},//todo
+  minInnerSize: {height: 10,width: 10},//todo
   maxInnerSize: {height: 480,width: 1080},//todo
   resizable: true,
   minimizable: true,
