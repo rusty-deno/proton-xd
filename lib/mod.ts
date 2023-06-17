@@ -14,7 +14,7 @@ import * as color from "./color.ts";
 
 namespace ProtonXD {
   //xd
-  export const {default: XD}=xd;
+  export const {default: XD,readClipboard,writeToClipboard}=xd;
   export type Theme=lib.Theme;
   export const {UrlAndHeaders,confirmDefaultVal,toContent}=xdTypes;
   export type WindowAttributes=xdTypes.WindowAttributes;

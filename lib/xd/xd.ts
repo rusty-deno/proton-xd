@@ -8,11 +8,10 @@ export default class XD {
     lib.init(confirmDefaultVal(windowAttrs,dwa),confirmDefaultVal(webviewAttrs,dweba),toContent(content));
   }
 
-  public static writeToClipboard=(str: string)=> lib.write_to_clipboard(str);
 
-  public static readClipboard=()=> lib.read_clipboard();
 }
 
-
+export const writeToClipboard=(str: string)=> lib.write_to_clipboard(str);
+export const readClipboard=()=> lib.read_clipboard();
 
 
