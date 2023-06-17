@@ -149,6 +149,7 @@ pub fn init(window_atters: &str,webview_atters: &str,content: &str) {
   let _window_atters: WindowAttrs=from_str(window_atters).unwrap();
   let _webview_atters: WebViewAttrs=from_str(webview_atters).unwrap();
   let _content: Content=from_str(content).unwrap();
+  
   _init_webview(_window_atters,_webview_atters,_content)
 }
 

@@ -62,11 +62,13 @@ export function toContent(content: Content): string {
   });
 }
 
-export function confirmDefaultVal<T>(main: T,def: {[key: string]: unknown}) {
-  let attrs: {[k: string]: unknown}={};
-  (Object.keys(def) as (keyof typeof def)[]).forEach((k)=> {
-    attrs[to_snake_case(k.toString())]=def[k];
-  });
+type Iter={[key: string]: unknown};
+
+export function confirmDefaultVal(main: Iter,def: Iter) {
+  let attrs: Iter={};
+  for(const key in def)
+    attrs[to_snake_case(key)]=main[key]??def[key];
+
   return JSON.stringify(attrs);
 }
 

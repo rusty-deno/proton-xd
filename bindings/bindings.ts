@@ -33,7 +33,7 @@ if (Deno.build.os === "windows") {
   }
 }
 
-export const { symbols,close } = Deno.dlopen(
+const { symbols } = Deno.dlopen(
   {
     darwin: uri + "libxd.dylib",
     windows: uri + "xd.dll",
@@ -94,8 +94,6 @@ export const { symbols,close } = Deno.dlopen(
     },
   },
 )
-
-
 export type Content =
   | {
     Html: {
