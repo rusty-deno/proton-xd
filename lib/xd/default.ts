@@ -1,7 +1,8 @@
 
+
 export const defaultWindowAttrs={
   innerSize: {height: 480,width: 1080},
-  minInnerSize: {height: 10,width: 10},//todo
+  minInnerSize: {height: 10,width: 10},
   maxInnerSize: {height: 480,width: 1080},//todo
   resizable: true,
   minimizable: true,
@@ -29,7 +30,7 @@ export const defaultWebViewAttrs={
     r: 0,
     g: 0,
     b: 0,
-    a: 0
+    a: 255
   },
   zoomHotkeysEnabled: false,
   initializationScripts: [],

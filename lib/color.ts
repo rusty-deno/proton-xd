@@ -12,10 +12,10 @@ export type RgbArray=[
   b: number,
   a?: number
 ];
+export type Color=string|Rgb|number|RgbArray;
 
 
-
-export default function rgba(color: string|Rgb|number|RgbArray): Rgba {
+export default function rgba(color: Color): Rgba {
   switch(typeof color) {
     case "object":
       const isRgb=color instanceof Rgb;

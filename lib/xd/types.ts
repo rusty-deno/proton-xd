@@ -1,4 +1,4 @@
-import { Size,Theme,Rgba,Content as content,Header } from "../../bindings/bindings.ts";
+import { Size,Theme,Rgba,Header } from "../../bindings/bindings.ts";
 
 export interface WindowAttributes {
   innerSize?: Size;
