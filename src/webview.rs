@@ -204,13 +204,12 @@ fn _init_webview(attrs: WindowAttrs,webview_atters: WebViewAttrs,content: Conten
     header_map
   }
 
-  webview_builder=match content {
+
+  let _webview=match content {
     Content::Html { html }=> webview_builder.with_html(html),
     Content::Url { url }=> webview_builder.with_url(&url),
     Content::UrlAndHeaders { url,headers }=> webview_builder.with_url_and_headers(&url,to_header_map(headers))
-  }.unwrap();
-  
-  webview_builder.build().unwrap();
+  }.unwrap().build().unwrap();
 
   event_loop.run(move |event, _, control_flow| {
     *control_flow=ControlFlow::Wait;

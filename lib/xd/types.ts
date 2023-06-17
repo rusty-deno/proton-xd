@@ -51,7 +51,7 @@ export function toContent(content: Content): string {
       headers: content.headers
     }
   }:
-  content instanceof URL||content.charAt(0)!==">"?{
+  content instanceof URL?{
     Url: {
       url: content.toString()
     }
