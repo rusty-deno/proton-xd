@@ -64,18 +64,3 @@ export function toContent(content: Content): string {
   });
 }
 
-type Iter={[key: string]: unknown};
-
-export function confirmDefaultVal(main: Iter,def: Iter) {
-  let attrs: Iter={};
-  for(const key in def)
-    attrs[to_snake_case(key)]=main[key]??def[key];
-
-  return JSON.stringify(attrs);
-}
-
-function to_snake_case(str: string) {
-  return str.replace(/[A-Z]/g,(s)=> {
-    return `_${s.toLowerCase()}`;
-  });
-}

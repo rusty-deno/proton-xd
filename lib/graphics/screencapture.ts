@@ -6,9 +6,9 @@ export default class ScreenCapturer {
   
   /**
    * 
-   * @param {number} x 
-   * @param {number} y 
-   * @param {number} delay 
+   * @param {number} x x axis
+   * @param {number} y y axis
+   * @param {number} delay for delayed screenshots
    * @returns {Promise<Image>}
    */
   public static screenshot=async (x: number,y: number,delay: number=0): Promise<Image>=> new Image(JSON.parse(await lib.screenshot(x,y,delay/1000)));

@@ -20,6 +20,7 @@ namespace ProtonXD {
   export type WindowAttributes=xdTypes.WindowAttributes;
   export type WebViewAttributes=xdTypes.default;
 
+
   //default
   export const {defaultWebViewAttrs,defaultWindowAttrs}=def;
 

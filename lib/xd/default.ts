@@ -41,3 +41,19 @@ export const defaultWebViewAttrs={
   incognito: false,
   autoplay: true,
 };
+
+type Iter={[key: string]: unknown};
+
+export function confirmDefaultVal(main: Iter,def: Iter): any {
+  let attrs: Iter={};
+  for(const key in def)
+    attrs[to_snake_case(key)]=main[key]??def[key];
+
+  return attrs;
+}
+
+export function to_snake_case(str: string) {
+  return str.replace(/[A-Z]/g,(s)=> {
+    return `_${s.toLowerCase()}`;
+  });
+}
