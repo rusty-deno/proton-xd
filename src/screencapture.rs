@@ -6,18 +6,18 @@ use deno_bindgen::deno_bindgen;
 
 
 #[deno_bindgen(non_blocking)]
-pub fn screenshot(x: i32,y: i32,delay: u32)-> String {
+pub fn screenshot(x: i32,y: i32,delay: f32)-> String {
   ss(x,y,delay)
 }
 
 #[deno_bindgen]
-pub fn screenshot_sync(x: i32,y: i32,delay: u32)-> String {
+pub fn screenshot_sync(x: i32,y: i32,delay: f32)-> String {
   ss(x,y,delay)
 }
 
 //screenshot
-fn ss(x: i32,y: i32,delay: u32)-> String {
-  thread::sleep(Duration::from_millis(delay as u64));
+fn ss(x: i32,y: i32,delay: f32)-> String {
+  thread::sleep(Duration::from_secs_f32(delay));
 
   let mut img=screenshoter::ScreenCapturer::from_point(x,y).unwrap().capture().unwrap();
 

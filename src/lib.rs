@@ -1,8 +1,8 @@
-pub mod webview;
+pub mod xd;
 pub mod screencapture;
 pub mod dialog;
 
-pub use webview::*;
+pub use xd::*;
 pub use screencapture::*;
 pub use dialog::*;
 

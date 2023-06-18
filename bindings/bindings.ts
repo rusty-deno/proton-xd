@@ -50,9 +50,14 @@ export const { symbols,close } = Deno.dlopen(
       result: "buffer",
       nonblocking: false,
     },
+    dialog: {
+      parameters: ["buffer", "usize", "buffer", "usize"],
+      result: "void",
+      nonblocking: false,
+    },
     error: {
       parameters: ["buffer", "usize"],
-      result: "buffer",
+      result: "void",
       nonblocking: false,
     },
     information: {
@@ -73,12 +78,12 @@ export const { symbols,close } = Deno.dlopen(
     },
     read_clipboard: { parameters: [], result: "buffer", nonblocking: false },
     screenshot: {
-      parameters: ["i32", "i32", "u32"],
+      parameters: ["i32", "i32", "f32"],
       result: "buffer",
       nonblocking: true,
     },
     screenshot_sync: {
-      parameters: ["i32", "i32", "u32"],
+      parameters: ["i32", "i32", "f32"],
       result: "buffer",
       nonblocking: false,
     },
@@ -170,12 +175,25 @@ export function calender(a0: string) {
   const result = readPointer(rawResult)
   return decode(result)
 }
+export function dialog(a0: string, a1: string) {
+  const a0_buf = encode(a0)
+  const a1_buf = encode(a1)
+
+  const rawResult = symbols.dialog(
+    a0_buf,
+    a0_buf.byteLength,
+    a1_buf,
+    a1_buf.byteLength,
+  )
+  const result = rawResult
+  return result
+}
 export function error(a0: string) {
   const a0_buf = encode(a0)
 
   const rawResult = symbols.error(a0_buf, a0_buf.byteLength)
-  const result = readPointer(rawResult)
-  return decode(result)
+  const result = rawResult
+  return result
 }
 export function information(a0: string) {
   const a0_buf = encode(a0)
