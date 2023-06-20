@@ -1,5 +1,9 @@
 target/
 
+*.lock
+
+*.json
+
 *.png
 *.jpeg
 todo.*
