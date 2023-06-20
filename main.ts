@@ -8,5 +8,5 @@ import ProtonXD from './lib/mod.ts';
 
 const img=await ProtonXD.ScreenCapturer.screenshot(1,1);
 
-
-
+Deno.writeTextFileSync("bytes.json",JSON.stringify([...img.bytes]));
+Deno.writeTextFileSync("png.json",JSON.stringify([...img.png()]));

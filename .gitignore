@@ -1,5 +1,6 @@
-/target
-./xd.png
-./xd.jpeg
-./main.ts
-./todo.txt
+target/
+
+*.png
+*.jpeg
+todo.*
+main.ts
