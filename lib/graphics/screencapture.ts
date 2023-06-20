@@ -1,5 +1,5 @@
 import * as lib from "../../bindings/bindings.ts";
-import {instantiate,convert} from "../../bindings/graphics-xd.generated.js";
+import {instantiate,convert} from "../../bindings/encoder.generated.js";
 
 await instantiate();
 

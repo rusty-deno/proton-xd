@@ -2,9 +2,6 @@ target/
 
 *.lock
 
-*.json
-
 *.png
 *.jpeg
 todo.*
-main.ts
