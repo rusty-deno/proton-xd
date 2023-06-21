@@ -29,7 +29,3 @@ fn ss(x: i32,y: i32,delay: f32)-> String {
   }
   format!("{{\"height\": {},\"width\": {},\"bytes\": {:?}}}",img.height,img.width,img.bytes)
 }
-
-
-
-//screenrecorder

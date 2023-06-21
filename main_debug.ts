@@ -9,4 +9,4 @@ import ProtonXD from './lib/mod.ts';
 const img=await ProtonXD.ScreenCapturer.screenshot(1,1);
 
 
-
+Deno.writeFileSync("xd.png",img.png());

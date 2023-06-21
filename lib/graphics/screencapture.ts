@@ -19,6 +19,11 @@ namespace ScreenCapturer {
    * @returns {Image}
    */
   export const screenshotSync=(x: number,y: number,delay: number=0): Image=> new Image(JSON.parse(lib.screenshot_sync(x,y,delay/1000)));
+
+
+
+
+
 }
 
 export class Image {
@@ -31,14 +36,14 @@ export class Image {
     this.width=img.width;
     this.bytes=img.bytes;
   }
-
+  
   /**
    * @returns {Uint8Array} encodes the rgba bytes into png format
    */
   public png=(): Uint8Array=> convert(this.bytes,this.height,this.width,"image/png",100);
   
   /**
-   * @param {number} quality affects the quality of tthe image default is 100
+   * @param {number} quality affects the quality of the image.. default is 100
    * @returns {Uint8Array}
    */
   public jpeg=(quality: number=100): Uint8Array=> convert(this.bytes,this.height,this.width,"image/jpeg",quality);

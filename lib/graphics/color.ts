@@ -40,7 +40,7 @@ function hexToRgb(color: number): Rgba {
     r: color&0xff,
     g: color&0xffff%256,
     b: color&0xffffff%256,
-    a: color.toString().length>6?color&0xffffffff%256:255,
+    a: color.toString().length>6?color&0xffffffff%256:0xff,
   };
 }
 

@@ -44,6 +44,7 @@ impl Size {
   }
 }
 
+
 #[deno_bindgen]
 pub struct WindowAttrs {
   inner_size: Size,
@@ -157,7 +158,8 @@ pub fn init(window_atters: &str,webview_atters: &str,content: &str) {
 fn _init_webview(attrs: WindowAttrs,webview_atters: WebViewAttrs,content: Content) {
   let event_loop=EventLoop::new();
   let window_builder=WindowBuilder::new();
-  
+
+
   let window=window_builder
   .with_inner_size(attrs.inner_size.physical_size())
   .with_min_inner_size(attrs.min_inner_size.physical_size())

@@ -16,7 +16,7 @@ namespace ProtonXD {
   //xd
   export const {default: XD,readClipboard,writeToClipboard}=xd;
   export type Theme=lib.Theme;
-  export const {UrlAndHeaders,confirmDefaultVal,toContent}=xdTypes;
+  export const {UrlAndHeaders,toContent}=xdTypes;
   export type WindowAttributes=xdTypes.WindowAttributes;
   export type WebViewAttributes=xdTypes.default;
 
