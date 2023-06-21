@@ -15,6 +15,7 @@ screenshoter = "0.1.1"
 screenshots = "0.6.0"
 captrs2 = "0.2.2"
 tauri-plugin-dialog = "2.0.0-alpha.0"
+gtk4 = "0.6.6"
 
 
 [profile.release]
