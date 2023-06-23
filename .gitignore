@@ -1,8 +1,14 @@
 target/
 
-*.lock
-
 *.png
 *.jpeg
-todo.*
 
+todo.*
+target/
+
+Cargo.lock
+deno.lock
+
+**/*.rs.bk
+
+*.pdb

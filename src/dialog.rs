@@ -2,6 +2,7 @@ use deno_bindgen::deno_bindgen;
 
 
 
+
 //dialogs
 fn todo()-> String {
   todo!("i didnt check before using that lib as it was so smoll.. that idiot wrote horrible machine dependant code..")
@@ -52,7 +53,17 @@ pub fn warning(_message: &str)-> String {
 //open
 #[deno_bindgen]
 pub fn open() {
-  
+  tauri_plugin_dialog::FileDialogBuilder::new(dialog)
+
 }
 
 
+#[cfg(test)]
+mod tests {
+
+  #[test]
+  fn xd() {
+    open();
+  }
+
+}
