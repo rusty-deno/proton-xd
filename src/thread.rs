@@ -1,5 +1,5 @@
 use std::{
-  thread::{self, JoinHandle},
+  thread,
   time::Duration
 };
 use deno_bindgen::deno_bindgen;

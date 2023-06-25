@@ -33,7 +33,7 @@ if (Deno.build.os === "windows") {
   }
 }
 
-export const { symbols,close } = Deno.dlopen(
+const { symbols } = Deno.dlopen(
   {
     darwin: uri + "libxd.dylib",
     windows: uri + "xd.dll",
@@ -99,14 +99,6 @@ export const { symbols,close } = Deno.dlopen(
       result: "void",
       nonblocking: false,
     },
-    spawn: {
-      parameters: ["function"],
-      result: "function"
-    },
-    g: {
-      parameters: [],
-      result: "function"
-    }
   },
 )
 export type Content =
@@ -278,12 +270,4 @@ export function write_to_clipboard(a0: string) {
   const rawResult = symbols.write_to_clipboard(a0_buf, a0_buf.byteLength)
   const result = rawResult
   return result
-}
-
-export function spawn(fn: Deno.PointerValue) {
-  return symbols.spawn(fn);
-}
-
-export function g() {
-  return symbols.g();
 }
