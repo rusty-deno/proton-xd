@@ -53,7 +53,7 @@ pub fn warning(_message: &str)-> String {
 //open
 #[deno_bindgen]
 pub fn open() {
-  tauri_plugin_dialog::FileDialogBuilder::new(dialog)
+  
 
 }
 
@@ -63,7 +63,7 @@ mod tests {
 
   #[test]
   fn xd() {
-    open();
+    
   }
 
 }

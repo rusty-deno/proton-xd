@@ -70,6 +70,7 @@ export const { symbols,close } = Deno.dlopen(
       result: "void",
       nonblocking: false,
     },
+    open: { parameters: [], result: "void", nonblocking: false },
     progress: { parameters: [], result: "buffer", nonblocking: false },
     question: {
       parameters: ["buffer", "usize"],
@@ -78,15 +79,16 @@ export const { symbols,close } = Deno.dlopen(
     },
     read_clipboard: { parameters: [], result: "buffer", nonblocking: false },
     screenshot: {
-      parameters: ["i32", "i32", "f32"],
+      parameters: ["i32", "i32", "f64"],
       result: "buffer",
       nonblocking: true,
     },
     screenshot_sync: {
-      parameters: ["i32", "i32", "f32"],
+      parameters: ["i32", "i32", "f64"],
       result: "buffer",
       nonblocking: false,
     },
+    sleep: { parameters: ["f32"], result: "void", nonblocking: false },
     warning: {
       parameters: ["buffer", "usize"],
       result: "buffer",
@@ -97,6 +99,14 @@ export const { symbols,close } = Deno.dlopen(
       result: "void",
       nonblocking: false,
     },
+    spawn: {
+      parameters: ["function"],
+      result: "function"
+    },
+    g: {
+      parameters: [],
+      result: "function"
+    }
   },
 )
 export type Content =
@@ -218,6 +228,11 @@ export function init(a0: string, a1: string, a2: string) {
   const result = rawResult
   return result
 }
+export function open() {
+  const rawResult = symbols.open()
+  const result = rawResult
+  return result
+}
 export function progress() {
   const rawResult = symbols.progress()
   const result = readPointer(rawResult)
@@ -245,6 +260,11 @@ export function screenshot_sync(a0: number, a1: number, a2: number) {
   const result = readPointer(rawResult)
   return decode(result)
 }
+export function sleep(a0: number) {
+  const rawResult = symbols.sleep(a0)
+  const result = rawResult
+  return result
+}
 export function warning(a0: string) {
   const a0_buf = encode(a0)
 
@@ -258,4 +278,12 @@ export function write_to_clipboard(a0: string) {
   const rawResult = symbols.write_to_clipboard(a0_buf, a0_buf.byteLength)
   const result = rawResult
   return result
+}
+
+export function spawn(fn: Deno.PointerValue) {
+  return symbols.spawn(fn);
+}
+
+export function g() {
+  return symbols.g();
 }

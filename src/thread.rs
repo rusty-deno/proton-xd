@@ -1,5 +1,5 @@
 use std::{
-  thread,
+  thread::{self, JoinHandle},
   time::Duration
 };
 use deno_bindgen::deno_bindgen;
@@ -13,12 +13,3 @@ pub fn sleep(secs: f32) {
 
 
 
-
-#[cfg(test)]
-mod tests {
-
-  #[test]
-  fn xd() {
-    
-  }
-}

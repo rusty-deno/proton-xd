@@ -1,22 +1,29 @@
 import { None,Some } from "../rust/option.ts";
+import { spawn } from "../../bindings/bindings.ts";
 
 
+export default class Thread<T> {
+  private callback: ()=> void;
+  private xd=None<T>(null);
 
-export function spawn<T>(callback: ()=> T) {
-  let xd=None<T>(null);
-  const fn=new Deno.UnsafeCallback({
-    parameters: [],
-    result: "void"
-  },()=> {
-    xd=Some(callback());
-  });
+  public readonly name?: string;
 
-  const code=`new Deno.UnsafeFnPointer(${fn.pointer},${fn.definition}).call();`;
-  
+  constructor(callback: ()=> T,name?: string) {
+    this.callback=()=> {
+      this.xd=Some(callback());
+    };
+    
+    this.name=name;
+  }
 
 
-
-  return xd;
+  public spawn() {
+    const fn=new Deno.UnsafeCallback({
+      parameters: [],
+      result: "void"
+    },this.callback);
+    
+    
+  }
 }
-
 

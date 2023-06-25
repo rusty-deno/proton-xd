@@ -36,6 +36,9 @@ namespace ProtonXD {
   export type ImageBuffer=sc.ImageBuffer;
 
   //api
+  /**
+   * @description frees memory allocated in heap by the dynamic library
+   */
   export const close=lib.close;
 }
 
