@@ -8,6 +8,11 @@ export default class XD {
   private windowAttrs: lib.WindowAttrs;
   private webviewAttrs: lib.WebViewAttrs;
 
+  /**
+   * @param {Content} content defines the initial content of the webview
+   * @param {WindowAttributes} windowAttrs defined the window's properties
+   * @param {WebViewAttributes} webviewAttrs defines the webview's propoerties
+   */
   constructor(content: Content,windowAttrs: WindowAttributes={},webviewAttrs: WebViewAttributes={}) {
     this.content=content;
     this.windowAttrs=confirmDefaultVal(windowAttrs,dwa);
@@ -50,7 +55,7 @@ export default class XD {
 
   /**
    * Initializes the webview..
-   * updating window or webview after initialization doesn't affect the window or webview
+   * updating window or webview after initialization doesn't affect them
    */
   public init() {
     lib.init(JSON.stringify(this.windowAttrs),JSON.stringify(this.webviewAttrs),toContent(this.content));

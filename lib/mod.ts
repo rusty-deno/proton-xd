@@ -12,6 +12,8 @@ import * as lib from "../bindings/bindings.ts";
 //color
 import * as color from "./graphics/color.ts";
 
+
+
 namespace ProtonXD {
   //xd
   export const {default: XD,readClipboard,writeToClipboard}=xd;

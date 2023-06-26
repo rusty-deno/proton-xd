@@ -1,5 +1,9 @@
 {
   "deno.enable": true,
   "deno.lint": false,
-  "deno.unstable": true
+  "deno.unstable": true,
+  "files.associations": {
+    "thread": "cpp",
+    "memory": "cpp"
+  }
 }

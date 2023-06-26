@@ -1,11 +1,10 @@
 // Auto-generated with deno_bindgen
+const encoder = new TextEncoder()
+const decode = new TextDecoder().decode
+
 function encode(v: string | Uint8Array): Uint8Array {
   if (typeof v !== "string") return v
-  return new TextEncoder().encode(v)
-}
-
-function decode(v: Uint8Array): string {
-  return new TextDecoder().decode(v)
+  return encoder.encode(v)
 }
 
 // deno-lint-ignore no-explicit-any
@@ -33,7 +32,7 @@ if (Deno.build.os === "windows") {
   }
 }
 
-const { symbols } = Deno.dlopen(
+export const { symbols, close } = Deno.dlopen(
   {
     darwin: uri + "libxd.dylib",
     windows: uri + "xd.dll",
@@ -71,6 +70,8 @@ const { symbols } = Deno.dlopen(
       nonblocking: false,
     },
     open: { parameters: [], result: "void", nonblocking: false },
+    park: { parameters: [], result: "void", nonblocking: false },
+    park_timeout: { parameters: ["f64"], result: "void", nonblocking: false },
     progress: { parameters: [], result: "buffer", nonblocking: false },
     question: {
       parameters: ["buffer", "usize"],
@@ -99,6 +100,10 @@ const { symbols } = Deno.dlopen(
       result: "void",
       nonblocking: false,
     },
+    spawn: {
+      parameters: ["function"],
+      result: "void"
+    }
   },
 )
 export type Content =
@@ -225,6 +230,16 @@ export function open() {
   const result = rawResult
   return result
 }
+export function park() {
+  const rawResult = symbols.park()
+  const result = rawResult
+  return result
+}
+export function park_timeout(a0: number) {
+  const rawResult = symbols.park_timeout(a0)
+  const result = rawResult
+  return result
+}
 export function progress() {
   const rawResult = symbols.progress()
   const result = readPointer(rawResult)
@@ -270,4 +285,7 @@ export function write_to_clipboard(a0: string) {
   const rawResult = symbols.write_to_clipboard(a0_buf, a0_buf.byteLength)
   const result = rawResult
   return result
+}
+export function spawn(fn_ptr: Deno.PointerValue) {
+  symbols.spawn(fn_ptr);
 }
