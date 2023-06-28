@@ -7,4 +7,3 @@ pub use xd::*;
 pub use screencapture::*;
 pub use dialog::*;
 pub use thread::*;
-

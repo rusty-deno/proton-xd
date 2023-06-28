@@ -4,4 +4,7 @@ export default function panic(msg?: string): never {
 }
 
 
+export function todo(msg: string="not implemented"): never {
+  panic(msg);
+}
 

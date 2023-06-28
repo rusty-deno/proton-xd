@@ -4,13 +4,13 @@ import * as def from './xd/default.ts';
 import * as xdTypes from "./xd/types.ts";
 
 //screencapture
-import * as sc from "./graphics/screencapture.ts";
+import * as sc from "./screencapture/screencapture.ts";
 
 //bindings
 import * as lib from "../bindings/bindings.ts";
 
 //color
-import * as color from "./graphics/color.ts";
+import * as color from "./screencapture/color.ts";
 
 
 

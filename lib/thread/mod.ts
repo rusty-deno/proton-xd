@@ -1,4 +1,4 @@
-import { None,Some } from "../rust/option.ts";
+import { None,Some } from "../rust/io/option.ts";
 import { spawn } from "../../bindings/bindings.ts";
 
 

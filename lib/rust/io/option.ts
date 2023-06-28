@@ -1,5 +1,5 @@
-import panic from './panic.ts';
-import ErrorHandler from './error_handle.ts';
+import panic from '../error/panic.ts';
+import ErrorHandler from '../error/error_handle.ts';
 
 export type None=undefined|null;
 export type Some<T>=NonNullable<T>;
@@ -9,7 +9,6 @@ export default class Option<T> implements ErrorHandler<T,None> {
   constructor(val: T|None) {
     this.value=val;
   }
-
 
   public unwrap() {
     if(!this.value) panic("None value found.. panicked");

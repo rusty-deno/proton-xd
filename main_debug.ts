@@ -10,8 +10,3 @@ const t=new Thread(()=> {
 
 t.spawn();
 
-
-
-
-
-
