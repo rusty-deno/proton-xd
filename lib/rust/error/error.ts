@@ -1,17 +1,12 @@
 
-
-
-export default class Error {
+export enum ErrorCode {
+  NotFound=404,
   
 
 
 
 
-
-
-
 }
-
 
 
 

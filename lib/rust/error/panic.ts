@@ -1,6 +1,7 @@
 
-export default function panic(msg?: string): never {
-  throw new Error(msg);
+export default function panic(err: string|Error="Program panicked"): never {
+  console.error(err);
+  Deno.exit(1);
 }
 
 

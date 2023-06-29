@@ -5,8 +5,8 @@ import WebViewAttributes,{ Content,WindowAttributes,toContent } from "./types.ts
 
 export default class XD {
   private content: Content;
-  private windowAttrs: lib.WindowAttrs;
-  private webviewAttrs: lib.WebViewAttrs;
+  private windowAttrs: WindowAttributes;
+  private webviewAttrs: WebViewAttributes;
 
   /**
    * @param {Content} content defines the initial content of the webview
@@ -15,8 +15,8 @@ export default class XD {
    */
   constructor(content: Content,windowAttrs: WindowAttributes={},webviewAttrs: WebViewAttributes={}) {
     this.content=content;
-    this.windowAttrs=confirmDefaultVal(windowAttrs,dwa);
-    this.webviewAttrs=confirmDefaultVal(webviewAttrs,dweba);
+    this.windowAttrs=windowAttrs;
+    this.webviewAttrs=webviewAttrs;
   }
   /**
    * @param {WindowAttributes} window
@@ -24,7 +24,7 @@ export default class XD {
    * doesn't affect its other properties
    */
   public set window(window: WindowAttributes) {
-    this.windowAttrs=confirmDefaultVal(window,this.windowAttrs);
+    this.windowAttrs=window;
   }
 
   /**
@@ -33,22 +33,23 @@ export default class XD {
    * doesn't affect its other properties
    */
   public set webview(webview: WebViewAttributes) {
-    this.webviewAttrs=confirmDefaultVal(webview,this.webviewAttrs);
+    this.webviewAttrs=webview;
   }
+  
 
   /**
-   * @returns {lib.WindowAttrs}
+   * @returns {WindowAttributes}
    * returns a reference to its window
    */
-  public get window(): lib.WindowAttrs {
+  public get window(): WindowAttributes {
     return this.windowAttrs;
   }
 
   /**
-   * @returns {lib.WebViewAttrs}
+   * @returns {WebViewAttributes}
    * returns a reference to its webview
    */
-  public get webview(): lib.WebViewAttrs {
+  public get webview(): WebViewAttributes {
     return this.webviewAttrs;
   }
   
@@ -58,15 +59,17 @@ export default class XD {
    * updating window or webview after initialization doesn't affect them
    */
   public init() {
-    lib.init(JSON.stringify(this.windowAttrs),JSON.stringify(this.webviewAttrs),toContent(this.content));
+    lib.init(
+      JSON.stringify(confirmDefaultVal(this.windowAttrs,dwa)),
+      JSON.stringify(confirmDefaultVal(this.webviewAttrs,dweba)),
+      toContent(this.content)
+    );
   }
-
-
+  
 }
 
 export type WindowProperty=keyof WindowAttributes;
+export type WebViewProperty=keyof WebViewAttributes;
 
 export const writeToClipboard=(str: string)=> lib.write_to_clipboard(str);
 export const readClipboard=()=> lib.read_clipboard();
-
-

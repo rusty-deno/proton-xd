@@ -5,30 +5,23 @@ export type Err=Error;
 export type OK<T>=NonNullable<T>;
 
 
-export default class Result<T> implements ErrorHandler<T,Error> {
-  public readonly res: T|Error;
+export default class Result<T> implements ErrorHandler<T,Err> {
+  public readonly res: T|Err;
 
-  constructor(res: T|Error) {
+  constructor(res: T|Err) {
     this.res=res;
   }
 
   public unwrap(): T {
-    if(this.res instanceof Error) panic(this.res.message);
+    if(this.res instanceof Error) panic(this.res);
     return this.res;
   }
 
-  public unwrapOrElse(f: (err: Error)=> T): T {
+  public unwrapOrElse(f: (err: Err)=> T): T {
     return this.res instanceof Error?f(this.res):this.res;
   }
   
-  public unwrapOrUnchecked() {
-    if(this.res instanceof Error) throw new Error(this.res.message,{
-      cause: this.res.cause
-    });
-    return this.res;
-  }
 
-  
 }
 
 
