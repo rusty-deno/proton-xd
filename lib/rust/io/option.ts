@@ -1,10 +1,9 @@
 import panic from '../error/panic.ts';
-import ErrorHandler from '../error/error_handle.ts';
 
 export type None=undefined|null;
 export type Some<T>=NonNullable<T>;
 
-export default class Option<T> implements ErrorHandler<T,None> {
+export default class Option<T> {
   public readonly value: T|None;
   constructor(val: T|None) {
     this.value=val;

@@ -55,8 +55,8 @@ export default class XD {
   
 
   /**
-   * Initializes the webview..
-   * updating window or webview after initialization doesn't affect them
+   * @description Initializes the webview..
+   * @description updating window or webview after initialization doesn't affect them
    */
   public init() {
     lib.init(

@@ -1,7 +1,11 @@
 // Auto-generated with deno_bindgen
 
 const encoder = new TextEncoder();
-const decode = new TextDecoder().decode;
+const decoder = new TextDecoder();
+
+function decode(buffer: Uint8Array) {
+  return decoder.decode(buffer);
+}
 
 function encode(v: string | Uint8Array): Uint8Array {
   if (typeof v !== "string") return v;
@@ -22,7 +26,6 @@ function readPointer(v: any): Uint8Array {
 const url = new URL("xd.dll", import.meta.url);
 
 let uri = url.pathname;
-if (!uri.endsWith("/")) uri += "/";
 
 // https://docs.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-loadlibrarya#parameters
 if (Deno.build.os === "windows") {
@@ -33,7 +36,7 @@ if (Deno.build.os === "windows") {
   }
 }
 
-export const { symbols, close } = Deno.dlopen("xd.dll", {
+export const { symbols, close } = Deno.dlopen(uri, {
   calender: {
     parameters: ["buffer", "usize"],
     result: "buffer",
@@ -256,6 +259,7 @@ export function screenshot_sync(a0: number, a1: number, a2: number) {
   const result = readPointer(rawResult);
   return decode(result);
 }
+
 export function sleep(a0: number) {
   const rawResult = symbols.sleep(a0);
   const result = rawResult;
