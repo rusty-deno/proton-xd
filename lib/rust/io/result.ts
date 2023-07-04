@@ -74,3 +74,15 @@ export function Err<T>(err: Err=new Error) {
 export function Ok<T>(res: T) {
   return new Result<T,Err>(res);
 }
+
+export async function Res<T>(f: ()=> Promise<T>) {
+  return new Result<T,Err>(await f().catch((error)=> error));
+}
+
+export function ResSync<T>(f: ()=> T) {
+  try {
+    return Ok<T>(f());
+  } catch (error) {
+    return Err<T>(error);
+  }
+}
