@@ -1,5 +1,5 @@
 import Result,{Res,ResSync} from '../io/result.ts';
-import { PathBuf } from '../path/mod.ts';
+import { PathBuf } from '../path.ts';
 
 
 

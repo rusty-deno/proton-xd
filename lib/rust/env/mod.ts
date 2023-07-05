@@ -1,5 +1,5 @@
 import { Res,ResSync } from "../io/result.ts";
-import { PathBuf } from "../path/mod.ts";
+import { PathBuf } from "../path.ts";
 
 namespace env {
 
@@ -38,10 +38,11 @@ namespace env {
   }
 
 
-  //have to make its return type Vars
+  //make it return type `Vars`
   export function getAllVars() {
     return Deno.env.toObject();
   }
+  
 
 }
 

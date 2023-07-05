@@ -9,6 +9,12 @@ export default class Option<T> {
     this.value=val;
   }
 
+
+
+  public or(opt: T) {
+    return this.value??opt;
+  }
+
   public unwrap() {
     if(!this.value) panic("None value found.. panicked");
     return this.value;
