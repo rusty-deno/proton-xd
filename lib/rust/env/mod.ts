@@ -1,5 +1,8 @@
 import { Res,ResSync } from "../io/result.ts";
 import { PathBuf } from "../path.ts";
+import Option from '../io/option.ts';
+
+export type Var=[key: string,value: string];
 
 namespace env {
 
@@ -34,13 +37,18 @@ namespace env {
   }
   
   export function getVar(key: string) {
-    return ResSync(()=> Deno.env.get(key));
+    return new Option(Deno.env.get(key));
   }
-
-
-  //make it return type `Vars`
-  export function getAllVars() {
-    return Deno.env.toObject();
+  
+  export function getAllVars(): Var[] {
+    const vars: Var[]=[];
+    const object=Deno.env.toObject();
+    
+    for(const key in object) {
+      vars.push([key,object[key]]);
+    }
+    
+    return vars;
   }
   
 
