@@ -40,15 +40,14 @@ namespace env {
     return new Option(Deno.env.get(key));
   }
   
-  export function getAllVars(): Var[] {
-    const vars: Var[]=[];
+  export function getAllVars(): Iterable<Var> {
     const object=Deno.env.toObject();
     
-    for(const key in object) {
-      vars.push([key,object[key]]);
-    }
-    
-    return vars;
+    return {
+      *[Symbol.iterator](): Iterator<Var> {
+        for(const key in object) yield [key,object[key]];
+      }
+    };
   }
   
 
