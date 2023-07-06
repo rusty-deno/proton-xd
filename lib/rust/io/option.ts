@@ -27,12 +27,30 @@ export default class Option<T> {
   public unwrapOrElse(f: (err: None)=> T) {
     return this.value??f(this.value && undefined);
   }
+
+  public static get None() {
+    return None<any>(null);
+  }
 }
 
 export function Some<T>(val: T) {
   return new Option(val);
 }
 
-export function None<T>(val: None) {
+/**
+ * @param {None} val
+ * @returns {Option<T>}
+ * @description use for extream type safety
+ */
+export function None<T>(val: None): Option<T> {
   return new Option<T>(val);
+}
+
+
+export async function Opt<T>(f: ()=> Promise<T|None>) {
+  return new Option<T>(await f());
+}
+
+export function OptSync<T>(f: ()=> T|None) {
+  return new Option<T>(f());
 }

@@ -6,7 +6,7 @@ export type Var=[key: string,value: string];
 
 namespace env {
 
-  export const args=Deno.args
+  export const args=Deno.args;
   
   export function currentDir() {
     return ResSync(()=> Deno.cwd());

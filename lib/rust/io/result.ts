@@ -1,8 +1,8 @@
 import panic from "../error/panic.ts";
-import Option,{ None,Some } from './option.ts';
+import Option,{ Some } from './option.ts';
 
 export type Ok<T>=NonNullable<T>;
-export type Err=Error;
+export type Err<E extends Error=Error>=E;
 
 
 export default class Result<T,E extends Error> {
@@ -22,8 +22,8 @@ export default class Result<T,E extends Error> {
     return this.res instanceof Error?this:f(this.res);
   }
   
-  public err() {
-    return this.res instanceof Error?None<T>(null):Some(this.res);
+  public err(): Option<E> {
+    return this.res instanceof Error?Some(this.res):Option.None;
   }
 
   public expect(msg: string): T {
@@ -65,6 +65,9 @@ export default class Result<T,E extends Error> {
   public unwrapOrElse(f: (err: E)=> T): T {
     return this.res instanceof Error?f(this.res):this.res;
   }
+
+  public static Ok=<T>(res: T)=> Ok<T>(res);
+  public static Err=<T>(err: Err=new Error)=> Err<T>(err);
 }
 
 

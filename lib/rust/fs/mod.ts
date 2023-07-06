@@ -1,5 +1,6 @@
 import Result,{Res,ResSync} from '../io/result.ts';
 import { PathBuf } from '../path.ts';
+import file from './file.ts';
 
 
 
@@ -161,7 +162,21 @@ namespace fs {
     return ResSync(()=> Deno.truncateSync(name,len));
   }
   
-  
+  export async function open(path: string, options?: Deno.OpenOptions) {
+    return await file.open(path,options);
+  }
+
+  export function openSync(path: string, options?: Deno.OpenOptions) {
+    return file.openSync(path,options);
+  }
+
+  export async function create(path: string) {
+    return await file.create(path);
+  }
+
+  export function createSync(path: string) {
+    return file.createSync(path);
+  }
 }
 
 

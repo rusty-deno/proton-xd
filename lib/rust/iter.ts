@@ -9,7 +9,7 @@ export type Enumerate<T>=Iterable<[index: number,item: T]>;
 export default abstract class Iter<T> implements Iterable<T> {
   
   abstract next(): T;
-  abstract [Symbol.iterator](): Iterator<T,any,undefined>;
+  abstract [Symbol.iterator](): Iterator<T>;
   
   public forEach(f: (value: T,index: number,iter: this)=> void) {
     let i=0;
