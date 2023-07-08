@@ -1,5 +1,4 @@
 import Option,{None} from "./io/option.ts";
-import { todo } from './error/panic.ts';
 
 
 export type Enumerate<T>=Iterable<[index: number,item: T]>;
@@ -22,7 +21,7 @@ export default abstract class Iter<T> implements Iterable<T> {
     return new Array(...this);
   }
   
-  public entries() {
+  public enumerate(): Enumerate<T> {
     return this.toArray().entries();
   }
   
@@ -41,14 +40,17 @@ export default abstract class Iter<T> implements Iterable<T> {
   public reduce(f: (prev: T,current: T,index: number)=> Option<T>|T): Option<T> {
     return this.fold(f);
   }
-
-  public enumerate(): Enumerate<T> {
-    todo();
-  }
   
   public at(index: number) {
-    let i=0;
-    for(const iterator of this) if(i++===index) return iterator;
+    return new Option([...this][index]);
+  }
+
+  public indexOf(data: T) {
+    return [...this].indexOf(data);
+  }
+
+  public contains(data: T) {
+    return Boolean(this.indexOf(data)+1);
   }
   
 }

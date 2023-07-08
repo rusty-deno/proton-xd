@@ -1,11 +1,12 @@
 import panic from "../error/panic.ts";
 import Option,{ Some } from './option.ts';
+import { Exception } from './exception.ts';
 
 export type Ok<T>=NonNullable<T>;
 export type Err<E extends Error=Error>=E;
 
 
-export default class Result<T,E extends Error> {
+export default class Result<T,E extends Error> implements Exception<T,E> {
   public readonly res: T|E;
   public readonly isErr: boolean;
 
