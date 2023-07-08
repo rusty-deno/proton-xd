@@ -18,7 +18,7 @@ export default abstract class Iter<T> implements Iterable<T> {
   }
 
   public toArray() {
-    return new Array(...this);
+    return [...this];
   }
   
   public enumerate(): Enumerate<T> {

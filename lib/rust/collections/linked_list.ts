@@ -1,5 +1,6 @@
 import Option,{None,Some} from "../io/option.ts";
 import Iter from '../iter.ts';
+import { todo } from '../error/panic.ts';
 
 export default class LinkedList<T> extends Iter<T> {
   private head: Option<Node<T>>=None(undefined);
@@ -30,7 +31,7 @@ export default class LinkedList<T> extends Iter<T> {
   }
 
   public set length(size: number) {
-    this.size=size;
+    todo();
   }
 
   public get front() {
@@ -68,12 +69,7 @@ export default class LinkedList<T> extends Iter<T> {
       this.pushFront(data);
       return;
     }
-    let current=this.head.value;
-
-    while(current.next.value) {
-      current=current.next.value;
-    }
-    this.tail=Some(new Node(data,undefined));
+    this.tail=Some(new Node(data));
     this.size++;
   }
 
@@ -85,6 +81,7 @@ export default class LinkedList<T> extends Iter<T> {
       current=current.next.value;
     }
     current.next=None(undefined);
+    this.size--;
     return true;
   }
 
@@ -93,25 +90,31 @@ export default class LinkedList<T> extends Iter<T> {
       this.head=this.head.value?.next;
       return true;
     }
+    this.size--;
     return false;
   }
 
   public append(other: Iterable<T>) {
-    this.tail=new Option(new LinkedList(...other).front.value);
+    const ll=new LinkedList(...other);
+    this.tail=new Option(ll.front.value);
+    this.size=ll.size;
   }
   
   public appendFront(other: Iterable<T>) {
-    const current=structuredClone(this.head);
-    const ll=new LinkedList(...other);
-    ll.append(current);
+    const ll=new LinkedList(...other,...this);
     this.head=ll.front;
+    this.size=ll.size;
+  }
+
+  public empty() {
+    this.head=None(undefined);
+    this.size+=0;
   }
 
   public isEmpty() {
-    return !this.head.value;
+    return !this.size;
   }
   
-
 }
 
 

@@ -13,14 +13,11 @@ pub use thread::*;
 
 #[cfg(test)]
 mod tests {
-  use std::collections::LinkedList;
+  use std::collections::HashMap;
 
   #[test]
   fn xd() {
-    let _map=LinkedList::from([
-      9
-    ]);
-    
+    let _map: HashMap<u8,i8>=HashMap::from([]);
     
     
 
