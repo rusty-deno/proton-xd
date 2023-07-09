@@ -6,66 +6,40 @@ export type Ok<T>=NonNullable<T>;
 export type Err<E extends Error=Error>=E;
 
 
-export default class Result<T,E extends Error> implements Exception<T,E> {
-  public readonly res: T|E;
-  public readonly isErr: boolean;
+export default class Result<T,E extends Error> extends Exception<T,E> {
+  public readonly result: T|E;
 
   constructor(res: T|E) {
-    this.res=res;
-    this.isErr=this.res instanceof Error;
+    super();
+    this.result=res;
+  }
+
+  get isException() {
+    return this.result instanceof Error;
+  }
+
+  public err(): Option<E> {
+    return this.isException?Some(this.result):Option.None;
   }
 
   public and(res: Result<T,E>): Result<T,E> {
-    return this.isErr?this:res;
+    return this.isException?this:res;
   }
 
   public andThen(f: (xd: T)=> Result<T,E>) {
-    return this.res instanceof Error?this:f(this.res);
-  }
-  
-  public err(): Option<E> {
-    return this.res instanceof Error?Some(this.res):Option.None;
+    return this.result instanceof Error?this:f(this.result);
   }
 
-  public expect(msg: string): T {
-    if(this.res instanceof Error) panic(msg);
-    return this.res;
-  }
-  
-  public expectErr(msg: string) {
-    if(this.res instanceof Error) return this;
-    panic(`${msg}: ${this.res}`);
-  }
-
-  public or(res: T) {
-    return this.res instanceof Error?res:this.res;
-  }
-  
   public orElse(op: (err: E)=> Result<T,E>) {
-    return this.res instanceof Error?op(this.res):this;
-  }
-  
-  
-  public unwrapOr(op: T) {
-    return this.unwrapOrElse(()=> op);
+    return this.result instanceof Error?op(this.result):this;
   }
 
-  public contains() {
-    return !this.containsErr();
+  public res() {
+    return this.result;
   }
 
-  public containsErr() {
-    return this.res instanceof Error;
-  }
-  
-  public unwrap(): T {
-    if(this.res instanceof Error) panic(this.res);
-    return this.res;
-  }
-  
-  public unwrapOrElse(f: (err: E)=> T): T {
-    return this.res instanceof Error?f(this.res):this.res;
-  }
+
+
 
   public static Ok=<T>(res: T)=> Ok<T>(res);
   public static Err=<T>(err: Err=new Error)=> Err<T>(err);

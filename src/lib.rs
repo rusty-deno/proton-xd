@@ -13,13 +13,11 @@ pub use thread::*;
 
 #[cfg(test)]
 mod tests {
-  use std::collections::HashMap;
 
   #[test]
   fn xd() {
+    let mut vec=vec![69,83,365,74,33,235,6];
     
-
-
 
 
 

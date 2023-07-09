@@ -25,5 +25,3 @@ export default abstract class List<T> extends Iter<T> {
     return Boolean(this.indexOf(data)+1);
   }
 }
-
-

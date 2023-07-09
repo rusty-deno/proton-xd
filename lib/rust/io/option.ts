@@ -1,36 +1,40 @@
-import panic from '../error/panic.ts';
 import { Exception } from './exception.ts';
 
 export type None=undefined|null;
 export type Some<T>=NonNullable<T>;
 
-export default class Option<T> implements Exception<T,None> {
+export default class Option<T> extends Exception<T,None> {
   public readonly value: T|None;
+
   constructor(val: T|None) {
+    super();
     this.value=val;
   }
 
-
-
-  public or(opt: T) {
-    return this.value??opt;
-  }
-
-  public unwrap() {
-    if(!this.value) panic("None value found.. panicked");
+  res(): T|None {
     return this.value;
   }
 
-  public unwrapUnchecked() {
-    return this.value;
+
+  public and(op: this): Option<T> {
+    return this.isException?this:op;
   }
 
-  public unwrapOrElse(f: (err: None)=> T) {
-    return this.value??f(this.value && undefined);
+  public andThen(f: (xd: T)=> Option<T>): Option<T> {
+    return this.isException?this:f(this.value!);
+  }
+
+  get isException(): boolean {
+    return !(this.value??false);
+  }
+
+  public orElse(op: (err: None)=> Option<T>): Option<T> {
+    const val: any=this.value;
+    return this.isException?op(val):this;
   }
 
   public static get None() {
-    return None<any>(null);
+    return None<any>(undefined);
   }
 }
 
