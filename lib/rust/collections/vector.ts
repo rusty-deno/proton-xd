@@ -1,13 +1,23 @@
-import Iter from '../iter.ts';
+import Option from "../io/option.ts";
+import { Enumerate } from "../iter.ts";
+import List from "./List.ts";
+import Clone from '../clone.ts';
 
 
-export default class Vec<T> extends Iter<T> {
-  private size=0;
-  [index: number]: T;
+export default class Vec<T> extends List<T> implements Clone<Vec<T>> {
+  private readonly arr=new Array<T>;
   
   constructor(...elements: T[]) {
     super();
-    for(const element of elements) this[this.size++]=element;
+    this.arr.push(...elements);
+  }
+
+  public get length() {
+    return this.arr.length;
+  }
+  
+  public set length(size: number) {
+    this.arr.length=size;
   }
 
   next(): T {
@@ -15,17 +25,39 @@ export default class Vec<T> extends Iter<T> {
   }
   
   *[Symbol.iterator](): Iterator<T,any,undefined> {
-    for(let i=0;i<this.size;i++) yield this[i];
+    for(const iterator of this.arr) yield iterator;
   }
 
-  public at() {
-    
+  public sort(f: (a: T, b: T)=> number) {
+    this.arr.sort(f);
+    return this;
   }
 
+  public contains(data: T): boolean {
+    return this.arr.includes(data);
+  }
 
+  public indexOf(data: T): number {
+    return this.arr.indexOf(data);
+  }
+
+  public at(index: number): Option<T> {
+    return new Option(this.arr.at(index));
+  }
+
+  public enumerate(): Enumerate<T> {
+    return this.arr.entries();
+  }
   
-  
+  public toArray(): T[] {
+    return structuredClone(this.arr);
+  }
 
-} 
+  public toVec(): Vec<T> {
+    return this.clone();
+  }
 
-
+  public clone(): Vec<T> {
+    return structuredClone(this);
+  }
+}
