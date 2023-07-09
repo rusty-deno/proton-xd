@@ -54,3 +54,15 @@ namespace env {
 }
 
 export default env;
+export const {
+  args,
+  currentDir,
+  currentExe,
+  getAllVars,
+  getVar,
+  homeDir,
+  joinPaths,
+  removeVar,
+  setCurrentDir,
+  setVar
+}=env;

@@ -1,7 +1,7 @@
 import * as clone from "./clone.ts";
 
 
-namespace std {
+module std {
   export type Clone<T>=clone.default<T>;
 
 

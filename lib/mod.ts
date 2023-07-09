@@ -2,6 +2,7 @@
 import * as xd from "./xd/xd.ts";
 import * as def from './xd/default.ts';
 import * as xdTypes from "./xd/types.ts";
+export * from "./rust/mod.ts";
 
 //screencapture
 import * as sc from "./screencapture/screencapture.ts";
@@ -42,6 +43,7 @@ namespace ProtonXD {
    * @description frees memory allocated in heap by the dynamic library
    */
   export const close=lib.close;
+  
 }
 
 
