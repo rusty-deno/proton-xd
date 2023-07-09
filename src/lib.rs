@@ -17,9 +17,11 @@ mod tests {
 
   #[test]
   fn xd() {
-    let _map: HashMap<u8,i8>=HashMap::from([]);
     
-    
+
+
+
+
 
   }
 

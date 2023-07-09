@@ -2,11 +2,9 @@
 import collections from "./lib/rust/collections/mod.ts";
 
 
+const map=new collections.HashMap();
 
-const ll=new collections.LinkedList(0,69);
 
-ll.appendFront([69]);
+console.log(String.call(null,"tt"));
 
-console.log(...ll);
 
-console.log(ll.length);

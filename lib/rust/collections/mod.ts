@@ -14,8 +14,9 @@ namespace collections {
   
   export namespace hash_map {
     export const HashMap=hash_map_mod.default;
-    export type Pair<K,V>=hash_map_mod.Pair<K,V>;
+    export type Entry<K,V>=hash_map_mod.Entry<K,V>;
   }
+  
   
   export const LinkedList=linked_list_mod.default;
   export const HashMap=hash_map_mod.default;

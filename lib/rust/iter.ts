@@ -21,8 +21,9 @@ export default abstract class Iter<T> implements Iterable<T> {
     return [...this];
   }
   
-  public enumerate(): Enumerate<T> {
-    return this.toArray().entries();
+  public *enumerate(): Enumerate<T> {
+    let i=0;
+    for(const iterator of this) yield [i++,iterator];
   }
   
   public fold(f: (prev: T,current: T,index: number)=> Option<T>|T): Option<T> {
@@ -39,18 +40,6 @@ export default abstract class Iter<T> implements Iterable<T> {
 
   public reduce(f: (prev: T,current: T,index: number)=> Option<T>|T): Option<T> {
     return this.fold(f);
-  }
-  
-  public at(index: number) {
-    return new Option([...this][index]);
-  }
-
-  public indexOf(data: T) {
-    return [...this].indexOf(data);
-  }
-
-  public contains(data: T) {
-    return Boolean(this.indexOf(data)+1);
   }
   
 }

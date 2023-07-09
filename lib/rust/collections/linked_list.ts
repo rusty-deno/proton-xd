@@ -1,8 +1,8 @@
 import Option,{None,Some} from "../io/option.ts";
-import Iter from '../iter.ts';
 import { todo } from '../error/panic.ts';
+import List from './List.ts';
 
-export default class LinkedList<T> extends Iter<T> {
+export default class LinkedList<T> extends List<T> {
   private head: Option<Node<T>>=None(undefined);
   private size: number=0;
 
@@ -114,7 +114,7 @@ export default class LinkedList<T> extends Iter<T> {
   public isEmpty() {
     return !this.size;
   }
-  
+
 }
 
 
