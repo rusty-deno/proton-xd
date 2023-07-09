@@ -1,14 +1,13 @@
 import Option from "../io/option.ts";
 import { Enumerate } from "../iter.ts";
-import List from "./List.ts";
+import * as list from "./List.ts";
 import Clone from '../clone.ts';
 
 
-export default class Vec<T> extends List<T> implements Clone<Vec<T>> {
+export default class Vec<T> implements Clone<Vec<T>> {
   private readonly arr=new Array<T>;
   
   constructor(...elements: T[]) {
-    super();
     this.arr.push(...elements);
   }
 

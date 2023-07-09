@@ -1,9 +1,9 @@
 // import ProtonXD from "./lib/mod.ts";
-import collections from "./lib/rust/collections/mod.ts";
+import {Vec} from "./lib/rust/collections/mod.ts";
 
-const map=new collections.HashMap();
+const map=new Vec(69,0);
 
 
-console.log(String.call(null,"tt"));
+console.log(map);
 
 
