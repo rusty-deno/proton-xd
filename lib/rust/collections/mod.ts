@@ -12,8 +12,8 @@ module collections {
   }
   
   export module hash_map {
-    export const {HashMap,hash}=hash_map_mod.default;
-    export type Entry<K,V>=hash_map_mod.default.Entry<K,V>;
+    export const {HashMap,hash}=hash_map_mod;
+    export type Entry<K,V>=hash_map_mod.Entry<K,V>;
   }
   
   export const List=list.default;
@@ -22,10 +22,12 @@ module collections {
   export const LinkedList=linked_list.LinkedList;
 }
 
-export const {LinkedList,Node,HashMap}={
-  ...linked_list_mod.default,
-  ...hash_map_mod.default
-};
-export const Vec=vec.default;
+// export const {LinkedList,Node,HashMap}={
+//   ...linked_list_mod.default,
+//   ...hash_map_mod.default
+// };
+// export const Vec=vec.default;
 
 export default collections;
+
+
