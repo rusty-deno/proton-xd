@@ -1,8 +1,7 @@
 import panic from "../error/panic.ts";
-import Option,{Some} from "./option.ts";
 
 
-export abstract class Exception<T,E> {
+export default abstract class Exception<T,E> {
   abstract res(): T|E;
   public abstract and(res: this): unknown;
   public abstract andThen(f: (xd: T)=> unknown): unknown;

@@ -1,5 +1,5 @@
 import Iter from "../iter.ts";
-import { HashMap } from "./hash_map.ts";
+import HashMap from "./hash_map.ts";
 
 
 

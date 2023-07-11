@@ -1,32 +1,44 @@
-import * as linked_list_mod from "./linked_list.ts";
-import * as hash_map_mod from "./hash_map.ts";
-import * as vec from "./vector.ts";
-import * as list from "./List.ts";
+import LinkedList, * as linked_list_mod from "./linked_list.ts";
+import HashMap,* as hash_map_mod from "./hash_map.ts";
+import Vec, * as vec from "./vector.ts";
+import List, * as list from "./List.ts";
+import HashSet,* as hash_set from './hash_set.ts';
 
+export * from "./hash_map.ts";
+export * from "./hash_set.ts";
+export * from "./linked_list.ts";
+export * from "./vector.ts";
+export {
+  HashMap,
+  LinkedList,
+  Vec,
+  List,
+  HashSet,
+};
 
 
 
 module collections {
   export module linked_list {
-    export const {LinkedList,Node}=linked_list_mod.default;
+    export const {Node}=linked_list_mod;
+
+    export class LinkedList<T> extends linked_list_mod.default<T> {}
   }
   
   export module hash_map {
-    export const {HashMap,hash}=hash_map_mod;
+    export class HashMap<K,V> extends hash_map_mod.default<K,V> {}
+
+
+    export const {hash}=hash_map_mod;
     export type Entry<K,V>=hash_map_mod.Entry<K,V>;
   }
   
-  export const List=list.default;
-  export const Vec=vec.default;
-  export const HashMap=hash_map.HashMap;
-  export const LinkedList=linked_list.LinkedList;
+  export abstract class List<T> extends list.default<T> {}
+  export class Vec<T> extends vec.default<T> {}
+  export class HashMap<K,V> extends hash_map_mod.default<K,V> {}
+  export class LinkedList<T> extends linked_list_mod.default<T> {}
+  export class HashSet<T> extends hash_set.default<T> {}
 }
-
-// export const {LinkedList,Node,HashMap}={
-//   ...linked_list_mod.default,
-//   ...hash_map_mod.default
-// };
-// export const Vec=vec.default;
 
 export default collections;
 

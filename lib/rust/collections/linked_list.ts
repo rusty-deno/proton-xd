@@ -2,8 +2,7 @@ import Option,{None,Some} from "../io/option.ts";
 import { todo } from '../error/panic.ts';
 import List from './List.ts';
 
-module linked_list {
-  export class LinkedList<T> extends List<T> {
+export default class LinkedList<T> extends List<T> {
     private head: Option<Node<T>>=None(undefined);
     private size: number=0;
 
@@ -116,20 +115,19 @@ module linked_list {
       return !this.size;
     }
 
-  }
+}
+
+export class Node<T> {
+  data: T;
+  next: Option<Node<T>>;
   
-  export class Node<T> {
-    data: T;
-    next: Option<Node<T>>;
-    
-    constructor(data: T,next?: Node<T>|null) {
-      this.data=data;
-      this.next=new Option(next);
-    }
+  constructor(data: T,next?: Node<T>|null) {
+    this.data=data;
+    this.next=new Option(next);
   }
 }
 
-export default linked_list;
+
 
 
 

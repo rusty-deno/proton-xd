@@ -1,4 +1,4 @@
-import { Exception } from './exception.ts';
+import Exception from './exception.ts';
 
 export type None=undefined|null;
 export type Some<T>=NonNullable<T>;

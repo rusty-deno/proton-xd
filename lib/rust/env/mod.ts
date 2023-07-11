@@ -1,6 +1,5 @@
-import { Res,ResSync } from "../io/result.ts";
+import { ResSync,Option } from "../io/mod.ts";
 import { PathBuf } from "../path.ts";
-import Option from '../io/option.ts';
 
 export type Var=[key: string,value: string];
 
@@ -40,14 +39,9 @@ namespace env {
     return new Option(Deno.env.get(key));
   }
   
-  export function getAllVars(): Iterable<Var> {
+  export function *getAllVars(): Iterable<Var> {
     const object=Deno.env.toObject();
-    
-    return {
-      *[Symbol.iterator](): Iterator<Var> {
-        for(const key in object) yield [key,object[key]];
-      }
-    };
+    for(const key in object) yield [key,object[key]];
   }
   
 

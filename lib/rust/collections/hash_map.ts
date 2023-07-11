@@ -1,10 +1,10 @@
 import Iter from '../iter.ts';
 import std from '../mod.ts';
-import Option,{Some,None} from '../io/option.ts';
+import {Option} from '../io/mod.ts';
 import { todo } from '../error/panic.ts';
 
 
-export class HashMap<K,V> extends Iter<Entry<K,V>> implements std.Clone<HashMap<K,V>> {
+export default class HashMap<K,V> extends Iter<Entry<K,V>> implements std.Clone<HashMap<K,V>> {
   private _entries: Entry<K,V>[];
   constructor(...entries: Entry<K,V>[]) {
     super();

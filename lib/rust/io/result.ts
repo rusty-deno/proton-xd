@@ -1,6 +1,5 @@
-import panic from "../error/panic.ts";
 import Option,{ Some } from './option.ts';
-import { Exception } from './exception.ts';
+import Exception from './exception.ts';
 
 export type Ok<T>=NonNullable<T>;
 export type Err<E extends Error=Error>=E;

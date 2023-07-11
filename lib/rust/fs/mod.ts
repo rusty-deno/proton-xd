@@ -1,8 +1,10 @@
-import Result,{Res,ResSync} from '../io/result.ts';
+import { Result,Res,ResSync } from '../io/mod.ts';
 import { PathBuf } from '../path.ts';
 import * as fiLe from './file.ts';
 import * as dir_builder from "./directory_builder.ts";
 
+export * from "./directory_builder.ts";
+export * from "./file.ts";
 
 
 namespace fs {
@@ -181,8 +183,6 @@ namespace fs {
 
 export default fs;
 export const {
-  DirBuilder,
-  file,
   readDir,
   readDirSync,
   readFile,

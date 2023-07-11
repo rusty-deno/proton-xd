@@ -1,4 +1,4 @@
-import Result,{ Ok,Err } from "../io/result.ts";
+import { Ok,Err,Result } from "../io/mod.ts";
 
 
 namespace net {
