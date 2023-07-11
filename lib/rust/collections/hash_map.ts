@@ -58,8 +58,8 @@ export class HashMap<K,V> extends Iter<Entry<K,V>> implements std.Clone<HashMap<
   }
 
   private hash=(key: K): number=> {
-    const hash: number=todo();
-    return hash^(hash>>>16);
+    const h=hash(key);
+    return h^(h>>>16);
   };
   
   public remove(key: K): void {
@@ -69,7 +69,6 @@ export class HashMap<K,V> extends Iter<Entry<K,V>> implements std.Clone<HashMap<
 }
 
 export function hash(_obj: any): number {
-  
   todo();
 }
 

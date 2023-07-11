@@ -1,4 +1,4 @@
-import Option, { None } from "../io/option.ts";
+import Option from "../io/option.ts";
 import { Enumerate } from "../iter.ts";
 import Clone from '../clone.ts';
 
@@ -14,7 +14,7 @@ export default class Vec<T> extends Array<T> implements Clone<Vec<T>> {
     for(const iterator of this) f(iterator,i++,this);
   }
 
-  
+
   public fold(f: (prev: T,current: T,index: number)=> Option<T>|T): Option<T> {
     return new Option(super.reduce((prev: T,current: T,index: number)=> {
       const xd=f(prev,current,index);
