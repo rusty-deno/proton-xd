@@ -1,4 +1,4 @@
-import { todo,Option,None,Some } from "../../../mod.ts";
+import { Option,None,Some } from "../../../mod.ts";
 import { Node } from "./mod.ts";
 import { List } from "../List.ts";
 
@@ -26,10 +26,6 @@ export class LinkedList<T> extends List<T> {
 
   public get length() {
     return this.size;
-  }
-
-  public set length(size: number) {
-    todo();
   }
 
   public get front() {
