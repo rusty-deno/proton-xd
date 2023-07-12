@@ -1,8 +1,8 @@
-import Option from "../io/option.ts";
-import Iter from "../iter.ts";
+import {Option} from "../io/option.ts";
+import {Iter} from "../iter.ts";
 
 
-export default abstract class List<T> extends Iter<T> {
+export abstract class List<T> extends Iter<T> {
   abstract [Symbol.iterator](): Iterator<T>;
   abstract next(): T;
   /**

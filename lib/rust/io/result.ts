@@ -1,11 +1,11 @@
-import Option,{ Some } from './option.ts';
-import Exception from './exception.ts';
+import { Option,Some } from './option.ts';
+import { Exception } from './exception.ts';
 
-export type Ok<T>=NonNullable<T>;
+export type Ok<T>=T;
 export type Err<E extends Error=Error>=E;
 
 
-export default class Result<T,E extends Error> extends Exception<T,E> {
+export class Result<T,E extends Error> extends Exception<T,E> {
   public readonly result: T|E;
 
   constructor(res: T|E) {

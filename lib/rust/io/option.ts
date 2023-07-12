@@ -1,9 +1,9 @@
-import Exception from './exception.ts';
+import {Exception} from './exception.ts';
 
 export type None=undefined|null;
 export type Some<T>=NonNullable<T>;
 
-export default class Option<T> extends Exception<T,None> {
+export class Option<T> extends Exception<T,None> {
   public readonly value: T|None;
 
   constructor(val: T|None) {

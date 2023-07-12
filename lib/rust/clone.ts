@@ -1,5 +1,5 @@
 
-export default interface Clone<T> {
+export interface Clone<T> {
   clone(): T;
 }
 

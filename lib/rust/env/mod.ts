@@ -1,4 +1,5 @@
-import { ResSync,Option } from "../io/mod.ts";
+import { ResSync } from "../io/result.ts";
+import { Option } from "../io/option.ts";
 import { PathBuf } from "../path.ts";
 
 export type Var=[key: string,value: string];

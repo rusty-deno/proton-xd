@@ -1,5 +1,5 @@
 
-export default function panic(err: string|Error="Program panicked"): never {
+export function panic(err: string|Error="Program panicked"): never {
   console.error(err);
   Deno.exit(1);
 }

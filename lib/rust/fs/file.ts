@@ -1,9 +1,9 @@
 import { Res, ResSync } from "../io/result.ts";
 import { Opt,OptSync } from "../io/option.ts";
 
-export default class file {
+export class file {
   private fs: Deno.FsFile;
-  private constructor(f: Deno.FsFile) {
+  constructor(f: Deno.FsFile) {
     this.fs=f;
   }
   
