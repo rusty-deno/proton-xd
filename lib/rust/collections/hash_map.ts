@@ -21,7 +21,7 @@ export class HashMap<K,V> extends Iter<Entry<K,V>> implements Clone {
 
   *[Symbol.iterator](): Iterator<Entry<K,V>> {
     for(const entry of this._entries) {
-      if(!entry.value) continue;
+      if(!entry?.value) continue;
       yield entry.value;
     }
   }
@@ -62,19 +62,32 @@ export class HashMap<K,V> extends Iter<Entry<K,V>> implements Clone {
     this.hash=hasher;
   }
 
-  private hash=(key: K): number=> {
-    const h=hash(key);
-    return h^(h>>>16);
-  };
+  private hash=hash;
   
   public remove(key: K): void {
     this._entries[this.hash(key)]=None(undefined);
   }
   
+  [Symbol.toStringTag]() {
+    let str: string="\0";
+    for(const entry of this) str+=`${entry[0]} => ${entry[1]}\n`;
+    return str;
+  }
+
+  public override toString() {
+    return this[Symbol.toStringTag]();
+  }
 }
 
-export function hash(_obj: any): number {
-  todo();
+export function hash(obj: any): number {
+  switch(typeof obj) {
+    case "number":
+    case "boolean":
+      return Number(obj);
+    case "string"://gperf
+    default:
+      todo();
+  }
 }
 
 export type Entry<K,V>=[key: K,value: V];
