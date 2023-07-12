@@ -1,6 +1,8 @@
-import {Option,None,Some} from "../io/option.ts";
-import { todo } from '../error/panic.ts';
-import {List} from './List.ts';
+import { todo,Option,None,Some } from "../../mod.ts";
+import { Node } from "./mod.ts";
+import { List } from "../list/List.ts";
+
+
 
 export class LinkedList<T> extends List<T> {
   private head: Option<Node<T>>=None(undefined);
@@ -108,15 +110,7 @@ export class LinkedList<T> extends List<T> {
 
 }
 
-export class Node<T> {
-  data: T;
-  next: Option<Node<T>>;
-  
-  constructor(data: T,next?: Node<T>|null) {
-  this.data=data;
-  this.next=new Option(next);
-  }
-}
+
 
 
 

@@ -1,5 +1,5 @@
-import {Option} from "../io/option.ts";
-import {Iter} from "../iter.ts";
+import { Option,Iter } from "../../mod.ts";
+
 
 
 export abstract class List<T> extends Iter<T> {

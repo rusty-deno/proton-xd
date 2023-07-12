@@ -1,6 +1,4 @@
-import { Option,None } from "../io/option.ts";
-import { Enumerate } from "../iter.ts";
-import {Clone} from '../clone.ts';
+import { Option,None,Enumerate,Clone } from "../../mod.ts";
 
 
 export class Vec<T> extends Array<T> implements Clone {
