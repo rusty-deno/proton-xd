@@ -16,7 +16,6 @@ mod tests {
 
   #[test]
   fn xd() {
-    let mut vec=vec![69,83,365,74,33,235,6];
     
 
 

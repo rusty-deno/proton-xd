@@ -1,6 +1,6 @@
 
-export interface Clone<T> {
-  clone(): T;
+export interface Clone {
+  clone(): unknown;
 }
 
 

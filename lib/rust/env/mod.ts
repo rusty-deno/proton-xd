@@ -2,10 +2,10 @@ import { ResSync } from "../io/result.ts";
 import { Option } from "../io/option.ts";
 import { PathBuf } from "../path.ts";
 
-export type Var=[key: string,value: string];
 
-namespace env {
 
+export namespace env {
+  export type Var=[key: string,value: string];
   export const args=Deno.args;
   
   export function currentDir() {
@@ -47,17 +47,3 @@ namespace env {
   
 
 }
-
-export default env;
-export const {
-  args,
-  currentDir,
-  currentExe,
-  getAllVars,
-  getVar,
-  homeDir,
-  joinPaths,
-  removeVar,
-  setCurrentDir,
-  setVar
-}=env;

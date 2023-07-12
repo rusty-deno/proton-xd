@@ -3,7 +3,7 @@ import { Enumerate } from "../iter.ts";
 import {Clone} from '../clone.ts';
 
 
-export class Vec<T> extends Array<T> implements Clone<Vec<T>> {
+export class Vec<T> extends Array<T> implements Clone {
 
   constructor(...elements: T[]) {
     super(...elements);
