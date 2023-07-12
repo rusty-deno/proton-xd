@@ -1,6 +1,6 @@
-import { todo,Option,None,Some } from "../../mod.ts";
+import { todo,Option,None,Some } from "../../../mod.ts";
 import { Node } from "./mod.ts";
-import { List } from "../list/List.ts";
+import { List } from "../List.ts";
 
 
 
