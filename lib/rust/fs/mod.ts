@@ -1,6 +1,6 @@
-import {Res,ResSync,Result} from '../io/result.ts';
+import {Result} from '../io/result.ts';
+import { Res,ResSync } from '../io/res.ts';
 import { PathBuf } from '../path.ts';
-
 import {file} from './file.ts';
 
 export * from "./directory_builder.ts";

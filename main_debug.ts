@@ -1,10 +1,7 @@
-import {HashMap} from "./lib/rust/mod.ts";
+import * as std from "./lib/rust/mod.ts";
 
-const map: HashMap<boolean,string>=new HashMap;
+std.collections.HashMap;
 
-map.set(!69,"xd");
-map.set(!10,"ff");
 
-console.log(map.toString());
 
 

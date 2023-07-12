@@ -3,7 +3,7 @@ import { defaultWindowAttrs as dwa,defaultWebViewAttrs as dweba,confirmDefaultVa
 import WebViewAttributes,{ Content,WindowAttributes,toContent } from "./types.ts";
 
 
-export default class XD {
+export class XD {
   private content: Content;
   private windowAttrs: WindowAttributes;
   private webviewAttrs: WebViewAttributes;

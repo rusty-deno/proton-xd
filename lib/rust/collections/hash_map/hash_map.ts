@@ -1,7 +1,5 @@
-import { Iter } from '../iter.ts';
-import { Clone } from '../clone.ts';
-import { Option,None,Some } from '../io/option.ts';
-import { todo } from '../error/panic.ts';
+import { Iter,Clone,Option,Some,None } from '../../mod.ts';
+import { HasherFn,hash,Entry } from './mod.ts';
 
 
 export class HashMap<K,V> extends Iter<Entry<K,V>> implements Clone {
@@ -78,18 +76,4 @@ export class HashMap<K,V> extends Iter<Entry<K,V>> implements Clone {
     return this[Symbol.toStringTag]();
   }
 }
-
-export function hash(obj: any): number {
-  switch(typeof obj) {
-    case "number":
-    case "boolean":
-      return Number(obj);
-    case "string"://gperf
-    default:
-      todo();
-  }
-}
-
-export type Entry<K,V>=[key: K,value: V];
-export type HasherFn<K>=(obj: K)=> number;
 

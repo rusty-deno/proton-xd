@@ -1,7 +1,7 @@
 import {Exception} from './exception.ts';
 
-export type None=undefined|null;
-export type Some<T>=NonNullable<T>;
+
+
 
 export class Option<T> extends Exception<T,None> {
   public readonly value: T|None;
@@ -38,6 +38,9 @@ export class Option<T> extends Exception<T,None> {
   }
 }
 
+export type None=undefined|null;
+export type Some<T>=NonNullable<T>;
+
 export function Some<T>(val: T) {
   return new Option(val);
 }
@@ -49,13 +52,4 @@ export function Some<T>(val: T) {
  */
 export function None<T>(val: None): Option<T> {
   return new Option<T>(val);
-}
-
-
-export async function Opt<T>(f: ()=> Promise<T|None>) {
-  return new Option<T>(await f());
-}
-
-export function OptSync<T>(f: ()=> T|None) {
-  return new Option<T>(f());
 }
