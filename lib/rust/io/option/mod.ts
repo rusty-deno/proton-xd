@@ -7,3 +7,5 @@ export async function Opt<T>(f: ()=> Promise<T|None>) {
 export function OptSync<T>(f: ()=> T|None) {
   return new Option<T>(f());
 }
+
+export * from "./option.ts"; 

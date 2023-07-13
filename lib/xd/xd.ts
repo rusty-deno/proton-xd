@@ -71,5 +71,9 @@ export class XD {
 export type WindowProperty=keyof WindowAttributes;
 export type WebViewProperty=keyof WebViewAttributes;
 
-export const writeToClipboard=(str: string)=> lib.write_to_clipboard(str);
-export const readClipboard=()=> lib.read_clipboard();
+export function writeToClipboard(str: string){
+  return lib.write_to_clipboard(str);
+}
+export function readClipboard() {
+  return lib.read_clipboard();
+}

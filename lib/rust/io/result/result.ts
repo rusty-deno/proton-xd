@@ -1,5 +1,5 @@
-import { Option,Some } from './option.ts';
-import { Exception } from './exception.ts';
+import { Option,Some } from '../option/option.ts';
+import { Exception } from '../exception.ts';
 
 export type Ok<T>=T;
 export type Err<E extends Error=Error>=E;

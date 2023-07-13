@@ -1,4 +1,4 @@
-import {Exception} from './exception.ts';
+import { Exception } from '../exception.ts';
 
 
 

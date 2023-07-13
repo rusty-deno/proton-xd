@@ -1,3 +1,3 @@
-export * from "./module.ts";
-import * as ProtonXD from "./module.ts";
+export * from "./mod/mod.ts";
+import * as ProtonXD from "./mod/mod.ts";
 export default ProtonXD;

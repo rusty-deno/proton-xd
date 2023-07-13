@@ -1,8 +1,8 @@
-import { None,Some } from "../rust/io/option.ts";
-import { spawn } from "../../bindings/bindings.ts";
+import { spawn } from "../../../bindings/bindings.ts";
+import { Some,None } from "../mod.ts";
 
 
-export default class Thread<T> {
+export class Thread<T> {
   private xd=None<T>(null);
   private fn: Deno.UnsafeCallback<{
     parameters: [],

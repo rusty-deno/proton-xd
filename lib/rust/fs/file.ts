@@ -1,5 +1,5 @@
-import { Res, ResSync } from "../io/result.ts";
-import { Opt,OptSync } from "../io/option.ts";
+import { Res,ResSync } from "../io/result/mod.ts";
+import { Opt,OptSync } from "../io/option/mod.ts";
 
 export class file {
   private fs: Deno.FsFile;

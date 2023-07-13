@@ -1,6 +1,5 @@
-import * as std from "./lib/rust/mod.ts";
+import * as lib from "./lib/mod/mod.ts";
 
-std.collections;
 
 
 
