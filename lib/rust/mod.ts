@@ -21,6 +21,7 @@ export * from "./thread/thread.ts";
 
 export * from "./net/fetch.ts";
 export * from "./collections/list/vector.ts";
+export * from "./collections/hash_map/hash_map.ts";
 
 
 

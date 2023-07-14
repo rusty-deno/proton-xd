@@ -25,4 +25,5 @@ export abstract class List<T> extends Iter<T> {
   public contains(data: T) {
     return Boolean(this.indexOf(data)+1);
   }
+  
 }

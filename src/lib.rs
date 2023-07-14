@@ -16,8 +16,9 @@ mod tests {
 
   #[test]
   fn xd() {
-    use std::;
-    let _n: u8=69;
+    use std::collections::BTreeSet;
+    let mut _n: BTreeSet<u8>=BTreeSet::new();
+
 
 
   }
