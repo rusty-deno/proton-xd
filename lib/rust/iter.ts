@@ -1,5 +1,5 @@
-import {Option,None} from "./io/option.ts";
-import {Vec} from './collections/vector.ts';
+import {Option,None} from "./io/option/option.ts";
+import {Vec} from './collections/mod.ts';
 
 
 export type Enumerate<T>=Iterable<[index: number,item: T]>;

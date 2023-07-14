@@ -16,8 +16,8 @@ mod tests {
 
   #[test]
   fn xd() {
-    
-
+    use std::;
+    let _n: u8=69;
 
 
   }

@@ -66,6 +66,9 @@ export class XD {
     );
   }
   
+  public static instantiate(content: Content,windowAttrs: WindowAttributes={},webviewAttrs: WebViewAttributes={}) {
+    new XD(content,windowAttrs,webviewAttrs).init();
+  }
 }
 
 export type WindowProperty=keyof WindowAttributes;

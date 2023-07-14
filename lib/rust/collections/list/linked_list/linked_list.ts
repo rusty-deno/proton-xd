@@ -10,7 +10,7 @@ export class LinkedList<T> extends List<T> {
 
   constructor(...nodes: T[]) {
     super();
-    for(const node of nodes.reverse()) this.pushFront(node);
+    for(let i=nodes.length;i>0;) this.pushFront(nodes[--i]);
   }
 
 
@@ -23,6 +23,13 @@ export class LinkedList<T> extends List<T> {
     for(let iter=this.head.value;iter&&iter.next;iter=iter.next.value) yield iter.data;
   }
 
+  public [Symbol.toStringTag]() {
+    return [...this].join(" => ");
+  }
+
+  public override toString() {
+    return this[Symbol.toStringTag]();
+  }
 
   public get length() {
     return this.size;
