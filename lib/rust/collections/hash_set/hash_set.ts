@@ -1,13 +1,12 @@
-import {Iter} from "../../iter.ts";
+import {Iter} from "../iter.ts";
 import {HashMap} from "../hash_map/hash_map.ts";
 
 
 
-export class HashSet<T> extends Iter<T> {
+export class HashSet<T> {
   private map: HashMap<T,undefined>=new HashMap;
 
   constructor(...entries: T[]) {
-    super();
     for(const entry of entries) this.add(entry);
   }
   

@@ -1,5 +1,5 @@
-import {Option,None} from "./io/option/option.ts";
-import {Vec} from './collections/mod.ts';
+import { Option,None } from "../mod.ts";
+import { Vec } from "../mod.ts";
 
 
 export type Enumerate<T>=Iterable<[index: number,item: T]>;
@@ -9,7 +9,7 @@ export type Enumerate<T>=Iterable<[index: number,item: T]>;
 export abstract class Iter<T> implements Iterable<T> {
   abstract next(): T;
   abstract [Symbol.iterator](): Iterator<T>;
-  
+   
   public forEach(f: (value: T,index: number,iter: this)=> void) {
     let i=0;
     for(const iterator of this) {
@@ -46,10 +46,3 @@ export abstract class Iter<T> implements Iterable<T> {
     return new Vec(...this);
   }
 }
-
-const xd=[69];
-
-
-xd.reduce((a,b)=> {
-  return a+b;
-});

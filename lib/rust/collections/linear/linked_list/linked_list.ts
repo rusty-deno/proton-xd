@@ -1,15 +1,13 @@
 import { Option,None,Some } from "../../../mod.ts";
 import { Node } from "./mod.ts";
-import { List } from "../List.ts";
 
 
 
-export class LinkedList<T> extends List<T> {
+export class LinkedList<T> {
   private head: Option<Node<T>>=None(undefined);
   private size: number=0;
 
   constructor(...nodes: T[]) {
-    super();
     for(let i=nodes.length;i>0;) this.pushFront(nodes[--i]);
   }
 
@@ -27,7 +25,7 @@ export class LinkedList<T> extends List<T> {
     return [...this].join(" => ");
   }
 
-  public override toString() {
+  public toString() {
     return this[Symbol.toStringTag]();
   }
 

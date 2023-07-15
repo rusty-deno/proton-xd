@@ -11,7 +11,7 @@ export * as thread from "./thread/mod.ts";
 
 
 export * from "./clone.ts";
-export * from "./iter.ts";
+export * from "./collections/iter.ts";
 
 export * from "./io/result/result.ts";
 export * from "./io/option/option.ts";
