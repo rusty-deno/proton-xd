@@ -60,7 +60,11 @@ export class HashMap<K,V> extends Iter<Entry<K,V>> implements Clone {
     this.hash=hasher;
   }
 
-  private hash=hash;
+  private hash=(key: K)=>{
+    let h=hash(key);
+    console.log(h=h^(h>>>16));
+    return h;
+  };
   
   public remove(key: K): void {
     this._entries[this.hash(key)]=None(undefined);
