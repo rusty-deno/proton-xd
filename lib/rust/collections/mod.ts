@@ -6,3 +6,5 @@ export * as linked_list from "./linear/linked_list/mod.ts";
 export * from "./linear/linked_list/linked_list.ts";
 export * as list from "./linear/mod.ts";
 export * from "./linear/vector.ts";
+export * from "./linear/stack/stack.ts";
+export * as stack from "./linear/stack/mod.ts";
