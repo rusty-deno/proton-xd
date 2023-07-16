@@ -1,12 +1,12 @@
-import { Stack } from './lib/rust/collections/linear/stack/stack.ts';
+import { fetchApi } from "./lib/mod.ts";
+import { panic } from './lib/rust/error/panic.ts';
+
+
+const res=(await fetchApi("http://localhost:6969/")).unwrapOrElse((e)=> {
+  panic(e);
+});
+
+console.log();
 
 
 
-const xd=new Stack(3);
-
-
-xd.push(69,55);
-
-
-
-console.log(xd.pop());

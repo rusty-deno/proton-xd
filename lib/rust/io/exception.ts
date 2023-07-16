@@ -8,7 +8,9 @@ export abstract class Exception<T,E> {
   abstract get isException(): boolean;
   public abstract orElse(op: (err: E)=> unknown): unknown;
 
-  private readonly _res: any=this.res();
+  protected get _res(): any {
+    return this.res();
+  }
 
   
   public expect(msg: string): T {
@@ -37,9 +39,10 @@ export abstract class Exception<T,E> {
     return this.isException;
   }
   
-  public unwrap(): T {
-    if(this.isException) panic(this._res);
-    return this._res;
+  public unwrap(): T {    
+    return this.unwrapOrElse((e: any)=> {
+      panic(e);
+    });
   }
   
   public unwrapOrElse(f: (err: E)=> T): T {

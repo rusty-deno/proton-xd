@@ -8,3 +8,5 @@ export * as list from "./linear/mod.ts";
 export * from "./linear/vector.ts";
 export * from "./linear/stack/stack.ts";
 export * as stack from "./linear/stack/mod.ts";
+export * from "./btree/btree.ts";
+export * as btree from "./btree/mod.ts";

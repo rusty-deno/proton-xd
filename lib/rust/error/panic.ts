@@ -1,7 +1,8 @@
 
+
 export function panic(err: string|Error="Program panicked"): never {
   console.error(err);
-  Deno.exit(1);
+  return Deno.exit(1);
 }
 
 
