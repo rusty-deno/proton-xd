@@ -249,10 +249,10 @@ export function read_clipboard() {
   const result = readPointer(rawResult);
   return decode(result);
 }
-export function screenshot(a0: number, a1: number, a2: number) {
-  const rawResult = symbols.screenshot(a0, a1, a2);
-  const result = rawResult.then(readPointer);
-  return result.then(decode);
+export async function screenshot(a0: number, a1: number, a2: number) {
+  const rawResult = await symbols.screenshot(a0, a1, a2);
+  const buffer = readPointer(rawResult);
+  return decode(buffer);
 }
 export function screenshot_sync(a0: number, a1: number, a2: number) {
   const rawResult = symbols.screenshot_sync(a0, a1, a2);

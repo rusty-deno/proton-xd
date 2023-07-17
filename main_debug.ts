@@ -1,12 +1,8 @@
-import { fetchApi } from "./lib/mod.ts";
-import { panic } from './lib/rust/error/panic.ts';
+import { CString } from './lib/rust/ffi/c_str.ts';
 
 
-const res=(await fetchApi("http://localhost:6969/")).unwrapOrElse((e)=> {
-  panic(e);
-});
+const xd=new CString("xd");
 
-console.log();
-
+console.log(xd);
 
 
