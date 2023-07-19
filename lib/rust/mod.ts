@@ -6,7 +6,6 @@ export * as io from "./io/mod.ts";
 export * as net from "./net/mod.ts";
 export * as path from "./path.ts";
 export * as thread from "./thread/mod.ts";
-export * as ffi from "./ffi/mod.ts";
 
 
 

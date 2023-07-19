@@ -4,9 +4,10 @@ import { Iter } from '../iter.ts';
 
 
 
-export class HashMap<K,V> implements Clone {
+export class HashMap<K,V> extends Iter<Entry<K,V>> implements Clone {
   private _entries: Option<Entry<K,V>>[]=[];
   constructor(...entries: Entry<K,V>[]) {
+    super();
     for(const entry of entries) this.set(entry[0],entry[1]);
   }
 

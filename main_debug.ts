@@ -1,7 +1,6 @@
-import { CString } from './lib/rust/ffi/c_str.ts';
+import { collections } from "./lib/mod.ts";
 
-
-const xd=new CString("xd");
+const xd=new collections.Vec(0,69);
 
 console.log(xd);
 
