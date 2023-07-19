@@ -47,7 +47,16 @@ export class Vec<T> extends Array<T> implements Clone {
   public clone(): Vec<T> {
     return structuredClone(this);
   }
+
+  /**
+   * @deprecated
+   */
+  public at=super.at;
   
+  public nth(index: number) {
+    return new Option(super.at(index));
+  }
+
 }
 
 

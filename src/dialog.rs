@@ -1,12 +1,18 @@
 use deno_bindgen::deno_bindgen;
 
 
+#[cfg(test)]
+mod tests {
 
+  #[test]
+  fn xd() {
+    
+  }
 
-//dialogs
-fn todo()-> String {
-  todo!("i didnt check before using that lib as it was so smoll.. that idiot wrote horrible machine dependant code..")
 }
+
+
+
 
 #[deno_bindgen]
 pub fn dialog(_title: &str,_message: &str) {
@@ -58,12 +64,8 @@ pub fn open() {
 }
 
 
-#[cfg(test)]
-mod tests {
 
-  #[test]
-  fn xd() {
-    
-  }
-
+//dialogs
+fn todo()-> String {
+  todo!("i didnt check before using that lib as it was so smoll.. that idiot wrote horrible machine dependant code..")
 }
