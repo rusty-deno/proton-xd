@@ -2,7 +2,7 @@
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
 
-function decoder(buffer: Uint8Array): string {
+function decode(buffer: Uint8Array): string {
   return decoder.decode(buffer);
 }
 
@@ -35,11 +35,6 @@ if (Deno.build.os === "windows") {
 }
 
 export const { symbols, close } = Deno.dlopen(uri, {
-  calender: {
-    parameters: ["buffer", "usize"],
-    result: "buffer",
-    nonblocking: false,
-  },
   error: {
     parameters: ["buffer", "usize", "buffer", "usize", "u8"],
     result: "void",
@@ -62,12 +57,6 @@ export const { symbols, close } = Deno.dlopen(uri, {
   },
   park: { parameters: [], result: "void", nonblocking: false },
   park_timeout: { parameters: ["f64"], result: "void", nonblocking: false },
-  progress: { parameters: [], result: "buffer", nonblocking: false },
-  prompt: {
-    parameters: ["buffer", "usize"],
-    result: "buffer",
-    nonblocking: false,
-  },
   read_clipboard: { parameters: [], result: "buffer", nonblocking: false },
   screenshot: {
     parameters: ["i32", "i32", "f32"],
@@ -160,13 +149,6 @@ export type WindowAttrs = {
   content_protection: boolean;
   visible_on_all_workspaces: boolean;
 };
-export function calender(a0: string) {
-  const a0_buf = encode(a0);
-
-  const rawResult = symbols.calender(a0_buf, a0_buf.byteLength);
-  const result = readPointer(rawResult);
-  return decode(result);
-}
 export function error(a0: string, a1: string, a2: number) {
   const a0_buf = encode(a0);
   const a1_buf = encode(a1);
@@ -234,18 +216,6 @@ export function park_timeout(a0: number) {
   const rawResult = symbols.park_timeout(a0);
   const result = rawResult;
   return result;
-}
-export function progress() {
-  const rawResult = symbols.progress();
-  const result = readPointer(rawResult);
-  return decode(result);
-}
-export function prompt(a0: string) {
-  const a0_buf = encode(a0);
-
-  const rawResult = symbols.prompt(a0_buf, a0_buf.byteLength);
-  const result = readPointer(rawResult);
-  return decode(result);
 }
 export function read_clipboard() {
   const rawResult = symbols.read_clipboard();
