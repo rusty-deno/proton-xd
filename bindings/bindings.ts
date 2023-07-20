@@ -1,3 +1,4 @@
+import { prototypes } from './bindings.prototype.ts';
 // Auto-generated with deno_bindgen
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
@@ -38,9 +39,19 @@ export const { symbols, close } = Deno.dlopen(uri, {
   error: {
     parameters: ["buffer", "usize", "buffer", "usize", "u8"],
     result: "void",
+    nonblocking: true,
+  },
+  error_sync: {
+    parameters: ["buffer", "usize", "buffer", "usize", "u8"],
+    result: "void",
     nonblocking: false,
   },
   info: {
+    parameters: ["buffer", "usize", "buffer", "usize", "u8"],
+    result: "void",
+    nonblocking: true,
+  },
+  info_sync: {
     parameters: ["buffer", "usize", "buffer", "usize", "u8"],
     result: "void",
     nonblocking: false,
@@ -51,6 +62,11 @@ export const { symbols, close } = Deno.dlopen(uri, {
     nonblocking: false,
   },
   message: {
+    parameters: ["buffer", "usize", "buffer", "usize", "u8"],
+    result: "void",
+    nonblocking: true,
+  },
+  message_sync: {
     parameters: ["buffer", "usize", "buffer", "usize", "u8"],
     result: "void",
     nonblocking: false,
@@ -72,6 +88,11 @@ export const { symbols, close } = Deno.dlopen(uri, {
   warning: {
     parameters: ["buffer", "usize", "buffer", "usize", "u8"],
     result: "void",
+    nonblocking: true,
+  },
+  warning_sync: {
+    parameters: ["buffer", "usize", "buffer", "usize", "u8"],
+    result: "void",
     nonblocking: false,
   },
   write_to_clipboard: {
@@ -79,6 +100,46 @@ export const { symbols, close } = Deno.dlopen(uri, {
     result: "void",
     nonblocking: false,
   },
+  error_cfm: {
+    parameters: ["buffer","buffer","u8"],
+    result: "bool",
+    nonblocking: true
+  },
+  message_cfm: {
+    parameters: ["buffer","buffer","u8"],
+    result: "bool",
+    nonblocking: true
+  },
+  info_cfm: {
+    parameters: ["buffer","buffer","u8"],
+    result: "bool",
+    nonblocking: true
+  },
+  warning_cfm: {
+    parameters: ["buffer","buffer","u8"],
+    result: "bool",
+    nonblocking: true
+  },
+  error_cfm_sync: {
+    parameters: ["buffer","buffer","u8"],
+    result: "bool"
+  },
+  message_cfm_sync: {
+    parameters: ["buffer","buffer","u8"],
+    result: "bool"
+  },
+  info_cfm_sync: {
+    parameters: ["buffer","buffer","u8"],
+    result: "bool"
+  },
+  warning_cfm_sync: {
+    parameters: ["buffer","buffer","u8"],
+    result: "bool"
+  },
+  spawn: {
+    parameters: ["function"],
+    result: "void"
+  }
 });
 export type Content =
   | {
@@ -163,11 +224,39 @@ export function error(a0: string, a1: string, a2: number) {
   const result = rawResult;
   return result;
 }
+export function error_sync(a0: string, a1: string, a2: number) {
+  const a0_buf = encode(a0);
+  const a1_buf = encode(a1);
+
+  const rawResult = symbols.error_sync(
+    a0_buf,
+    a0_buf.byteLength,
+    a1_buf,
+    a1_buf.byteLength,
+    a2,
+  );
+  const result = rawResult;
+  return result;
+}
 export function info(a0: string, a1: string, a2: number) {
   const a0_buf = encode(a0);
   const a1_buf = encode(a1);
 
   const rawResult = symbols.info(
+    a0_buf,
+    a0_buf.byteLength,
+    a1_buf,
+    a1_buf.byteLength,
+    a2,
+  );
+  const result = rawResult;
+  return result;
+}
+export function info_sync(a0: string, a1: string, a2: number) {
+  const a0_buf = encode(a0);
+  const a1_buf = encode(a1);
+
+  const rawResult = symbols.info_sync(
     a0_buf,
     a0_buf.byteLength,
     a1_buf,
@@ -198,6 +287,20 @@ export function message(a0: string, a1: string, a2: number) {
   const a1_buf = encode(a1);
 
   const rawResult = symbols.message(
+    a0_buf,
+    a0_buf.byteLength,
+    a1_buf,
+    a1_buf.byteLength,
+    a2,
+  );
+  const result = rawResult;
+  return result;
+}
+export function message_sync(a0: string, a1: string, a2: number) {
+  const a0_buf = encode(a0);
+  const a1_buf = encode(a1);
+
+  const rawResult = symbols.message_sync(
     a0_buf,
     a0_buf.byteLength,
     a1_buf,
@@ -242,6 +345,20 @@ export function warning(a0: string, a1: string, a2: number) {
   const a1_buf = encode(a1);
 
   const rawResult = symbols.warning(
+    a0_buf,
+    a0_buf.byteLength,
+    a1_buf,
+    a1_buf.byteLength,
+    a2,
+  );
+  const result = rawResult;
+  return result;
+}
+export function warning_sync(a0: string, a1: string, a2: number) {
+  const a0_buf = encode(a0);
+  const a1_buf = encode(a1);
+
+  const rawResult = symbols.warning_sync(
     a0_buf,
     a0_buf.byteLength,
     a1_buf,
