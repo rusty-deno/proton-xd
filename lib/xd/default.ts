@@ -1,3 +1,10 @@
+export enum Default {
+  TITLE="untitled"
+  
+
+
+  
+}
 
 
 export const defaultWindowAttrs={
@@ -8,7 +15,7 @@ export const defaultWindowAttrs={
   minimizable: true,
   maximizable: true,
   closable: true,
-  title: "untitled",
+  title: Default.TITLE,
   maximized: false,
   visible: true,
   transparent: false,
@@ -42,10 +49,11 @@ export const defaultWebViewAttrs={
   autoplay: true,
 };
 
-type Iter={[key: string]: unknown};
+type IterObj={[key: string]: unknown};
 
-export function confirmDefaultVal(main: Iter,def: Iter): any {
-  let attrs: Iter={};
+
+export function confirmDefaultVal(main: IterObj,def: IterObj): any {
+  let attrs: IterObj={};
   for(const key in def)
     attrs[to_snake_case(key)]=main[key]??def[key];
 
