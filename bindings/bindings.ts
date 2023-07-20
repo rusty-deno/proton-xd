@@ -1,15 +1,13 @@
 // Auto-generated with deno_bindgen
-
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
 
-function decode(buffer: Uint8Array) {
-  return decoder.decode(buffer);
+function encode(v: string | Uint8Array): Uint8Array {
+  return typeof v!=="string"?v:encoder.encode(v);
 }
 
-function encode(v: string | Uint8Array): Uint8Array {
-  if (typeof v !== "string") return v;
-  return encoder.encode(v);
+function decode(v: Uint8Array) {
+  return decoder.decode(v);
 }
 
 // deno-lint-ignore no-explicit-any
@@ -37,24 +35,20 @@ if (Deno.build.os === "windows") {
 }
 
 export const { symbols, close } = Deno.dlopen(uri, {
+  alert: { parameters: [], result: "void", nonblocking: false },
   calender: {
     parameters: ["buffer", "usize"],
     result: "buffer",
     nonblocking: false,
   },
-  dialog: {
+  error: {
     parameters: ["buffer", "usize", "buffer", "usize"],
     result: "void",
     nonblocking: false,
   },
-  error: {
-    parameters: ["buffer", "usize"],
+  info: {
+    parameters: ["buffer", "usize", "buffer", "usize"],
     result: "void",
-    nonblocking: false,
-  },
-  information: {
-    parameters: ["buffer", "usize"],
-    result: "buffer",
     nonblocking: false,
   },
   init: {
@@ -62,30 +56,34 @@ export const { symbols, close } = Deno.dlopen(uri, {
     result: "void",
     nonblocking: false,
   },
-  open: { parameters: [], result: "void", nonblocking: false },
+  message: {
+    parameters: ["buffer", "usize", "buffer", "usize"],
+    result: "void",
+    nonblocking: false,
+  },
   park: { parameters: [], result: "void", nonblocking: false },
   park_timeout: { parameters: ["f64"], result: "void", nonblocking: false },
   progress: { parameters: [], result: "buffer", nonblocking: false },
-  question: {
+  prompt: {
     parameters: ["buffer", "usize"],
     result: "buffer",
     nonblocking: false,
   },
   read_clipboard: { parameters: [], result: "buffer", nonblocking: false },
   screenshot: {
-    parameters: ["i32", "i32", "f64"],
+    parameters: ["i32", "i32", "f32"],
     result: "buffer",
     nonblocking: true,
   },
   screenshot_sync: {
-    parameters: ["i32", "i32", "f64"],
+    parameters: ["i32", "i32", "f32"],
     result: "buffer",
     nonblocking: false,
   },
   sleep: { parameters: ["f32"], result: "void", nonblocking: false },
   warning: {
-    parameters: ["buffer", "usize"],
-    result: "buffer",
+    parameters: ["buffer", "usize", "buffer", "usize"],
+    result: "void",
     nonblocking: false,
   },
   write_to_clipboard: {
@@ -93,10 +91,6 @@ export const { symbols, close } = Deno.dlopen(uri, {
     result: "void",
     nonblocking: false,
   },
-  spawn: {
-    parameters: ["function"],
-    result: "void"
-  }
 });
 export type Content =
   | {
@@ -167,6 +161,11 @@ export type WindowAttrs = {
   content_protection: boolean;
   visible_on_all_workspaces: boolean;
 };
+export function alert() {
+  const rawResult = symbols.alert();
+  const result = rawResult;
+  return result;
+}
 export function calender(a0: string) {
   const a0_buf = encode(a0);
 
@@ -174,11 +173,11 @@ export function calender(a0: string) {
   const result = readPointer(rawResult);
   return decode(result);
 }
-export function dialog(a0: string, a1: string) {
+export function error(a0: string, a1: string) {
   const a0_buf = encode(a0);
   const a1_buf = encode(a1);
 
-  const rawResult = symbols.dialog(
+  const rawResult = symbols.error(
     a0_buf,
     a0_buf.byteLength,
     a1_buf,
@@ -187,19 +186,18 @@ export function dialog(a0: string, a1: string) {
   const result = rawResult;
   return result;
 }
-export function error(a0: string) {
+export function info(a0: string, a1: string) {
   const a0_buf = encode(a0);
+  const a1_buf = encode(a1);
 
-  const rawResult = symbols.error(a0_buf, a0_buf.byteLength);
+  const rawResult = symbols.info(
+    a0_buf,
+    a0_buf.byteLength,
+    a1_buf,
+    a1_buf.byteLength,
+  );
   const result = rawResult;
   return result;
-}
-export function information(a0: string) {
-  const a0_buf = encode(a0);
-
-  const rawResult = symbols.information(a0_buf, a0_buf.byteLength);
-  const result = readPointer(rawResult);
-  return decode(result);
 }
 export function init(a0: string, a1: string, a2: string) {
   const a0_buf = encode(a0);
@@ -217,8 +215,16 @@ export function init(a0: string, a1: string, a2: string) {
   const result = rawResult;
   return result;
 }
-export function open() {
-  const rawResult = symbols.open();
+export function message(a0: string, a1: string) {
+  const a0_buf = encode(a0);
+  const a1_buf = encode(a1);
+
+  const rawResult = symbols.message(
+    a0_buf,
+    a0_buf.byteLength,
+    a1_buf,
+    a1_buf.byteLength,
+  );
   const result = rawResult;
   return result;
 }
@@ -237,10 +243,10 @@ export function progress() {
   const result = readPointer(rawResult);
   return decode(result);
 }
-export function question(a0: string) {
+export function prompt(a0: string) {
   const a0_buf = encode(a0);
 
-  const rawResult = symbols.question(a0_buf, a0_buf.byteLength);
+  const rawResult = symbols.prompt(a0_buf, a0_buf.byteLength);
   const result = readPointer(rawResult);
   return decode(result);
 }
@@ -249,28 +255,33 @@ export function read_clipboard() {
   const result = readPointer(rawResult);
   return decode(result);
 }
-export async function screenshot(a0: number, a1: number, a2: number) {
-  const rawResult = await symbols.screenshot(a0, a1, a2);
-  const buffer = readPointer(rawResult);
-  return decode(buffer);
+export function screenshot(a0: number, a1: number, a2: number) {
+  const rawResult = symbols.screenshot(a0, a1, a2);
+  const result = rawResult.then(readPointer);
+  return result.then(decode);
 }
 export function screenshot_sync(a0: number, a1: number, a2: number) {
   const rawResult = symbols.screenshot_sync(a0, a1, a2);
   const result = readPointer(rawResult);
   return decode(result);
 }
-
 export function sleep(a0: number) {
   const rawResult = symbols.sleep(a0);
   const result = rawResult;
   return result;
 }
-export function warning(a0: string) {
+export function warning(a0: string, a1: string) {
   const a0_buf = encode(a0);
+  const a1_buf = encode(a1);
 
-  const rawResult = symbols.warning(a0_buf, a0_buf.byteLength);
-  const result = readPointer(rawResult);
-  return decode(result);
+  const rawResult = symbols.warning(
+    a0_buf,
+    a0_buf.byteLength,
+    a1_buf,
+    a1_buf.byteLength,
+  );
+  const result = rawResult;
+  return result;
 }
 export function write_to_clipboard(a0: string) {
   const a0_buf = encode(a0);
@@ -278,8 +289,4 @@ export function write_to_clipboard(a0: string) {
   const rawResult = symbols.write_to_clipboard(a0_buf, a0_buf.byteLength);
   const result = rawResult;
   return result;
-}
-
-export function spawn(callback: Deno.PointerValue) {
-  symbols.spawn(callback);
 }

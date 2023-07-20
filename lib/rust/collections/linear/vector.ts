@@ -51,7 +51,9 @@ export class Vec<T> extends Array<T> implements Clone {
   /**
    * @deprecated
    */
-  public at=super.at;
+  public at(index: number) {
+    return super.at(index);
+  }
   
   public nth(index: number) {
     return new Option(super.at(index));

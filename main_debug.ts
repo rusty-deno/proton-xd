@@ -1,6 +1,5 @@
-import { collections } from "./lib/mod.ts";
+import { message } from "./bindings/bindings.ts";
 
-const xd=new collections.Vec(0,69);
 
-console.log(xd);
+message("xd","tt");
 
