@@ -64,33 +64,41 @@ pub extern "C" fn error_cfm(error_message: *const i8,title: *const i8,typ: u8)->
 
 #[deno_bindgen]
 pub fn info(info: &str,title: &str,typ: u8) {
-  dialog(title,info,typ);
+  dialog(title,info,typ).show_alert().unwrap_or(());
 }
 
-
+#[no_mangle]
+pub extern "C" fn info_cfm(info: *const i8,title: *const i8,typ: u8)-> bool {
+  dialog(to_str(title),to_str(info),typ).show_confirm().unwrap_or(false)
+}
 
 
 #[deno_bindgen]
 pub fn warning(message: &str,title: &str,typ: u8) {
-  dialog(title,message,typ);
+  dialog(title,message,typ).show_alert().unwrap_or(());
+}
+
+#[no_mangle]
+pub extern "C" fn warning_cfm(message: *const i8,title: *const i8,typ: u8)-> bool {
+  dialog(to_str(title),to_str(message),typ).show_confirm().unwrap_or(false)
 }
 
 
 
-///todo
-#[deno_bindgen]
-pub fn progress()-> String {
-  todo!()
-}
+//todo
+// #[deno_bindgen]
+// pub fn progress()-> String {
+//   todo!()
+// }
 
-///todo
-#[deno_bindgen]
-pub fn prompt(_query: &str)-> String {
-  todo!()
-}
+//todo
+// #[deno_bindgen]
+// pub fn prompt(_query: &str)-> String {
+//   todo!()
+// }
 
-///todo
-#[deno_bindgen]
-pub fn calender(_title: &str)-> String {
-  todo!()
-}
+//todo
+// #[deno_bindgen]
+// pub fn calender(_title: &str)-> String {
+//   todo!()
+// }
