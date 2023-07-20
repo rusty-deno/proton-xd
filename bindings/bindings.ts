@@ -2,12 +2,12 @@
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
 
-function encode(v: string | Uint8Array): Uint8Array {
-  return typeof v!=="string"?v:encoder.encode(v);
+function decoder(buffer: Uint8Array): string {
+  return decoder.decode(buffer);
 }
 
-function decode(v: Uint8Array) {
-  return decoder.decode(v);
+function encode(v: string | Uint8Array): Uint8Array {
+  return typeof v !== "string" ? v : encoder.encode(v);
 }
 
 // deno-lint-ignore no-explicit-any
@@ -35,19 +35,18 @@ if (Deno.build.os === "windows") {
 }
 
 export const { symbols, close } = Deno.dlopen(uri, {
-  alert: { parameters: [], result: "void", nonblocking: false },
   calender: {
     parameters: ["buffer", "usize"],
     result: "buffer",
     nonblocking: false,
   },
   error: {
-    parameters: ["buffer", "usize", "buffer", "usize"],
+    parameters: ["buffer", "usize", "buffer", "usize", "u8"],
     result: "void",
     nonblocking: false,
   },
   info: {
-    parameters: ["buffer", "usize", "buffer", "usize"],
+    parameters: ["buffer", "usize", "buffer", "usize", "u8"],
     result: "void",
     nonblocking: false,
   },
@@ -57,7 +56,7 @@ export const { symbols, close } = Deno.dlopen(uri, {
     nonblocking: false,
   },
   message: {
-    parameters: ["buffer", "usize", "buffer", "usize"],
+    parameters: ["buffer", "usize", "buffer", "usize", "u8"],
     result: "void",
     nonblocking: false,
   },
@@ -82,7 +81,7 @@ export const { symbols, close } = Deno.dlopen(uri, {
   },
   sleep: { parameters: ["f32"], result: "void", nonblocking: false },
   warning: {
-    parameters: ["buffer", "usize", "buffer", "usize"],
+    parameters: ["buffer", "usize", "buffer", "usize", "u8"],
     result: "void",
     nonblocking: false,
   },
@@ -161,11 +160,6 @@ export type WindowAttrs = {
   content_protection: boolean;
   visible_on_all_workspaces: boolean;
 };
-export function alert() {
-  const rawResult = symbols.alert();
-  const result = rawResult;
-  return result;
-}
 export function calender(a0: string) {
   const a0_buf = encode(a0);
 
@@ -173,7 +167,7 @@ export function calender(a0: string) {
   const result = readPointer(rawResult);
   return decode(result);
 }
-export function error(a0: string, a1: string) {
+export function error(a0: string, a1: string, a2: number) {
   const a0_buf = encode(a0);
   const a1_buf = encode(a1);
 
@@ -182,11 +176,12 @@ export function error(a0: string, a1: string) {
     a0_buf.byteLength,
     a1_buf,
     a1_buf.byteLength,
+    a2,
   );
   const result = rawResult;
   return result;
 }
-export function info(a0: string, a1: string) {
+export function info(a0: string, a1: string, a2: number) {
   const a0_buf = encode(a0);
   const a1_buf = encode(a1);
 
@@ -195,6 +190,7 @@ export function info(a0: string, a1: string) {
     a0_buf.byteLength,
     a1_buf,
     a1_buf.byteLength,
+    a2,
   );
   const result = rawResult;
   return result;
@@ -215,7 +211,7 @@ export function init(a0: string, a1: string, a2: string) {
   const result = rawResult;
   return result;
 }
-export function message(a0: string, a1: string) {
+export function message(a0: string, a1: string, a2: number) {
   const a0_buf = encode(a0);
   const a1_buf = encode(a1);
 
@@ -224,6 +220,7 @@ export function message(a0: string, a1: string) {
     a0_buf.byteLength,
     a1_buf,
     a1_buf.byteLength,
+    a2,
   );
   const result = rawResult;
   return result;
@@ -270,7 +267,7 @@ export function sleep(a0: number) {
   const result = rawResult;
   return result;
 }
-export function warning(a0: string, a1: string) {
+export function warning(a0: string, a1: string, a2: number) {
   const a0_buf = encode(a0);
   const a1_buf = encode(a1);
 
@@ -279,6 +276,7 @@ export function warning(a0: string, a1: string) {
     a0_buf.byteLength,
     a1_buf,
     a1_buf.byteLength,
+    a2,
   );
   const result = rawResult;
   return result;

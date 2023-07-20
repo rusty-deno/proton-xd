@@ -1,3 +1,5 @@
+
+
 use deno_bindgen::deno_bindgen;
 use native_dialog::{
   MessageDialog,
@@ -8,6 +10,8 @@ use native_dialog::{
     self,
   }
 };
+
+use crate::ffi::to_str;
 
 #[cfg(test)]
 mod tests {
@@ -32,16 +36,17 @@ fn get_typ(typ: u8)-> MessageType {
 }
 
 
+
+
 #[deno_bindgen]
 pub fn message(message: &str,title: &str,typ: u8) {
   dialog(title,message,typ);
 }
 
-
-pub fn message_cfm(message: &str,title: &str,typ: u8)-> bool {
-  dialog(title,message,typ).show_confirm().unwrap_or(false)
+#[no_mangle]
+pub extern "C" fn message_cfm(message: *const i8,title: *const i8,typ: u8)-> bool {
+  dialog(to_str(title),to_str(message),typ).show_confirm().unwrap_or(false)
 }
-
 
 
 
@@ -50,11 +55,20 @@ pub fn error(error_message: &str,title: &str,typ: u8) {
   dialog(title,error_message,typ).show_alert().unwrap_or(());
 }
 
+#[no_mangle]
+pub extern "C" fn error_cfm(error_message: *const i8,title: *const i8,typ: u8)-> bool {
+  dialog(to_str(title),to_str(error_message),typ).show_confirm().unwrap_or(false)
+}
+
+
 
 #[deno_bindgen]
 pub fn info(info: &str,title: &str,typ: u8) {
   dialog(title,info,typ);
 }
+
+
+
 
 #[deno_bindgen]
 pub fn warning(message: &str,title: &str,typ: u8) {
