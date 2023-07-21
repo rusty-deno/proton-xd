@@ -27,7 +27,7 @@ fn get_typ(typ: u8)-> MessageType {
 
 #[deno_bindgen(non_blocking)]
 pub fn alert(message: &str,title: &str,typ: u8) {
-  dialog(title,message,typ);
+  dialog(title,message,typ).show_alert().unwrap_or(());
 }
 
 #[no_mangle]
@@ -37,7 +37,7 @@ pub extern "C" fn confirm(text: *const i8,title: *const i8,typ: u8)-> bool {
 
 #[deno_bindgen]
 pub fn alert_sync(message: &str,title: &str,typ: u8) {
-  dialog(title,message,typ);
+  dialog(title,message,typ).show_alert().unwrap_or(());
 }
 
 #[no_mangle]

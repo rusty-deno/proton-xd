@@ -2,11 +2,11 @@
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
 
-function decode(buffer: Uint8Array): string {
+export function decode(buffer: Uint8Array): string {
   return decoder.decode(buffer);
 }
 
-function encode(v: string | Uint8Array): Uint8Array {
+export function encode(v: string | Uint8Array): Uint8Array {
   return typeof v !== "string" ? v : encoder.encode(v);
 }
 

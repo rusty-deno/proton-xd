@@ -1,9 +1,5 @@
+import { win } from "./lib/xd/mod.ts";
 
-const process=new Deno.Command("cargo",{
-  args: ["build"],
-  stdout: "piped",
-});
 
-const cmd=process.spawn();
+await win.warn("xd dgdush ldjhglkjdh gljdhlgjdsh gldhv ldhl");
 
-console.log(cmd.stdout);
