@@ -1,5 +1,5 @@
 import { win } from "./lib/xd/mod.ts";
 
 
-await win.warn("xd dgdush ldjhglkjdh gljdhlgjdsh gldhv ldhl");
+console.log(win.confirmSync("ggggakdakl s hfseb fjksfg ds,jfhsldrjf;fs. fn,sz n,fsn s","xd",2));
 

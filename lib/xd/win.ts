@@ -18,18 +18,26 @@ export function messageSync(message: string,title: string=Default.TITLE,type=Mes
   lib.alert_sync(message,title,type);
 }
 
-export async function error(err: string="Some error occured!",title: string="Error") {
+export async function error(err="Some error occured!",title="Error") {
   await message(err,title,MessageType.Error);
 }
 
-export function errorSync(err: string="Some error occured!",title: string="Error") {
+export function errorSync(err="Some error occured!",title="Error") {
   messageSync(err,title,MessageType.Error);
 }
 
-export async function warn(warning: string,title: string="Warning") {
+export async function warn(warning: string,title="Warning") {
   await message(warning,title,MessageType.Warning);
 }
 
-export function warnSync(warning: string,title: string="Warning") {
+export function warnSync(warning: string,title="Warning") {
   messageSync(warning,title,MessageType.Warning);
+}
+
+export async function confirm(txt: string,title: string=Default.TITLE,type=MessageType.Info) {
+  return await symbols.confirm(encode(title),encode(txt),type);
+}
+
+export function confirmSync(txt: string,title: string=Default.TITLE,type=MessageType.Info) {
+  return symbols.confirm_sync(encode(title),encode(txt),type);
 }
