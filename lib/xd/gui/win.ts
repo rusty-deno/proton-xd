@@ -1,13 +1,8 @@
-import * as lib from '../../bindings/bindings.ts';
-import { Default } from './default.ts';
+import * as lib from '../../../bindings/bindings.ts';
+import { Default } from '../default.ts';
+import { MessageType } from './mod.ts';
 
 const {symbols,encode}=lib;
-export enum MessageType {
-  Info,
-  Warning,
-  Error
-}
-
 
 
 export async function message(message: string,title: string=Default.TITLE,type=MessageType.Info) {

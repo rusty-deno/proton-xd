@@ -1,9 +1,5 @@
 export enum Default {
   TITLE="untitled"
-  
-
-
-  
 }
 
 
