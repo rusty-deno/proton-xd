@@ -35,7 +35,7 @@ pub extern "C" fn confirm(text: *const i8,title: *const i8,typ: u8)-> bool {
   dialog(to_str(text),to_str(title),typ).show_confirm().unwrap_or(false)
 }
 
-#[deno_bindgen(non_blocking)]
+#[deno_bindgen]
 pub fn alert_sync(message: &str,title: &str,typ: u8) {
   dialog(title,message,typ);
 }

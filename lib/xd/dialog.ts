@@ -11,14 +11,12 @@ export enum MessageType {
 
 
 export async function message(message: string,title: string=Default.TITLE,type=MessageType.Info) {
-  await lib.message(message,title,type);
+  await lib.alert(message,title,type);
 }
 
 export function messageSync(message: string,title: string=Default.TITLE,type=MessageType.Info) {
-  lib.message_sync(message,title,type);
+  lib.alert_sync(message,title,type);
 }
-
-
 
 
 
