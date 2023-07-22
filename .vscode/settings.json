@@ -1,12 +1,5 @@
 {
   "deno.enable": true,
-  "deno.lint": false,
+  "deno.lint": true,
   "deno.unstable": true,
-  "files.associations": {
-    "thread": "cpp",
-    "memory": "cpp",
-    "unordered_map": "cpp",
-    "xhash": "cpp",
-    "type_traits": "cpp"
-  }
 }
