@@ -2,12 +2,23 @@
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
 
-export function decode(buffer: Uint8Array): string {
+function decode(buffer: Uint8Array): string {
   return decoder.decode(buffer);
 }
 
-export function encode(v: string | Uint8Array): Uint8Array {
+function encode(v: string | Uint8Array): Uint8Array {
   return typeof v !== "string" ? v : encoder.encode(v);
+}
+
+function getExt() {
+  switch (Deno.build.os) {
+    case "windows":
+      return "dll";
+    case "darwin":
+      return "dylib";
+    default:
+      return "so";
+  }
 }
 
 // deno-lint-ignore no-explicit-any
@@ -21,7 +32,7 @@ function readPointer(v: any): Uint8Array {
   return buf;
 }
 
-const url = new URL("xd.dll", import.meta.url);
+const url = new URL(`xd.${getExt()}`, import.meta.url);
 
 let uri = url.pathname;
 
@@ -50,6 +61,7 @@ export const { symbols, close } = Deno.dlopen(uri, {
     result: "void",
     nonblocking: false,
   },
+  open: { parameters: [], result: "void", nonblocking: false },
   park: { parameters: [], result: "void", nonblocking: false },
   park_timeout: { parameters: ["f64"], result: "void", nonblocking: false },
   read_clipboard: { parameters: [], result: "buffer", nonblocking: false },
@@ -69,15 +81,6 @@ export const { symbols, close } = Deno.dlopen(uri, {
     result: "void",
     nonblocking: false,
   },
-  confirm: {
-    parameters: ["buffer","buffer","u8"],
-    result: "bool",
-    nonblocking: true
-  },
-  confirm_sync: {
-    parameters: ["buffer","buffer","u8"],
-    result: "bool"
-  }
 });
 export type Content =
   | {
@@ -189,6 +192,11 @@ export function init(a0: string, a1: string, a2: string) {
     a2_buf,
     a2_buf.byteLength,
   );
+  const result = rawResult;
+  return result;
+}
+export function open() {
+  const rawResult = symbols.open();
   const result = rawResult;
   return result;
 }

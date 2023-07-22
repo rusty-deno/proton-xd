@@ -64,3 +64,8 @@ pub extern "C" fn confirm_sync(text: *const i8,title: *const i8,typ: u8)-> bool 
 // pub fn calender(_title: &str)-> String {
 //   todo!()
 // }
+
+#[deno_bindgen]
+pub fn open() {
+  
+}

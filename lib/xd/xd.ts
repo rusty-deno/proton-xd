@@ -4,9 +4,9 @@ import WebViewAttributes,{ Content,WindowAttributes,toContent } from "./types.ts
 
 
 export class XD {
-  private content: Content;
-  private windowAttrs: WindowAttributes;
-  private webviewAttrs: WebViewAttributes;
+  private readonly content: Content;
+  private readonly windowAttrs: WindowAttributes;
+  private readonly webviewAttrs: WebViewAttributes;
 
   /**
    * @param {Content} content defines the initial content of the webview
@@ -18,13 +18,14 @@ export class XD {
     this.windowAttrs=windowAttrs;
     this.webviewAttrs=webviewAttrs;
   }
+
   /**
    * @param {WindowAttributes} window
    * updates the properties of window..
    * doesn't affect its other properties
    */
   public set window(window: WindowAttributes) {
-    this.windowAttrs=window;
+    for(const key in window) this.window[key]=window[key];
   }
 
   /**
@@ -33,9 +34,8 @@ export class XD {
    * doesn't affect its other properties
    */
   public set webview(webview: WebViewAttributes) {
-    this.webviewAttrs=webview;
+    for(const key in webview) this.webview[key]=webview[key];
   }
-  
 
   /**
    * @returns {WindowAttributes}
@@ -69,6 +69,11 @@ export class XD {
   public static instantiate(content: Content,windowAttrs: WindowAttributes={},webviewAttrs: WebViewAttributes={}) {
     new XD(content,windowAttrs,webviewAttrs).init();
   }
+
+
+
+
+
 }
 
 export type WindowProperty=keyof WindowAttributes;
