@@ -1,9 +1,10 @@
+import { WebViewAttributes,WindowAttributes } from './types.ts';
 export enum Default {
   TITLE="untitled"
 }
 
 
-export const defaultWindowAttrs={
+export const defaultWindowAttrs: WindowAttributes={
   innerSize: {height: 480,width: 1080},
   minInnerSize: {height: 10,width: 10},
   maxInnerSize: {height: 480,width: 1080},//todo
@@ -18,14 +19,27 @@ export const defaultWindowAttrs={
   decorations: true,
   alwaysOnTop: false,
   alwaysOnBottom: false,
-  windowIcon: "",
+  windowIcon: {
+    path: "",
+    size: {
+      height: 0,
+      width: 0
+    }
+  },//bad icon
+  taskbarIcon: {
+    path: "",
+    size: {
+      height: 0,
+      width: 0
+    }
+  },//bad icon
   preferredTheme: "Dark",
   focused: true,
   contentProtection: false,
   visibleOnAllWorkspaces: false,
 };
 
-export const defaultWebViewAttrs={
+export const defaultWebViewAttrs: WebViewAttributes={
   userAgent: "None",
   visible: true,
   transparent: false,
@@ -48,8 +62,9 @@ export const defaultWebViewAttrs={
 type IterObj={[key: string]: unknown};
 
 
+// deno-lint-ignore no-explicit-any
 export function confirmDefaultVal(main: IterObj,def: IterObj): any {
-  let attrs: IterObj={};
+  const attrs: IterObj={};
   for(const key in def)
     attrs[to_snake_case(key)]=main[key]??def[key];
 

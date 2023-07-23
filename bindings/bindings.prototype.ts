@@ -1,4 +1,3 @@
-import { symbols } from "./bindings.ts";
 
 
 export const prototypes: Deno.ForeignLibraryInterface={
@@ -10,6 +9,10 @@ export const prototypes: Deno.ForeignLibraryInterface={
   confirm_sync: {
     parameters: ["buffer","buffer","u8"],
     result: "bool"
+  },
+  spawn: {
+    parameters: ["function"],
+    result: "void"
   }
 };
 

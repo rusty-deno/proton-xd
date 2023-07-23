@@ -103,6 +103,10 @@ export type Header = {
   name: string;
   value: string;
 };
+export type Img = {
+  path: string;
+  size: Size;
+};
 export type Rgba = {
   r: number;
   g: number;
@@ -145,7 +149,8 @@ export type WindowAttrs = {
   decorations: boolean;
   always_on_top: boolean;
   always_on_bottom: boolean;
-  window_icon: string;
+  window_icon: Img;
+  taskbar_icon: Img;
   preferred_theme: Theme;
   focused: boolean;
   content_protection: boolean;

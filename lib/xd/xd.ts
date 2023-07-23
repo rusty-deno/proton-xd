@@ -1,6 +1,6 @@
 import * as lib from "../../bindings/bindings.ts";
-import { defaultWindowAttrs as dwa,defaultWebViewAttrs as dweba,confirmDefaultVal,to_snake_case } from "./default.ts";
-import WebViewAttributes,{ Content,WindowAttributes,toContent } from "./types.ts";
+import { defaultWindowAttrs as dwa,defaultWebViewAttrs as dweba,confirmDefaultVal } from "./default.ts";
+import { WebViewAttributes,Content,WindowAttributes,toContent } from "./types.ts";
 
 
 export class XD {
@@ -27,6 +27,14 @@ export class XD {
   public set window(window: WindowAttributes) {
     for(const key in window) this.window[key]=window[key];
   }
+  /**
+   * @returns {WindowAttributes}
+   * returns a reference to its window
+   */
+  public get window(): WindowAttributes {
+    return this.windowAttrs;
+  }
+
 
   /**
    * @param {WebViewAttributes} webview
@@ -36,15 +44,6 @@ export class XD {
   public set webview(webview: WebViewAttributes) {
     for(const key in webview) this.webview[key]=webview[key];
   }
-
-  /**
-   * @returns {WindowAttributes}
-   * returns a reference to its window
-   */
-  public get window(): WindowAttributes {
-    return this.windowAttrs;
-  }
-
   /**
    * @returns {WebViewAttributes}
    * returns a reference to its webview

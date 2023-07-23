@@ -16,7 +16,7 @@ use wry::{
       Icon
     },
     clipboard::Clipboard,
-    dpi::PhysicalSize, platform::windows::WindowBuilderExtWindows,
+    dpi::PhysicalSize, platform::windows::{WindowBuilderExtWindows, IconExtWindows},
   },
   webview::{
     WebViewBuilder,
@@ -36,27 +36,26 @@ use serde_json::from_str;
 
 #[deno_bindgen]
 pub struct Size {
-  height: u16,
-  width: u16
+  height: u32,
+  width: u32
 }
 impl Size {
-  pub fn physical_size(&self)-> PhysicalSize<u16> {
+  pub fn physical_size(&self)-> PhysicalSize<u32> {
     PhysicalSize::new(self.width,self.height)
   }
 }
 
 #[deno_bindgen]
 pub struct Img {
-  pub height: u32,
-  pub width: u32,
-  pub bytes: Vec<u8>
+  path: String,
+  size: Size
 }
-
 impl Img {
   pub fn to_icon(self)-> Option<Icon> {
-    Icon::from_rgba(self.bytes,self.width,self.height).ok()
+    Icon::from_path(self.path,Some(self.size.physical_size())).ok()
   }
 }
+
 
 #[deno_bindgen]
 pub struct WindowAttrs {
@@ -195,6 +194,9 @@ fn _init_webview(attrs: WindowAttrs,webview_atters: WebViewAttrs,content: Conten
   .with_taskbar_icon(attrs.taskbar_icon.to_icon())
   .build(&event_loop)
   .unwrap();
+
+  
+
 
   let mut webview_builder=WebViewBuilder::new(window).unwrap()
   .with_user_agent(&webview_atters.user_agent)

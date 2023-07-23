@@ -1,4 +1,4 @@
-import { spawn } from "../../../bindings/bindings.ts";
+import { symbols } from "../../../bindings/bindings.ts";
 import { Some,None } from "../mod.ts";
 
 
@@ -23,7 +23,7 @@ export class Thread<T> {
 
 
   public spawn() {
-    spawn(this.fn.pointer);
+    symbols.spawn(this.fn.pointer);
   }
 
   public terminate() {
