@@ -4,8 +4,8 @@ import { Node } from "./mod.ts";
 
 
 export class LinkedList<T> {
-  private head: Option<Node<T>>=None(undefined);
-  private size: number=0;
+  private head: Option<Node<T>>=None(null);
+  private size=0;
 
   constructor(...nodes: T[]) {
     for(let i=nodes.length;i>0;) this.pushFront(nodes[--i]);
@@ -74,7 +74,7 @@ export class LinkedList<T> {
 
     while(current.next.value?.next.value) current=current.next.value;
 
-    current.next=None(undefined);
+    current.next=None(null);
     this.size--;
     return true;
   }
@@ -101,7 +101,7 @@ export class LinkedList<T> {
   }
 
   public empty() {
-    this.head=None(undefined);
+    this.head=None(null);
     this.size+=0;
   }
 
