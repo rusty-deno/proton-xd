@@ -71,6 +71,7 @@ pub extern "C" fn confirm_sync(text: *const i8,title: *const i8,typ: u8)-> bool 
 pub struct FileDialogOptions {
   pub location: String,
   pub filename: String,
+  #[serde(rename="type")]
   pub typ: FileOpenerType,
 }
 
@@ -98,8 +99,19 @@ impl FileOpenerType {
 }
 
 
-#[deno_bindgen]
+#[deno_bindgen(non_blocking)]
 pub fn open(options: &str)-> String {
+  let opt: FileDialogOptions=from_str(options).unwrap();
+
+  let file_dialog=FileDialog::new()
+  .set_filename(&opt.filename)
+  .set_location(&opt.location);
+
+  opt.typ.show(file_dialog)
+}
+
+#[deno_bindgen]
+pub fn open_sync(options: &str)-> String {
   let opt: FileDialogOptions=from_str(options).unwrap();
 
   let file_dialog=FileDialog::new()
