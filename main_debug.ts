@@ -1,5 +1,6 @@
 
 
-import { open } from "./lib/xd/gui/win.ts";
+import { chooseFileSync } from "./lib/xd/gui/win.ts";
 
-open();
+console.log(chooseFileSync());
+

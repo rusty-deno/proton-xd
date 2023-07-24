@@ -6,3 +6,8 @@ export interface FileOpenerOptions {
     type?: FileOpenerType
 }
 
+export enum MessageType {
+    Info,
+    Warning,
+    Error
+}

@@ -1,6 +1,3 @@
 export * as win from "./win.ts";
-export enum MessageType {
-  Info,
-  Warning,
-  Error
-}
+export * from "./type.ts";
+export * as deflt from "./default.ts";
