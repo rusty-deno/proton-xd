@@ -61,3 +61,7 @@ interface SaveFileOptions {
 export async function save(options: SaveFileOptions={filename: "",location: Deno.env.get("HOME")}) {
   return await lib.save(JSON.stringify(options));
 }
+
+export function saveSync(options: SaveFileOptions={filename: "",location: Deno.env.get("HOME")}) {
+  return lib.save_sync(JSON.stringify(options));
+}
