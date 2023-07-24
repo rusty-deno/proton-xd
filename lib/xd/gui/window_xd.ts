@@ -53,3 +53,11 @@ export function chooseFileSync(options: FileOpenerOptions={}) {
   return  lib.open_sync(JSON.stringify(opt));
 }
 
+interface SaveFileOptions {
+  filename?: string;
+  location?: string;
+}
+
+export async function save(options: SaveFileOptions={filename: "",location: Deno.env.get("HOME")}) {
+  return await lib.save(JSON.stringify(options));
+}
