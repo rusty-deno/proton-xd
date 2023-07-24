@@ -124,8 +124,23 @@ pub fn open_sync(options: &str)-> String {
   opt.typ.show(file_dialog)
 }
 
-#[deno_bindgen]
+#[deno_bindgen(non_blocking)]
 pub fn save(options: &str)-> String {
+  let opt: FileDialogOptions=from_str(options).unwrap();
+  let file_dialog=FileDialog::new()
+  .set_filename(&opt.filename)
+  .set_location(&opt.location);
+
+  file_dialog.show_save_single_file()
+  .unwrap()
+  .unwrap_or_default()
+  .to_str()
+  .unwrap_or_default()
+  .to_string()
+}
+
+#[deno_bindgen]
+pub fn save_sync(options: &str)-> String {
   let opt: FileDialogOptions=from_str(options).unwrap();
   let file_dialog=FileDialog::new()
   .set_filename(&opt.filename)
