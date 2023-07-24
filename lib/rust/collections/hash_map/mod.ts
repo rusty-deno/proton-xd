@@ -1,6 +1,7 @@
 import { todo } from "../../mod.ts";
 
 
+// deno-lint-ignore no-explicit-any
 export function hash(obj: any): number {
   switch(typeof obj) {
     case "number":
