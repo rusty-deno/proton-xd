@@ -64,6 +64,11 @@ export const { symbols, close } = Deno.dlopen(uri, {
   open: {
     parameters: ["buffer", "usize"],
     result: "buffer",
+    nonblocking: true,
+  },
+  open_sync: {
+    parameters: ["buffer", "usize"],
+    result: "buffer",
     nonblocking: false,
   },
   park: { parameters: [], result: "void", nonblocking: false },
@@ -217,6 +222,13 @@ export function open(a0: string) {
   const a0_buf = encode(a0);
 
   const rawResult = symbols.open(a0_buf, a0_buf.byteLength);
+  const result = rawResult.then(readPointer);
+  return result.then(decode);
+}
+export function open_sync(a0: string) {
+  const a0_buf = encode(a0);
+
+  const rawResult = symbols.open_sync(a0_buf, a0_buf.byteLength);
   const result = readPointer(rawResult);
   return decode(result);
 }

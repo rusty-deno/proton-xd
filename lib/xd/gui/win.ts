@@ -1,9 +1,14 @@
 import * as lib from '../../../bindings/bindings.ts';
-import { Default } from '../default.ts';
+import { Default,confirmDefaultVal } from '../default.ts';
 import { MessageType } from './mod.ts';
+import { FileOpenerOptions } from './type.ts';
+import { defaultOptions } from './default.ts';
 
-const {symbols,encode}=lib;
-
+const {symbols}=lib;
+const encoder=new TextEncoder;
+function encode(str: string) {
+  return encoder.encode(str);
+}
 
 export async function message(message: string,title: string=Default.TITLE,type=MessageType.Info) {
   await lib.alert(message,title,type);
@@ -35,4 +40,11 @@ export async function confirm(txt: string,title: string=Default.TITLE,type=Messa
 
 export function confirmSync(txt: string,title: string=Default.TITLE,type=MessageType.Info) {
   return symbols.confirm_sync(encode(title),encode(txt),type);
+}
+
+
+
+export async function open(options: FileOpenerOptions={}) {
+  const opt=confirmDefaultVal(options as {[index: string]: unknown},defaultOptions);
+  return await lib.open(JSON.stringify(opt));
 }
