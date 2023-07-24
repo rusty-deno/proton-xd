@@ -17,16 +17,16 @@ export class BinaryTree<T> extends Iter<T> {
     return this[Symbol.iterator]().next().value;
   }
   
-  *[Symbol.iterator](): Iterator<T,any,undefined> {
+  *[Symbol.iterator](): Iterator<T> {
     
   }
 
   [Symbol.toStringTag]() {
+    // deno-lint-ignore prefer-const
     let str="";
 
-    for(const node of this) {
-
-    }
+    // deno-lint-ignore no-unused-vars
+    for(const node of this);
     return str;
   }
 
