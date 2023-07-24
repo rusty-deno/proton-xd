@@ -9,7 +9,7 @@ export class file {
   
 
   public static async create(path: string) {
-    return Res(async ()=> new file(await Deno.create(path)));
+    return await Res(async ()=> new file(await Deno.create(path)));
   }
 
   public static createSync(path: string) {
@@ -17,7 +17,7 @@ export class file {
   }
   
   public static async open(path: string,options?: Deno.OpenOptions) {
-    return Res(async ()=> new file(await Deno.open(path,options)));
+    return await Res(async ()=> new file(await Deno.open(path,options)));
   }
 
   public static openSync(path: string,options?: Deno.OpenOptions) {
@@ -25,7 +25,7 @@ export class file {
   }
 
   public async metadata() {
-    return Res(async ()=>  await this.fs.stat());
+    return await Res(async ()=>  await this.fs.stat());
   }
 
   public metadataSync() {
@@ -33,7 +33,7 @@ export class file {
   }
 
   public async truncate(len?: number) {
-    return Res(async ()=> await this.fs.truncate(len));
+    return await Res(async ()=> await this.fs.truncate(len));
   }
 
   public truncateSync(len?: number) {
@@ -45,7 +45,7 @@ export class file {
   }
 
   public async read() {
-    return Opt(async ()=> {
+    return await Opt(async ()=> {
       const buf=new Uint8Array;
       const bytes=await this.fs.read(buf);
       return bytes==null?bytes:buf;
@@ -61,7 +61,7 @@ export class file {
   }
 
   public async write(buf: Uint8Array) {
-    return Res(async ()=> this.fs.write(buf));
+    return await Res(()=> this.fs.write(buf));
   }
 
   public writeSync(buf: Uint8Array) {
