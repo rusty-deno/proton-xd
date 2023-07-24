@@ -1,6 +1,7 @@
+import { windowXD } from "./mod.ts";
 
 
-import { chooseFileSync } from "./lib/xd/gui/win.ts";
 
-console.log(chooseFileSync());
+
+console.log(windowXD.chooseFileSync());
 

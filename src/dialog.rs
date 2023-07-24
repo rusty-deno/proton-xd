@@ -1,5 +1,4 @@
 use deno_bindgen::deno_bindgen;
-use serde_json::{from_str, to_string};
 use crate::ffi::to_str;
 use native_dialog::{
   MessageDialog,
@@ -10,6 +9,10 @@ use native_dialog::{
     self,
   },
   FileDialog
+};
+use serde_json::{
+  from_str,
+  to_string
 };
 
 pub fn dialog<'a>(title: &'a str,message: &'a str,typ: u8)-> MessageDialog<'a> {
