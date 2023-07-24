@@ -9,7 +9,7 @@ export * from "./file.ts";
 
 
 export async function canonicalize(path: PathBuf) {
-  return Res(()=> Deno.realPath(path));
+  return await await Res(()=> Deno.realPath(path));
 }
 
 export function canonicalizeSync(path: PathBuf) {
@@ -17,7 +17,7 @@ export function canonicalizeSync(path: PathBuf) {
 }
 
 export async function copy(from: PathBuf,to: PathBuf): Promise<Result<void,Error>> {
-  return Res<void>(()=> Deno.copyFile(from,to));
+  return await Res<void>(()=> Deno.copyFile(from,to));
 }
 
 export function copySync(from: PathBuf,to: PathBuf) {
@@ -25,7 +25,7 @@ export function copySync(from: PathBuf,to: PathBuf) {
 }
 
 export async function createDir(path: PathBuf,options?: Deno.MkdirOptions) {
-  return Res(()=> Deno.mkdir(path,options));
+  return await Res(()=> Deno.mkdir(path,options));
 }
 
 export function createDirSync(path: PathBuf,options?: Deno.MkdirOptions) {
@@ -33,7 +33,7 @@ export function createDirSync(path: PathBuf,options?: Deno.MkdirOptions) {
 }
 
 export async function link(original: string,link: string) {
-  return Res(async ()=> await Deno.link(original,link));
+  return await Res(async ()=> await Deno.link(original,link));
 }
 
 export function linkSync(original: string,link: string) {
@@ -41,7 +41,7 @@ export function linkSync(original: string,link: string) {
 }
 
 export async function metadata(path: PathBuf) {
-  return Res(async ()=> Deno.stat(path));
+  return await Res(()=> Deno.stat(path));
 }
 
 export function metadataSync(path: PathBuf) {
@@ -49,7 +49,7 @@ export function metadataSync(path: PathBuf) {
 }
 
 export async function readFile(path: PathBuf) {
-  return Res(async ()=> await Deno.readFile(path));
+  return await Res(async ()=> await Deno.readFile(path));
 }
 
 export function readFileSync(path: PathBuf) {
@@ -65,7 +65,7 @@ export function readDirSync(path: PathBuf) {
 }
 
 export async function readLink(path: PathBuf) {
-  return Res(async ()=> await Deno.readLink(path));
+  return await Res(async ()=> await Deno.readLink(path));
 }
 
 export function readLinkSync(path: PathBuf) {
@@ -73,7 +73,7 @@ export function readLinkSync(path: PathBuf) {
 }
 
 export async function readToString(path: PathBuf,options?: Deno.ReadFileOptions) {
-  return Res(async ()=> await Deno.readTextFile(path,options));
+  return await Res(async ()=> await Deno.readTextFile(path,options));
 }
 
 export function readToStringSync(path: PathBuf) {
@@ -81,7 +81,7 @@ export function readToStringSync(path: PathBuf) {
 }
 
 export async function removeDir(path: PathBuf,options?: Deno.RemoveOptions) {
-  return Res(async ()=> await Deno.remove(path,options));
+  return await Res(async ()=> await Deno.remove(path,options));
 }
 
 export function removeDirSync(path: PathBuf,options?: Deno.RemoveOptions) {
@@ -89,7 +89,7 @@ export function removeDirSync(path: PathBuf,options?: Deno.RemoveOptions) {
 }
 
 export async function rename(oldpath: PathBuf,newpath: PathBuf) {
-  return Res(async ()=> await Deno.rename(oldpath,newpath));
+  return await Res(async ()=> await Deno.rename(oldpath,newpath));
 }
 
 export function renameSync(oldpath: PathBuf,newpath: PathBuf) {
@@ -97,7 +97,7 @@ export function renameSync(oldpath: PathBuf,newpath: PathBuf) {
 }
 
 export async function chmod(path: PathBuf,mode: number) {
-  return Res(async ()=> await Deno.chmod(path,mode));
+  return await Res(async ()=> await Deno.chmod(path,mode));
 }
 
 export function chmodSync(path: PathBuf,mode: number) {
@@ -105,7 +105,7 @@ export function chmodSync(path: PathBuf,mode: number) {
 }
 
 export async function chown(path: PathBuf,uid: number|null,gid: number|null) {
-  return Res(async ()=> await Deno.chown(path,uid,gid));
+  return await Res(async ()=> await Deno.chown(path,uid,gid));
 }
 
 export function chownSync(path: PathBuf,uid: number|null,gid: number|null) {
@@ -113,7 +113,7 @@ export function chownSync(path: PathBuf,uid: number|null,gid: number|null) {
 }
 
 export async function symlinkMetadata(path: PathBuf) {
-  return Res(async ()=> await Deno.lstat(path));
+  return await Res(async ()=> await Deno.lstat(path));
 }
 
 export function symlinkMetadataSync(path: PathBuf) {
@@ -121,7 +121,7 @@ export function symlinkMetadataSync(path: PathBuf) {
 }
 
 export async function writeFile(path: PathBuf,data: Uint8Array|ReadableStream<Uint8Array>,options?: Deno.WriteFileOptions) {
-  return Res(async ()=> await Deno.writeFile(path,data,options));
+  return await Res(async ()=> await Deno.writeFile(path,data,options));
 }
 
 export function writeFileSync(path: PathBuf,data: Uint8Array,options?: Deno.WriteFileOptions) {
@@ -129,7 +129,7 @@ export function writeFileSync(path: PathBuf,data: Uint8Array,options?: Deno.Writ
 }
 
 export async function writeTextFile(path: PathBuf,data: ReadableStream<string>,options?: Deno.WriteFileOptions) {
-  return Res(async ()=> await Deno.writeTextFile(path,data,options));
+  return await Res(async ()=> await Deno.writeTextFile(path,data,options));
 }
 
 export function writeTextFileSync(path: PathBuf,data: string,options?: Deno.WriteFileOptions) {
@@ -137,7 +137,7 @@ export function writeTextFileSync(path: PathBuf,data: string,options?: Deno.Writ
 }
 
 export async function makeTempDir(options: Deno.MakeTempOptions) {
-  return Res(async ()=> await Deno.makeTempDir(options));
+  return await Res(async ()=> await Deno.makeTempDir(options));
 }
 
 export function makeTempDirSync(options: Deno.MakeTempOptions) {
@@ -145,7 +145,7 @@ export function makeTempDirSync(options: Deno.MakeTempOptions) {
 }
 
 export async function makeTempFile(options: Deno.MakeTempOptions) {
-  return Res(async ()=> await Deno.makeTempFile(options));
+  return await Res(async ()=> await Deno.makeTempFile(options));
 }
 
 export function makeTempFileSync(options: Deno.MakeTempOptions) {
@@ -153,7 +153,7 @@ export function makeTempFileSync(options: Deno.MakeTempOptions) {
 }
 
 export async function truncate(name: string,len?: number) {
-  return Res(async ()=> await Deno.truncate(name,len));
+  return await Res(async ()=> await Deno.truncate(name,len));
 }
 
 export function truncateSync(name: string,len?: number) {
@@ -161,7 +161,7 @@ export function truncateSync(name: string,len?: number) {
 }
 
 export async function open(path: string, options?: Deno.OpenOptions) {
-  return file.open(path,options);
+  return await file.open(path,options);
 }
 
 
@@ -170,7 +170,7 @@ export function openSync(path: string, options?: Deno.OpenOptions) {
 }
 
 export async function create(path: string) {
-  return file.create(path);
+  return await file.create(path);
 }
 
 export function createSync(path: string) {
