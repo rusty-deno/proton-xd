@@ -69,11 +69,11 @@ export class HashMap<K,V> extends Iter<Entry<K,V>> implements Clone {
   };
   
   public remove(key: K): void {
-    this._entries[this.hash(key)]=None(undefined);
+    this._entries[this.hash(key)]=None(null);
   }
   
   [Symbol.toStringTag]() {
-    let str: string="\0";
+    let str="\0";
     for(const entry of this) str+=`${entry[0]} => ${entry[1]}\n`;
     return str;
   }
@@ -82,4 +82,3 @@ export class HashMap<K,V> extends Iter<Entry<K,V>> implements Clone {
     return this[Symbol.toStringTag]();
   }
 }
-
