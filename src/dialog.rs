@@ -1,7 +1,5 @@
-use core::panic;
-
 use deno_bindgen::deno_bindgen;
-use serde_json::from_str;
+use serde_json::{from_str, to_string};
 use crate::ffi::to_str;
 use native_dialog::{
   MessageDialog,
@@ -88,10 +86,15 @@ impl FileOpenerType {
     match self {
       FileOpenerType::SingleFile=> dialog.show_open_single_file(),
       FileOpenerType::SingleDir=> dialog.show_open_single_dir(),
-      _=> panic!("not supported")
+      _=> return self.show_multiple_opener(dialog)
     }.unwrap().unwrap_or_default().to_str().unwrap_or_default().to_string()
   }
-  
+
+  fn show_multiple_opener(self,dialog: FileDialog)-> String {
+    let paths=dialog.show_open_multiple_file().unwrap();
+    return to_string(&paths).unwrap();
+  }
+
 }
 
 
