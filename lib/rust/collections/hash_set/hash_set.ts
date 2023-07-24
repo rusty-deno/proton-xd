@@ -4,7 +4,7 @@ import {HashMap} from "../hash_map/hash_map.ts";
 
 
 export class HashSet<T> extends Iter<T> {
-  private map: HashMap<T,undefined>=new HashMap;
+  private map: HashMap<T,null>=new HashMap;
 
   constructor(...entries: T[]) {
     super();
@@ -20,7 +20,7 @@ export class HashSet<T> extends Iter<T> {
   }
 
   public add(data: T) {
-    this.map.set(data,undefined);
+    this.map.set(data,null);
   }
   
   public remove(data: T) {
