@@ -52,3 +52,4 @@ export function chooseFileSync(options: FileOpenerOptions={}) {
   const opt=confirmDefaultVal(options as {[index: string]: unknown},defaultOptions);
   return  lib.open_sync(JSON.stringify(opt));
 }
+

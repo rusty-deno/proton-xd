@@ -91,12 +91,12 @@ impl FileOpenerType {
       FileOpenerType::SingleFile=> dialog.show_open_single_file(),
       FileOpenerType::SingleDir=> dialog.show_open_single_dir(),
       _=> return self.show_multiple_opener(dialog)
-    }.unwrap().unwrap_or_default().to_str().unwrap_or_default().to_string()
+    }.unwrap_or(Some("".into())).unwrap_or_default().to_str().unwrap_or_default().to_string()
   }
 
   fn show_multiple_opener(self,dialog: FileDialog)-> String {
     let paths=dialog.show_open_multiple_file().unwrap();
-    return to_string(&paths).unwrap();
+    return to_string(&paths).unwrap_or(String::from("[]"));
   }
 
 }
@@ -122,4 +122,19 @@ pub fn open_sync(options: &str)-> String {
   .set_location(&opt.location);
 
   opt.typ.show(file_dialog)
+}
+
+#[deno_bindgen]
+pub fn save(options: &str)-> String {
+  let opt: FileDialogOptions=from_str(options).unwrap();
+  let file_dialog=FileDialog::new()
+  .set_filename(&opt.filename)
+  .set_location(&opt.location);
+
+  file_dialog.show_save_single_file()
+  .unwrap()
+  .unwrap_or_default()
+  .to_str()
+  .unwrap_or_default()
+  .to_string()
 }

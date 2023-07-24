@@ -74,6 +74,11 @@ export const { symbols, close } = Deno.dlopen(uri, {
   park: { parameters: [], result: "void", nonblocking: false },
   park_timeout: { parameters: ["f64"], result: "void", nonblocking: false },
   read_clipboard: { parameters: [], result: "buffer", nonblocking: false },
+  save: {
+    parameters: ["buffer", "usize"],
+    result: "buffer",
+    nonblocking: false,
+  },
   screenshot: {
     parameters: ["i32", "i32", "f32"],
     result: "buffer",
@@ -257,6 +262,13 @@ export function park_timeout(a0: number) {
 }
 export function read_clipboard() {
   const rawResult = symbols.read_clipboard();
+  const result = readPointer(rawResult);
+  return decode(result);
+}
+export function save(a0: string) {
+  const a0_buf = encode(a0);
+
+  const rawResult = symbols.save(a0_buf, a0_buf.byteLength);
   const result = readPointer(rawResult);
   return decode(result);
 }
