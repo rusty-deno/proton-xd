@@ -99,8 +99,9 @@ impl FileOpenerType {
 
 
 #[deno_bindgen]
-pub fn open_single(options: &str)-> String {
+pub fn open(options: &str)-> String {
   let opt: FileDialogOptions=from_str(options).unwrap();
+
   let file_dialog=FileDialog::new()
   .set_filename(&opt.filename)
   .set_location(&opt.location);

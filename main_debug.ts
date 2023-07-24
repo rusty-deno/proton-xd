@@ -1,35 +1,16 @@
-import ProtonXD from "./mod.ts";
+import { open } from "./bindings/bindings.ts";
+import { Vec } from "./mod.ts";
+
+const path=new URL("./",import.meta.url);
+
+const xd=path.toString().replaceAll("/","\\")+"xd.png";
+const dir=path.pathname.replace("/","");
+
+const paths: Vec<string>=JSON.parse(open(JSON.stringify({
+  location: dir,
+  filename: xd,
+  typ: "MultipleFile"
+})));
 
 
-
-ProtonXD.XD.instantiate(`
-<html>
-  <head>
-  <style>
-    body {
-      color: #ff00ff;
-    }
-  </style>
-  </head>
-  <body>
-    hello wrld
-  </body>
-</html>`,{
-  title: "my-app",
-  windowIcon: {
-    path: "./xd.png",
-    size: {
-      height: 100,
-      width: 100
-    }
-  },
-  taskbarIcon: {
-    path: "./xd.png",
-    size: {
-      height: 100,
-      width: 100
-    }
-  },
-});
-
-
+console.log(paths);

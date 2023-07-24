@@ -61,7 +61,11 @@ export const { symbols, close } = Deno.dlopen(uri, {
     result: "void",
     nonblocking: false,
   },
-  open: { parameters: [], result: "void", nonblocking: false },
+  open: {
+    parameters: ["buffer", "usize"],
+    result: "buffer",
+    nonblocking: false,
+  },
   park: { parameters: [], result: "void", nonblocking: false },
   park_timeout: { parameters: ["f64"], result: "void", nonblocking: false },
   read_clipboard: { parameters: [], result: "buffer", nonblocking: false },
@@ -99,6 +103,15 @@ export type Content =
       headers: Array<Header>;
     };
   };
+export type FileDialogOptions = {
+  location: string;
+  filename: string;
+  typ: FileOpenerType;
+};
+export type FileOpenerType =
+  | "SingleFile"
+  | "SingleDir"
+  | "MultipleFile";
 export type Header = {
   name: string;
   value: string;
@@ -200,10 +213,12 @@ export function init(a0: string, a1: string, a2: string) {
   const result = rawResult;
   return result;
 }
-export function open() {
-  const rawResult = symbols.open();
-  const result = rawResult;
-  return result;
+export function open(a0: string) {
+  const a0_buf = encode(a0);
+
+  const rawResult = symbols.open(a0_buf, a0_buf.byteLength);
+  const result = readPointer(rawResult);
+  return decode(result);
 }
 export function park() {
   const rawResult = symbols.park();
