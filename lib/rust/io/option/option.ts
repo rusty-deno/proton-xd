@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 import { Exception } from '../exception.ts';
 
 
@@ -34,7 +35,7 @@ export class Option<T> extends Exception<T,None> {
   }
 
   public static get None() {
-    return None<any>(undefined);
+    return None<any>(null);
   }
 }
 
