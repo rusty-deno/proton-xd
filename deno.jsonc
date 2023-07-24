@@ -3,5 +3,11 @@
     "dev": "deno run -A --unstable ./main_debug.ts",
     "serve": "deno run -A server_debug.ts",
     "build": "deno_bindgen"
+  },
+  "fmt": {
+    "options": {
+      "semiColons": true,
+      "singleQuote": false
+    }
   }
 }
