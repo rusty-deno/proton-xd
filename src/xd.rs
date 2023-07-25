@@ -193,7 +193,6 @@ fn _init_webview(attrs: WindowAttrs,webview_atters: WebViewAttrs,content: Conten
   .with_focused(attrs.focused)
   .with_content_protection(attrs.content_protection)
   .with_visible_on_all_workspaces(attrs.visible_on_all_workspaces)
-  .with_window_icon(attrs.window_icon.to_icon())
   .build(&event_loop)
   .unwrap();
 
