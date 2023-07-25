@@ -10,14 +10,14 @@ function encode(v: string | Uint8Array): Uint8Array {
   return typeof v !== "string" ? v : encoder.encode(v);
 }
 
-function getExt() {
+function getName(name: string) {
   switch (Deno.build.os) {
     case "windows":
-      return "dll";
+      return `${name}.dll`;
     case "darwin":
-      return "dylib";
+      return `lib${name}.dylib`;
     default:
-      return "so";
+      return `lib${name}.so`;
   }
 }
 
@@ -32,7 +32,7 @@ function readPointer(v: any): Uint8Array {
   return buf;
 }
 
-const url = new URL(`xd.${getExt()}`, import.meta.url);
+const url = new URL(getName("xd"), import.meta.url);
 
 let uri = url.pathname;
 
