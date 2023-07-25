@@ -16,7 +16,7 @@ use wry::{
       Icon
     },
     clipboard::Clipboard,
-    dpi::PhysicalSize, platform::windows::{WindowBuilderExtWindows, IconExtWindows},
+    dpi::PhysicalSize,
   },
   webview::{
     WebViewBuilder,
@@ -28,6 +28,9 @@ use wry::{
     HeaderName
   }
 };
+
+
+
 
 use deno_bindgen::deno_bindgen;
 use std::str::FromStr;
@@ -52,7 +55,7 @@ pub struct Img {
 }
 impl Img {
   pub fn to_icon(self)-> Option<Icon> {
-    Icon::from_path(self.path,Some(self.size.physical_size())).ok()
+    todo!()
   }
 }
 
@@ -191,7 +194,6 @@ fn _init_webview(attrs: WindowAttrs,webview_atters: WebViewAttrs,content: Conten
   .with_content_protection(attrs.content_protection)
   .with_visible_on_all_workspaces(attrs.visible_on_all_workspaces)
   .with_window_icon(attrs.window_icon.to_icon())
-  .with_taskbar_icon(attrs.taskbar_icon.to_icon())
   .build(&event_loop)
   .unwrap();
 

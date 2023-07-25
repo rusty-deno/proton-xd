@@ -1,7 +1,13 @@
-import { windowXD } from "./mod.ts";
+import ProtonXD from "./mod.ts";
 
-
-
-
-console.log(windowXD.chooseFileSync());
+ProtonXD.XD.instantiate("<html><body>hello wrld</body></html>",{
+    title: "my-app",
+    windowIcon: {
+        size: {
+            height: 768,
+            width: 768
+        },
+        path: new URL("./xd.png",import.meta.url).href
+    }
+});
 
