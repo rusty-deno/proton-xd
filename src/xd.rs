@@ -31,7 +31,6 @@ use wry::{
 
 
 
-
 use deno_bindgen::deno_bindgen;
 use std::str::FromStr;
 use serde_json::from_str;
@@ -55,7 +54,8 @@ pub struct Img {
 }
 impl Img {
   pub fn to_icon(self)-> Option<Icon> {
-    todo!()
+    let img=image::open(&self.path).unwrap_or_default().to_rgb8();
+    Icon::from_rgba(img.to_vec(),img.width(),img.height()).ok()
   }
 }
 
