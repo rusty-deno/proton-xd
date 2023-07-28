@@ -1,15 +1,15 @@
-import { todo } from "../../mod.ts";
-
+import sum from "npm:hash-sum";
 
 // deno-lint-ignore no-explicit-any
 export function hash(obj: any): number {
   switch(typeof obj) {
-    case "number":
-    case "boolean":
-      return Number(obj);
-    case "string"://gperf
+    case "number": return obj;
+    case "boolean": return Number(obj);
+    case "undefined": return 0;
+    case "string":
+    case "bigint":
     default:
-      todo();
+      return sum(obj);
   }
 }
 

@@ -25,9 +25,24 @@
   },
   "npm": {
     "specifiers": {
+      "console": "console@0.7.2",
+      "hash": "hash@0.2.1",
+      "hash-sum": "hash-sum@2.0.0",
       "jpeg-js": "jpeg-js@0.4.4"
     },
     "packages": {
+      "console@0.7.2": {
+        "integrity": "sha512-+JSDwGunA4MTEgAV/4VBKwUHonP8CzJ/6GIuwPi6acKFqFfHUdSGCm89ZxZ5FfGWdZfkdgAroy5bJ5FSeN/t4g==",
+        "dependencies": {}
+      },
+      "hash-sum@2.0.0": {
+        "integrity": "sha512-WdZTbAByD+pHfl/g9QSsBIIwy8IT+EsPiKDs0KNX+zSHhdDLFKdZu0BQHljvO+0QI/BasbMSUa8wYNCZTvhslg==",
+        "dependencies": {}
+      },
+      "hash@0.2.1": {
+        "integrity": "sha512-yUBu1BNORmIBcz6XsuSIs0mUCnYTb3rsgEWE87d7giQYUCxqtxiVRkokV9mXH3xBKVfPqML+21ruSOQinnTqtg==",
+        "dependencies": {}
+      },
       "jpeg-js@0.4.4": {
         "integrity": "sha512-WZzeDOEtTOBK4Mdsar0IqEU5sMr3vSV2RqkAIzUEV2BHnUfKGyswWFPFwK5EeDo93K3FohSHbLAjj0s1Wzd+dg==",
         "dependencies": {}

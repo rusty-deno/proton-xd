@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "dev": "deno run -A --unstable ./main_debug.ts",
+    "dev": "deno run -A --unstable ./main_debug.ts a b -c --quite",
     "serve": "deno run -A server_debug.ts",
     "build": "deno_bindgen"
   },

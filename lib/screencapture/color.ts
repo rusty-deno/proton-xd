@@ -18,6 +18,7 @@ export type Color=string|Rgb|number|RgbArray;
 
 export function rgba(color: Color): Rgba {
   switch(typeof color) {
+    // deno-lint-ignore no-case-declarations
     case "object":
       const isRgb=color instanceof Rgb;
       return {
@@ -33,14 +34,14 @@ export function rgba(color: Color): Rgba {
   }
 }
 
-export const hex=(color: Rgb|RgbArray)=> color instanceof Rgb?((color.r*256+color.g)*256+color.b)*256+(color.a??255):((color[0]*256+color[1])*256+color[2])*256+(color[3]??255);
+export const hex=(color: Rgb|RgbArray)=> color instanceof Rgb?((color.r*0x100+color.g)*0x100+color.b)*0x100+(color.a??255):((color[0]*0x100+color[1])*0x100+color[2])*0x100+(color[3]??255);
 
 function hexToRgb(color: number): Rgba {
   return {
     r: color&0xff,
-    g: color&0xffff%256,
-    b: color&0xffffff%256,
-    a: color.toString().length>6?color&0xffffffff%256:0xff,
+    g: color&0xffff%0x100,
+    b: color&0xffffff%0x100,
+    a: color.toString().length>6?color&0xffffffff%0x100:0xff,
   };
 }
 
