@@ -5,6 +5,8 @@ import { join } from "https://deno.land/std@0.132.0/path/mod.ts";
 import { relative } from "https://deno.land/std@0.132.0/path/mod.ts";
 import { codegen } from "./codegen.ts";
 
+
+
 const flags=parse(Deno.args, { "--": true });
 const release=!!flags.release;
 
@@ -40,13 +42,11 @@ async function findRelativeTarget() {
   return relative(Deno.cwd(), metadata.workspace_root);
 }
 
-let source=null;
 async function generate() {
   let conf;
   try {
     conf=JSON.parse(await Deno.readTextFile(metafile));
-  } catch (_) {
-    // Nothing to update.
+  } catch(_) {
     return;
   }
 
@@ -55,8 +55,9 @@ async function generate() {
   const pkgName=conf.name;
   const fetchPrefix=typeof flags.release==="string"?flags.release:await findRelativeTarget()+[cargoTarget,release?"release":"debug"].join("/");
 
-  source="// Auto-generated with deno_bindgen\n";
-  source+=codegen(
+  
+  
+  const source=codegen(
     fetchPrefix,
     pkgName,
     conf.typeDefs,
@@ -68,24 +69,21 @@ async function generate() {
       releaseURL: flags.release,
     },
   );
-
-  await Deno.remove(metafile);
-}
-
-try {
-  await Deno.remove(metafile);
-} catch {
-  // no op
+  return source;
 }
 
 const process=build();
-
-console.log(process.stdout);
-
-
 const status=await process.status;
 
-if(status.success||typeof flags.release==="string") await generate();
-source?await Deno.writeTextFile("./bindings/bindings.ts",source):Deno.exit(status?.code);
+
+
+if(status.success||typeof flags.release==="string") {
+  const str=await generate()??"//xd";
+  await Deno.writeTextFile("bindings/bindings.ts",str);
+}
+
+
+
+
 
 Deno.exit(status.code);
