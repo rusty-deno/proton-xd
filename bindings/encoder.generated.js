@@ -200,7 +200,7 @@ export function isInstantiated() {
  * @param {InstantiateOptions} opts
  */
 async function instantiateModule(opts) {
-  const wasmUrl = opts.url ?? new URL("./proton-xd.wasm",import.meta.url);
+  const wasmUrl = opts.url ?? new URL("./bin/proton-xd.wasm.wasm",import.meta.url);
   const decompress = opts.decompress;
   const isFile = wasmUrl.protocol === "file:";
 
