@@ -24,7 +24,7 @@ export abstract class Exception<T,E> {
     panic(`${msg}: ${this._res}`);
   }
 
-  public or(res: T) {
+  public or(res: T): T {
     return this.isException?res:this._res;
   }
   

@@ -53,10 +53,7 @@ async function generate() {
   const cargoTarget=Deno.env.get("CARGO_TARGET_DIR")??"./target";
 
   const pkgName=conf.name;
-  const fetchPrefix=typeof flags.release==="string"
-   ?flags.release
-   :await findRelativeTarget()+[cargoTarget,release?"release":"debug"]
-      .join("/");
+  const fetchPrefix=typeof flags.release==="string"?flags.release:await findRelativeTarget()+[cargoTarget,release?"release":"debug"].join("/");
 
   source="// Auto-generated with deno_bindgen\n";
   source+=codegen(
@@ -89,6 +86,6 @@ console.log(process.stdout);
 const status=await process.status;
 
 if(status.success||typeof flags.release==="string") await generate();
-source?await Deno.writeTextFile("bindings/bindings.ts",source):Deno.exit(status?.code||1);
+source?await Deno.writeTextFile("./bindings/bindings.ts",source):Deno.exit(status?.code);
 
 Deno.exit(status.code);

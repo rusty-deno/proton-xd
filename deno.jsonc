@@ -1,8 +1,10 @@
 {
   "tasks": {
-    "dev": "deno run -A --unstable ./main_debug.ts a b -c --quite",
+    "dev": "deno run -A --unstable ./main_debug.ts",
     "serve": "deno run -A server_debug.ts",
-    "build": "deno_bindgen"
+    "build": "deno run -A ./build.ts",
+    "patch": "deno run --allow-read=. --allow-write=. https://deno.land/x/bmp@v0.2.0/cli.ts -p",
+    "minor": "deno run --allow-read=. --allow-write=. https://deno.land/x/bmp@v0.2.0/cli.ts -m"
   },
   "fmt": {
     "options": {

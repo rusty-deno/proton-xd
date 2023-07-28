@@ -4,6 +4,7 @@
 import { ensureDirSync } from "https://deno.land/std@0.132.0/fs/ensure_dir.ts";
 import { createFromBuffer,GlobalConfiguration } from "https://deno.land/x/dprint@0.2.0/mod.ts";
 import * as Cache from "https://deno.land/x/cache@0.2.13/mod.ts";
+import { readToStringSync,copySync } from "../lib/rust/fs/mod.ts";
 
 
 Cache.configure({ directory: Cache.options.directory });
@@ -142,12 +143,13 @@ export function codegen(
   options?: Options
 ) {
   const fileName=getPath(name);
+  const bin=`bindings/bin/${Deno.build.target}.${getExt()}`;
   
   
   ensureDirSync("bindings");
-  Deno.copyFileSync(`${fetchPrefix}/${fileName}`,`bindings/${fileName}`);
+  copySync(`${fetchPrefix}/${fileName}`,bin).unwrapOrElse(e=> console.log(e));
 
-
+  
 
   signature=Object.keys(signature)
     .sort()
@@ -158,6 +160,7 @@ export function codegen(
       }),
       {},
     );
+  const prototype=readToStringSync("./bindings/bindings.prototype.json").or("{}").trim();
 
   return tsFormatter.formatText("bindings/bindings.ts",`
 const encoder=new TextEncoder;
@@ -184,7 +187,7 @@ function readPointer(v: any): Uint8Array {
   return buf;
 }
 
-const url=new URL(\`${name}.\${getExt()}\`, import.meta.url);
+const url=new URL(\`./bindings/bin/\${Deno.build.target\}.\${getExt()}\`, import.meta.url);
 ${
       typeof options?.releaseURL==="string"
        ?`
@@ -244,35 +247,35 @@ export const { symbols,close }=Deno.dlopen(uri, {`
             }", nonblocking: ${String(!!signature[sig].nonBlocking)} }`,
         )
         .join(", ")
-    } });
+    },${prototype.substring(1,prototype.length-1)}});
 ${
-      Object.keys(decl)
-        .sort()
-        .map((def)=> typescript[def])
-        .join("\n")
-    }
+  Object.keys(decl)
+  .sort()
+  .map((def)=> typescript[def])
+  .join("\n")
+}
 ${
-      Object.keys(signature)
-        .map((sig)=> {
-          const { parameters, result, nonBlocking }=signature[sig];
+  Object.keys(signature)
+  .map((sig)=> {
+    const { parameters, result, nonBlocking }=signature[sig];
 
-          return `export function ${sig}(${
-            parameters
-              .map((p, i)=> `a${i}: ${resolveType(decl, p)}`)
-              .join(",")
-          }) {
+    return `export function ${sig}(${
+      parameters
+        .map((p, i)=> `a${i}: ${resolveType(decl, p)}`)
+        .join(",")
+    }) {
   ${
-            parameters
-              .map((p, i) =>
-                isBufferType(p)
-                 ?`const a${i}_buf=encode(${
-                    BufferTypeEncoders[p] ?? Encoder.JsonStringify
-                  }(a${i}));`
-                 :null
-              )
-              .filter((c)=> c!==null)
-              .join("\n")
-          }
+    parameters
+      .map((p, i) =>
+        isBufferType(p)
+         ?`const a${i}_buf=encode(${
+            BufferTypeEncoders[p] ?? Encoder.JsonStringify
+          }(a${i}));`
+         :null
+      )
+      .filter((c)=> c!==null)
+      .join("\n")
+    }
 
   const rawResult=symbols.${sig}(${
             parameters
@@ -308,8 +311,8 @@ ${
              :"return result;"
           };
 }`;
-        })
-        .join("\n")
+      })
+      .join("\n")
     }
  `);
 }

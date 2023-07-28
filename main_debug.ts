@@ -1,6 +1,8 @@
 // deno-lint-ignore-file
 // import ProtonXD from "./mod.ts";
 
+import { readToStringSync } from "./lib/rust/fs/mod.ts";
+
 // ProtonXD.XD.instantiate("<html><body>hello wrld</body></html>",{
 //     title: "my-app"
 // });
@@ -18,5 +20,11 @@
 
 
 
-console.log(Deno.build.target);
 
+
+const prototype=readToStringSync("./bindings/bindings.prototype.json").or("{}").trim();
+
+
+
+
+console.log(prototype.substring(1,prototype.length-1));

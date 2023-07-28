@@ -10,14 +10,14 @@ function encode(v: string | Uint8Array): Uint8Array {
   return typeof v !== "string" ? v : encoder.encode(v);
 }
 
-function getName(name: string) {
+function getExt() {
   switch (Deno.build.os) {
     case "windows":
-      return `${name}.dll`;
+      return "dll";
     case "darwin":
-      return `lib${name}.dylib`;
+      return "dylib";
     default:
-      return `lib${name}.so`;
+      return "so";
   }
 }
 
@@ -32,7 +32,7 @@ function readPointer(v: any): Uint8Array {
   return buf;
 }
 
-const url = new URL(getName("xd"), import.meta.url);
+const url = new URL(`xd.${getExt()}`, import.meta.url);
 
 let uri = url.pathname;
 
@@ -100,19 +100,6 @@ export const { symbols, close } = Deno.dlopen(uri, {
     result: "void",
     nonblocking: false,
   },
-  confirm: {
-    parameters: ["buffer","buffer","u8"],
-    result: "bool",
-    nonblocking: true
-  },
-  confirm_sync: {
-    parameters: ["buffer","buffer","u8"],
-    result: "bool"
-  },
-  spawn: {
-    parameters: ["function"],
-    result: "void"
-  }
 });
 export type Content =
   | {
