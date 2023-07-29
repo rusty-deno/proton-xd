@@ -12,10 +12,6 @@ export class Vec<T> extends Array<T> implements Clone {
     for(const iterator of this) f(iterator,i++,this);
   }
 
-  // public override at(index: number): Option<T> {
-  //   return new Option(super.at(index));
-  // }
-
   public fold(f: (prev: T,current: T,index: number)=> Option<T>|T): Option<T> {
     let folded: Option<T>=None(null);
     let i=0;
@@ -58,7 +54,7 @@ export class Vec<T> extends Array<T> implements Clone {
   public nth(index: number) {
     return new Option(super.at(index));
   }
-
+  
+  
 }
-
 
