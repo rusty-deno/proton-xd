@@ -32,7 +32,7 @@ function readPointer(v: any): Uint8Array {
 }
 
 const url = new URL(
-  `./bindings/bin/${Deno.build.target}.${getExt()}`,
+  `./bin/${Deno.build.target}.${getExt()}`,
   import.meta.url,
 );
 
