@@ -107,6 +107,11 @@ export class LinkedList<T> {
     return !this.size;
   }
 
+  public static fromArray<T>(arr: T[]) {
+    const ll=new LinkedList<T>();
+    for(let i=arr.length;i>0;) ll.pushFront(arr[--i]);
+    return ll;
+  }
 }
 
 
