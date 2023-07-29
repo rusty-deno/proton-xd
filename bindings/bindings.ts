@@ -31,10 +31,7 @@ function readPointer(v: any): Uint8Array {
   return buf;
 }
 
-const url = new URL(
-  `./bin/${Deno.build.target}.${getExt()}`,
-  import.meta.url,
-);
+const url = new URL(`./bin/${Deno.build.target}.${getExt()}`, import.meta.url);
 
 let uri = url.pathname;
 

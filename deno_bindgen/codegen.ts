@@ -129,8 +129,16 @@ function getExt() {
   }
 }
 
+
 function getPath(name: string) {
-  return `${name}.${getExt()}`;
+  switch(Deno.build.os) {
+    case "windows":
+      return `${name}.dll`;
+    case "darwin":
+      return `lib${name}.dylib`;
+    default:
+      return `lib${name}.so`;
+  }
 }
 
 // TODO(@littledivy): factor out options in an interface
@@ -142,12 +150,11 @@ export function codegen(
   signature: Sig,
   options?: Options
 ) {
-  const fileName=getPath(name);
   const bin=`bindings/bin/${Deno.build.target}.${getExt()}`;
   
   
   ensureDirSync("bindings");
-  copySync(`${fetchPrefix}/${fileName}`,bin).unwrapOrElse(e=> console.log(e));
+  copySync(`${fetchPrefix}/${getPath(name)}`,bin).unwrapOrElse(e=> console.log(e));
 
   
 
