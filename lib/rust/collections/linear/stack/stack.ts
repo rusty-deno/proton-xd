@@ -1,48 +1,53 @@
 import { Option } from '../../../mod.ts';
 import { Iter } from '../../iter.ts';
+import { LinkedList } from '../linked_list/linked_list.ts';
 
 
 
 
 export class Stack<T> extends Iter<T> {
-  private data: T[];
-  private top=0;
+  private data: LinkedList<T>;
+  private current=0;
   public readonly size: number;
 
   constructor(size: number=16) {
     super();
-    this.data=new Array(size);
+    this.data=new LinkedList();
     this.size=size;
   }
+  
+  public get top() {
+    return this.current;
+  }
+  
 
   next(): T {
     return this[Symbol.iterator]().next().value;
   }
 
+  
   *[Symbol.iterator](): Iterator<T> {
-    for(let iter=this.data.pop();iter;iter=this.data.pop()) yield iter!;
-    this.data=new Array(this.size);
+    for(let entity=this.pop().value;entity;entity=this.pop().value) yield entity;
   }
 
   public static fromArray<T>(arr: T[]) {
     const stack=new Stack(arr.length);
-    stack.data=arr;
-    stack.top=arr.length;
+    stack.data=LinkedList.fromArray(arr);
+    stack.current=arr.length;
     return stack;
   }
 
   public pop(): Option<T> {
-    return new Option(this.data[this.top-1]);
+    this.current&&=--this.current;
+    return this.data.popFront();
   }
-
-  public push(...elements: T[]) {
-    for(const element of elements) {
-      if(this.top>=this.size) continue;
-      this.data[this.top++]=element;
-    }
+  
+  public push(entity: T) {
+    if(this.current-1==this.data.length) return false;
+    this.data.pushFront(entity);
+    this.current++;
+    return true;
   }
-
-
 }
 
 
