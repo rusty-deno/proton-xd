@@ -11,8 +11,12 @@ export class LinkedList<T> {
     for(let i=nodes.length;i>0;) this.pushFront(nodes[--i]);
   }
 
-
-
+  public static fromArray<T>(arr: T[]) {
+    const ll=new LinkedList<T>();
+    for(let i=arr.length;i>0;) ll.pushFront(arr[--i]);
+    return ll;
+  }
+  
   next(): T {
     return this[Symbol.iterator]().next().value;
   }
@@ -93,9 +97,10 @@ export class LinkedList<T> {
   }
       
   public appendFront(other: Iterable<T>) {
-    const ll=new LinkedList(...other,...this);
-    this.head=ll.front;
-    this.size+=ll.size;
+    for(const iter of other) {
+      this.pushFront(iter);
+      this.size++;
+    }
   }
 
   public empty() {
@@ -107,10 +112,14 @@ export class LinkedList<T> {
     return !this.size;
   }
 
-  public static fromArray<T>(arr: T[]) {
-    const ll=new LinkedList<T>();
-    for(let i=arr.length;i>0;) ll.pushFront(arr[--i]);
+  public reverse() {
+    const ll=new LinkedList<T>;
+    for(const node of this) ll.pushFront(node);
     return ll;
+  }
+
+  public toReverse() {
+    this.head=this.reverse().head;
   }
 }
 
