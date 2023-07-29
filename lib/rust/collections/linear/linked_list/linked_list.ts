@@ -69,40 +69,38 @@ export class LinkedList<T> {
   }
 
   public popBack() {
-    if(!this.head.value) return false;
+    if(!this.head.value) return Option.None;
     let current=this.head.value;
 
     while(current.next.value?.next.value) current=current.next.value;
-
+    const last=new Option(current.next.value?.data);
     current.next=None(null);
     this.size--;
-    return true;
+    return last;
   }
 
   public popFront() {
-    if(this.head.value) {
-      this.head=this.head.value?.next;
-      return true;
-    }
-    this.size--;
-    return false;
+    const entity=this.head.value?.data;
+    this.head=new Option(this.head.value?.next.value);
+    if(entity) --this.size;
+    return new Option(entity);
   }
 
   public append(other: Iterable<T>) {
     const ll=new LinkedList(...other);
     this.tail=new Option(ll.front.value);
-    this.size=ll.size;
+    this.size+=ll.size;
   }
       
   public appendFront(other: Iterable<T>) {
     const ll=new LinkedList(...other,...this);
     this.head=ll.front;
-    this.size=ll.size;
+    this.size+=ll.size;
   }
 
   public empty() {
     this.head=None(null);
-    this.size+=0;
+    this.size=0;
   }
 
   public isEmpty() {
