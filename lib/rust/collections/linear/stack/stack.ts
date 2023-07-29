@@ -32,11 +32,11 @@ export class Stack<T> extends Iter<T> {
 
   public static fromArray<T>(arr: T[]) {
     const stack=new Stack(arr.length);
-    stack.data=LinkedList.fromArray(arr);
+    stack.data=LinkedList.fromArray(arr.toReversed());
     stack.current=arr.length;
     return stack;
   }
-
+  
   public pop(): Option<T> {
     this.current&&=--this.current;
     return this.data.popFront();
