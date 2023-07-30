@@ -1,13 +1,14 @@
 import { Option,None,Some } from "../../../mod.ts";
+import { List } from "../List.ts";
 import { Node } from "./mod.ts";
 
 
-
-export class LinkedList<T> {
+export class LinkedList<T> extends List<T> {
   private head: Option<Node<T>>=None(null);
   private size=0;
 
   constructor(...nodes: T[]) {
+    super();
     for(let i=nodes.length;i>0;) this.pushFront(nodes[--i]);
   }
 
@@ -41,13 +42,13 @@ export class LinkedList<T> {
     return this.head;
   }
 
-  public get back() {
-    if(!this.head.value) return this.head.value;
+  public get back(): Option<Node<T>> {
+    if(!this.head.value) return None(null);
 
     let current=this.head.value;
 
     while(current.next.value) current=current.next.value;
-    return current;
+    return Some(current);
   }
 
   private set tail(node: Option<Node<T>>) {
@@ -121,6 +122,14 @@ export class LinkedList<T> {
   public toReverse() {
     this.head=this.reverse().head;
   }
+
+  public at(index: number) {
+    if(index<0) index+=this.size;
+    for(let i=0,iter=this.head.value;;iter=iter?.next.value,i++) {
+      if(i==index) return new Option(iter?.data);
+    }
+  }
+  
 }
 
 
