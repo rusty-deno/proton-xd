@@ -17,7 +17,7 @@ export class Queue<T> extends List<T> {
   }
 
   *[Symbol.iterator](): Iterator<T> {
-    for(let entity=this.dequeue().value;entity;entity=this.dequeue().value) yield entity;
+    for(let entity=this.dequeue().value;entity!=null;entity=this.dequeue().value) yield entity;
   }
 
   public get length() {
