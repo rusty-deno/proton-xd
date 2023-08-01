@@ -26,6 +26,10 @@ export class HashSet<T> extends Iter<T> {
   public remove(data: T) {
     this.map.remove(data);
   }
+
+  public toString() {
+    return `{${this.toArray().join(" , ")}}`;
+  }
 }
 
 

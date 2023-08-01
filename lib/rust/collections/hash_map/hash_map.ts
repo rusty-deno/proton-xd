@@ -2,8 +2,6 @@ import { Clone,Option,Some,None } from '../../mod.ts';
 import { HasherFn,hash,Entry } from './mod.ts';
 import { Iter } from '../iter.ts';
 
-
-
 export class HashMap<K,V> extends Iter<Entry<K,V>> implements Clone {
   private _entries: Option<Entry<K,V>>[]=[];
   constructor(...entries: Entry<K,V>[]) {
@@ -63,9 +61,7 @@ export class HashMap<K,V> extends Iter<Entry<K,V>> implements Clone {
   }
 
   private hash=(key: K)=>{
-    let h=hash(key);
-    console.log(h=h^(h>>>16));
-    return h;
+    return hash(key);
   };
   
   public remove(key: K): void {

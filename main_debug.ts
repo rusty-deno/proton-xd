@@ -5,16 +5,10 @@
 //     title: "my-app"
 // });
 
-import { collections } from "./mod.ts";
+import { HashSet } from "./lib/rust/collections/mod.ts";
 
-const q=new collections.Queue(0,1,2,3,4,5,69);
+const set=new HashSet(0,1,2,3,4,5,69,4);
 
-
-for(const entity of q) {
-    console.log(entity);
-}
-
-
-console.log(q.toString());
+console.log(set);
 
 
