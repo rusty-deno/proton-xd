@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 import { Option,Some } from '../option/option.ts';
 import { Exception } from '../exception.ts';
 
@@ -5,7 +6,7 @@ export type Ok<T>=T;
 export type Err<E extends Error=Error>=E;
 
 
-export class Result<T,E extends Error> extends Exception<T,E> {
+export class Result<T,E> extends Exception<T,E> {
   public readonly result: T|E;
   public readonly isException: boolean;
 
@@ -39,14 +40,14 @@ export class Result<T,E extends Error> extends Exception<T,E> {
 
 
   public static Ok=<T>(res: T)=> Ok<T>(res);
-  public static Err=<T>(err: Err=new Error)=> Err<T>(err);
+  public static Err=<T>(err: T)=> Err<T>(err);
 }
 
 
-export function Err<T>(err: Err=new Error) {
-  return new Result<T,Err>(err,true);
+export function Err<T>(err: T) {
+  return new Result<any,T>(err,true);
 }
-export function Ok<T,E extends Error=Err>(res: T) {
-  return new Result<T,E>(res);
+export function Ok<T>(res: T) {
+  return new Result<T,any>(res);
 }
 
