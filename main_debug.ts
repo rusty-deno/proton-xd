@@ -1,14 +1,15 @@
+// deno-lint-ignore-file
 // import ProtonXD from "./mod.ts";
+import { HashMap } from './lib/rust/collections/hash_map/hash_map.ts';
 
 
 // ProtonXD.XD.instantiate(`<html><body style="color: #ff00ff;">hello wrld</body></html>`,{
 //     title: "my-app"
 // });
 
-import { HashSet } from "./lib/rust/collections/mod.ts";
+const map=new HashMap(["xd",69]);
 
-const set=new HashSet(0,1,2,3,4,5,69,4);
+console.log(map.entries());
 
-console.log(set);
 
 

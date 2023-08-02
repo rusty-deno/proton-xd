@@ -36,9 +36,9 @@ export class HashMap<K,V> extends Iter<Entry<K,V>> implements Clone {
   }
 
   *[Symbol.iterator](): Iterator<Entry<K,V>> {
-    for(const {value} of this.buckets) {
-      if(!value) continue;
-      for(const entry of value) yield entry;
+    for(const bucket of this.buckets) {
+      if(!bucket?.value) continue;
+      for(const entry of bucket.value) yield entry;
     }
   }
 
@@ -52,7 +52,7 @@ export class HashMap<K,V> extends Iter<Entry<K,V>> implements Clone {
 
   public set(key: K,val: V): void {
     const hash=this.hash(key);
-    if(this.buckets[hash].value)
+    if(this.buckets[hash]?.value)
       this.buckets[hash].value!.pushFront([key,val]);
     else
       this.buckets[hash]=Some(new LinkedList([key,val]));
