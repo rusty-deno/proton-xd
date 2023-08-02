@@ -1,14 +1,32 @@
-import { Clone,Option,Some,None } from '../../mod.ts';
+// deno-lint-ignore-file
+import { Clone,Option,Some,None,Iter } from '../../mod.ts';
 import { HasherFn,hash,Entry } from './mod.ts';
-import { Iter } from '../iter.ts';
+import { Vec } from '../mod.ts';
+import { LinkedList } from '../linear/linked_list/linked_list.ts';
+import { todo } from '../../error/panic.ts';
+import sum from 'npm:hash-sum';
 
 export class HashMap<K,V> extends Iter<Entry<K,V>> implements Clone {
-  private _entries: Option<Entry<K,V>>[]=[];
+  // private buckets=new Vec<Option<Entry<K,V>>>();
+  private buckets=new Vec<Option<LinkedList<Entry<K,V>>>>();
+
   constructor(...entries: Entry<K,V>[]) {
     super();
     for(const entry of entries) this.set(entry[0],entry[1]);
   }
 
+  public static withHasher<K,V>(fn: HasherFn<K>,...entries: Entry<K,V>[]) {
+    const hash_map=new HashMap(...entries);
+    hash_map.hasher=fn;
+    return hash_map;
+  }
+
+  public static fromIter<K,V>(iter: Iterable<Entry<K,V>>) {
+    const map=new HashMap<K,V>();
+    for(const entry of iter) map.set(entry[0],entry[1]);
+    return map;
+  }
+  
   public clone(): HashMap<K,V> {
     return structuredClone(this);
   }
@@ -18,26 +36,35 @@ export class HashMap<K,V> extends Iter<Entry<K,V>> implements Clone {
   }
 
   *[Symbol.iterator](): Iterator<Entry<K,V>> {
-    for(const entry of this._entries) {
-      if(!entry?.value) continue;
-      yield entry.value;
+    for(const {value} of this.buckets) {
+      if(!value) continue;
+      for(const entry of value) yield entry;
     }
   }
 
-  public entries(): Entry<K,V>[] {
-    return [...this];
+  public entries(): Vec<Entry<K,V>> {
+    return new Vec(...this);
   }
   
   public get size(): number {
-    return this._entries.length;
+    return this.buckets.length;
   }
 
   public set(key: K,val: V): void {
-    this._entries[this.hash(key)]=Some([key,val]);
+    const hash=this.hash(key);
+    if(this.buckets[hash].value)
+      this.buckets[hash].value!.pushFront([key,val]);
+    else
+      this.buckets[hash]=Some(new LinkedList([key,val]));
   }
 
   public get(key: K): Option<V> {
-    return new Option(this._entries[this.hash(key)].value?.[1]);
+    const bucket=this.buckets[this.hash(key)].value;
+    if(bucket)
+      for(const entity of bucket)
+        if(sum(key)===sum(entity[0])) return Some(entity[1]);
+
+    return None(null);
   }
 
   public has(key: K): boolean {
@@ -45,7 +72,7 @@ export class HashMap<K,V> extends Iter<Entry<K,V>> implements Clone {
   }
 
   public empty() {
-    this._entries=[];
+    this.buckets=new Vec;
   }
 
   public isEmpty() {
@@ -55,17 +82,16 @@ export class HashMap<K,V> extends Iter<Entry<K,V>> implements Clone {
   public get hasher(): HasherFn<K> {
     return this.hash;
   }
-
+  
   public set hasher(hasher: HasherFn<K>) {
     this.hash=hasher;
   }
 
-  private hash=(key: K)=>{
-    return hash(key);
-  };
+  private hash=(key: K)=> hash(key);
   
   public remove(key: K): void {
-    this._entries[this.hash(key)]=None(null);
+    // this.buckets[this.hash(key)]=None(null);
+    todo();
   }
   
   [Symbol.toStringTag]() {

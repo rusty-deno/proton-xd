@@ -3,13 +3,12 @@ import sum from "npm:hash-sum";
 // deno-lint-ignore no-explicit-any
 export function hash(obj: any): number {
   switch(typeof obj) {
-    case "number": return obj;
     case "boolean": return Number(obj);
     case "undefined": return 0;
     case "string":
     case "bigint":
     default:
-      return sum(obj);
+      return obj==null?0:Number.parseInt(`0x${sum(obj)}`)&0xff;
   }
 }
 
