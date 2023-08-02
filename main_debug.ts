@@ -7,9 +7,11 @@ import { HashMap } from './lib/rust/collections/hash_map/hash_map.ts';
 //     title: "my-app"
 // });
 
-const map=new HashMap(["xd",69]);
+const map=new HashMap(["xd",100],["gg",69]);
 
 console.log(map.entries());
 
+map.set("xd",69);
 
+console.log(map.entries());
 

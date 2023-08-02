@@ -3,11 +3,10 @@ import { Clone,Option,Some,None,Iter } from '../../mod.ts';
 import { HasherFn,hash,Entry } from './mod.ts';
 import { Vec } from '../mod.ts';
 import { LinkedList } from '../linear/linked_list/linked_list.ts';
-import { todo } from '../../error/panic.ts';
 import sum from 'npm:hash-sum';
+import { todo } from '../../error/panic.ts';
 
 export class HashMap<K,V> extends Iter<Entry<K,V>> implements Clone {
-  // private buckets=new Vec<Option<Entry<K,V>>>();
   private buckets=new Vec<Option<LinkedList<Entry<K,V>>>>();
 
   constructor(...entries: Entry<K,V>[]) {
@@ -52,19 +51,30 @@ export class HashMap<K,V> extends Iter<Entry<K,V>> implements Clone {
 
   public set(key: K,val: V): void {
     const hash=this.hash(key);
-    if(this.buckets[hash]?.value)
-      this.buckets[hash].value!.pushFront([key,val]);
-    else
+
+    if(!this.buckets[hash]?.value) {
       this.buckets[hash]=Some(new LinkedList([key,val]));
+      return;
+    }
+    for(const entity of this.buckets[hash].value!) {
+      if(!this.equals(entity[0],key)) continue;
+      entity[1]=val;
+      return;
+    }
+  }
+
+  private equals<T extends K|V>(obj1: T,obj2: T) {
+    return Number.parseInt(`0x${sum(obj1)}`)===Number.parseInt(`0x${sum(obj2)}`);
   }
 
   public get(key: K): Option<V> {
-    const bucket=this.buckets[this.hash(key)].value;
-    if(bucket)
-      for(const entity of bucket)
-        if(sum(key)===sum(entity[0])) return Some(entity[1]);
-
-    return None(null);
+    try {
+      for(const entity of this.buckets[this.hash(key)].value!)
+        if(this.equals(entity[0],key)) return Some(entity[1]);
+      throw new Error;
+    }catch {
+      return None(null);
+    }
   }
 
   public has(key: K): boolean {
@@ -90,7 +100,6 @@ export class HashMap<K,V> extends Iter<Entry<K,V>> implements Clone {
   private hash=(key: K)=> hash(key);
   
   public remove(key: K): void {
-    // this.buckets[this.hash(key)]=None(null);
     todo();
   }
   
