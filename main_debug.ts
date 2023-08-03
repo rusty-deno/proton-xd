@@ -6,13 +6,5 @@
 //   title: "my-app"
 // });
 
-type IterObj={
-  [key: string]: unknown;
-};
-export function confirmDefaultVal(main: IterObj,def: IterObj): any {
-  for(const key in def) main[key]??=def[key];
-  return main;
-}
 
-console.log(confirmDefaultVal({},{"xd": 69}));
 

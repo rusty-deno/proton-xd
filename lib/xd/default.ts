@@ -4,7 +4,7 @@ export enum Default {
 }
 
 
-export const defaultWindowAttrs: WindowAttributes={
+export const defaultWindowAttrs={
   innerSize: {height: 480,width: 1080},
   minInnerSize: {height: 10,width: 10},
   maxInnerSize: {height: 480,width: 1080},//todo
@@ -37,9 +37,9 @@ export const defaultWindowAttrs: WindowAttributes={
   focused: true,
   contentProtection: false,
   visibleOnAllWorkspaces: false,
-};
+} satisfies WindowAttributes;
 
-export const defaultWebViewAttrs: WebViewAttributes={
+export const defaultWebViewAttrs={
   userAgent: "None",
   visible: true,
   transparent: false,
@@ -57,7 +57,7 @@ export const defaultWebViewAttrs: WebViewAttributes={
   backForwardNavigationGestures: false,
   incognito: false,
   autoplay: true,
-};
+} satisfies WebViewAttributes;
 
 type IterObj={[key: string]: unknown};
 
