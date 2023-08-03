@@ -64,15 +64,6 @@ type IterObj={[key: string]: unknown};
 
 // deno-lint-ignore no-explicit-any
 export function confirmDefaultVal(main: IterObj,def: IterObj): any {
-  const attrs: IterObj={};
-  for(const key in def)
-    attrs[to_snake_case(key)]=main[key]??def[key];
-
-  return attrs;
-}
-
-export function to_snake_case(str: string) {
-  return str.replace(/[A-Z]/g,(s)=> {
-    return `_${s.toLowerCase()}`;
-  });
+  for(const key in def) main[key]??=def[key];
+  return main;
 }

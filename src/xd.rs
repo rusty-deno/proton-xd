@@ -62,8 +62,11 @@ impl Img {
 
 #[deno_bindgen]
 pub struct WindowAttrs {
+  #[serde(rename="innerSize")]
   inner_size: Size,
+  #[serde(rename="minInnerSize")]
   min_inner_size: Size,
+  #[serde(rename="minInnerSize")]
   max_inner_size: Size,
   resizable: bool,
   minimizable: bool,
@@ -74,13 +77,20 @@ pub struct WindowAttrs {
   visible: bool,
   transparent: bool,
   decorations: bool,
+  #[serde(rename="alwaysOnTop")]
   always_on_top: bool,
+  #[serde(rename="alwaysOnBottom")]
   always_on_bottom: bool,
+  #[serde(rename="windowIcon")]
   window_icon: Img,
+  #[serde(rename="taskbarIcon")]
   taskbar_icon: Img,
+  #[serde(rename="preferredTheme")]
   preferred_theme: Theme,
   focused: bool,
+  #[serde(rename="contentProtection")]
   content_protection: bool,
+  #[serde(rename="visibleOnAllWorkspaces")]
   visible_on_all_workspaces: bool,
 }
 
@@ -115,15 +125,21 @@ impl Rgba {
 
 #[deno_bindgen]
 pub struct WebViewAttrs {
+  #[serde(rename="userAgent")]
   pub user_agent: String,
   pub visible: bool,
   pub transparent: bool,
+  #[serde(rename="backgroundColor")]
   pub background_color: Rgba,
+  #[serde(rename="zoomHotkeysEnabled")]
   pub zoom_hotkeys_enabled: bool,
+  #[serde(rename="initializationScripts")]
   pub initialization_scripts: Vec<String>,
   pub clipboard: bool,
   pub devtools: bool,
+  #[serde(rename="acceptFirstMouse")]
   pub accept_first_mouse: bool,
+  #[serde(rename="backForwardNavigationGestures")]
   pub back_forward_navigation_gestures: bool,
   pub incognito: bool,
   pub autoplay: bool,
@@ -163,11 +179,11 @@ impl Header {
 
 #[deno_bindgen]
 pub fn init(window_atters: &str,webview_atters: &str,content: &str) {
-  let _window_atters: WindowAttrs=from_str(window_atters).unwrap();
-  let _webview_atters: WebViewAttrs=from_str(webview_atters).unwrap();
-  let _content: Content=from_str(content).unwrap();
+  let window_atters: WindowAttrs=from_str(window_atters).unwrap();
+  let webview_atters: WebViewAttrs=from_str(webview_atters).unwrap();
+  let content: Content=from_str(content).unwrap();
   
-  _init_webview(_window_atters,_webview_atters,_content)
+  _init_webview(window_atters,webview_atters,content)
 }
 
 
@@ -217,14 +233,14 @@ fn _init_webview(attrs: WindowAttrs,webview_atters: WebViewAttrs,content: Conten
   for script in &webview_atters.initialization_scripts {
     webview_builder=webview_builder.with_initialization_script(&script);
   }
-
-  fn to_header_map(headers: Vec<Header>)-> HeaderMap {
+  
+  let to_header_map=|headers: Vec<Header>|-> HeaderMap {
     let mut header_map=HeaderMap::new();
     for header in headers {
       header_map.insert(header.name(),header.value()).unwrap();
     }
     header_map
-  }
+  };
 
 
   let _webview=match content {
@@ -253,6 +269,7 @@ pub fn write_to_clipboard(str: &str) {
   Clipboard::new().write_text(str)
 }
 
+///@returns {string}
 #[deno_bindgen]
 pub fn read_clipboard()-> String {
   Clipboard::new().read_text().unwrap_or_default()
