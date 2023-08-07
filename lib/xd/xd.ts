@@ -5,8 +5,8 @@ import { WebViewAttributes,Content,WindowAttributes,toContent } from "./types.ts
 
 export class XD {
   private readonly content: Content;
-  private readonly windowAttrs: WindowAttributes;
-  private readonly webviewAttrs: WebViewAttributes;
+  private windowAttrs: WindowAttributes;
+  private webviewAttrs: WebViewAttributes;
 
   /**
    * @param {Content} content defines the initial content of the webview
@@ -25,7 +25,10 @@ export class XD {
    * doesn't affect its other properties
    */
   public set window(window: WindowAttributes) {
-    for(const key in window) this.window[key]=window[key];
+    this.webviewAttrs={
+      ...this.webviewAttrs,
+      ...window
+    };
   }
   /**
    * @returns {WindowAttributes}
@@ -42,7 +45,10 @@ export class XD {
    * doesn't affect its other properties
    */
   public set webview(webview: WebViewAttributes) {
-    for(const key in webview) this.webview[key]=webview[key];
+    this.webview={
+      ...this.webviewAttrs,
+      ...webview
+    };
   }
   /**
    * @returns {WebViewAttributes}
@@ -57,7 +63,7 @@ export class XD {
    * @description Initializes the webview..
    * @description updating window or webview after initialization doesn't affect them
    */
-  public init() {
+  public spawn() {
     lib.init(
       JSON.stringify(confirmDefaultVal(this.windowAttrs as IterObj,dwa)),
       JSON.stringify(confirmDefaultVal(this.webviewAttrs as IterObj,dweba)),
@@ -66,12 +72,8 @@ export class XD {
   }
   
   public static instantiate(content: Content,windowAttrs: WindowAttributes={},webviewAttrs: WebViewAttributes={}) {
-    new XD(content,windowAttrs,webviewAttrs).init();
+    new XD(content,windowAttrs,webviewAttrs).spawn();
   }
-
-
-
-
 
 }
 

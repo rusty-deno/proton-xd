@@ -5,7 +5,6 @@ export enum Default {
 
 
 export const defaultWindowAttrs={
-  innerSize: {height: 480,width: 1080},
   resizable: true,
   minimizable: true,
   maximizable: true,
@@ -17,7 +16,6 @@ export const defaultWindowAttrs={
   decorations: true,
   alwaysOnTop: false,
   alwaysOnBottom: false,
-  windowIcon: "",//bad icon
   preferredTheme: "Dark",
   focused: true,
   contentProtection: false,

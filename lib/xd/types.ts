@@ -37,7 +37,7 @@ export interface WebViewAttributes {
   autoplay?: boolean;
   html?: string;
   url?: string|URL;
-  headers: Header[];
+  headers?: Header[];
 }
 
 export type Content=string|URL|UrlAndHeaders;
