@@ -1,5 +1,5 @@
 import * as lib from "../../bindings/bindings.ts";
-import { defaultWindowAttrs as dwa,defaultWebViewAttrs as dweba,confirmDefaultVal } from "./default.ts";
+import { defaultWindowAttrs as dwa,defaultWebViewAttrs as dweba,confirmDefaultVal, IterObj } from "./default.ts";
 import { WebViewAttributes,Content,WindowAttributes,toContent } from "./types.ts";
 
 
@@ -59,8 +59,8 @@ export class XD {
    */
   public init() {
     lib.init(
-      JSON.stringify(confirmDefaultVal(this.windowAttrs,dwa)),
-      JSON.stringify(confirmDefaultVal(this.webviewAttrs,dweba)),
+      JSON.stringify(confirmDefaultVal(this.windowAttrs as IterObj,dwa)),
+      JSON.stringify(confirmDefaultVal(this.webviewAttrs as IterObj,dweba)),
       toContent(this.content)
     );
   }

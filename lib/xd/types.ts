@@ -1,4 +1,5 @@
-import { Size,Theme,Rgba,Header,Img } from "../../bindings/bindings.ts";
+import { Size,Theme,Rgba,Header } from "../../bindings/bindings.ts";
+
 export interface WindowAttributes {
   innerSize?: Size;
   minInnerSize?: Size;//todo
@@ -18,9 +19,7 @@ export interface WindowAttributes {
   focused?: boolean;
   contentProtection?: boolean;
   visibleOnAllWorkspaces?: boolean;
-  windowIcon?: Img;
-  taskbarIcon?: Img;
-  [key: string]: unknown;
+  windowIcon?: string;
 }
 
 export interface WebViewAttributes {
@@ -36,7 +35,6 @@ export interface WebViewAttributes {
   backForwardNavigationGestures?: boolean;
   incognito?: boolean;
   autoplay?: boolean;
-  [key: string]: unknown;
 }
 
 export type Content=string|URL|UrlAndHeaders;

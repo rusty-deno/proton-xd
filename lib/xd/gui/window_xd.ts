@@ -1,5 +1,5 @@
 import * as lib from '../../../bindings/bindings.ts';
-import { Default,confirmDefaultVal } from '../default.ts';
+import { Default,IterObj,confirmDefaultVal } from '../default.ts';
 import { MessageType,FileOpenerOptions } from './mod.ts';
 import { defaultOptions } from './default.ts';
 
@@ -44,12 +44,12 @@ export function confirmSync(txt: string,title: string=Default.TITLE,type=Message
 
 
 export async function chooseFile(options: FileOpenerOptions={}) {
-  const opt=confirmDefaultVal(options as {[index: string]: unknown},defaultOptions);
+  const opt=confirmDefaultVal(options as IterObj,defaultOptions);
   return await lib.open(JSON.stringify(opt));
 }
 
 export function chooseFileSync(options: FileOpenerOptions={}) {
-  const opt=confirmDefaultVal(options as {[index: string]: unknown},defaultOptions);
+  const opt=confirmDefaultVal(options as IterObj,defaultOptions);
   return  lib.open_sync(JSON.stringify(opt));
 }
 

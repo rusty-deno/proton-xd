@@ -16,7 +16,10 @@ use wry::{
       Icon
     },
     clipboard::Clipboard,
-    dpi::PhysicalSize,
+    dpi::{
+      PhysicalSize,
+      self
+    },
   },
   webview::{
     WebViewBuilder,
@@ -42,20 +45,8 @@ pub struct Size {
   width: u32
 }
 impl Size {
-  pub fn physical_size(&self)-> PhysicalSize<u32> {
-    PhysicalSize::new(self.width,self.height)
-  }
-}
-
-#[deno_bindgen]
-pub struct Img {
-  path: String,
-  size: Size
-}
-impl Img {
-  pub fn to_icon(self)-> Option<Icon> {
-    let img=image::open(&self.path).unwrap_or_default().to_rgb8();
-    Icon::from_rgba(img.to_vec(),img.width(),img.height()).ok()
+  pub fn physical_size(&self)-> dpi::Size {
+    dpi::Size::Physical(PhysicalSize::new(self.width,self.height))
   }
 }
 
@@ -63,11 +54,11 @@ impl Img {
 #[deno_bindgen]
 pub struct WindowAttrs {
   #[serde(rename="innerSize")]
-  inner_size: Size,
+  inner_size: Option<Size>,
   #[serde(rename="minInnerSize")]
-  min_inner_size: Size,
-  #[serde(rename="minInnerSize")]
-  max_inner_size: Size,
+  min_inner_size: Option<Size>,
+  #[serde(rename="maxInnerSize")]
+  max_inner_size: Option<Size>,
   resizable: bool,
   minimizable: bool,
   maximizable: bool,
@@ -82,9 +73,7 @@ pub struct WindowAttrs {
   #[serde(rename="alwaysOnBottom")]
   always_on_bottom: bool,
   #[serde(rename="windowIcon")]
-  window_icon: Img,
-  #[serde(rename="taskbarIcon")]
-  taskbar_icon: Img,
+  window_icon: String,
   #[serde(rename="preferredTheme")]
   preferred_theme: Theme,
   focused: bool,
@@ -123,6 +112,12 @@ impl Rgba {
   }
 }
 
+pub fn to_icon(path: String)-> Option<Icon> {
+  let img=image::open(path).unwrap_or_default().to_rgb8();
+  Icon::from_rgba(img.to_vec(),img.width(),img.height()).ok()
+}
+
+
 #[deno_bindgen]
 pub struct WebViewAttrs {
   #[serde(rename="userAgent")]
@@ -144,6 +139,8 @@ pub struct WebViewAttrs {
   pub incognito: bool,
   pub autoplay: bool,
 }
+
+
 
 #[deno_bindgen]
 pub enum Content {
@@ -175,6 +172,16 @@ impl Header {
 }
 
 
+#[allow(unused_must_use)]
+pub fn set_size(window: &mut Option<dpi::Size>,size: Option<Size>) {
+  match size {
+    Some(s)=> {
+      window.insert(s.physical_size());
+    },
+    None=> (),
+  }
+}
+
 
 
 #[deno_bindgen]
@@ -189,12 +196,17 @@ pub fn init(window_atters: &str,webview_atters: &str,content: &str) {
 
 fn _init_webview(attrs: WindowAttrs,webview_atters: WebViewAttrs,content: Content) {
   let event_loop=EventLoop::new();
-  let window_builder=WindowBuilder::new();
+  let mut window_builder=WindowBuilder::new();
+  let win=&mut window_builder.window;
+  
+  set_size(&mut win.inner_size,attrs.inner_size);
+  set_size(&mut win.max_inner_size,attrs.max_inner_size);
+  set_size(&mut win.min_inner_size,attrs.min_inner_size);
+
+
 
 
   let window=window_builder
-  .with_inner_size(attrs.inner_size.physical_size())
-  .with_min_inner_size(attrs.min_inner_size.physical_size())
   .with_resizable(attrs.resizable)
   .with_minimizable(attrs.minimizable)
   .with_maximizable(attrs.maximizable)

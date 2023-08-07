@@ -6,8 +6,6 @@ export enum Default {
 
 export const defaultWindowAttrs={
   innerSize: {height: 480,width: 1080},
-  minInnerSize: {height: 10,width: 10},
-  maxInnerSize: {height: 480,width: 1080},//todo
   resizable: true,
   minimizable: true,
   maximizable: true,
@@ -19,20 +17,7 @@ export const defaultWindowAttrs={
   decorations: true,
   alwaysOnTop: false,
   alwaysOnBottom: false,
-  windowIcon: {
-    path: "",
-    size: {
-      height: 0,
-      width: 0
-    }
-  },//bad icon
-  taskbarIcon: {
-    path: "",
-    size: {
-      height: 0,
-      width: 0
-    }
-  },//bad icon
+  windowIcon: "",//bad icon
   preferredTheme: "Dark",
   focused: true,
   contentProtection: false,
@@ -59,7 +44,7 @@ export const defaultWebViewAttrs={
   autoplay: true,
 } satisfies WebViewAttributes;
 
-type IterObj={[key: string]: unknown};
+export type IterObj={[key: string]: unknown};
 
 
 // deno-lint-ignore no-explicit-any
