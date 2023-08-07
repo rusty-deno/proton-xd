@@ -25,15 +25,8 @@ export const defaultWindowAttrs={
 } satisfies WindowAttributes;
 
 export const defaultWebViewAttrs={
-  userAgent: "None",
   visible: true,
   transparent: false,
-  backgroundColor: {
-    r: 0,
-    g: 0,
-    b: 0,
-    a: 255
-  },
   zoomHotkeysEnabled: false,
   initializationScripts: [],
   clipboard: false,

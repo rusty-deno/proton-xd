@@ -145,7 +145,7 @@ fn set_size(window: &mut Option<dpi::Size>,size: Option<Size>) {
   }
 }
 
-pub fn to_icon(path: String)-> Option<Icon> {
+fn to_icon(path: String)-> Option<Icon> {
   let img=image::open(path).unwrap_or_default().to_rgb8();
   Icon::from_rgba(img.to_vec(),img.width(),img.height()).ok()
 }

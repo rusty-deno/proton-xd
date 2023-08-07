@@ -35,6 +35,9 @@ export interface WebViewAttributes {
   backForwardNavigationGestures?: boolean;
   incognito?: boolean;
   autoplay?: boolean;
+  html?: string;
+  url?: string|URL;
+  headers: Header[];
 }
 
 export type Content=string|URL|UrlAndHeaders;
