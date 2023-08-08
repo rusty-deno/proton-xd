@@ -112,6 +112,7 @@ export const { symbols, close } = Deno.dlopen(uri, {
   "spawn": {
     "parameters": ["function"],
     "result": "void",
+    "nonblocking": true
   },
 });
 export type FileDialogOptions = {

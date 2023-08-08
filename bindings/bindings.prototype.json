@@ -10,6 +10,7 @@
   },
   "spawn": {
     "parameters": ["function"],
-    "result": "void"
+    "result": "void",
+    "monblocking": true
   }
 }

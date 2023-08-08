@@ -1,7 +1,6 @@
 import { symbols } from "../../../bindings/bindings.ts";
 import { Some,None } from "../mod.ts";
 
-
 export class Thread<T> {
   private xd=None<T>(null);
   private fn: Deno.UnsafeCallback<{
@@ -22,8 +21,10 @@ export class Thread<T> {
   }
 
 
-  public spawn() {
-    symbols.spawn(this.fn.pointer);
+  public async spawn(): Promise<T> {
+    await symbols.spawn(this.fn.pointer);
+    // deno-lint-ignore no-explicit-any
+    return this.xd.value as any;
   }
 
   public terminate() {
