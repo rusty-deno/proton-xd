@@ -15,20 +15,10 @@ pub use thread::*;
 
 #[cfg(test)]
 mod tests {
-  use std::collections::HashMap;
   
   #[test]
   fn xd() {
-    let mut xd: HashMap<String,u8>=HashMap::new();
-
-    xd.insert("xd".to_string(),69);
     
-
-
-
-
-
   }
-
 
 }

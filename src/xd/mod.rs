@@ -49,10 +49,10 @@ pub fn init(window_atters: &str,webview_atters: &str) {
 
 
 #[allow(warnings)]
-fn _init_webview(attrs: WindowAttrs,webview_atters: WebViewAttrs)-> wry::Result<()> {
+fn _init_webview(window_attrs: WindowAttrs,webview_attrs: WebViewAttrs)-> wry::Result<()> {
   let event_loop=EventLoop::new();
-  let window=attrs.build(&event_loop)?;
-  let webview=webview_atters.build(window)?;
+  let window=window_attrs.build(&event_loop)?;
+  let webview=webview_attrs.build(window)?;
   
   event_loop.run(move |event, _, control_flow| {
     *control_flow=ControlFlow::Wait;
