@@ -64,7 +64,5 @@ export class Vec<T> extends Array<T> implements Clone {
   }
 }
 
-export function vec<T>(...iter: T[]) {
-  return Vec.fromArr(iter);
-}
+
 

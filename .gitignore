@@ -4,10 +4,9 @@ target/
 *.jpeg
 
 todo.*
-target/
 
-Cargo.lock
-deno.lock
+
+*.lock
 
 **/*.rs.bk
 

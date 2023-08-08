@@ -130,7 +130,7 @@ function getExt() {
 }
 
 
-function getPath(name: string) {
+function getName(name: string) {
   switch(Deno.build.os) {
     case "windows":
       return `${name}.dll`;
@@ -153,8 +153,8 @@ export function codegen(
   const bin=`bindings/bin/${Deno.build.target}.${getExt()}`;
   
   
-  ensureDirSync("bindings");
-  copySync(`${fetchPrefix}/${getPath(name)}`,bin).unwrapOrElse(e=> console.log(e));
+  ensureDirSync("bindings/bin");
+  copySync(`${fetchPrefix}/${getName(name)}`,bin).unwrapOrElse(e=> console.log(e));
   
   if(Deno.args.includes("--no-bindings")) Deno.exit(0);
 
