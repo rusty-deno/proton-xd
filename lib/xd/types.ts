@@ -1,4 +1,6 @@
-import { Size,Theme,Rgba,Header } from "../../bindings/bindings.ts";
+import { Header,Rgba,Theme,Size } from "../../bindings/bindings.ts";
+
+export type Content=string|URL;
 
 export interface WindowAttributes {
   innerSize?: Size;
@@ -40,21 +42,9 @@ export interface WebViewAttributes {
   headers?: Header[];
 }
 
-export type Content=string|URL|UrlAndHeaders;
-
-export abstract class UrlAndHeaders {
-  abstract url: string|URL;
-  abstract headers: Array<Header>
-}
 
 export function toContent(content: Content): string {
-  return JSON.stringify(content instanceof UrlAndHeaders?{
-    UrlAndHeaders: {
-      url: content.url.toString(),
-      headers: content.headers
-    }
-  }:
-  content instanceof URL?{
+  return JSON.stringify(content instanceof URL? {
     Url: {
       url: content.toString()
     }

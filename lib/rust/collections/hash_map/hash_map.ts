@@ -6,11 +6,10 @@ import { LinkedList } from '../linear/linked_list/linked_list.ts';
 import sum from 'npm:hash-sum';
 import { todo } from '../../error/panic.ts';
 
-export class HashMap<K,V> extends Iter<Entry<K,V>> implements Clone {
+export class HashMap<K,V> implements Clone {
   private buckets=new Vec<Option<LinkedList<Entry<K,V>>>>();
 
   constructor(...entries: Entry<K,V>[]) {
-    super();
     for(const entry of entries) this.set(entry[0],entry[1]);
   }
 
