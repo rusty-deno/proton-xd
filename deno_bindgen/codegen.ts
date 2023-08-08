@@ -155,8 +155,8 @@ export function codegen(
   
   ensureDirSync("bindings");
   copySync(`${fetchPrefix}/${getPath(name)}`,bin).unwrapOrElse(e=> console.log(e));
-
   
+  if(Deno.args.includes("--no-bindings")) Deno.exit(0);
 
   signature=Object.keys(signature)
     .sort()

@@ -1,3 +1,4 @@
+type None=undefined|null;
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
 
@@ -140,10 +141,10 @@ export type Theme =
   | "Light"
   | "Dark";
 export type WebViewAttrs = {
-  user_agent: string | undefined | null;
+  user_agent: string|None;
   visible: boolean;
   transparent: boolean;
-  background_color: Rgba | undefined | null;
+  background_color: Rgba|None;
   zoom_hotkeys_enabled: boolean;
   initialization_scripts: Array<string>;
   clipboard: boolean;
@@ -152,14 +153,14 @@ export type WebViewAttrs = {
   back_forward_navigation_gestures: boolean;
   incognito: boolean;
   autoplay: boolean;
-  html: string | undefined | null;
-  url: string | undefined | null;
-  headers: Array<Header> | undefined | null;
+  html: string|None;
+  url: string|None;
+  headers: Array<Header>|None;
 };
 export type WindowAttrs = {
-  inner_size: Size | undefined | null;
-  min_inner_size: Size | undefined | null;
-  max_inner_size: Size | undefined | null;
+  inner_size: Size|None;
+  min_inner_size: Size|None;
+  max_inner_size: Size|None;
   resizable: boolean;
   minimizable: boolean;
   maximizable: boolean;

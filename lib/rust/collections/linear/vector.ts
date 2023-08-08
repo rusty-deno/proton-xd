@@ -55,6 +55,16 @@ export class Vec<T> extends Array<T> implements Clone {
     return new Option(super.at(index));
   }
   
-  
+  public static fromIter<T>(iter: Iterable<T>) {
+    return new Vec(...iter);
+  }
+
+  public static fromArr<T>(arr: T[]) {
+    return this.fromIter(arr);
+  }
+}
+
+export function vec<T>(...iter: T[]) {
+  return Vec.fromArr(iter);
 }
 

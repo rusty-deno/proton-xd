@@ -64,7 +64,7 @@ pub struct WindowAttrs {
   #[serde(rename="alwaysOnBottom")]
   always_on_bottom: bool,
   #[serde(rename="windowIcon")]
-  window_icon: String,
+  window_icon: Option<String>,
   #[serde(rename="preferredTheme")]
   preferred_theme: Theme,
   focused: bool,
@@ -145,8 +145,13 @@ fn set_size(window: &mut Option<dpi::Size>,size: Option<Size>) {
   }
 }
 
-fn to_icon(path: String)-> Option<Icon> {
-  let img=image::open(path).unwrap_or_default().to_rgb8();
-  Icon::from_rgba(img.to_vec(),img.width(),img.height()).ok()
+fn to_icon(path: Option<String>)-> Option<Icon> {
+  match path {
+    Some(path)=> {
+      let img=image::open(path).unwrap_or_default().to_rgb8();
+      Icon::from_rgba(img.to_vec(),img.width(),img.height()).ok()
+    },
+    None=> None
+  }
 }
 
