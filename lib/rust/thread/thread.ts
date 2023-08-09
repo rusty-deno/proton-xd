@@ -32,5 +32,8 @@ export class Thread<T> {
     return this.xd;
   }
   
+  public static async spawn<T>(callback: ()=> T,name?: string) {
+    return await new Thread(callback,name).spawn();
+  }
 }
 
