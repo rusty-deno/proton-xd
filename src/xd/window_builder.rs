@@ -1,5 +1,7 @@
 use deno_bindgen::deno_bindgen;
 
+
+#[allow(unused_imports)]
 use wry::application::{
   event_loop::EventLoop,
   window::{
@@ -11,10 +13,27 @@ use wry::application::{
   },
   dpi::{
     PhysicalSize,
-    self
+    Size as size
   },
   error::OsError,
+  menu::MenuItem as menu_item,
 };
+#[allow(unused_imports)]
+use wry::application::{
+  menu::{
+    MenuBar,
+    MenuItemAttributes,
+    AboutMetadata as metadata
+  },
+  event_loop::ControlFlow,
+  event::{
+    StartCause,
+    Event,
+    WindowEvent
+  },
+  platform::windows::EventLoopExtWindows,
+};
+
 
 #[deno_bindgen]
 pub struct Size {
@@ -22,8 +41,8 @@ pub struct Size {
   width: u32
 }
 impl Size {
-  pub fn physical_size(&self)-> dpi::Size {
-    dpi::Size::Physical(PhysicalSize::new(self.width,self.height))
+  pub fn physical_size(&self)-> size {
+    size::Physical(PhysicalSize::new(self.width,self.height))
   }
 }
 
@@ -41,6 +60,90 @@ impl Theme {
     })
   }
 }
+
+#[deno_bindgen]
+pub struct AboutMetadata {
+  pub version: Option<String>,
+  pub authors: Option<Vec<String>>,
+  pub comments: Option<String>,
+  pub copyright: Option<String>,
+  pub license: Option<String>,
+  pub website: Option<String>,
+  pub website_label: Option<String>,
+}
+
+impl Into<metadata> for AboutMetadata {
+  fn into(self)-> metadata {
+    let AboutMetadata {
+      version,
+      authors,
+      comments,
+      copyright,
+      license,
+      website,
+      website_label
+    }=self;
+    metadata {
+      version,
+      authors,
+      comments,
+      copyright,
+      license,
+      website,
+      website_label
+    }
+  }
+}
+
+
+#[deno_bindgen]
+pub enum MenuItem {
+  About {
+    title: String,
+    metadata: AboutMetadata
+  },
+  Hide,
+  Services,
+  HideOthers,
+  ShowAll,
+  CloseWindow,
+  Quit,
+  Copy,
+  Cut,
+  Undo,
+  Redo,
+  SelectAll,
+  Paste,
+  EnterFullScreen,
+  Minimize,
+  Zoom,
+  Separator,
+}
+
+impl Into<menu_item> for MenuItem {
+  fn into(self)-> menu_item {
+    match self {
+      MenuItem::About {title,metadata}=> menu_item::About(title,metadata.into()),
+      MenuItem::Hide=> menu_item::Hide,
+      MenuItem::Services=> menu_item::Services,
+      MenuItem::HideOthers=> menu_item::HideOthers,
+      MenuItem::ShowAll=> menu_item::ShowAll,
+      MenuItem::CloseWindow=> menu_item::CloseWindow,
+      MenuItem::Quit=> menu_item::Quit,
+      MenuItem::Copy=> menu_item::Copy,
+      MenuItem::Cut=> menu_item::Cut,
+      MenuItem::Undo=> menu_item::Undo,
+      MenuItem::Redo=> menu_item::Redo,
+      MenuItem::SelectAll=> menu_item::SelectAll,
+      MenuItem::Paste=> menu_item::Paste,
+      MenuItem::EnterFullScreen=> menu_item::EnterFullScreen,
+      MenuItem::Minimize=> menu_item::Minimize,
+      MenuItem::Zoom=> menu_item::Zoom,
+      MenuItem::Separator=> menu_item::Separator,
+    }
+  }
+}
+
 
 #[deno_bindgen]
 pub struct WindowAttrs {
@@ -71,8 +174,9 @@ pub struct WindowAttrs {
   #[serde(rename="contentProtection")]
   content_protection: bool,
   #[serde(rename="visibleOnAllWorkspaces")]
-  visible_on_all_workspaces: bool,
+  visible_on_all_workspaces: bool
 }
+
 
 impl WindowAttrs {
   pub fn build(self,event_loop: &EventLoop<()>)-> Result<Window,OsError> {
@@ -95,10 +199,11 @@ impl WindowAttrs {
       transparent,
       visible,
       visible_on_all_workspaces,
-      window_icon
+      window_icon,
+      ..
     }=self;
 
-    let mut win=WindowAttributes {
+    let win=WindowAttributes {
       always_on_bottom,
       always_on_top,
       closable,
@@ -115,11 +220,11 @@ impl WindowAttrs {
       preferred_theme: preferred_theme.theme(),
       window_icon: to_icon(window_icon),
       visible_on_all_workspaces,
+      inner_size: to_size(inner_size),
+      max_inner_size: to_size(max_inner_size),
+      min_inner_size: to_size(min_inner_size),
       ..Default::default()
     };
-    set_size(&mut win.inner_size,inner_size);
-    set_size(&mut win.max_inner_size,max_inner_size);
-    set_size(&mut win.min_inner_size,min_inner_size);
 
     window_builder(win).build(event_loop)
   }
@@ -135,13 +240,10 @@ fn window_builder(window: WindowAttributes)-> WindowBuilder {
   window_builder
 }
 
-#[allow(unused_must_use)]
-fn set_size(window: &mut Option<dpi::Size>,size: Option<Size>) {
+fn to_size(size: Option<Size>)-> Option<size> {
   match size {
-    Some(s)=> {
-      window.insert(s.physical_size());
-    },
-    None=> (),
+    Some(s)=> Some(s.physical_size()),
+    None=> None,
   }
 }
 
@@ -155,3 +257,46 @@ fn to_icon(path: Option<String>)-> Option<Icon> {
   }
 }
 
+
+
+
+
+
+
+
+
+#[test]
+fn xd() {
+  let event_loop: EventLoop<()>=EventLoopExtWindows::new_any_thread();
+
+  let mut menu=MenuBar::new();
+
+  let mut submenu=MenuBar::new();
+  submenu.add_item(MenuItemAttributes::new("xd"));
+  submenu.add_native_item(menu_item::Quit);
+
+
+  menu.add_submenu("xd",true,submenu);
+  
+
+
+  let _window=WindowBuilder::new()
+  .with_menu(menu)
+  .build(&event_loop)
+  .unwrap();
+
+
+
+  
+  event_loop.run(move |event, _, control_flow| {
+    *control_flow=ControlFlow::Wait;
+    match event {
+      Event::NewEvents(StartCause::Init)=> println!(""),
+      Event::WindowEvent {
+        event: WindowEvent::CloseRequested,
+        ..
+      }=> *control_flow=ControlFlow::Exit,
+      _=> (),
+    }
+  });
+}
