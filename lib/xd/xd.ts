@@ -26,8 +26,8 @@ export class XD {
    * doesn't affect its other properties
    */
   public set window(window: WindowAttributes) {
-    this.webviewAttrs={
-      ...this.webviewAttrs,
+    this.windowAttrs={
+      ...this.windowAttrs,
       ...window
     };
   }
