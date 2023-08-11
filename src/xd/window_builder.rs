@@ -1,6 +1,5 @@
 use deno_bindgen::deno_bindgen;
 
-
 #[allow(unused_imports)]
 use wry::application::{
   event_loop::EventLoop,
@@ -23,7 +22,8 @@ use wry::application::{
   menu::{
     MenuBar,
     MenuItemAttributes,
-    AboutMetadata as metadata
+    AboutMetadata as metadata,
+    MenuId
   },
   event_loop::ControlFlow,
   event::{
@@ -40,8 +40,9 @@ pub struct Size {
   height: u32,
   width: u32
 }
-impl Size {
-  pub fn physical_size(&self)-> size {
+
+impl Into<size> for Size {
+  fn into(self) -> size {
     size::Physical(PhysicalSize::new(self.width,self.height))
   }
 }
@@ -95,6 +96,26 @@ impl Into<metadata> for AboutMetadata {
   }
 }
 
+#[deno_bindgen]
+pub struct Attributes {
+  id: String,
+  title: String,
+  // #[serde(rename="keyboardAccelerator")] todo
+  // keyboard_accelerator: Option<Accelerator>,
+  enabled: bool,
+  selected: bool,
+}
+
+impl<'a> Into<MenuItemAttributes<'a>> for Attributes {
+  fn into(self)-> MenuItemAttributes<'a> {
+    // MenuItemAttributes::new(self.title)
+    // .with_enabled(self.enabled)
+    // .with_id(MenuId::new(self.id))
+    // .with_selected(self.selected)
+    unimplemented!()
+  }
+}
+
 
 #[deno_bindgen]
 pub enum MenuItem {
@@ -122,27 +143,48 @@ pub enum MenuItem {
 
 impl Into<menu_item> for MenuItem {
   fn into(self)-> menu_item {
+    use MenuItem::*;
     match self {
-      MenuItem::About {title,metadata}=> menu_item::About(title,metadata.into()),
-      MenuItem::Hide=> menu_item::Hide,
-      MenuItem::Services=> menu_item::Services,
-      MenuItem::HideOthers=> menu_item::HideOthers,
-      MenuItem::ShowAll=> menu_item::ShowAll,
-      MenuItem::CloseWindow=> menu_item::CloseWindow,
-      MenuItem::Quit=> menu_item::Quit,
-      MenuItem::Copy=> menu_item::Copy,
-      MenuItem::Cut=> menu_item::Cut,
-      MenuItem::Undo=> menu_item::Undo,
-      MenuItem::Redo=> menu_item::Redo,
-      MenuItem::SelectAll=> menu_item::SelectAll,
-      MenuItem::Paste=> menu_item::Paste,
-      MenuItem::EnterFullScreen=> menu_item::EnterFullScreen,
-      MenuItem::Minimize=> menu_item::Minimize,
-      MenuItem::Zoom=> menu_item::Zoom,
-      MenuItem::Separator=> menu_item::Separator,
+      About {title,metadata}=> menu_item::About(title,metadata.into()),
+      Hide=> menu_item::Hide,
+      Services=> menu_item::Services,
+      HideOthers=> menu_item::HideOthers,
+      ShowAll=> menu_item::ShowAll,
+      CloseWindow=> menu_item::CloseWindow,
+      Quit=> menu_item::Quit,
+      Copy=> menu_item::Copy,
+      Cut=> menu_item::Cut,
+      Undo=> menu_item::Undo,
+      Redo=> menu_item::Redo,
+      SelectAll=> menu_item::SelectAll,
+      Paste=> menu_item::Paste,
+      EnterFullScreen=> menu_item::EnterFullScreen,
+      Minimize=> menu_item::Minimize,
+      Zoom=> menu_item::Zoom,
+      Separator=> menu_item::Separator,
     }
   }
 }
+
+#[deno_bindgen]
+pub enum Entity {
+  Item {
+    item: Attributes
+  },
+  NativeItem {
+    item: MenuItem
+  },
+  SubMenu {
+    menu: Box<Entity>
+  }
+}
+
+impl Entity {
+  pub fn for_each() {
+    unimplemented!()
+  }
+}
+
 
 
 #[deno_bindgen]
@@ -229,10 +271,9 @@ impl WindowAttrs {
     window_builder(win).build(event_loop)
   }
 
-
-
-
 }
+
+
 
 fn window_builder(window: WindowAttributes)-> WindowBuilder {
   let mut window_builder=WindowBuilder::new();
@@ -242,7 +283,7 @@ fn window_builder(window: WindowAttributes)-> WindowBuilder {
 
 fn to_size(size: Option<Size>)-> Option<size> {
   match size {
-    Some(s)=> Some(s.physical_size()),
+    Some(s)=> Some(s.into()),
     None=> None,
   }
 }
@@ -273,6 +314,8 @@ fn xd() {
 
   let mut submenu=MenuBar::new();
   submenu.add_item(MenuItemAttributes::new("xd"));
+  submenu.add_item(MenuItemAttributes::new("gg"));
+
   submenu.add_native_item(menu_item::Quit);
 
 
