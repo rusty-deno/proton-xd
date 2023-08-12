@@ -10,7 +10,6 @@ use wry::application::{
     Theme as theme,
     Icon,
     WindowAttributes,
-    WindowSizeConstraints
   },
   dpi::{
     PhysicalSize,
@@ -234,12 +233,7 @@ impl WindowAttrs {
       window_icon,
       ..
     }=self;
-
-    let to_constraint=|| {
-      WindowSizeConstraints {
-        ..Default::default()
-      }
-    };
+    
 
     let win=WindowAttributes {
       always_on_bottom,
