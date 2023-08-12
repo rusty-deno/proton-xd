@@ -1,6 +1,7 @@
 use deno_bindgen::deno_bindgen;
 
-#[allow(unused_imports)]
+
+
 use wry::application::{
   event_loop::EventLoop,
   window::{
@@ -15,23 +16,10 @@ use wry::application::{
     Size as size
   },
   error::OsError,
-  menu::MenuItem as menu_item,
-};
-#[allow(unused_imports)]
-use wry::application::{
   menu::{
-    MenuBar,
-    MenuItemAttributes,
-    AboutMetadata as metadata,
-    MenuId
-  },
-  event_loop::ControlFlow,
-  event::{
-    StartCause,
-    Event,
-    WindowEvent
-  },
-  platform::windows::EventLoopExtWindows,
+    MenuItem as menu_item,
+    AboutMetadata as metadata, MenuItemAttributes,
+  }
 };
 
 
@@ -108,10 +96,10 @@ pub struct Attributes {
 
 impl<'a> Into<MenuItemAttributes<'a>> for Attributes {
   fn into(self)-> MenuItemAttributes<'a> {
-    // MenuItemAttributes::new(self.title)
+    // let f=MenuItemAttributes::new(self.title.as_str())
     // .with_enabled(self.enabled)
-    // .with_id(MenuId::new(self.id))
-    // .with_selected(self.selected)
+    // .with_id(MenuId::new(self.id.as_str()))
+    // .with_selected(self.selected);
     unimplemented!()
   }
 }
@@ -304,42 +292,65 @@ fn to_icon(path: Option<String>)-> Option<Icon> {
 
 
 
+#[cfg(test)]
+mod tests {
+  use wry::application::{
+    menu::{
+      MenuBar,
+      MenuItemAttributes,
+      MenuItem
+    },
+    event_loop::{
+      EventLoop,
+      ControlFlow
+    },
+    event::{
+      StartCause,
+      Event,
+      WindowEvent
+    },
+    platform::windows::EventLoopExtWindows,
+    window::WindowBuilder,
+  };
+
+  #[test]
+  fn xd() {
+    let event_loop: EventLoop<()>=EventLoopExtWindows::new_any_thread();
+
+    let mut menu=MenuBar::new();
+
+    let mut submenu=MenuBar::new();
+    submenu.add_item(MenuItemAttributes::new("xd"));
+    submenu.add_item(MenuItemAttributes::new("gg"));
+
+    submenu.add_native_item(MenuItem::Quit);
 
 
-#[test]
-fn xd() {
-  let event_loop: EventLoop<()>=EventLoopExtWindows::new_any_thread();
-
-  let mut menu=MenuBar::new();
-
-  let mut submenu=MenuBar::new();
-  submenu.add_item(MenuItemAttributes::new("xd"));
-  submenu.add_item(MenuItemAttributes::new("gg"));
-
-  submenu.add_native_item(menu_item::Quit);
+    menu.add_submenu("xd",true,submenu);
+    
 
 
-  menu.add_submenu("xd",true,submenu);
+    let _window=WindowBuilder::new()
+    .with_menu(menu)
+    .build(&event_loop)
+    .unwrap();
+
+
+
+    
+    event_loop.run(move |event, _, control_flow| {
+      *control_flow=ControlFlow::Wait;
+      match event {
+        Event::NewEvents(StartCause::Init)=> (),
+        Event::WindowEvent {
+          event: WindowEvent::CloseRequested,
+          ..
+        }=> *control_flow=ControlFlow::Exit,
+        _=> (),
+      }
+    });
+  }
   
-
-
-  let _window=WindowBuilder::new()
-  .with_menu(menu)
-  .build(&event_loop)
-  .unwrap();
-
-
-
-  
-  event_loop.run(move |event, _, control_flow| {
-    *control_flow=ControlFlow::Wait;
-    match event {
-      Event::NewEvents(StartCause::Init)=> println!(""),
-      Event::WindowEvent {
-        event: WindowEvent::CloseRequested,
-        ..
-      }=> *control_flow=ControlFlow::Exit,
-      _=> (),
-    }
-  });
 }
+
+

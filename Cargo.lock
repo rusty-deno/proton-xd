@@ -2838,10 +2838,8 @@ dependencies = [
  "deno_bindgen",
  "image",
  "native-dialog",
- "once_cell",
  "screenshoter",
  "serde",
- "serde_json",
  "wry",
 ]
 

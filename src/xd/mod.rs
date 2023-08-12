@@ -3,8 +3,10 @@ pub mod webview_builder;
 pub use window_builder::*;
 pub use webview_builder::*;
 
-use deno_bindgen::deno_bindgen;
-use serde_json::from_str;
+use deno_bindgen::{
+  deno_bindgen,
+  serde_json::from_str
+};
 
 use wry::application::{
   clipboard::Clipboard,
@@ -44,15 +46,15 @@ pub fn init(window_atters: &str,webview_atters: &str) {
   let webview_atters: WebViewAttrs=from_str(webview_atters).unwrap();
   
   
-  _init_webview(window_atters,webview_atters).unwrap();
+  spawn_webview(window_atters,webview_atters).unwrap();
 }
 
 
-#[allow(warnings)]
-fn _init_webview(window_attrs: WindowAttrs,webview_attrs: WebViewAttrs)-> wry::Result<()> {
+
+fn spawn_webview(window_attrs: WindowAttrs,webview_attrs: WebViewAttrs)-> wry::Result<()> {
   let event_loop=EventLoop::new();
   let window=window_attrs.build(&event_loop)?;
-  let webview=webview_attrs.build(window)?;
+  let _webview=webview_attrs.build(window)?;
   
   event_loop.run(move |event, _, control_flow| {
     *control_flow=ControlFlow::Wait;
