@@ -9,7 +9,8 @@ use wry::application::{
     WindowBuilder,
     Theme as theme,
     Icon,
-    WindowAttributes
+    WindowAttributes,
+    WindowSizeConstraints
   },
   dpi::{
     PhysicalSize,
@@ -18,7 +19,8 @@ use wry::application::{
   error::OsError,
   menu::{
     MenuItem as menu_item,
-    AboutMetadata as metadata, MenuItemAttributes,
+    AboutMetadata as metadata,
+    MenuItemAttributes,
   }
 };
 
@@ -131,25 +133,25 @@ pub enum MenuItem {
 
 impl Into<menu_item> for MenuItem {
   fn into(self)-> menu_item {
-    use MenuItem::*;
+    use menu_item::*;
     match self {
-      About {title,metadata}=> menu_item::About(title,metadata.into()),
-      Hide=> menu_item::Hide,
-      Services=> menu_item::Services,
-      HideOthers=> menu_item::HideOthers,
-      ShowAll=> menu_item::ShowAll,
-      CloseWindow=> menu_item::CloseWindow,
-      Quit=> menu_item::Quit,
-      Copy=> menu_item::Copy,
-      Cut=> menu_item::Cut,
-      Undo=> menu_item::Undo,
-      Redo=> menu_item::Redo,
-      SelectAll=> menu_item::SelectAll,
-      Paste=> menu_item::Paste,
-      EnterFullScreen=> menu_item::EnterFullScreen,
-      Minimize=> menu_item::Minimize,
-      Zoom=> menu_item::Zoom,
-      Separator=> menu_item::Separator,
+      MenuItem::About {title,metadata}=> About(title,metadata.into()),
+      MenuItem::Hide=> Hide,
+      MenuItem::Services=> Services,
+      MenuItem::HideOthers=> HideOthers,
+      MenuItem::ShowAll=> ShowAll,
+      MenuItem::CloseWindow=> CloseWindow,
+      MenuItem::Quit=> Quit,
+      MenuItem::Copy=> Copy,
+      MenuItem::Cut=> Cut,
+      MenuItem::Undo=> Undo,
+      MenuItem::Redo=> Redo,
+      MenuItem::SelectAll=> SelectAll,
+      MenuItem::Paste=> Paste,
+      MenuItem::EnterFullScreen=> EnterFullScreen,
+      MenuItem::Minimize=> Minimize,
+      MenuItem::Zoom=> Zoom,
+      MenuItem::Separator=> Separator,
     }
   }
 }
@@ -233,6 +235,12 @@ impl WindowAttrs {
       ..
     }=self;
 
+    let to_constraint=|| {
+      WindowSizeConstraints {
+        ..Default::default()
+      }
+    };
+
     let win=WindowAttributes {
       always_on_bottom,
       always_on_top,
@@ -251,8 +259,8 @@ impl WindowAttrs {
       window_icon: to_icon(window_icon),
       visible_on_all_workspaces,
       inner_size: to_size(inner_size),
-      max_inner_size: to_size(max_inner_size),
-      min_inner_size: to_size(min_inner_size),
+      // max_inner_size: to_size(max_inner_size),
+      // min_inner_size: to_size(min_inner_size),
       ..Default::default()
     };
 
@@ -285,8 +293,6 @@ fn to_icon(path: Option<String>)-> Option<Icon> {
     None=> None
   }
 }
-
-
 
 
 
