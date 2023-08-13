@@ -117,29 +117,20 @@ impl WebViewAttrs {
 }
 
 fn to_rgba(color: Option<Rgba>)-> Option<RGBA> {
-  match color {
-    Some(rbga)=> Some((rbga.r,rbga.g,rbga.b,rbga.a)),
-    None=> None,
-  }
+  let rbga=color?;
+  Some((rbga.r,rbga.g,rbga.b,rbga.a))
 }
 
 fn to_url(url: Option<String>)-> Option<Url> {
-  match url {
-    Some(url)=> Url::from_str(&url).ok(),
-    None=> None
-  }
+  Url::from_str(&url?).ok()
 }
 
 fn to_header_map(headers: Option<Vec<Header>>)-> Option<HeaderMap> {
-  match headers {
-    Some(headers)=> {
-      let mut map=HeaderMap::new();
-      
-      for header in headers {
-        map.insert(header.name(),header.value());
-      }
-      Some(map)
-    },
-    None=> None
+  let headers=headers?;
+  let mut map=HeaderMap::new();
+  
+  for header in headers {
+    map.insert(header.name(),header.value());
   }
+  Some(map)
 }

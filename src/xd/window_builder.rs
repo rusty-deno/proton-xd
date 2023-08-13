@@ -18,8 +18,7 @@ use wry::application::{
   error::OsError,
   menu::{
     MenuItem as menu_item,
-    AboutMetadata as metadata,
-    MenuItemAttributes,
+    AboutMetadata as metadata, MenuBar, MenuItemAttributes, MenuId,
   }
 };
 
@@ -85,7 +84,7 @@ impl Into<metadata> for AboutMetadata {
   }
 }
 
-#[deno_bindgen]
+#[derive(serde::Serialize,serde::Deserialize)]
 pub struct Attributes {
   id: String,
   title: String,
@@ -95,15 +94,7 @@ pub struct Attributes {
   selected: bool,
 }
 
-impl<'a> Into<MenuItemAttributes<'a>> for Attributes {
-  fn into(self)-> MenuItemAttributes<'a> {
-    // let f=MenuItemAttributes::new(self.title.as_str())
-    // .with_enabled(self.enabled)
-    // .with_id(MenuId::new(self.id.as_str()))
-    // .with_selected(self.selected);
-    unimplemented!()
-  }
-}
+
 
 
 #[deno_bindgen]
@@ -155,8 +146,10 @@ impl Into<menu_item> for MenuItem {
   }
 }
 
+
+
 #[deno_bindgen]
-pub enum Entity {
+pub enum MenuEntity {
   Item {
     item: Attributes
   },
@@ -164,13 +157,7 @@ pub enum Entity {
     item: MenuItem
   },
   SubMenu {
-    menu: Box<Entity>
-  }
-}
-
-impl Entity {
-  pub fn for_each() {
-    unimplemented!()
+    menu: Vec<MenuEntity>
   }
 }
 
@@ -205,11 +192,13 @@ pub struct WindowAttrs {
   #[serde(rename="contentProtection")]
   content_protection: bool,
   #[serde(rename="visibleOnAllWorkspaces")]
-  visible_on_all_workspaces: bool
+  visible_on_all_workspaces: bool,
+  menu: Vec<MenuEntity>
 }
 
 
 impl WindowAttrs {
+  #[allow(warnings)]
   pub fn build(self,event_loop: &EventLoop<()>)-> Result<Window,OsError> {
     let WindowAttrs {
       always_on_bottom,
@@ -231,7 +220,7 @@ impl WindowAttrs {
       visible,
       visible_on_all_workspaces,
       window_icon,
-      ..
+      menu
     }=self;
     
 
@@ -253,10 +242,33 @@ impl WindowAttrs {
       window_icon: to_icon(window_icon),
       visible_on_all_workspaces,
       inner_size: to_size(inner_size),
-      // max_inner_size: to_size(max_inner_size),
-      // min_inner_size: to_size(min_inner_size),
+      max_inner_size: to_size(max_inner_size),
+      min_inner_size: to_size(min_inner_size),
       ..Default::default()
     };
+    let ser_menu=menu;
+    let mut menu=MenuBar::new();
+    
+
+    for entity in ser_menu {
+      match entity {
+        MenuEntity::Item { item }=> {
+          menu.add_item(
+            MenuItemAttributes::new(&item.title)
+            .with_enabled(item.enabled)
+            .with_id(MenuId::new(&item.id))
+            .with_selected(item.selected)
+          );
+        },
+        MenuEntity::NativeItem { item }=> {
+          menu.add_native_item(item.into());
+        },
+        MenuEntity::SubMenu { menu }=> {
+          unimplemented!()
+        },
+      }
+    }
+
 
     window_builder(win).build(event_loop)
   }
@@ -272,20 +284,12 @@ fn window_builder(window: WindowAttributes)-> WindowBuilder {
 }
 
 fn to_size(size: Option<Size>)-> Option<size> {
-  match size {
-    Some(s)=> Some(s.into()),
-    None=> None,
-  }
+  Some(size?.into())
 }
 
 fn to_icon(path: Option<String>)-> Option<Icon> {
-  match path {
-    Some(path)=> {
-      let img=image::open(path).unwrap_or_default().to_rgb8();
-      Icon::from_rgba(img.to_vec(),img.width(),img.height()).ok()
-    },
-    None=> None
-  }
+  let img=image::open(path?).unwrap_or_default().to_rgb8();
+  Icon::from_rgba(img.to_vec(),img.width(),img.height()).ok()
 }
 
 
@@ -322,8 +326,8 @@ mod tests {
     let mut submenu=MenuBar::new();
     submenu.add_item(MenuItemAttributes::new("xd"));
     submenu.add_item(MenuItemAttributes::new("gg"));
-
     submenu.add_native_item(MenuItem::Quit);
+    
 
 
     menu.add_submenu("xd",true,submenu);
@@ -351,6 +355,7 @@ mod tests {
     });
   }
   
+
 }
 
 
