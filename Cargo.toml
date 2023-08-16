@@ -10,7 +10,7 @@ crate-type = ["cdylib"]
 deno_bindgen = "0.8.1"
 serde = { version = "1", features = ["derive"] }
 screenshoter = "0.1.1"
-wry = { path = "./wry" }
+wry = { git = "https://github.com/kakashi-69-xd/wry.git" }
 native-dialog = "0.6.4"
 image = "0.24.6"
 
