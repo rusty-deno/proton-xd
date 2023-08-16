@@ -45,9 +45,10 @@ pub enum Theme {
 
 impl Theme {
   pub fn theme(&self)-> Option<theme> {
+    use theme::*;
     Some(match self {
-      Theme::Light=> theme::Light,
-      Theme::Dark=> theme::Dark,
+      Self::Light=> Light,
+      Self::Dark=> Dark,
     })
   }
 }
