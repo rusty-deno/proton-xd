@@ -18,7 +18,10 @@ mod tests {
   
   #[test]
   fn xd() {
-    
+    let mut xd: u8=68;
+    let ptr=Box::new(&mut xd);
+    ptr.checked_add(1).unwrap();
+    println!("{xd}");
   }
 
 }

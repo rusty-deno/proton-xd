@@ -1,6 +1,5 @@
+
 use deno_bindgen::deno_bindgen;
-
-
 
 use wry::application::{
   event_loop::EventLoop,
@@ -18,9 +17,12 @@ use wry::application::{
   error::OsError,
   menu::{
     MenuItem as menu_item,
-    AboutMetadata as metadata, MenuBar, MenuItemAttributes, MenuId,
+    AboutMetadata as metadata, MenuBar,
   }
 };
+
+
+
 
 
 #[deno_bindgen]
@@ -51,6 +53,7 @@ impl Theme {
 }
 
 #[deno_bindgen]
+#[derive(Clone)]
 pub struct AboutMetadata {
   pub version: Option<String>,
   pub authors: Option<Vec<String>>,
@@ -84,7 +87,7 @@ impl Into<metadata> for AboutMetadata {
   }
 }
 
-#[derive(serde::Serialize,serde::Deserialize)]
+#[deno_bindgen]
 pub struct Attributes {
   id: String,
   title: String,
@@ -93,7 +96,6 @@ pub struct Attributes {
   enabled: bool,
   selected: bool,
 }
-
 
 
 
@@ -157,10 +159,11 @@ pub enum MenuEntity {
     item: MenuItem
   },
   SubMenu {
-    menu: Vec<MenuEntity>
+    title: String,
+    menu: Vec<MenuEntity>,
+    enabled: bool
   }
 }
-
 
 
 #[deno_bindgen]
@@ -200,6 +203,7 @@ pub struct WindowAttrs {
 impl WindowAttrs {
   #[allow(warnings)]
   pub fn build(self,event_loop: &EventLoop<()>)-> Result<Window,OsError> {
+    use MenuEntity::*;
     let WindowAttrs {
       always_on_bottom,
       always_on_top,
@@ -222,7 +226,6 @@ impl WindowAttrs {
       window_icon,
       menu
     }=self;
-    
 
     let win=WindowAttributes {
       always_on_bottom,
@@ -246,35 +249,40 @@ impl WindowAttrs {
       min_inner_size: to_size(min_inner_size),
       ..Default::default()
     };
+    
     let ser_menu=menu;
     let mut menu=MenuBar::new();
     
 
-    for entity in ser_menu {
-      match entity {
-        MenuEntity::Item { item }=> {
-          menu.add_item(
-            MenuItemAttributes::new(&item.title)
-            .with_enabled(item.enabled)
-            .with_id(MenuId::new(&item.id))
-            .with_selected(item.selected)
-          );
-        },
-        MenuEntity::NativeItem { item }=> {
-          menu.add_native_item(item.into());
-        },
-        MenuEntity::SubMenu { menu }=> {
-          unimplemented!()
-        },
-      }
-    }
-
-
-    window_builder(win).build(event_loop)
+    window_builder(win)
+    .with_menu(menu)
+    .build(event_loop)
   }
 
 }
 
+
+// match entity {
+//   Item { item }=> {
+//     parent.borrow_mut().add_item(
+//       MenuItemAttributes::new(&item.title)
+//       .with_enabled(item.enabled)
+//       .with_id(MenuId::new(&item.id))
+//       .with_selected(item.selected)
+//     );
+//   },
+//   NativeItem { item }=> {
+//     parent.borrow_mut().add_native_item(item.clone().into());
+//   },
+//   SubMenu { menu, title, enabled }=> {
+//     // let mut submenu=MenuBar::new();
+//     // parent.borrow_mut().add_submenu(title,*enabled,submenu);
+
+//     // families.borrow_mut().push((RefCell::new(&mut submenu),menu));
+//     unimplemented!();
+    
+//   },
+// }
 
 
 fn window_builder(window: WindowAttributes)-> WindowBuilder {
@@ -291,8 +299,6 @@ fn to_icon(path: Option<String>)-> Option<Icon> {
   let img=image::open(path?).unwrap_or_default().to_rgb8();
   Icon::from_rgba(img.to_vec(),img.width(),img.height()).ok()
 }
-
-
 
 
 
@@ -331,7 +337,6 @@ mod tests {
 
 
     menu.add_submenu("xd",true,submenu);
-    
 
 
     let _window=WindowBuilder::new()
@@ -355,7 +360,6 @@ mod tests {
     });
   }
   
-
 }
 
 
