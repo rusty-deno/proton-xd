@@ -8,17 +8,14 @@ use wry::application::{
     WindowBuilder,
     Theme as theme,
     Icon,
-    WindowAttributes,
+    WindowAttributes, WindowSizeConstraints,
   },
   dpi::{
     PhysicalSize,
-    Size as size
+    Size as size,
+    PixelUnit
   },
   error::OsError,
-  menu::{
-    MenuItem as menu_item,
-    AboutMetadata as metadata, MenuBar,
-  }
 };
 
 
@@ -53,128 +50,19 @@ impl Theme {
   }
 }
 
-#[deno_bindgen]
-#[derive(Clone)]
-pub struct AboutMetadata {
-  pub version: Option<String>,
-  pub authors: Option<Vec<String>>,
-  pub comments: Option<String>,
-  pub copyright: Option<String>,
-  pub license: Option<String>,
-  pub website: Option<String>,
-  pub website_label: Option<String>,
-}
-
-impl Into<metadata> for AboutMetadata {
-  fn into(self)-> metadata {
-    let AboutMetadata {
-      version,
-      authors,
-      comments,
-      copyright,
-      license,
-      website,
-      website_label
-    }=self;
-    metadata {
-      version,
-      authors,
-      comments,
-      copyright,
-      license,
-      website,
-      website_label
-    }
-  }
-}
-
-#[deno_bindgen]
-pub struct Attributes {
-  id: String,
-  title: String,
-  // #[serde(rename="keyboardAccelerator")] todo
-  // keyboard_accelerator: Option<Accelerator>,
-  enabled: bool,
-  selected: bool,
-}
-
-
-
-#[deno_bindgen]
-pub enum MenuItem {
-  About {
-    title: String,
-    metadata: AboutMetadata
-  },
-  Hide,
-  Services,
-  HideOthers,
-  ShowAll,
-  CloseWindow,
-  Quit,
-  Copy,
-  Cut,
-  Undo,
-  Redo,
-  SelectAll,
-  Paste,
-  EnterFullScreen,
-  Minimize,
-  Zoom,
-  Separator,
-}
-
-impl Into<menu_item> for MenuItem {
-  fn into(self)-> menu_item {
-    use menu_item::*;
-    match self {
-      MenuItem::About {title,metadata}=> About(title,metadata.into()),
-      MenuItem::Hide=> Hide,
-      MenuItem::Services=> Services,
-      MenuItem::HideOthers=> HideOthers,
-      MenuItem::ShowAll=> ShowAll,
-      MenuItem::CloseWindow=> CloseWindow,
-      MenuItem::Quit=> Quit,
-      MenuItem::Copy=> Copy,
-      MenuItem::Cut=> Cut,
-      MenuItem::Undo=> Undo,
-      MenuItem::Redo=> Redo,
-      MenuItem::SelectAll=> SelectAll,
-      MenuItem::Paste=> Paste,
-      MenuItem::EnterFullScreen=> EnterFullScreen,
-      MenuItem::Minimize=> Minimize,
-      MenuItem::Zoom=> Zoom,
-      MenuItem::Separator=> Separator,
-    }
-  }
-}
-
-
-
-#[deno_bindgen]
-pub enum MenuEntity {
-  Item {
-    item: Attributes
-  },
-  NativeItem {
-    item: MenuItem
-  },
-  SubMenu {
-    title: String,
-    menu: Vec<MenuEntity>,
-    enabled: bool
-  }
-}
-
 
 #[deno_bindgen]
 pub struct WindowAttrs {
   #[serde(rename="innerSize")]
   inner_size: Option<Size>,
-  #[serde(rename="minInnerSize")]
-  min_inner_size: Option<Size>,
-  #[serde(rename="maxInnerSize")]
-  max_inner_size: Option<Size>,
+  #[serde(rename="minHeight")]
+  min_height: Option<PixelUnit>,
+  #[serde(rename="maxHeight")]
+  max_height: Option<PixelUnit>,
+  #[serde(rename="minWidth")]
+  min_width: Option<PixelUnit>,
+  #[serde(rename="maxWidth")]
+  max_width: Option<PixelUnit>,
   resizable: bool,
   minimizable: bool,
   maximizable: bool,
@@ -196,15 +84,13 @@ pub struct WindowAttrs {
   #[serde(rename="contentProtection")]
   content_protection: bool,
   #[serde(rename="visibleOnAllWorkspaces")]
-  visible_on_all_workspaces: bool,
-  menu: Vec<MenuEntity>
+  visible_on_all_workspaces: bool
 }
 
 
 impl WindowAttrs {
-  #[allow(warnings)]
+
   pub fn build(self,event_loop: &EventLoop<()>)-> Result<Window,OsError> {
-    use MenuEntity::*;
     let WindowAttrs {
       always_on_bottom,
       always_on_top,
@@ -213,10 +99,12 @@ impl WindowAttrs {
       decorations,
       focused,
       inner_size,
-      max_inner_size,
+      max_height,
+      max_width,
+      min_height,
+      min_width,
       maximizable,
       maximized,
-      min_inner_size,
       minimizable,
       preferred_theme,
       resizable,
@@ -225,7 +113,6 @@ impl WindowAttrs {
       visible,
       visible_on_all_workspaces,
       window_icon,
-      menu
     }=self;
 
     let win=WindowAttributes {
@@ -246,44 +133,17 @@ impl WindowAttrs {
       window_icon: to_icon(window_icon),
       visible_on_all_workspaces,
       inner_size: to_size(inner_size),
-      max_inner_size: to_size(max_inner_size),
-      min_inner_size: to_size(min_inner_size),
+      inner_size_constraints: to_constraints(min_width,min_height,max_width,max_height),
       ..Default::default()
     };
     
-    let ser_menu=menu;
-    let mut menu=MenuBar::new();
-    
 
     window_builder(win)
-    .with_menu(menu)
     .build(event_loop)
   }
 
 }
 
-
-// match entity {
-//   Item { item }=> {
-//     parent.borrow_mut().add_item(
-//       MenuItemAttributes::new(&item.title)
-//       .with_enabled(item.enabled)
-//       .with_id(MenuId::new(&item.id))
-//       .with_selected(item.selected)
-//     );
-//   },
-//   NativeItem { item }=> {
-//     parent.borrow_mut().add_native_item(item.clone().into());
-//   },
-//   SubMenu { menu, title, enabled }=> {
-//     // let mut submenu=MenuBar::new();
-//     // parent.borrow_mut().add_submenu(title,*enabled,submenu);
-
-//     // families.borrow_mut().push((RefCell::new(&mut submenu),menu));
-//     unimplemented!();
-    
-//   },
-// }
 
 
 fn window_builder(window: WindowAttributes)-> WindowBuilder {
@@ -301,66 +161,12 @@ fn to_icon(path: Option<String>)-> Option<Icon> {
   Icon::from_rgba(img.to_vec(),img.width(),img.height()).ok()
 }
 
-
-
-#[cfg(test)]
-mod tests {
-  use wry::application::{
-    menu::{
-      MenuBar,
-      MenuItemAttributes,
-      MenuItem
-    },
-    event_loop::{
-      EventLoop,
-      ControlFlow
-    },
-    event::{
-      StartCause,
-      Event,
-      WindowEvent
-    },
-    platform::windows::EventLoopExtWindows,
-    window::WindowBuilder,
-  };
-
-  #[test]
-  fn xd() {
-    let event_loop: EventLoop<()>=EventLoopExtWindows::new_any_thread();
-
-    let mut menu=MenuBar::new();
-
-    let mut submenu=MenuBar::new();
-    submenu.add_item(MenuItemAttributes::new("xd"));
-    submenu.add_item(MenuItemAttributes::new("gg"));
-    submenu.add_native_item(MenuItem::Quit);
-    
-
-
-    menu.add_submenu("xd",true,submenu);
-
-
-    let _window=WindowBuilder::new()
-    .with_menu(menu)
-    .build(&event_loop)
-    .unwrap();
-
-
-
-    
-    event_loop.run(move |event, _, control_flow| {
-      *control_flow=ControlFlow::Wait;
-      match event {
-        Event::NewEvents(StartCause::Init)=> (),
-        Event::WindowEvent {
-          event: WindowEvent::CloseRequested,
-          ..
-        }=> *control_flow=ControlFlow::Exit,
-        _=> (),
-      }
-    });
+fn to_constraints(min_width: Option<PixelUnit>,min_height: Option<PixelUnit>,max_width: Option<PixelUnit>,max_height: Option<PixelUnit>)-> WindowSizeConstraints {
+  WindowSizeConstraints {
+    max_height,
+    max_width,
+    min_height,
+    min_width
   }
-  
 }
-
 
