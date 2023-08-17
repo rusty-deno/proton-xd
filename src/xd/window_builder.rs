@@ -14,7 +14,7 @@ use wry::application::{
   dpi::{
     PhysicalSize,
     Size as size,
-    PixelUnit
+    PixelUnit, PhysicalPixel
   },
   error::OsError,
 };
@@ -56,13 +56,13 @@ pub struct WindowAttrs {
   #[serde(rename="innerSize")]
   inner_size: Option<Size>,
   #[serde(rename="minHeight")]
-  min_height: Option<PixelUnit>,
+  min_height: Option<i32>,
   #[serde(rename="maxHeight")]
-  max_height: Option<PixelUnit>,
+  max_height: Option<i32>,
   #[serde(rename="minWidth")]
-  min_width: Option<PixelUnit>,
+  min_width: Option<i32>,
   #[serde(rename="maxWidth")]
-  max_width: Option<PixelUnit>,
+  max_width: Option<i32>,
   resizable: bool,
   minimizable: bool,
   maximizable: bool,
@@ -160,12 +160,10 @@ fn to_icon(path: Option<String>)-> Option<Icon> {
   Icon::from_rgba(img.to_vec(),img.width(),img.height()).ok()
 }
 
-fn to_constraints(min_width: Option<PixelUnit>,min_height: Option<PixelUnit>,max_width: Option<PixelUnit>,max_height: Option<PixelUnit>)-> WindowSizeConstraints {
-  WindowSizeConstraints {
-    max_height,
-    max_width,
-    min_height,
-    min_width
-  }
+fn to_constraints(min_width: Option<i32>,min_height: Option<i32>,max_width: Option<i32>,max_height: Option<i32>)-> WindowSizeConstraints {
+  let to_pixel=|s: Option<i32>| {
+    Some(PixelUnit::Physical(PhysicalPixel::new(s?)))
+  };
+  WindowSizeConstraints::new(to_pixel(min_width),to_pixel(min_height),to_pixel(max_width),to_pixel(max_height))
 }
 

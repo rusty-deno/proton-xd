@@ -1,4 +1,3 @@
-type None=undefined|null;
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
 
@@ -112,7 +111,7 @@ export const { symbols, close } = Deno.dlopen(uri, {
   "spawn": {
     "parameters": ["function"],
     "result": "void",
-    "nonblocking": true
+    "monblocking": true,
   },
 });
 export type FileDialogOptions = {
@@ -142,10 +141,10 @@ export type Theme =
   | "Light"
   | "Dark";
 export type WebViewAttrs = {
-  user_agent: string|None;
+  user_agent: string | undefined | null;
   visible: boolean;
   transparent: boolean;
-  background_color: Rgba|None;
+  background_color: Rgba | undefined | null;
   zoom_hotkeys_enabled: boolean;
   initialization_scripts: Array<string>;
   clipboard: boolean;
@@ -154,14 +153,16 @@ export type WebViewAttrs = {
   back_forward_navigation_gestures: boolean;
   incognito: boolean;
   autoplay: boolean;
-  html: string|None;
-  url: string|None;
-  headers: Array<Header>|None;
+  html: string | undefined | null;
+  url: string | undefined | null;
+  headers: Array<Header> | undefined | null;
 };
 export type WindowAttrs = {
-  inner_size: Size|None;
-  min_inner_size: Size|None;
-  max_inner_size: Size|None;
+  inner_size: Size | undefined | null;
+  min_height: PixelUnit | undefined | null;
+  max_height: PixelUnit | undefined | null;
+  min_width: PixelUnit | undefined | null;
+  max_width: PixelUnit | undefined | null;
   resizable: boolean;
   minimizable: boolean;
   maximizable: boolean;
@@ -173,7 +174,7 @@ export type WindowAttrs = {
   decorations: boolean;
   always_on_top: boolean;
   always_on_bottom: boolean;
-  window_icon: string;
+  window_icon: string | undefined | null;
   preferred_theme: Theme;
   focused: boolean;
   content_protection: boolean;

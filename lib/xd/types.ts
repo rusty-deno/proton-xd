@@ -4,8 +4,10 @@ export type Content=string|URL;
 
 export interface WindowAttributes {
   innerSize?: Size;
-  minInnerSize?: Size;//todo
-  maxInnerSize?: Size;//todo
+  minHeight?: number;//todo
+  maxHeight?: number;//todo
+  minWidth?: number;
+  maxWidth?: number;
   resizable?: boolean;
   minimizable?: boolean;
   maximizable?: boolean;
