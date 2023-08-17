@@ -59,7 +59,6 @@ pub struct Position {
 }
 
 
-
 #[deno_bindgen]
 pub struct WindowAttrs {
   #[serde(rename="innerSize")]
@@ -87,7 +86,6 @@ pub struct WindowAttrs {
   always_on_bottom: bool,
   #[serde(rename="windowIcon")]
   window_icon: Option<String>,
-  #[serde(rename="preferredTheme")]
   theme: Theme,
   focused: bool,
   #[serde(rename="contentProtection")]

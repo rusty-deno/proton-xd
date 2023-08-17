@@ -1,4 +1,7 @@
-import { Header,Rgba,Theme,Size } from "../../bindings/bindings.ts";
+import { Header,Rgba,Theme,Size,Position } from "../../bindings/bindings.ts";
+export type {
+  Position
+};
 
 export type Content=string|URL;
 
@@ -19,11 +22,12 @@ export interface WindowAttributes {
   decorations?: boolean;
   alwaysOnTop?: boolean;
   alwaysOnBottom?: boolean;
-  preferredTheme?: Theme;
+  theme?: Theme;
   focused?: boolean;
   contentProtection?: boolean;
   visibleOnAllWorkspaces?: boolean;
   windowIcon?: string;
+  position?: Position;
 }
 
 export interface WebViewAttributes {

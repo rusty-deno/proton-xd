@@ -1,19 +1,22 @@
-// import { XD,$url } from "./mod.ts";
+import { XD,$url } from "./mod.ts";
 
 
-// XD.instantiate($url("./index.html",import.meta.url),{
-//   title: "my-app",
+XD.instantiate($url("./index.html",import.meta.url),{
+  title: "my-app",
+});
+
+
+
+// const finalizer=new FinalizationRegistry((val)=> {
+//   console.log("Xd",val);
+// });
+
+// const obj=[69];
+
+// finalizer.register(obj,()=> {
+//   console.log("xd");
 // });
 
 
-type Tree=(string|Tree)[];
-
-const xd: Tree=[];
-
-for await(const entity of Deno.readDir(`${Deno.env.get("HOME")}/Desktop`)) {
-  xd.push(entity.name);
-}
-
-console.log(xd);
 
 

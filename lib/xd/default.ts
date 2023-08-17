@@ -16,7 +16,7 @@ export const defaultWindowAttrs={
   decorations: true,
   alwaysOnTop: false,
   alwaysOnBottom: false,
-  preferredTheme: "Dark",
+  theme: "Dark",
   focused: true,
   contentProtection: false,
   visibleOnAllWorkspaces: false,
