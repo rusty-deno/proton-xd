@@ -8,7 +8,8 @@ use wry::application::{
     WindowBuilder,
     Theme as theme,
     Icon,
-    WindowAttributes, WindowSizeConstraints,
+    WindowAttributes,
+    WindowSizeConstraints,
   },
   dpi::{
     PhysicalSize,
@@ -29,7 +30,7 @@ pub struct Size {
 }
 
 impl Into<size> for Size {
-  fn into(self) -> size {
+  fn into(self)-> size {
     size::Physical(PhysicalSize::new(self.width,self.height))
   }
 }
@@ -42,10 +43,9 @@ pub enum Theme {
 
 impl Theme {
   pub fn theme(&self)-> Option<theme> {
-    use theme::*;
     Some(match self {
-      Self::Light=> Light,
-      Self::Dark=> Dark,
+      Self::Light=> theme::Light,
+      Self::Dark=> theme::Dark,
     })
   }
 }
@@ -115,7 +115,7 @@ impl WindowAttrs {
       window_icon,
     }=self;
 
-    let win=WindowAttributes {
+    let window=WindowAttributes {
       always_on_bottom,
       always_on_top,
       closable,
@@ -138,10 +138,9 @@ impl WindowAttrs {
     };
     
 
-    window_builder(win)
+    window_builder(window)
     .build(event_loop)
   }
-
 }
 
 
