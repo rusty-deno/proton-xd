@@ -11,3 +11,9 @@ export enum MessageType {
     Warning,
     Error
 }
+
+export interface SaveFileOptions {
+    filename?: string;
+    location?: string;
+}
+  
