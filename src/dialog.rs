@@ -2,18 +2,18 @@ use crate::ffi::to_str;
 use native_dialog::{
   MessageDialog,
   MessageType::{
-    Error,
     Info,
     Warning,
+    Error,
     self,
   },
-  FileDialog
+  FileDialog,
 };
 use deno_bindgen::{
   deno_bindgen,
   serde_json::{
     from_str,
-    to_string
+    to_string,
   }
 };
 
@@ -94,30 +94,31 @@ impl FileOpenerType {
       FileOpenerType::SingleFile=> dialog.show_open_single_file(),
       FileOpenerType::SingleDir=> dialog.show_open_single_dir(),
       _=> return self.show_multiple_opener(dialog)
-    }.unwrap_or(Some("".into())).unwrap_or_default().to_str().unwrap_or_default().to_string()
+    }.unwrap_or(Some("".into()))
+    .unwrap_or_default()
+    .to_str()
+    .unwrap_or_default()
+    .to_string()
   }
 
   fn show_multiple_opener(self,dialog: FileDialog)-> String {
     let paths=dialog.show_open_multiple_file().unwrap();
-    return to_string(&paths).unwrap_or(String::from("[]"));
+    to_string(&paths).unwrap_or(String::from("[]"))
   }
-
 }
 
 
 #[deno_bindgen(non_blocking)]
 pub fn open(options: &str)-> String {
-  let opt: FileDialogOptions=from_str(options).unwrap();
-
-  let file_dialog=FileDialog::new()
-  .set_filename(&opt.filename)
-  .set_location(&opt.location);
-
-  opt.typ.show(file_dialog)
+  _open(options)
 }
 
 #[deno_bindgen]
 pub fn open_sync(options: &str)-> String {
+  _open(options)
+}
+
+fn _open(options: &str)-> String {
   let opt: FileDialogOptions=from_str(options).unwrap();
 
   let file_dialog=FileDialog::new()
@@ -129,30 +130,23 @@ pub fn open_sync(options: &str)-> String {
 
 #[deno_bindgen(non_blocking)]
 pub fn save(options: &str)-> String {
-  let opt: FileDialogOptions=from_str(options).unwrap();
-  let file_dialog=FileDialog::new()
-  .set_filename(&opt.filename)
-  .set_location(&opt.location);
-
-  file_dialog.show_save_single_file()
-  .unwrap()
-  .unwrap_or_default()
-  .to_str()
-  .unwrap_or_default()
-  .to_string()
+  _save(options).unwrap_or_default()
 }
 
 #[deno_bindgen]
 pub fn save_sync(options: &str)-> String {
+  _save(options).unwrap_or_default()
+}
+
+fn _save(options: &str)-> native_dialog::Result<String> {
   let opt: FileDialogOptions=from_str(options).unwrap();
   let file_dialog=FileDialog::new()
   .set_filename(&opt.filename)
   .set_location(&opt.location);
 
-  file_dialog.show_save_single_file()
-  .unwrap()
+  Ok(file_dialog.show_save_single_file()?
   .unwrap_or_default()
   .to_str()
   .unwrap_or_default()
-  .to_string()
+  .to_string())
 }

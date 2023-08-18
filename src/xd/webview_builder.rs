@@ -18,8 +18,6 @@ use wry::{
   }
 };
 
-
-
 #[deno_bindgen]
 pub struct Rgba {
   r: u8,
