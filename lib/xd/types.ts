@@ -1,14 +1,22 @@
 import { Header,Rgba,Theme,Size,Position } from "../../bindings/bindings.ts";
 export type {
-  Position
+  Position,
+  Theme,
+  Rgba,
+  Header,
+  Size
 };
 
+/**
+ * Content may be an URL or html/text
+ */
 export type Content=string|URL;
+
 
 export interface WindowAttributes {
   innerSize?: Size;
-  minHeight?: number;//todo
-  maxHeight?: number;//todo
+  minHeight?: number;
+  maxHeight?: number;
   minWidth?: number;
   maxWidth?: number;
   resizable?: boolean;
@@ -30,6 +38,7 @@ export interface WindowAttributes {
   position?: Position;
 }
 
+
 export interface WebViewAttributes {
   userAgent?: string;
   visible?: boolean;
@@ -45,12 +54,14 @@ export interface WebViewAttributes {
   autoplay?: boolean;
   html?: string;
   url?: string|URL;
-  headers?: Header[];
+  headers?: Array<Header>;
 }
 
-
+/**
+ * serializes the Content enum
+ */
 export function toContent(content: Content): string {
-  return JSON.stringify(content instanceof URL? {
+  return JSON.stringify(isURL(content)? {
     Url: {
       url: content.toString()
     }
@@ -61,3 +72,9 @@ export function toContent(content: Content): string {
   });
 }
 
+/**
+ * checks if content is an URL
+ */
+export function isURL(content: Content) {
+  return content instanceof URL||!content.trimStart().startsWith("<");
+}

@@ -3,7 +3,9 @@ export enum Default {
   TITLE="untitled"
 }
 
-
+/**
+ * Default value of the window properties
+ */
 export const defaultWindowAttrs={
   resizable: true,
   minimizable: true,
@@ -22,6 +24,9 @@ export const defaultWindowAttrs={
   visibleOnAllWorkspaces: false,
 } satisfies WindowAttributes;
 
+/**
+ * Default value of the webview properties
+ */
 export const defaultWebViewAttrs={
   visible: true,
   transparent: false,
@@ -35,11 +40,8 @@ export const defaultWebViewAttrs={
   autoplay: true,
 } satisfies WebViewAttributes;
 
-export type IterObj={[key: string]: unknown};
-
-
 // deno-lint-ignore no-explicit-any
-export function confirmDefaultVal(main: IterObj,def: IterObj): any {
+export function confirmDefaultVal(main: any,def: any): any {
   for(const key in def) main[key]??=def[key];
   return main;
 }
