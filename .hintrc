@@ -3,13 +3,6 @@
     "development"
   ],
   "hints": {
-    "compat-api/css": [
-      "default",
-      {
-        "ignore": [
-          "user-select"
-        ]
-      }
-    ]
+    "compat-api/css": "off"
   }
 }

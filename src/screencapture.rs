@@ -18,7 +18,6 @@ pub fn screenshot_sync(x: i32,y: i32,delay: f32)-> String {
 //screenshot
 fn ss(x: i32,y: i32,delay: f32)-> String {
   thread::sleep(Duration::from_secs_f32(delay));
-
   let mut img=screenshoter::ScreenCapturer::from_point(x,y).unwrap().capture().unwrap();
 
   for i in (0..img.bytes.len()).step_by(4) {

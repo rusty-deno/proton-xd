@@ -21,8 +21,10 @@ export class Thread<T> {
   }
 
 
+  // deno-lint-ignore require-await
   public async spawn(): Promise<T> {
-    await symbols.spawn(this.fn.pointer);
+    symbols.spawn(this.fn.pointer);
+    this.fn.close();
     // deno-lint-ignore no-explicit-any
     return this.xd.value as any;
   }

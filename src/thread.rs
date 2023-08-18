@@ -36,7 +36,6 @@ pub fn sleep(secs: f32) {
 pub extern "C" fn spawn(callback: extern "C" fn()) {
   thread::spawn(move || {
     callback();
-    drop(callback);
   });
 }
 

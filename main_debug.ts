@@ -17,6 +17,6 @@ finalizer.register(obj,()=> {
   console.log("xd");
 });
 
-
+for(const xd of obj) console.log(xd);
 
 
