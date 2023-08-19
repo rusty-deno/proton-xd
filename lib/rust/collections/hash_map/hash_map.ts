@@ -2,6 +2,7 @@ import { Entry } from './mod.ts';
 import { Iter } from '../iter.ts';
 import { Option } from '../../io/option/option.ts';
 import { Vec } from '../linear/vector.ts';
+import { HashSet } from '../hash_set/hash_set.ts';
 
 
 export class HashMap<K,V> extends Iter<Entry<K,V>> {
@@ -23,7 +24,8 @@ export class HashMap<K,V> extends Iter<Entry<K,V>> {
   *[Symbol.iterator](): Iterator<Entry<K,V>> {
     for(const entity of this.map) yield entity;
   }
-  public entries() {
+  
+  public entries(): Vec<Entry<K,V>> {
     return new Vec(...this.map);
   }
 
@@ -48,6 +50,10 @@ export class HashMap<K,V> extends Iter<Entry<K,V>> {
     return this.map.delete(key);
   }
 
+  public empty() {
+    this.map.clear();
+  }
+
   public isEmpty() {
     return !this.size;
   }
@@ -62,6 +68,13 @@ export class HashMap<K,V> extends Iter<Entry<K,V>> {
     return this.toString();
   }
 
+  public keySet() {
+    return HashSet.formIter(this.map.keys());
+  }
+
+  public entrySet(): HashSet<Entry<K,V>> {
+    return HashSet.formIter(this.map.entries());
+  }
 }
 
 
