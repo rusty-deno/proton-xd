@@ -8,3 +8,15 @@ pub use xd::*;
 pub use screencapture::*;
 pub use dialog::*;
 pub use thread::*;
+
+
+#[cfg(test)]
+mod tests {
+
+
+  #[test]
+  fn xd() {
+    
+  }
+
+}

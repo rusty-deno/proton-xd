@@ -22,7 +22,11 @@ export class HashMap<K,V> extends Iter<Entry<K,V>> implements Clone {
     return HashMap.fromIter(map);
   }
 
-
+  public static formRecord<K extends string|number|symbol,V>(record: Record<K,V>) {
+    const map=new HashMap<K,V>();
+    for(const key in record) map.set(key,record[key]);
+    return map;
+  }
   
   next(): Entry<K,V> {
     return this[Symbol.iterator]().next().value;

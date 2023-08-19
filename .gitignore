@@ -11,3 +11,5 @@ todo.*
 **/*.rs.bk
 
 *.pdb
+
+compilation-time.txt
