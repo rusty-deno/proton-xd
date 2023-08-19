@@ -7,6 +7,14 @@ export class Vec<T> extends Array<T> implements Clone {
     super(...elements);
   }
 
+  public static fromIter<T>(iter: Iterable<T>) {
+    return new Vec(...iter);
+  }
+
+  public static fromArr<T>(arr: T[]) {
+    return this.fromIter(arr);
+  }
+
   public override forEach(f: (value: T,index: number,iter: this)=> void): void {
     let i=0;
     for(const iterator of this) f(iterator,i++,this);
@@ -55,12 +63,12 @@ export class Vec<T> extends Array<T> implements Clone {
     return new Option(super.at(index));
   }
   
-  public static fromIter<T>(iter: Iterable<T>) {
-    return new Vec(...iter);
-  }
-
-  public static fromArr<T>(arr: T[]) {
-    return this.fromIter(arr);
+  // deno-lint-ignore no-explicit-any
+  public override map<U>(fn: (element: T,index: number,vec: Vec<T>)=> U,_thisArg?: any): Vec<U> {
+    const vec=new Vec<U>();
+    for(const [index,element] of this.entries()) vec.push(fn(element,index,this));
+    
+    return vec;
   }
 }
 
