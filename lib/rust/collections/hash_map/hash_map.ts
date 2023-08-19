@@ -3,55 +3,62 @@ import { Iter } from '../iter.ts';
 import { Option } from '../../io/option/option.ts';
 import { Vec } from '../linear/vector.ts';
 import { HashSet } from '../hash_set/hash_set.ts';
+import { Clone } from '../../clone.ts';
 
 
-export class HashMap<K,V> extends Iter<Entry<K,V>> {
-  private map: Map<K,V>;
+export class HashMap<K,V> extends Iter<Entry<K,V>> implements Clone {
+  private unordered_map: Map<K,V>;
 
   constructor(...entries: Entry<K,V>[]) {
     super();
-    this.map=new Map(entries);
+    this.unordered_map=new Map(entries);
   }
 
   public static fromIter<K,V>(iter: Iterable<Entry<K,V>>) {
     return new HashMap(...iter);
   }
+
+  public static form<K,V>(map: Iterable<Entry<K,V>>) {
+    return HashMap.fromIter(map);
+  }
+
+
   
   next(): Entry<K,V> {
     return this[Symbol.iterator]().next().value;
   }
 
   *[Symbol.iterator](): Iterator<Entry<K,V>> {
-    for(const entity of this.map) yield entity;
+    for(const entity of this.unordered_map) yield entity;
   }
   
   public entries(): Vec<Entry<K,V>> {
-    return new Vec(...this.map);
+    return new Vec(...this.unordered_map);
   }
 
   public get size() {
-    return this.map.size;
+    return this.unordered_map.size;
   }
 
 
   public get(key: K) {
-    return new Option(this.map.get(key));
+    return new Option(this.unordered_map.get(key));
   }
   
   public set(key: K,value: V) {
-    this.map.set(key,value);
+    this.unordered_map.set(key,value);
   }
 
   public has(key: K) {
-    return !!this.map.get(key);
+    return !!this.unordered_map.get(key);
   }
 
   public remove(key: K) {
-    return this.map.delete(key);
+    return this.unordered_map.delete(key);
   }
 
   public empty() {
-    this.map.clear();
+    this.unordered_map.clear();
   }
 
   public isEmpty() {
@@ -60,7 +67,7 @@ export class HashMap<K,V> extends Iter<Entry<K,V>> {
 
   public toString() {
     let str="";
-    for(const entry of this.map) str+=`${entry[0]} => ${entry[1]}\n`;
+    for(const [key,value] of this.unordered_map) str+=`${key} => ${value}\n`;
     return str;
   }
 
@@ -69,12 +76,21 @@ export class HashMap<K,V> extends Iter<Entry<K,V>> {
   }
 
   public keySet() {
-    return HashSet.formIter(this.map.keys());
+    return HashSet.formIter(this.unordered_map.keys());
   }
 
   public entrySet(): HashSet<Entry<K,V>> {
-    return HashSet.formIter(this.map.entries());
+    return HashSet.formIter(this.unordered_map.entries());
   }
+
+  public valueSet() {
+    // todo;
+  }
+
+  public clone() {
+    return HashMap.fromIter(this.unordered_map);
+  }
+
 }
 
 

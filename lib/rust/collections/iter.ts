@@ -26,7 +26,7 @@ export abstract class Iter<T> implements Iterable<T> {
     for(const iterator of this) yield [i++,iterator];
   }
   
-  public fold(f: (prev: T,current: T,index: number)=> Option<T>|T): Option<T> {
+  public reduce(f: (prev: T,current: T,index: number)=> Option<T>|T): Option<T> {
     let folded: Option<T>=None(null);
     let i=0;
 
@@ -38,8 +38,25 @@ export abstract class Iter<T> implements Iterable<T> {
     return folded;
   }
 
-  public reduce(f: (prev: T,current: T,index: number)=> Option<T>|T): Option<T> {
-    return this.fold(f);
+  public filter(fn: (element: T,index: number)=> boolean) {
+    const filtered=new Vec;
+
+    for(const [index,element] of this.enumerate()) {
+      if(!fn(element,index)) continue;
+      filtered.push(element);
+    }
+
+    return filtered;
+  }
+
+  public map<O>(fn: (element: T,index: number)=> O) {
+    const map=new Vec;
+
+    for(const [index,element] of this.enumerate()) {
+      map.push(fn(element,index));
+    }
+    
+    return map;
   }
   
   public toVec() {
