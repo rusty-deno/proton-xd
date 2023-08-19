@@ -1,49 +1,53 @@
-import {Iter} from "../iter.ts";
-import { HasherFn,HashMap } from '../hash_map/mod.ts';
-
+import { Iter } from "../iter.ts";
+import { Vec } from '../linear/vector.ts';
 
 
 export class HashSet<T> extends Iter<T> {
-  private map=new HashMap<T,null>();
+  private set: Set<T>;
 
   constructor(...entries: T[]) {
     super();
-    for(const entry of entries) this.add(entry);
+    this.set=new Set(entries);
   }
 
-  public static withHasher<T>(fn: HasherFn<T>,...entries: T[]) {
-    const set=new HashSet(...entries);
-    set.map.hasher=fn;
-    return set;
+  public static formIter<T>(iter: Iterable<T>) {
+    return new HashSet(...iter);
   }
-  
-  public static fromIter<T>(entries: Iterable<T>) {
-    const set=new Set<T>;
-    for(const entry of entries) set.add(entry);
-    return set;
+
+  public get size() {
+    return this.set.size;
   }
-  
+
   next(): T {
     return this[Symbol.iterator]().next().value;
   }
 
   *[Symbol.iterator](): Iterator<T> {
-    for(const entry of this.map) yield entry[0];
-  }
-
-  public add(data: T,) {
-    this.map.set(data,null);
+    for(const element of this.set) yield element;
   }
   
-  public remove(data: T) {
-    this.map.remove(data);
+  public add(element: T) {
+    this.set.add(element);
+  }
+  
+  public remove(element: T) {
+    return this.set.delete(element);
+  }
+  
+  public entries() {
+    return new Vec(...this.set);
   }
 
-  public toString() {
-    return `{${this.toArray().join(" , ")}}`;
+  public has(element: T) {
+    return this.set.has(element);
+  }
+
+  public empty() {
+    this.set.clear();
+  }
+  
+  public isEmpty() {
+    return !!this.set;
   }
 }
-
-
-
 
