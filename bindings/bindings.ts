@@ -6,7 +6,7 @@ function decode(buffer: Uint8Array): string {
 }
 
 function encode(v: string | Uint8Array): Uint8Array {
-  return typeof v !== "string" ? v : encoder.encode(v);
+  return typeof v !== "string" ? v : encoder.encode(v.endsWith("\0")?v:v+"\0");
 }
 
 function getExt() {

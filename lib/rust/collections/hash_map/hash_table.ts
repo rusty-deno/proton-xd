@@ -17,7 +17,7 @@ export class HashTable<K,V> implements Clone {
 
   public static fromIter<K,V>(hasher: HasherFn<K>,iter: Iterable<Entry<K,V>>) {
     const map=new HashTable<K,V>(hasher);
-    for(const entry of iter) map.set(entry[0],entry[1]);
+    for(const entry of iter) map.set(...entry);
     return map;
   }
 

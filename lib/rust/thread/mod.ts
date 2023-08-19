@@ -1,7 +1,9 @@
 export * from "./thread.ts";
+import { Thread } from "../mod.ts";
 
 
 
+// deno-lint-ignore require-await
 export async function spawn<T>(callback: ()=> T,name?: string) {
-  return (await import("./thread.ts")).Thread.spawn(callback,name);
+  return Thread.spawn(callback,name);
 }
