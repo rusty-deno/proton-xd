@@ -1,6 +1,6 @@
 import { Clone,Option } from '../../mod.ts';
 import { Entry } from './mod.ts';
-import { Vec } from '../mod.ts';
+import { HashSet, Vec } from '../mod.ts';
 import { HashMap } from './hash_map.ts';
 
 export type HasherFn<K>=(obj: K)=> number;
@@ -20,6 +20,12 @@ export class HashTable<K,V> implements Clone {
     for(const entry of iter) map.set(entry[0],entry[1]);
     return map;
   }
+
+  public static formRecord<K extends string|number|symbol,V>(hasher: HasherFn<K>,record: Record<K,V>) {
+    const map=new HashTable<K,V>(hasher);
+    for(const key in record) map.set(key,record[key]);
+    return map;
+  }
   
   public clone(): HashTable<K,V> {
     return HashTable.fromIter(this.hasher,this.entries());
@@ -35,10 +41,6 @@ export class HashTable<K,V> implements Clone {
 
   *[Symbol.iterator](): Iterator<Entry<K,V>> {
     for(const entry of this.table) yield entry;
-  }
-
-  public entries(): Vec<Entry<K,V>> {
-    return new Vec(...this);
   }
   
   public get size(): number {
@@ -78,4 +80,29 @@ export class HashTable<K,V> implements Clone {
   public toString() {
     return this[Symbol.toStringTag]();
   }
+
+  public keySet() {
+    return HashSet.formIter(this.keys());
+  }
+
+  public keys() {
+    return this.table.map(([key,_])=> key);
+  }
+
+  public entrySet(): HashSet<Entry<K,V>> {
+    return new HashSet(...this);
+  }
+
+  public entries(): Vec<Entry<K,V>> {
+    return new Vec(...this);
+  }
+
+  public valueSet() {
+    return HashSet.formIter(this.values());
+  }
+
+  public values() {
+    return this.table.map(([_,value])=> value);
+  }
+  
 }

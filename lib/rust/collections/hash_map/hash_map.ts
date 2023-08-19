@@ -35,10 +35,6 @@ export class HashMap<K,V> extends Iter<Entry<K,V>> implements Clone {
   *[Symbol.iterator](): Iterator<Entry<K,V>> {
     for(const entity of this.unordered_map) yield entity;
   }
-  
-  public entries(): Vec<Entry<K,V>> {
-    return new Vec(...this.unordered_map);
-  }
 
   public get size() {
     return this.unordered_map.size;
@@ -83,14 +79,26 @@ export class HashMap<K,V> extends Iter<Entry<K,V>> implements Clone {
     return HashSet.formIter(this.unordered_map.keys());
   }
 
+  public keys() {
+    return Vec.fromIter(this.unordered_map.keys());
+  }
+
   public entrySet(): HashSet<Entry<K,V>> {
     return HashSet.formIter(this.unordered_map.entries());
   }
 
-  public valueSet() {
-    // todo;
+  public entries(): Vec<Entry<K,V>> {
+    return new Vec(...this.unordered_map);
   }
 
+  public valueSet() {
+    return HashSet.formIter(this.unordered_map.values());
+  }
+
+  public values() {
+    return Vec.fromIter(this.unordered_map.values());
+  }
+  
   public clone() {
     return HashMap.fromIter(this.unordered_map);
   }
