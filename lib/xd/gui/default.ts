@@ -12,5 +12,5 @@ export const defaultFileOpenerOptions={
 
 export const defaultSaveFileOptions={
     filename: "",
-    location: Deno.env.get("HOME")
+    location: Deno.env.get("HOME")??"/home"
 } satisfies SaveFileOptions;

@@ -5,12 +5,8 @@
 //   title: "my-app",
 // });
 
-import { HashSet } from "./lib/rust/collections/mod.ts";
 
 
 
-console.log(new HashSet(69,5,4,1));
-
-console.log(new Set([69,5,4,1]));
 
 

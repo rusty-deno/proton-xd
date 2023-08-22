@@ -1,7 +1,5 @@
 import { WebViewAttributes,WindowAttributes } from './types.ts';
-export enum Default {
-  TITLE="untitled"
-}
+
 
 /**
  * Default value of the window properties
@@ -11,7 +9,7 @@ export const defaultWindowAttrs={
   minimizable: true,
   maximizable: true,
   closable: true,
-  title: Default.TITLE,
+  title: "untitled",
   maximized: false,
   visible: true,
   transparent: false,
