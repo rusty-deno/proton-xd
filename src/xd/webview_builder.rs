@@ -1,7 +1,7 @@
 use deno_bindgen::deno_bindgen;
 use std::str::FromStr;
 
-#[allow(unused_imports)]
+
 use wry::{
   application::window::Window,
   webview::{
@@ -67,8 +67,8 @@ pub struct WebViewAttrs {
   pub headers: Option<Vec<Header>>
 }
 
+
 impl WebViewAttrs {
-  #[allow(warnings)]
   pub fn build(self,window: Window)-> Result<WebView,wry::Error> {
     let WebViewAttrs {
       user_agent,
@@ -112,6 +112,7 @@ impl WebViewAttrs {
 
     webview.build()
   }
+
 }
 
 fn to_rgba(color: Option<Rgba>)-> Option<RGBA> {

@@ -1,11 +1,15 @@
 import { Rgba } from "../../bindings/bindings.ts";
 
-export abstract class Rgb {
-  abstract r: number;
-  abstract g: number;
-  abstract b: number;
-  abstract a?: number;
+export interface Rgb {
+  r: number;
+  g: number;
+  b: number;
+  a?: number;
 }
+
+/**
+ * Touple representing a RGB value
+ */
 export type RgbTouple=[
   r: number,
   g: number,
@@ -15,17 +19,19 @@ export type RgbTouple=[
 
 export type Color=string|Rgb|number|RgbTouple;
 
-
+/**
+ * Takes a color as argument and returns its RGBA representation
+ */
 export function rgba(color: Color): Rgba {
   switch(typeof color) {
     // deno-lint-ignore no-case-declarations
     case "object":
-      const isRgb=color instanceof Rgb;
+      const isRgb=color instanceof Array;
       return {
-        r: isRgb?color.r:color[0],
-        g: isRgb?color.g:color[1],
-        b: isRgb?color.b:color[2],
-        a: (isRgb?color.a:color[3])??0xff
+        r: isRgb?color[0]:color.r,
+        g: isRgb?color[1]:color.g,
+        b: isRgb?color[2]:color.b,
+        a: (isRgb?color[3]:color.a)??0xff
       };
     case "number":
       return hexToRgb(color);
@@ -34,7 +40,14 @@ export function rgba(color: Color): Rgba {
   }
 }
 
-export const hex=(color: Rgb|RgbTouple)=> color instanceof Rgb?((color.r*0x100+color.g)*0x100+color.b)*0x100+(color.a??255):((color[0]*0x100+color[1])*0x100+color[2])*0x100+(color[3]??255);
+/**
+ * Returns the hexadecimal representation of a RGB color
+ */
+export function hex(color: Rgb|RgbTouple) {
+  return color instanceof Array?((color[0]*0x100+color[1])*0x100+color[2])*0x100+(color[3]??255):((color.r*0x100+color.g)*0x100+color.b)*0x100+(color.a??255);
+}
+
+
 
 function hexToRgb(color: number): Rgba {
   return {

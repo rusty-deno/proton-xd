@@ -92,7 +92,7 @@ pub struct WindowAttrs {
   content_protection: bool,
   #[serde(rename="visibleOnAllWorkspaces")]
   visible_on_all_workspaces: bool,
-  position: Option<Position>
+  position: Option<Position>,
 }
 
 
