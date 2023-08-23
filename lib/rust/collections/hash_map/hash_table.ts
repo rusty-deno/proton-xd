@@ -6,6 +6,21 @@ import { HashMap } from './hash_map.ts';
 export type HasherFn<K>=(obj: K)=> number;
 
 
+/**
+ * A HashTable implemented constant time look-ups.
+ * It's desined to be used only in special cases like keyword recognization,
+ * Where the keys are limited and known at compile-time..
+ * It must be used with a custom hash function..
+ * # Example
+ * * For example the keys are Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday.
+ * * Then the hash-function may be second char of the string & length of the string
+ * ```ts
+ * const hash=(key: string)=> key.charCodeAt(1)&key.length;
+ * const table=new HashTable(hash,["Sunday",0],["Monday",1],["Tuesday",2],["Wednesday",3],["Thursday",4],["Friday",5],["Saturday",6]);
+ * 
+ * console.log(table.get("Monday").unwrap());
+ * ```
+ */
 export class HashTable<K,V> implements Clone {
   private table=new Vec<Entry<K,V>>();
   public readonly hasher: HasherFn<K>;
@@ -104,5 +119,5 @@ export class HashTable<K,V> implements Clone {
   public values() {
     return this.table.map(([_,value])=> value);
   }
-  
 }
+

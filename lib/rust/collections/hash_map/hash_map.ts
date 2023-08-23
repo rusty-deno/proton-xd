@@ -5,7 +5,16 @@ import { Vec } from '../linear/vector.ts';
 import { HashSet } from '../hash_set/hash_set.ts';
 import { Clone } from '../../clone.ts';
 
-
+/**
+ * A HashMap implemented with quadratic probing and SIMD lookup.
+ * An improved version of Map with extra type safety
+ * 
+ * # Example
+ * ```ts
+ * const map=new HashMap([69,"xd"]);
+ * console.log(map.get(69).unwrap());
+ * ```
+ */
 export class HashMap<K,V> extends Iter<Entry<K,V>> implements Clone {
   private unordered_map: Map<K,V>;
 
