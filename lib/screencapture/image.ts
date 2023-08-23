@@ -3,7 +3,7 @@ import {instantiate,convert} from "../../bindings/encoder.generated.js";
 await instantiate();
 
 
-export type RawImage={
+export type RGBImage={
   height: number;
   width: number
   bytes: Uint8Array;
@@ -18,14 +18,20 @@ export class ImageBuffer {
   public height: number;
   public bytes: Uint8Array;
 
-  constructor(img: RawImage) {
+  constructor(img: RGBImage) {
     this.bytes=img.bytes;
     this.height=img.height;
     this.width=img.width;
   }
-  
+
+  /**
+   * Encodes the image data to a png image buffer
+   */
   public png=(): Uint8Array=> convert(this.bytes,this.height,this.width,"image/png",100);
   
+  /**
+   * Encodes the image data to a jpeg image buffer
+   */
   public jpeg=(quality=100): Uint8Array=> convert(this.bytes,this.height,this.width,"image/jpeg",quality);
 }
 
