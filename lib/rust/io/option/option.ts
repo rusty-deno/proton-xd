@@ -41,6 +41,7 @@ export class Option<T> extends Exception<T,None> {
 
 export type None=undefined|null;
 export type Some<T>=NonNullable<T>;
+export const none=Option.None;
 
 export function Some<T>(val: T) {
   return new Option(val);

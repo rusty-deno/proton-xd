@@ -16,7 +16,6 @@ mod tests {
 
   #[test]
   fn xd() {
-    
   }
 
 }
