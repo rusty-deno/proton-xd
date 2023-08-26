@@ -16,6 +16,7 @@ mod tests {
 
   #[test]
   fn xd() {
+    assert_eq!(69,69)
   }
 
 }

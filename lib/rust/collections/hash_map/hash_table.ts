@@ -18,7 +18,7 @@ export type HasherFn<K>=(obj: K)=> number;
  * const hash=(key: string)=> key.charCodeAt(1)&key.length;
  * const table=new HashTable(hash,["Sunday",0],["Monday",1],["Tuesday",2],["Wednesday",3],["Thursday",4],["Friday",5],["Saturday",6]);
  * 
- * console.log(table.get("Monday").unwrap());
+ * $assertEq(table.get("Monday"),Some(1));
  * ```
  */
 export class HashTable<K,V> implements Clone {
@@ -46,7 +46,7 @@ export class HashTable<K,V> implements Clone {
     return map;
   }
   /**
-   * Constructs a HashMap from an Record.
+   * Constructs a HashTable from an Record.
    * # Example
    * ```ts
    * const table=new HashTable(hashFn,{
@@ -86,13 +86,13 @@ export class HashTable<K,V> implements Clone {
   }
   
   /**
-   * * Inserts a key-value pair into the map.
-   * * If the map did not have this key present, [None] is returned.
-   * * If the map did have this key present, the value is updated, and the old value is returned.
+   * * Inserts a key-value pair into the table.
+   * * If the table did not have this key present, [None] is returned.
+   * * If the table did have this key present, the value is updated, and the old value is returned.
    * # Example
    * ```ts
    * const table=new HashTable<number,string>(hashFn);
-   * assertEq(table.set(69,"xd"),Option.None);
+   * $assertEq(table.set(69,"xd"),Option.None);
    * ```
    */
   public set(key: K,value: V): Option<Entry<K,V>> {
@@ -108,7 +108,7 @@ export class HashTable<K,V> implements Clone {
    * ```ts
    * const table=new HashTable<number,string>(hashFn);
    * table.set(69,"xd");
-   * assertEq(table.get(69),Some("xd"));
+   * $assertEq(table.get(69),Some("xd"));
    * ```
    */
   public get(key: K): Option<V> {
@@ -116,12 +116,12 @@ export class HashTable<K,V> implements Clone {
   }
 
   /**
-   * Returns true if the map contains a value for the specified key else false.
+   * Returns true if the table contains a value for the specified key else false.
    * # Example
    * ```ts
    * const table=new HashTable<number,string>(hashFn);
    * table.set(69,"xd");
-   * assert(table.has(69));
+   * $assert(table.has(69));
    * ```
    */
   public has(key: K): boolean {
@@ -135,7 +135,7 @@ export class HashTable<K,V> implements Clone {
    * const table=new HashTable<number,string>(hashFn);
    * table.set(69,"xd");
    * table.empty();
-   * assertEq(table.size,0);
+   * $assertEq(table.size,0);
    * ```
    */
   public empty() {
@@ -148,7 +148,7 @@ export class HashTable<K,V> implements Clone {
    * # Example
    * ```ts
    * const table=new HashTable<number,string>(hashFn);
-   * assert(table.isEmpty());
+   * $assert(table.isEmpty());
    * ```
    */
   public isEmpty() {
@@ -156,12 +156,12 @@ export class HashTable<K,V> implements Clone {
   }
   
   /**
-   * Removes a key from the map, returning the value at the key if the key was previously in the map.
+   * Removes a key from the table, returning the value at the key if the key was previously in the table.
    * # Example
    * ```ts
    * const table=new HashTable<number,string>(hashFn);
    * table.set(69,"xd");
-   * assertEq(table.remove(69),Some("xd"));
+   * $assertEq(table.remove(69),Some("xd"));
    * ```
    */
   public remove(key: K): Option<V> {
@@ -184,7 +184,7 @@ export class HashTable<K,V> implements Clone {
    * ```ts
    * const table=new HashTable<number,string>(hashFn);
    * table.set(69,"xd");
-   * assertEq(table.toString,`{
+   * $assertEq(table.toString,`{
    *    69: xd
    * }`);
    * ```
@@ -198,7 +198,7 @@ export class HashTable<K,V> implements Clone {
    * # Example
    * ```ts
    * const table=new HashTable<number,string>(hashFn,["xd",69],["xd1",0]);
-   * assertEq(table.keySet(),new HashSet("xd","xd1"));
+   * $assertEq(table.keySet(),new HashSet("xd","xd1"));
    * ```
    */
   public keySet() {
@@ -210,7 +210,7 @@ export class HashTable<K,V> implements Clone {
    * # Example
    * ```ts
    * const table=new HashTable<number,string>(hashFn,["xd",69],["xd1",0]);
-   * assertEq(table.keys(),$vec("xd","xd1"));
+   * $assertEq(table.keys(),$vec("xd","xd1"));
    * ```
    */
   public keys() {
@@ -222,7 +222,7 @@ export class HashTable<K,V> implements Clone {
    * # Example
    * ```ts
    * const table=new HashTable<number,string>(hashFn,["xd",69],["xd1",0]);
-   * assertEq(table.entrySet(),new HashSet(["xd",69],["xd1",0]));
+   * $assertEq(table.entrySet(),new HashSet(["xd",69],["xd1",0]));
    * ```
    */
   public entrySet(): HashSet<Entry<K,V>> {
@@ -234,7 +234,7 @@ export class HashTable<K,V> implements Clone {
    * # Example
    * ```ts
    * const table=new HashTable<number,string>(hashFn,["xd",69],["xd1",0]);
-   * assertEq(table.entries(),$vec(["xd",69],["xd1",0]));
+   * $assertEq(table.entries(),$vec(["xd",69],["xd1",0]));
    * ```
    */
   public entries(): Vec<Entry<K,V>> {
@@ -246,7 +246,7 @@ export class HashTable<K,V> implements Clone {
    * # Example
    * ```ts
    * const table=new HashTable<number,string>(hashFn,["xd",69],["xd1",69]);
-   * assertEq(table.valueSet(),new HashSet(69));
+   * $assertEq(table.valueSet(),new HashSet(69));
    * ```
    */
   public valueSet() {
@@ -258,7 +258,7 @@ export class HashTable<K,V> implements Clone {
    * # Example
    * ```ts
    * const table=new HashTable<number,string>(hashFn,["xd",69],["xd1",0]);
-   * assertEq(table.values(),$vec(69,0));
+   * $assertEq(table.values(),$vec(69,0));
    * ```
    */
   public values() {
