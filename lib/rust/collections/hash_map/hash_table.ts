@@ -58,7 +58,6 @@ export class HashTable<K,V> implements Clone {
     for(const key in record) map.set(key,record[key]);
     return map;
   }
-  
 
   public clone(): HashTable<K,V> {
     return HashTable.fromIter(this.hasher,this.entries());
@@ -194,26 +193,74 @@ export class HashTable<K,V> implements Clone {
     return this[Symbol.toStringTag]();
   }
 
+  /**
+   * Returns a set of the keys present in the current table.
+   * # Example
+   * ```ts
+   * const table=new HashTable<number,string>(hashFn,["xd",69],["xd1",0]);
+   * assertEq(table.keySet(),new HashSet("xd","xd1"));
+   * ```
+   */
   public keySet() {
     return HashSet.formIter(this.keys());
   }
 
+  /**
+   * Returns a set of the keys present in the current table.
+   * # Example
+   * ```ts
+   * const table=new HashTable<number,string>(hashFn,["xd",69],["xd1",0]);
+   * assertEq(table.keys(),$vec("xd","xd1"));
+   * ```
+   */
   public keys() {
     return this.table.map(([key,_])=> key);
   }
 
+  /**
+   * Returns a set of the keys present in the current table.
+   * # Example
+   * ```ts
+   * const table=new HashTable<number,string>(hashFn,["xd",69],["xd1",0]);
+   * assertEq(table.entrySet(),new HashSet(["xd",69],["xd1",0]));
+   * ```
+   */
   public entrySet(): HashSet<Entry<K,V>> {
     return new HashSet(...this);
   }
 
+  /**
+   * Returns a set of the keys present in the current table.
+   * # Example
+   * ```ts
+   * const table=new HashTable<number,string>(hashFn,["xd",69],["xd1",0]);
+   * assertEq(table.entries(),$vec(["xd",69],["xd1",0]));
+   * ```
+   */
   public entries(): Vec<Entry<K,V>> {
     return new Vec(...this);
   }
 
+  /**
+   * Returns a set of the keys present in the current table.
+   * # Example
+   * ```ts
+   * const table=new HashTable<number,string>(hashFn,["xd",69],["xd1",69]);
+   * assertEq(table.valueSet(),new HashSet(69));
+   * ```
+   */
   public valueSet() {
     return HashSet.formIter(this.values());
   }
-
+  
+  /**
+   * Returns a set of the keys present in the current table.
+   * # Example
+   * ```ts
+   * const table=new HashTable<number,string>(hashFn,["xd",69],["xd1",0]);
+   * assertEq(table.values(),$vec(69,0));
+   * ```
+   */
   public values() {
     return this.table.map(([_,value])=> value);
   }
