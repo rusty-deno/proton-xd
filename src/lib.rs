@@ -16,7 +16,8 @@ mod tests {
 
   #[test]
   fn xd() {
-    assert_eq!(69,69)
+    let xd: Option<u8>=Some(69);
+    xd.unwrap();
   }
 
 }
