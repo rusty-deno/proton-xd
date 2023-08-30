@@ -1,4 +1,4 @@
-export * from "./rust/mod.ts";
+export * from "./std/mod.ts";
 
 export * from "./xd/xd.ts";
 export * as windowXD from "./xd/gui/window_xd.ts";

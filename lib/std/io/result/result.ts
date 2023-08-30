@@ -16,27 +16,31 @@ export class Result<T,E> extends Exception<T,E> {
     this.isException=isException??res instanceof Error;
   }
 
-  public err(): Option<E> {
-    return this.isException?Some(this.result):Option.None;
-  }
+
 
   public and(res: Result<T,E>): Result<T,E> {
     return this.isException?this:res;
   }
 
   public andThen(f: (xd: T)=> Result<T,E>) {
-    return this.isException?this:f(this._res);
+    return this.isException?this:f(this.res());
   }
 
-  public orElse(op: (err: E)=> Result<T,E>) {
-    return this.isException?op(this._res):this;
+  public override orElse(op: (err: E)=> this) {
+    return this.isException?op(this.res()):this.clone();
   }
 
-  public res() {
+  public res(): any {
     return this.result;
   }
 
+  public err(): Option<E> {
+    return this.isException?Some(this.result):Option.None;
+  }
 
+  public ok(): Option<T> {
+    return !this.isException?Some(this.result):Option.None;
+  }
 
 
   public static Ok=<T>(res: T)=> Ok<T>(res);
@@ -50,4 +54,3 @@ export function Err<T>(err: T) {
 export function Ok<T>(res: T) {
   return new Result<T,any>(res);
 }
-
