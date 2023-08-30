@@ -11,15 +11,3 @@ pub use dialog::*;
 pub use thread::*;
 pub use convert::*;
 
-
-#[cfg(test)]
-mod tests {
-
-
-  #[test]
-  fn xd() {
-    let xd: Option<u8>=Some(69);
-    xd.unwrap();
-  }
-
-}

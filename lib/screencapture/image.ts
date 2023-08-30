@@ -1,7 +1,4 @@
-import {instantiate,convert} from "../../bindings/encoder.generated.js";
-
-await instantiate();
-
+import { symbols as lib } from "../../bindings/bindings.ts";
 
 export type RGBImage={
   height: number;
@@ -27,11 +24,25 @@ export class ImageBuffer {
   /**
    * Encodes the image data to a png image buffer
    */
-  public png=(): Uint8Array=> convert(this.bytes,this.height,this.width,"image/png",100);
+  public png=(): Uint8Array=> readPointer(lib.convert(this.bytes,this.bytes.length,this.width,this.height,0,100));
   
   /**
    * Encodes the image data to a jpeg image buffer
    */
-  public jpeg=(quality=100): Uint8Array=> convert(this.bytes,this.height,this.width,"image/jpeg",quality);
+  public jpeg=(quality=100): Uint8Array=> readPointer(lib.convert(this.bytes,this.bytes.length,this.width,this.height,69,quality));
 }
 
+function readPointer(v: Deno.PointerValue): Uint8Array {
+  if(v===null) return new Uint8Array;
+
+  const ptr=new Deno.UnsafePointerView(v);
+  const lengthBe=new Uint8Array(4);
+
+  const view=new DataView(lengthBe.buffer);
+  ptr.copyInto(lengthBe,0);
+
+  const buf=new Uint8Array(view.getUint32(0));
+  ptr.copyInto(buf,4);
+
+  return buf;
+}

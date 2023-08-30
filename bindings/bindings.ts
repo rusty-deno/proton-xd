@@ -6,7 +6,9 @@ function decode(buffer: Uint8Array): string {
 }
 
 function encode(v: string | Uint8Array): Uint8Array {
-  return typeof v !== "string" ? v : encoder.encode(v.endsWith("\0")?v:v+"\0");
+  return typeof v !== "string"
+    ? v
+    : encoder.encode(v.endsWith("\0") ? v : v + "\0");
 }
 
 function getExt() {
@@ -112,6 +114,10 @@ export const { symbols, close } = Deno.dlopen(uri, {
     "parameters": ["function"],
     "result": "void",
     "monblocking": true,
+  },
+  "convert": {
+    "parameters": ["buffer", "usize", "u32", "u32", "u8", "u8"],
+    "result": "buffer",
   },
 });
 export type FileDialogOptions = {
@@ -226,12 +232,13 @@ export function init(a0: string, a1: string) {
   const result = rawResult;
   return result;
 }
-export function open(a0: string) {
+export async function open(a0: string) {
   const a0_buf = encode(a0);
 
   const rawResult = symbols.open(a0_buf, a0_buf.byteLength);
   const result = rawResult.then(readPointer);
-  return result.then(decode);
+  const buffer=await result;
+  return decode(buffer);
 }
 export function open_sync(a0: string) {
   const a0_buf = encode(a0);
@@ -255,12 +262,13 @@ export function read_clipboard() {
   const result = readPointer(rawResult);
   return decode(result);
 }
-export function save(a0: string) {
+export async function save(a0: string) {
   const a0_buf = encode(a0);
 
   const rawResult = symbols.save(a0_buf, a0_buf.byteLength);
   const result = rawResult.then(readPointer);
-  return result.then(decode);
+  const buffer=await result;
+  return decode(buffer);
 }
 export function save_sync(a0: string) {
   const a0_buf = encode(a0);
@@ -269,10 +277,11 @@ export function save_sync(a0: string) {
   const result = readPointer(rawResult);
   return decode(result);
 }
-export function screenshot(a0: number, a1: number, a2: number) {
+export async function screenshot(a0: number, a1: number, a2: number) {
   const rawResult = symbols.screenshot(a0, a1, a2);
   const result = rawResult.then(readPointer);
-  return result.then(decode);
+  const buffer=await result;
+  return decode(buffer);
 }
 export function screenshot_sync(a0: number, a1: number, a2: number) {
   const rawResult = symbols.screenshot_sync(a0, a1, a2);
