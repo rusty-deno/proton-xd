@@ -21,8 +21,13 @@ export type Color=string|Rgb|number|RgbTouple;
 
 /**
  * Takes a color as argument and returns its RGBA representation
+ * # Example
+ * ```ts
+ * const color="#ff00ff";
+ * $assertEq($rgba(color),{ r: 0xff, g: 0x0, b: 0xff, a: 0xff });
+ * ```
  */
-export function rgba(color: Color): Rgba {
+export function $rgba(color: Color): Rgba {
   switch(typeof color) {
     // deno-lint-ignore no-case-declarations
     case "object":
@@ -41,9 +46,14 @@ export function rgba(color: Color): Rgba {
 }
 
 /**
- * Returns the hexadecimal representation of a RGB color
+ * Returns the hexadecimal representation of a RGB color.
+ * # Example
+ * ```ts
+ * const rgb=[255,0,255];
+ * $assertEq($hex(rgb),0xff00ffff);
+ * ```
  */
-export function hex(color: Rgb|RgbTouple) {
+export function $hex(color: Rgb|RgbTouple) {
   return color instanceof Array?((color[0]*0x100+color[1])*0x100+color[2])*0x100+(color[3]??255):((color.r*0x100+color.g)*0x100+color.b)*0x100+(color.a??255);
 }
 
@@ -57,6 +67,3 @@ function hexToRgb(color: number): Rgba {
     a: color.toString().length>6?color&0xffffffff%0x100:0xff,
   };
 }
-
-
-
