@@ -31,12 +31,12 @@ export function $rgba(color: Color): Rgba {
   switch(typeof color) {
     // deno-lint-ignore no-case-declarations
     case "object":
-      const isRgb=color instanceof Array;
+      const isTouple=color instanceof Array;
       return {
-        r: isRgb?color[0]:color.r,
-        g: isRgb?color[1]:color.g,
-        b: isRgb?color[2]:color.b,
-        a: (isRgb?color[3]:color.a)??0xff
+        r: isTouple?color[0]:color.r,
+        g: isTouple?color[1]:color.g,
+        b: isTouple?color[2]:color.b,
+        a: (isTouple?color[3]:color.a)??0xff
       };
     case "number":
       return hexToRgb(color);

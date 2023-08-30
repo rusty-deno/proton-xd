@@ -13,3 +13,5 @@ todo.*
 *.pdb
 
 compilation-time.txt
+
+.vscode/

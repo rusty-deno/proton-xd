@@ -43,22 +43,17 @@ impl Header {
 }
 
 #[deno_bindgen]
+#[serde(rename_all="camelCase")]
 pub struct WebViewAttrs {
-  #[serde(rename="userAgent")]
   pub user_agent: Option<String>,
   pub visible: bool,
   pub transparent: bool,
-  #[serde(rename="backgroundColor")]
   pub background_color: Option<Rgba>,
-  #[serde(rename="zoomHotkeysEnabled")]
   pub zoom_hotkeys_enabled: bool,
-  #[serde(rename="initializationScripts")]
   pub initialization_scripts: Vec<String>,
   pub clipboard: bool,
   pub devtools: bool,
-  #[serde(rename="acceptFirstMouse")]
   pub accept_first_mouse: bool,
-  #[serde(rename="backForwardNavigationGestures")]
   pub back_forward_navigation_gestures: bool,
   pub incognito: bool,
   pub autoplay: bool,

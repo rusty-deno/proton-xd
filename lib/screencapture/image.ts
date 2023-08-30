@@ -7,8 +7,8 @@ export type RGBImage={
 };
 
 /**
- * This is an image represented by a width and height and a container of channel data.
- * It provides direct access to its pixels and various convertions
+ * * This is an image represented by a width and height and a container of channel data.
+ * * It provides direct access to its pixels and various convertions
  */
 export class ImageBuffer {
   public width: number;
