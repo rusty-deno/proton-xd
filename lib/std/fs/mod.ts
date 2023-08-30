@@ -9,7 +9,7 @@ export * from "./file.ts";
 
 
 export async function canonicalize(path: PathBuf) {
-  return await await Res(()=> Deno.realPath(path));
+  return await Res(()=> Deno.realPath(path));
 }
 
 export function canonicalizeSync(path: PathBuf) {

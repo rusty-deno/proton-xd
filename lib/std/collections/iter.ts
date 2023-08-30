@@ -31,7 +31,7 @@ export abstract class Iter<T> implements Iterable<T> {
     let i=0;
 
     for(const iterator of this) {
-      const fold=f(folded.or(iterator),this.next(),++i);
+      const fold=f(folded.unwrapOr(iterator),this.next(),++i);
       folded=fold instanceof Option?fold:new Option(fold);
     }
     

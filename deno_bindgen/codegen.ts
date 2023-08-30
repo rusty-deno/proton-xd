@@ -4,7 +4,7 @@
 import { ensureDirSync } from "https://deno.land/std@0.132.0/fs/ensure_dir.ts";
 import { createFromBuffer,GlobalConfiguration } from "https://deno.land/x/dprint@0.2.0/mod.ts";
 import * as Cache from "https://deno.land/x/cache@0.2.13/mod.ts";
-import { readToStringSync,copySync } from "../lib/rust/fs/mod.ts";
+import { readToStringSync,copySync } from "../lib/std/fs/mod.ts";
 
 
 Cache.configure({ directory: Cache.options.directory });
@@ -167,7 +167,7 @@ export function codegen(
       }),
       {},
     );
-  const prototype=readToStringSync("./bindings/bindings.prototype.json").or("{}").trim();
+  const prototype=readToStringSync("./bindings/bindings.prototype.json").unwrapOr("{}").trim();
 
   return tsFormatter.formatText("bindings/bindings.ts",`
 const encoder=new TextEncoder;

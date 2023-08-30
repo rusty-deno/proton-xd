@@ -25,10 +25,10 @@ export class Vec<T> extends Array<T> implements Clone {
     let i=0;
 
     for(const iterator of this) {
-      const fold=f(folded.or(iterator),this.next(),++i);
+      const fold=f(folded.unwrapOr(iterator),this.next(),++i);
       folded=fold instanceof Option?fold:new Option(fold);
     }
-    
+
     return folded;
   }
 
@@ -62,13 +62,16 @@ export class Vec<T> extends Array<T> implements Clone {
   public nth(index: number) {
     return new Option(super.at(index));
   }
-  
-  // deno-lint-ignore no-explicit-any
-  public override map<U>(fn: (element: T,index: number,vec: Vec<T>)=> U,_thisArg?: any): Vec<U> {
+
+  public override map<U>(fn: (element: T,index: number,vec: Vec<T>)=> U): Vec<U> {
     const vec=new Vec<U>();
     for(const [index,element] of this.entries()) vec.push(fn(element,index,this));
     
     return vec;
+  }
+
+  public delete(index: number) {
+    return delete this[index];
   }
 }
 

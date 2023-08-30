@@ -1,6 +1,6 @@
 import { Option } from "../../mod.ts";
 import { LinkedList } from './linked_list/linked_list.ts';
-import { List } from './List.ts';
+import { List } from "./List.ts";
 
 
 
