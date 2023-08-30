@@ -60,12 +60,16 @@ pub struct Position {
 
 
 #[deno_bindgen]
-#[serde(rename_all="camelCase")]
 pub struct WindowAttrs {
+  #[serde(rename="innerSize")]
   inner_size: Option<Size>,
+  #[serde(rename="minHeight")]
   min_height: Option<i32>,
+  #[serde(rename="maxHeight")]
   max_height: Option<i32>,
+  #[serde(rename="minWidth")]
   min_width: Option<i32>,
+  #[serde(rename="maxWidth")]
   max_width: Option<i32>,
   resizable: bool,
   minimizable: bool,
@@ -76,12 +80,17 @@ pub struct WindowAttrs {
   visible: bool,
   transparent: bool,
   decorations: bool,
+  #[serde(rename="alwaysOnTop")]
   always_on_top: bool,
+  #[serde(rename="alwaysOnBottom")]
   always_on_bottom: bool,
+  #[serde(rename="windowIcon")]
   window_icon: Option<String>,
   theme: Theme,
   focused: bool,
+  #[serde(rename="contentProtection")]
   content_protection: bool,
+  #[serde(rename="visibleOnAllWorkspaces")]
   visible_on_all_workspaces: bool,
   position: Option<Position>,
 }
