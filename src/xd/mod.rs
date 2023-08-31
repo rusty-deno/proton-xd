@@ -42,9 +42,8 @@ pub fn read_clipboard()-> String {
 
 #[deno_bindgen]
 pub fn init(window_atters: &str,webview_atters: &str) {
-  let window_atters: WindowAttrs=from_str(window_atters).unwrap();
-  let webview_atters: WebViewAttrs=from_str(webview_atters).unwrap();
-  
+  let window_atters: WindowAttrs=from_str(window_atters).unwrap_or_else(|e| panic!("{:?}",e.classify()));
+  let webview_atters: WebViewAttrs=from_str(webview_atters).unwrap_or_else(|e| panic!("{:?}",e));
   
   spawn_webview(window_atters,webview_atters).unwrap();
 }

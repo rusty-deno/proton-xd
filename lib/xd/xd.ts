@@ -1,5 +1,5 @@
 import * as lib from "../../bindings/bindings.ts";
-import { defaultWindowAttrs as dwa,defaultWebViewAttrs as dweba,confirmDefaultVal } from "./default.ts";
+import { defaultWindowAttrs as dwa,defaultWebViewAttrs as dweba } from "./default.ts";
 import { WebViewAttributes,Content,WindowAttributes,isURL } from "./types.ts";
 
 /**
@@ -16,11 +16,17 @@ export class XD {
    * @param {WebViewAttributes} webviewAttrs defines the webview's propoerties
    */
   constructor(content: Content,windowAttrs: WindowAttributes={},webviewAttrs: WebViewAttributes={}) {
-    this.windowAttrs=windowAttrs;
-    this.webviewAttrs=webviewAttrs;
+    this.windowAttrs={
+      ...dwa,
+      ...windowAttrs
+    };
+    this.webviewAttrs={
+      ...dweba,
+      ...webviewAttrs
+    };
     
     if(isURL(content)) //if content is an URL then sets the url
-      this.webviewAttrs.url=content;
+      this.webviewAttrs.url=content.toString();
     else
       this.webviewAttrs.html=content as string; //if content is not an URL then it must be html/text
   }
@@ -59,8 +65,8 @@ export class XD {
    */
   public spawn() {
     lib.init(
-      JSON.stringify(confirmDefaultVal(this.windowAttrs,dwa)),
-      JSON.stringify(confirmDefaultVal(this.webviewAttrs,dweba))
+      JSON.stringify(this.windowAttrs),
+      JSON.stringify(this.webviewAttrs)
     );
   }
   

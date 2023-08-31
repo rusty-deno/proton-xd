@@ -4,7 +4,6 @@
 import { ensureDirSync } from "https://deno.land/std@0.132.0/fs/ensure_dir.ts";
 import { createFromBuffer,GlobalConfiguration } from "https://deno.land/x/dprint@0.2.0/mod.ts";
 import * as Cache from "https://deno.land/x/cache@0.2.13/mod.ts";
-import { readToStringSync,copySync } from "../lib/std/fs/mod.ts";
 
 
 Cache.configure({ directory: Cache.options.directory });
@@ -154,7 +153,8 @@ export function codegen(
   
   
   ensureDirSync("bindings/bin");
-  copySync(`${fetchPrefix}/${getName(name)}`,bin).unwrapOrElse(e=> console.log(e));
+  Deno.copyFileSync(`${fetchPrefix}/${getName(name)}`,bin);
+  
   
   if(Deno.args.includes("--no-bindings")) Deno.exit(0);
 
@@ -167,7 +167,7 @@ export function codegen(
       }),
       {},
     );
-  const prototype=readToStringSync("./bindings/bindings.prototype.json").unwrapOr("{}").trim();
+  const prototype=Deno.readTextFileSync("./bindings/bindings.prototype.json").trim();
 
   return tsFormatter.formatText("bindings/bindings.ts",`
 const encoder=new TextEncoder;
@@ -178,7 +178,7 @@ function decode(buffer: Uint8Array): string {
 }
 
 function encode(v: string|Uint8Array): Uint8Array {
-  return typeof v !== "string" ? v : encoder.encode(v.endsWith("\\0")?v:v+"\\0");
+  return typeof v !== "string" ? v : encoder.encode(v);
 }
 
 ${getExt.toString()}
