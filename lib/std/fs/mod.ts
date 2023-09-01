@@ -1,4 +1,4 @@
-import { Res,ResSync,Result } from "../io/result/mod.ts";
+import { Res,ResSync,Result } from '../error/result/mod.ts';
 import { PathBuf } from '../path.ts';
 import {file} from './file.ts';
 

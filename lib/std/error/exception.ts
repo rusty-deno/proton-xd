@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import { panic } from "../error/panic.ts";
+import { $panic } from './macros/panic.ts';
 import { Clone } from '../clone.ts';
 
 
@@ -53,7 +53,7 @@ export abstract class Exception<T,E> implements Clone {
    * * Panics if the value is a `None` with a custom panic message provided by msg.
    */
   public expect(msg: string): T {
-    if(this.isException) panic(msg);
+    if(this.isException) $panic(msg);
     return this.res();
   }
   
@@ -78,7 +78,7 @@ export abstract class Exception<T,E> implements Clone {
   
   public unwrap(): T {    
     return this.unwrapOrElse((e: any)=> {
-      panic(e);
+      $panic(e);
     });
   }
   

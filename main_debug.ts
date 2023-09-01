@@ -7,4 +7,3 @@
 import ProtonXD from "./mod.ts";
 
 ProtonXD.$panic();
-

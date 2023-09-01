@@ -1,5 +1,5 @@
-import { ResSync } from "../io/result/mod.ts";
-import { Option } from "../io/mod.ts";
+import { ResSync } from "../error/result/mod.ts";
+import { Option } from "../error/mod.ts";
 import { PathBuf } from "../path.ts";
 
 
