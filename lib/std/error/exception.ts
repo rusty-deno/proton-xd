@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import { $panic } from './macros/panic.ts';
+import { $panic } from '../mod.ts';
 import { Clone } from '../clone.ts';
 
 
