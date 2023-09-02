@@ -1,6 +1,6 @@
-import { ResSync } from "../error/result/mod.ts";
 import { Option } from "../error/mod.ts";
 import { PathBuf } from "../path.ts";
+import { $resultSync } from "../error/result/mod.ts";
 
 
 
@@ -9,15 +9,15 @@ export type Var=[key: string,value: string];
 export const args=Deno.args;
 
 export function currentDir() {
-  return ResSync(()=> Deno.cwd());
+  return $resultSync(()=> Deno.cwd());
 }
 
 export function currentExe() {
-  return ResSync(()=> Deno.execPath());
+  return $resultSync(()=> Deno.execPath());
 }
 
 export function homeDir() {
-  return ResSync(()=> Deno.env.get("HOME"));
+  return $resultSync(()=> Deno.env.get("HOME"));
 }
 
 export function joinPaths(...paths: string[]) {
@@ -29,7 +29,7 @@ export function removeVar(k: string) {
 }
 
 export function setCurrentDir(path: PathBuf) {
-  return ResSync(()=> Deno.chdir(path));
+  return $resultSync(()=> Deno.chdir(path));
 }
 
 export function setVar(key: string,value: string) {

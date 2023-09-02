@@ -1,5 +1,5 @@
-import { Res,ResSync } from "../error/result/mod.ts";
-import { Opt,OptSync } from "../error/option/mod.ts";
+import { $result,$resultSync } from "../error/result/mod.ts";
+import { $option,$optionSync } from "../error/option/mod.ts";
 
 export class file {
   private fs: Deno.FsFile;
@@ -9,35 +9,35 @@ export class file {
   
 
   public static async create(path: string) {
-    return await Res(async ()=> new file(await Deno.create(path)));
+    return await $result(async ()=> new file(await Deno.create(path)));
   }
 
   public static createSync(path: string) {
-    return ResSync(()=> new file(Deno.createSync(path)));
+    return $resultSync(()=> new file(Deno.createSync(path)));
   }
   
   public static async open(path: string,options?: Deno.OpenOptions) {
-    return await Res(async ()=> new file(await Deno.open(path,options)));
+    return await $result(async ()=> new file(await Deno.open(path,options)));
   }
 
   public static openSync(path: string,options?: Deno.OpenOptions) {
-    return ResSync(()=> new file(Deno.openSync(path,options)));
+    return $resultSync(()=> new file(Deno.openSync(path,options)));
   }
 
   public async metadata() {
-    return await Res(async ()=>  await this.fs.stat());
+    return await $result(async ()=>  await this.fs.stat());
   }
 
   public metadataSync() {
-    return ResSync(()=> this.fs.statSync());
+    return $resultSync(()=> this.fs.statSync());
   }
 
   public async truncate(len?: number) {
-    return await Res(async ()=> await this.fs.truncate(len));
+    return await $result(async ()=> await this.fs.truncate(len));
   }
 
   public truncateSync(len?: number) {
-    return ResSync(()=> this.fs.truncateSync(len));
+    return $resultSync(()=> this.fs.truncateSync(len));
   }
   
   public close() {
@@ -45,7 +45,7 @@ export class file {
   }
 
   public async read() {
-    return await Opt(async ()=> {
+    return await $option(async ()=> {
       const buf=new Uint8Array;
       const bytes=await this.fs.read(buf);
       return bytes==null?bytes:buf;
@@ -53,7 +53,7 @@ export class file {
   }
 
   public readSync() {
-    return OptSync(()=> {
+    return $optionSync(()=> {
       const buf=new Uint8Array;
       const bytes=this.fs.readSync(buf);
       return bytes==null?bytes:buf;
@@ -61,11 +61,11 @@ export class file {
   }
 
   public async write(buf: Uint8Array) {
-    return await Res(()=> this.fs.write(buf));
+    return await $result(()=> this.fs.write(buf));
   }
 
   public writeSync(buf: Uint8Array) {
-    return ResSync(()=> this.fs.writeSync(buf));
+    return $resultSync(()=> this.fs.writeSync(buf));
   }
 
   public get readable() {

@@ -16,13 +16,11 @@ export * from "./thread/thread.ts";
 
 //exception handeling
 export * from "./error/mod.ts";
-// export * from "./io/option/option.ts";
 
 //frequently used
-export * from "./net/fetch.ts";
 export * from "./collections/linear/vector.ts";
 export * from "./collections/hash_map/hash_map.ts";
 
 //macros
-export * from "./macros.ts";
+export * from "./macros/mod.ts";
 

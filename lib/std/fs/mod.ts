@@ -1,6 +1,6 @@
-import { Res,ResSync,Result } from '../error/result/mod.ts';
+import { $result,$resultSync,Result } from '../error/result/mod.ts';
 import { PathBuf } from '../path.ts';
-import {file} from './file.ts';
+import { file } from './file.ts';
 
 export * from "./directory_builder.ts";
 export * from "./file.ts";
@@ -9,155 +9,155 @@ export * from "./file.ts";
 
 
 export async function canonicalize(path: PathBuf) {
-  return await Res(()=> Deno.realPath(path));
+  return await $result(()=> Deno.realPath(path));
 }
 
 export function canonicalizeSync(path: PathBuf) {
-  return ResSync(()=> Deno.realPathSync(path));
+  return $resultSync(()=> Deno.realPathSync(path));
 }
 
 export async function copy(from: PathBuf,to: PathBuf): Promise<Result<void,Error>> {
-  return await Res<void>(()=> Deno.copyFile(from,to));
+  return await $result<void>(()=> Deno.copyFile(from,to));
 }
 
 export function copySync(from: PathBuf,to: PathBuf) {
-  return ResSync(()=> Deno.copyFileSync(from,to));
+  return $resultSync(()=> Deno.copyFileSync(from,to));
 }
 
 export async function createDir(path: PathBuf,options?: Deno.MkdirOptions) {
-  return await Res(()=> Deno.mkdir(path,options));
+  return await $result(()=> Deno.mkdir(path,options));
 }
 
 export function createDirSync(path: PathBuf,options?: Deno.MkdirOptions) {
-  return ResSync(()=> Deno.mkdirSync(path,options));
+  return $resultSync(()=> Deno.mkdirSync(path,options));
 }
 
 export async function link(original: string,link: string) {
-  return await Res(async ()=> await Deno.link(original,link));
+  return await $result(async ()=> await Deno.link(original,link));
 }
 
 export function linkSync(original: string,link: string) {
-  return ResSync(()=> Deno.linkSync(original,link));
+  return $resultSync(()=> Deno.linkSync(original,link));
 }
 
 export async function metadata(path: PathBuf) {
-  return await Res(()=> Deno.stat(path));
+  return await $result(()=> Deno.stat(path));
 }
 
 export function metadataSync(path: PathBuf) {
-  return ResSync(()=> Deno.statSync(path));
+  return $resultSync(()=> Deno.statSync(path));
 }
 
 export async function readFile(path: PathBuf) {
-  return await Res(async ()=> await Deno.readFile(path));
+  return await $result(async ()=> await Deno.readFile(path));
 }
 
 export function readFileSync(path: PathBuf) {
-  return ResSync(()=> Deno.readFileSync(path));
+  return $resultSync(()=> Deno.readFileSync(path));
 }
 
 export function readDir(path: PathBuf) {
-  return ResSync(()=> Deno.readDir(path));
+  return $resultSync(()=> Deno.readDir(path));
 }
 
 export function readDirSync(path: PathBuf) {
-  return ResSync(()=> Deno.readDirSync(path));
+  return $resultSync(()=> Deno.readDirSync(path));
 }
 
 export async function readLink(path: PathBuf) {
-  return await Res(async ()=> await Deno.readLink(path));
+  return await $result(async ()=> await Deno.readLink(path));
 }
 
 export function readLinkSync(path: PathBuf) {
-  return ResSync(()=> Deno.readLinkSync(path));
+  return $resultSync(()=> Deno.readLinkSync(path));
 }
 
 export async function readToString(path: PathBuf,options?: Deno.ReadFileOptions) {
-  return await Res(async ()=> await Deno.readTextFile(path,options));
+  return await $result(async ()=> await Deno.readTextFile(path,options));
 }
 
 export function readToStringSync(path: PathBuf) {
-  return ResSync(()=> Deno.readTextFileSync(path));
+  return $resultSync(()=> Deno.readTextFileSync(path));
 }
 
 export async function removeDir(path: PathBuf,options?: Deno.RemoveOptions) {
-  return await Res(async ()=> await Deno.remove(path,options));
+  return await $result(async ()=> await Deno.remove(path,options));
 }
 
 export function removeDirSync(path: PathBuf,options?: Deno.RemoveOptions) {
-  return ResSync(()=> Deno.removeSync(path,options));
+  return $resultSync(()=> Deno.removeSync(path,options));
 }
 
 export async function rename(oldpath: PathBuf,newpath: PathBuf) {
-  return await Res(async ()=> await Deno.rename(oldpath,newpath));
+  return await $result(async ()=> await Deno.rename(oldpath,newpath));
 }
 
 export function renameSync(oldpath: PathBuf,newpath: PathBuf) {
-  return ResSync(()=> Deno.renameSync(oldpath,newpath));
+  return $resultSync(()=> Deno.renameSync(oldpath,newpath));
 }
 
 export async function chmod(path: PathBuf,mode: number) {
-  return await Res(async ()=> await Deno.chmod(path,mode));
+  return await $result(async ()=> await Deno.chmod(path,mode));
 }
 
 export function chmodSync(path: PathBuf,mode: number) {
-  return ResSync(()=> Deno.chmodSync(path,mode));
+  return $resultSync(()=> Deno.chmodSync(path,mode));
 }
 
 export async function chown(path: PathBuf,uid: number|null,gid: number|null) {
-  return await Res(async ()=> await Deno.chown(path,uid,gid));
+  return await $result(async ()=> await Deno.chown(path,uid,gid));
 }
 
 export function chownSync(path: PathBuf,uid: number|null,gid: number|null) {
-  return ResSync(()=> Deno.chownSync(path,uid,gid));
+  return $resultSync(()=> Deno.chownSync(path,uid,gid));
 }
 
 export async function symlinkMetadata(path: PathBuf) {
-  return await Res(async ()=> await Deno.lstat(path));
+  return await $result(async ()=> await Deno.lstat(path));
 }
 
 export function symlinkMetadataSync(path: PathBuf) {
-  return ResSync(()=> Deno.lstatSync(path));
+  return $resultSync(()=> Deno.lstatSync(path));
 }
 
 export async function writeFile(path: PathBuf,data: Uint8Array|ReadableStream<Uint8Array>,options?: Deno.WriteFileOptions) {
-  return await Res(async ()=> await Deno.writeFile(path,data,options));
+  return await $result(async ()=> await Deno.writeFile(path,data,options));
 }
 
 export function writeFileSync(path: PathBuf,data: Uint8Array,options?: Deno.WriteFileOptions) {
-  return ResSync(()=> Deno.writeFileSync(path,data,options));
+  return $resultSync(()=> Deno.writeFileSync(path,data,options));
 }
 
 export async function writeTextFile(path: PathBuf,data: ReadableStream<string>,options?: Deno.WriteFileOptions) {
-  return await Res(async ()=> await Deno.writeTextFile(path,data,options));
+  return await $result(async ()=> await Deno.writeTextFile(path,data,options));
 }
 
 export function writeTextFileSync(path: PathBuf,data: string,options?: Deno.WriteFileOptions) {
-  return ResSync(()=> Deno.writeTextFileSync(path,data,options));
+  return $resultSync(()=> Deno.writeTextFileSync(path,data,options));
 }
 
 export async function makeTempDir(options: Deno.MakeTempOptions) {
-  return await Res(async ()=> await Deno.makeTempDir(options));
+  return await $result(async ()=> await Deno.makeTempDir(options));
 }
 
 export function makeTempDirSync(options: Deno.MakeTempOptions) {
-  return ResSync(()=> Deno.makeTempDirSync(options));
+  return $resultSync(()=> Deno.makeTempDirSync(options));
 }
 
 export async function makeTempFile(options: Deno.MakeTempOptions) {
-  return await Res(async ()=> await Deno.makeTempFile(options));
+  return await $result(async ()=> await Deno.makeTempFile(options));
 }
 
 export function makeTempFileSync(options: Deno.MakeTempOptions) {
-  return ResSync(()=> Deno.makeTempFileSync(options));
+  return $resultSync(()=> Deno.makeTempFileSync(options));
 }
 
 export async function truncate(name: string,len?: number) {
-  return await Res(async ()=> await Deno.truncate(name,len));
+  return await $result(async ()=> await Deno.truncate(name,len));
 }
 
 export function truncateSync(name: string,len?: number) {
-  return ResSync(()=> Deno.truncateSync(name,len));
+  return $resultSync(()=> Deno.truncateSync(name,len));
 }
 
 export async function open(path: string, options?: Deno.OpenOptions) {
