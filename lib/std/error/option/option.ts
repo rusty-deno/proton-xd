@@ -12,7 +12,12 @@ export class Option<T> extends Exception<T,None> {
   constructor(val: T|None) {
     super();
     this.value=val;
-    this.isException=!(val??false);
+    this.isException=val==null;
+  }
+
+  protected match<S,N>(t: (t: T)=> S,e: (e: None)=> N): S|N {
+    const res=this.res();
+    return this.isException?e(res):t(res);
   }
 
   protected res(): any {
@@ -45,7 +50,7 @@ export class Option<T> extends Exception<T,None> {
    * ```
    */
   public andThen(f: (xd: T)=> Option<T>): Option<T> {
-    return this.isException?this:f(this.value!);
+    return this.match(f,_=> this.clone());
   }
 
   /**
@@ -71,7 +76,7 @@ export class Option<T> extends Exception<T,None> {
    * ```
    */
   public override orElse(op: (err: None)=> this): this {
-    return this.isException?op(this.res()):this.clone();
+    return this.match(_=> this.clone(),op);
   }
 
   /**
@@ -87,8 +92,7 @@ export class Option<T> extends Exception<T,None> {
    * ```
    */
   public override expect(msg: string): T {
-    if(this.isException) $panic(msg);
-    return this.res();
+    return this.match(s=> s,_=> $panic(msg));
   }
 
   /**
@@ -103,9 +107,8 @@ export class Option<T> extends Exception<T,None> {
    * xd.expectNone(()=> console.log("xd is Some"));
    * ```
    */
-  public expectNone(callback: (val: T)=> never): None {
-    if(!this.isException) callback(this.res());
-    return this.res();
+  public expectNone(callback: (s: T)=> never): None {
+    return this.match(callback,n=> n);
   }
 
   /**
@@ -118,8 +121,8 @@ export class Option<T> extends Exception<T,None> {
    * $assertEq(xd.unwrapOr(69),Some(69));
    * ```
    */
-  public unwrapOr(op: T): T {
-    return this.isException?op:this.res();
+  public override unwrapOr(op: T): T {
+    return this.match(s=> s,_=> op);
   }
 
   /**
@@ -133,9 +136,8 @@ export class Option<T> extends Exception<T,None> {
    * $assertEq(xd.unwrap(),69);
    * ```
    */
-  public unwrap(): T {
-    const res=this.res();
-    return this.isException?$panic(res):res;
+  public override unwrap(): T {
+    return this.match(s=> s,e=> $panic(e as any));
   }
 
   /**
@@ -146,16 +148,15 @@ export class Option<T> extends Exception<T,None> {
    * $assertEq(xd.unwrapOrElse(()=> Some(69)),Some(69));
    * ```
    */
-  public unwrapOrElse(f: (none: None)=> T): T {
-    const res=this.res();
-    return this.isException?f(res):res;
+  public override unwrapOrElse(f: (none: None)=> T): T {
+    return this.match(s=> s,f);
   }
 
 
   /**
    * Returns whether the object contains a `Some` value.
    */
-  public contains() {
+  public override contains() {
     return !this.isException;
   }
 
@@ -169,20 +170,22 @@ export class Option<T> extends Exception<T,None> {
   public static get None() {
     return None<any>(null);
   }
+
+  public static Some<T>(val: Some<T>) {
+    return new Option<T>(val);
+  }
 }
 
 export type None=undefined|null;
 export type Some<T>=NonNullable<T>;
 export const none=Option.None;
 
-export function Some<T>(val: T) {
-  return new Option(val);
+export function Some<T>(val: NonNullable<T>) {
+  return Option.Some(val);
 }
 
 /**
- * @param {None} val
- * @returns {Option<T>}
- * @description use for extream type safety
+ * Use it for extream type safety
  */
 export function None<T>(val: None): Option<T> {
   return new Option<T>(val);
