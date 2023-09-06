@@ -18,7 +18,7 @@ export abstract class Exception<T,E> implements Clone {
    * # `isException`
    * * It must be defined as it tells whether the stored value is an `Exception`.
    */
-  protected abstract readonly isException: boolean;
+  protected abstract isException: boolean;
   
   /**
    * * Returns `Exception` if the value is an `Exception`,otherwise returns optb.

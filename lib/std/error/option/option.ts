@@ -6,12 +6,12 @@ import { Exception } from '../exception.ts';
 
 
 export class Option<T> extends Exception<T,None> {
-  public readonly value: T|None;
-  protected readonly isException: boolean;
+  private _value: T|None;
+  protected isException: boolean;
 
   constructor(val: T|None) {
     super();
-    this.value=val;
+    this._value=val;
     this.isException=val==null;
   }
 
@@ -21,8 +21,18 @@ export class Option<T> extends Exception<T,None> {
   }
 
   protected res(): any {
-    return this.value;
+    return this._value;
   }
+
+  public get value() {
+    return this._value;
+  }
+
+  public set value(val) {
+    this._value=val;
+    this.isException=val==null;
+  }
+
 
   /**
    * * Returns `None` if the value is `None`,otherwise returns optb.
@@ -111,6 +121,15 @@ export class Option<T> extends Exception<T,None> {
     return this.match(callback,n=> n);
   }
 
+  public insert(val: T) {
+    this._value=val;
+    this.isException=false;
+  }
+
+  public getOrInsert(val: T) {
+    return this.match(t=> t,_=> this.value=val);
+  }
+
   /**
    * * Returns the contained `Some` value or a provided default.
    * * Arguments passed to unwrapOr are eagerly evaluated; if you are passing the result of a function call, it is recommended to use unwrapOrElse.
@@ -171,7 +190,7 @@ export class Option<T> extends Exception<T,None> {
     return None<any>(null);
   }
 
-  public static Some<T>(val: Some<T>) {
+  public static Some<T>(val: T) {
     return new Option<T>(val);
   }
 }
@@ -180,7 +199,7 @@ export type None=undefined|null;
 export type Some<T>=NonNullable<T>;
 export const none=Option.None;
 
-export function Some<T>(val: NonNullable<T>) {
+export function Some<T>(val: T) {
   return Option.Some(val);
 }
 

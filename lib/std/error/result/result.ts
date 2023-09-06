@@ -8,21 +8,25 @@ export type Res<T,E>={ ok: T }|{ err: E };
 
 
 export class Result<T,E> extends Exception<T,E> {
-  protected readonly isException: boolean;
+  protected isException: boolean;
 
-  constructor(private result: Res<T,E>) {
+  constructor(private _result: Res<T,E>) {
     super();
-    this.isException=Object.hasOwn(result,"err");
+    this.isException=Object.hasOwn(_result,"err");
   }
 
   protected match<T1,E1>(t: (t: T)=> T1,e: (e: E)=> E1): T1|E1 {
-    const res=this.result as any;
-    return Object.hasOwn(this.result,"ok")?t(res.ok):e(res.err);
+    const res=this._result as any;
+    return Object.hasOwn(this._result,"ok")?t(res.ok):e(res.err);
   }
 
   protected res(): any {
-    const res=this.result as any;
+    const res=this._result as any;
     return res[Object.hasOwn(res,"ok")?"ok":"err"];
+  }
+
+  public get result(): T|E {
+    return this.res();
   }
 
   public and(res: Result<T,E>): Result<T,E> {
@@ -38,16 +42,27 @@ export class Result<T,E> extends Exception<T,E> {
   }
 
   public err(): Option<E> {
-    return this.match(_=> None(null),err=> Some(err as any));
+    return this.match(_=> None(null),err=> Some(err));
   }
 
   public ok(): Option<T> {
-    return this.match(ok=> Some(ok as any),_=> None(null));
+    return this.match(ok=> Some(ok),_=> None(null));
   }
 
   public containsErr() {
     return this.isException;
   }
+
+  public insert(ok: T) {
+    this._result={ok};
+    this.isException=false;
+  }
+
+  public getOrInsert(ok: T): T {
+    if(this.isException) this._result={ ok };
+    return this.res();
+  }
+
 
   public static Ok<T>(ok: T) {
     return new Result<T,any>({ ok });
