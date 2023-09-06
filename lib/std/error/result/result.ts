@@ -60,7 +60,7 @@ export class Result<T,E> extends Exception<T,E> {
 
   public getOrInsert(ok: T): T {
     if(this.isException) this._result={ ok };
-    return this.res();
+    return (this._result as any).ok;
   }
 
 

@@ -6,13 +6,11 @@ import { Exception } from '../exception.ts';
 
 
 export class Option<T> extends Exception<T,None> {
-  private _value: T|None;
   protected isException: boolean;
 
-  constructor(val: T|None) {
+  constructor(private _value: T|None) {
     super();
-    this._value=val;
-    this.isException=val==null;
+    this.isException=_value==null;
   }
 
   protected match<S,N>(t: (t: T)=> S,e: (e: None)=> N): S|N {
@@ -114,18 +112,35 @@ export class Option<T> extends Exception<T,None> {
    * # Example
    * ```ts
    * const xd=Some(69);
-   * xd.expectNone(()=> console.log("xd is Some"));
+   * xd.expectNone(()=> $panic("xd is Some"));
    * ```
    */
   public expectNone(callback: (s: T)=> never): None {
     return this.match(callback,n=> n);
   }
-
+  
+  /**
+   * * Inserts the given `Some` value in the current `Option`
+   * # Example
+   * ```ts
+   * const xd=None(null);
+   * $assertEq(xd.insert(69),Some(69));
+   * ```
+   */
   public insert(val: T) {
     this._value=val;
     this.isException=false;
+    return this;
   }
 
+  /**
+   * * Returns the contained `Some` value or Inserts the given `Some` value in the current `Option` and returns it
+   * # Example
+   * ```ts
+   * const xd=None(null);
+   * $assertEq(xd.getOrInsert(69),Some(69));
+   * ```
+   */
   public getOrInsert(val: T) {
     return this.match(t=> t,_=> this.value=val);
   }
