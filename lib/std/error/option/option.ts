@@ -49,12 +49,12 @@ export class Option<T> extends Exception<T,None> {
   
   /**
    * * Returns `None` if the option is `None`, otherwise calls f with the wrapped value and returns the result.
-   * * Some languages call this operation flatmap.
+   * * some languages call this operation flatmap.
    * 
    * # Example
    * ```ts
-   * const xd=Some(69);
-   * $assertEq(xd.andThen(x=> None(null)),None(null));
+   * const xd=Some(0);
+   * $assertEq(xd.andThen(x=> Some(69)),Some(69));
    * ```
    */
   public andThen(f: (xd: T)=> Option<T>): Option<T> {
@@ -100,7 +100,7 @@ export class Option<T> extends Exception<T,None> {
    * ```
    */
   public override expect(msg: string): T {
-    return this.match(s=> s,_=> $panic(msg));
+    return this.isException?this.res():$panic(msg);
   }
 
   /**
@@ -147,7 +147,7 @@ export class Option<T> extends Exception<T,None> {
 
   /**
    * * Returns the contained `Some` value or a provided default.
-   * * Arguments passed to unwrapOr are eagerly evaluated; if you are passing the result of a function call, it is recommended to use unwrapOrElse.
+   * * Arguments passed to unwrapOr are eagerly evaluated; if you are passing the result of a function call, it is recommended to use `unwrapOrElse`.
    * 
    * # Example
    * ```ts
@@ -184,6 +184,10 @@ export class Option<T> extends Exception<T,None> {
    */
   public override unwrapOrElse(f: (none: None)=> T): T {
     return this.match(s=> s,f);
+  }
+
+  public override unwrapUnchecked(): T|None {
+    return this._value;
   }
 
 
