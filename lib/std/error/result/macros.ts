@@ -1,14 +1,18 @@
-import { Result,Ok,Err } from "./result.ts";
+import { Ok,Err,Result } from "./result.ts";
 
 
-export async function $result<T>(f: ()=> Promise<T>) {
-  return new Result<T,Err>(await f().catch((error)=> error));
+export async function $result<T>(f: ()=> Promise<T>): Promise<Result<T,Error>> {
+  try {
+    return Ok(await f());
+  } catch (err) {
+    return Err(err);
+  }
 }
 
 export function $resultSync<T>(f: ()=> T) {
   try {
-    return Ok<T>(f());
+    return Ok<T,Err>(f());
   } catch (error) {
-    return Err<T>(error);
+    return Err<T,Err>(error);
   }
 }

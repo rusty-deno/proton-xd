@@ -162,7 +162,7 @@ export class HashMap<K,V> extends Iter<Entry<K,V>> implements Clone {
     return str+"\n}";
   }
 
-  [Symbol.toStringTag]() {
+  public get [Symbol.toStringTag]() {
     return this.toString();
   }
 

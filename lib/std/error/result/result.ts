@@ -1,56 +1,67 @@
 // deno-lint-ignore-file no-explicit-any
-import { Option,Some } from '../option/option.ts';
+import { Option,None,Some } from '../option/option.ts';
 import { Exception } from '../exception.ts';
 
 export type Ok<T>=T;
 export type Err<E extends Error=Error>=E;
+export type Res<T,E>={ ok: T }|{ err: E };
 
 
 export class Result<T,E> extends Exception<T,E> {
-  public readonly result: T|E;
-  public readonly isException: boolean;
+  protected readonly isException: boolean;
 
-  constructor(res: T|E,isException?: boolean) {
+  constructor(private result: Res<T,E>) {
     super();
-    this.result=res;
-    this.isException=isException??res instanceof Error;
+    this.isException=Object.hasOwn(result,"err");
   }
 
+  protected match<T1,E1>(t: (t: T)=> T1,e: (e: E)=> E1): T1|E1 {
+    const res=this.result as any;
+    return Object.hasOwn(this.result,"ok")?t(res.ok):e(res.err);
+  }
 
+  protected res(): any {
+    const res=this.result as any;
+    return res[Object.hasOwn(res,"ok")?"ok":"err"];
+  }
 
   public and(res: Result<T,E>): Result<T,E> {
-    return this.isException?this:res;
+    return this.isException?this.clone():res;
   }
 
   public andThen(f: (xd: T)=> Result<T,E>) {
-    return this.isException?this:f(this.res());
+    return this.match(f,_=> this.clone());
   }
 
   public override orElse(op: (err: E)=> this) {
-    return this.isException?op(this.res()):this.clone();
-  }
-
-  public res(): any {
-    return this.result;
+    return this.match(_=> this.clone(),op);
   }
 
   public err(): Option<E> {
-    return this.isException?Some(this.result):Option.None;
+    return this.match(_=> None(null),err=> Some(err as any));
   }
 
   public ok(): Option<T> {
-    return !this.isException?Some(this.result):Option.None;
+    return this.match(ok=> Some(ok as any),_=> None(null));
   }
 
+  public containsErr() {
+    return this.isException;
+  }
 
-  public static Ok=<T>(res: T)=> Ok<T>(res);
-  public static Err=<T>(err: T)=> Err<T>(err);
+  public static Ok<T>(ok: T) {
+    return new Result<T,any>({ ok });
+  }
+
+  public static Err<E>(err: E) {
+    return new Result<any,E>({ err });
+  }
 }
 
 
-export function Err<T>(err: T) {
-  return new Result<any,T>(err,true);
+export function Err<T,E>(err: E) {
+  return new Result<T,E>({ err });
 }
-export function Ok<T>(res: T) {
-  return new Result<T,any>(res);
+export function Ok<T,E>(ok: T) {
+  return new Result<T,E>({ ok });
 }
