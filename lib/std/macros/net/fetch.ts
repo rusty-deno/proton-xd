@@ -1,14 +1,12 @@
-import { Ok,Err,Result } from "../../mod.ts";
+
+import { $result,Result } from "../../error/result/mod.ts";
 import { HttpError } from "../../net/error.ts";
 
 
-export async function $fetch(inp: string|URL|Request,init?: RequestInit): Promise<Result<Response,HttpError>> {
-  try {
+export function $fetch(inp: string|URL|Request,init?: RequestInit): Promise<Result<Response,HttpError>> {
+  return $result(async ()=> {
     const res=await fetch(inp,init);
     if(!res.ok) throw new HttpError(res);
-
-    return Ok(res);
-  } catch(err) {    
-    return Err(err);
-  }
+    return res;
+  });
 }
