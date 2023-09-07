@@ -14,7 +14,7 @@ export * from "./clone.ts";
 export * from "./collections/iter.ts";
 export * from "./thread/thread.ts";
 
-//exception handeling
+//error handeling
 export * from "./error/mod.ts";
 
 //frequently used

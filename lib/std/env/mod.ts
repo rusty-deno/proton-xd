@@ -1,13 +1,10 @@
-import { Option,Result } from "../error/mod.ts";
-import { PathBuf } from "../path.ts";
 import { $resultSync } from "../error/result/mod.ts";
-import { HashMap } from '../collections/hash_map/hash_map.ts';
+import { Vec,HashMap,Option,Result } from "../mod.ts";
+import { PathBuf } from "../path.ts";
 
 
 
-
-export type Var=[key: string,value: string];
-export const args=Deno.args;
+export const args=Vec.fromArr(Deno.args);
 
 /**
  * Returns a {@linkcode Result} of the string representation of current working directory.
@@ -17,14 +14,13 @@ export const args=Deno.args;
  * If the current directory can be reached via multiple paths (due to symbolic
  * links), `currentDir()` may return any one of them.
  *
+ * # Example
  * ```ts
  * const cwd=env.currentDir();
  * console.log(cwd.unwrap());
  * ```
  *
- * Requires `allow-read` permission.
- *
- * @tags allow-read
+ * @requires `allow-read` permission.
  * @category Runtime Environment
  */
 export function currentDir() {
@@ -36,13 +32,12 @@ export function currentDir() {
  * 
  * Err varient {@linkcode Deno.errors.NotFound}
  *
+ * # Example
  * ```ts
  * console.log(env.currentExe().unwrap());  // e.g. "/home/father/.local/bin/deno"
  * ```
  *
- * Requires `allow-read` permission.
- *
- * @tags allow-read
+ * @requires `allow-read` permission.
  * @category Runtime Environment
  */
 export function currentExe(): Result<string,Deno.errors.NotFound> {
@@ -52,13 +47,12 @@ export function currentExe(): Result<string,Deno.errors.NotFound> {
 /**
  * Returns a {@linkcode Option} of the path to the home directory.
  *
+ * # Example
  * ```ts
  * console.log(env.homeDir().unwrap());  // e.g. "/home"
  * ```
  *
- * Requires `allow-read` permission.
- *
- * @tags allow-read
+ * @requires `allow-read` permission.
  * @category Runtime Environment
  */
 export function homeDir(): Option<string> {
@@ -67,13 +61,13 @@ export function homeDir(): Option<string> {
 
 /** Deletes the value of an environment variable.
  *
+ * # Example
  * ```ts
  * env.set("SOME_VAR", "Value");
  * $assertEq(env.removeVar("SOME_VAR"),Some("Value"));
  * ```
  *
- * Requires `allow-env` permission.
- *
+ * @requires `allow-env` permission.
  * @tags allow-env
  */
 export function removeVar(k: string): Option<string> {
@@ -90,15 +84,14 @@ export function removeVar(k: string): Option<string> {
  * Err varient {@linkcode Deno.errors.PermissionDenied} - if the user does not have
  * operating system file access rights.
  *
+ * # Example
  * ```ts
  * env.setCurrentDir("/home/userA");
  * env.setCurrentDir("../userB");
  * env.setCurrentDir("C:\\Program Files (x86)\\Java");
  * ```
  * 
- * Requires `allow-read` permission.
- *
- * @tags allow-read
+ * @requires `allow-read` permission.
  * @category Runtime Environment
  */
 export function setCurrentDir(path: PathBuf) {
@@ -107,13 +100,13 @@ export function setCurrentDir(path: PathBuf) {
 
 /** Sets the value of an environment variable.
  *
+ * # Example
  * ```ts
  * env.setVar("SOME_VAR","Value");
  * $assertEq(env.getVar("SOME_VAR"),Some("Value"));
  * ```
  *
- * Requires `allow-env` permission.
- *
+ * @requires `allow-env` permission.
  * @tags allow-env
  */
 export function setVar(key: string,value: string) {
@@ -122,13 +115,13 @@ export function setVar(key: string,value: string) {
 
 /** Retrieves the value of an environment variable.
  * 
+ * # Example
  * ```ts
  * console.log(Deno.env.get("HOME").unwrap());// e.g. outputs "/home/alice"
  * console.log(Deno.env.get("69").unwrap());
  * ```
  *
- * Requires `allow-env` permission.
- *
+ * @requires `allow-env` permission.
  * @tags allow-env
  */
 export function getVar(key: string) {
@@ -138,14 +131,14 @@ export function getVar(key: string) {
 /** Returns a snapshot of the environment variables at invocation as a
  * simple {@linkcode HashMap}
  *
+ * # Example
  * ```ts
  * env.set("TEST_VAR", "69");
  * const envMap=env.getMap();
  * $assertEq(envMap.get("TEST_VAR",Some("69")));
  * ```
  *
- * Requires `allow-env` permission.
- *
+ * @requires `allow-env` permission.
  * @tags allow-env
  */
 export function getMap(): HashMap<string,string> {

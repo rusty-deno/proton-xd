@@ -31,8 +31,8 @@ export class Result<T,E> extends Exception<T,E> {
   }
 
   /**
-   * * Returns `Err` if the value is `Err`,otherwise returns optb.
-   * * Arguments passed to and are eagerly evaluated; if you are passing the result of a function call, it is recommended to use andThen.
+   * * Returns `Err` if the value is `Err`,otherwise returns `optb`.
+   * * Arguments passed to {@linkcode and} are eagerly evaluated; if you are passing the result of a function call, it is recommended to use {@linkcode andThen}.
    * 
    * # Example
    * ```ts
@@ -41,13 +41,13 @@ export class Result<T,E> extends Exception<T,E> {
    * $assertEq(x.and(y),Ok(69));
    * ```
    */
-  public override and(res: Result<T,E>): Result<T,E> {
-    return this.isException?this.clone():res;
+  public override and(optb: Result<T,E>): Result<T,E> {
+    return this.isException?this.clone():optb;
   }
 
   /**
    * * Returns `Err` if the option is `Err`, otherwise calls f with the wrapped value and returns the result.
-   * * some languages call this operation flatmap.
+   * * some languages call this operation `flatmap`.
    * 
    * # Example
    * ```ts
@@ -60,7 +60,7 @@ export class Result<T,E> extends Exception<T,E> {
   }
 
   /**
-   * * Returns the `Result` if it contains a value,otherwise returns optb.
+   * * Returns the {@linkcode Result} if it contains a value,otherwise returns `optb`.
    * 
    * # Example
    * ```ts
@@ -73,7 +73,7 @@ export class Result<T,E> extends Exception<T,E> {
   }
 
   /**
-   * * Returns the `Result` if it contains a value, otherwise calls `f` and returns the result.
+   * * Returns the {@linkcode Result} if it contains a value, otherwise calls `f` and returns the result.
    * 
    * # Example
    * ```ts
@@ -97,7 +97,7 @@ export class Result<T,E> extends Exception<T,E> {
    * * Returns the contained `Ok` value.
    * 
    * # Panics
-   * * Panics if the value is a `Err` with a custom panic message provided by msg.
+   * * Panics if the value is a `Err` with a custom panic message provided by `msg`.
    * 
    * # Example
    * ```ts
@@ -140,7 +140,7 @@ export class Result<T,E> extends Exception<T,E> {
   }
 
   /**
-   * * Inserts the given `Ok` value in the current `Result`
+   * * Inserts the given `Ok` value in the current {@linkcode Result}
    * # Example
    * ```ts
    * const xd=Err("Err");
@@ -153,7 +153,7 @@ export class Result<T,E> extends Exception<T,E> {
   }
 
   /**
-   * * Returns the contained `Ok` value or Inserts the given `Ok` value in the current `Result` and returns it
+   * * Returns the contained `Ok` value or Inserts the given `Ok` value in the current {@linkcode Result} and returns it
    * # Example
    * ```ts
    * const xd=Err("Err");
@@ -167,7 +167,7 @@ export class Result<T,E> extends Exception<T,E> {
 
   /**
    * * Returns the contained `Ok` value.
-   * * Because this function may panic, its use is generally discouraged. Instead, prefer to use pattern matching and handle the None case explicitly, or call `unwrapOr`, `unwrapOrElse`.
+   * * Because this function may panic, its use is generally discouraged. Instead, prefer to use pattern matching and handle the None case explicitly, or call {@linkcode unwrapOr}, {@linkcode unwrapOrElse}.
    * # Panics
    * Panics if the self value equals `Err`.
    * # Example
@@ -182,7 +182,7 @@ export class Result<T,E> extends Exception<T,E> {
 
   /**
    * * Returns the contained `Ok` value or a provided default.
-   * * Arguments passed to unwrapOr are eagerly evaluated; if you are passing the result of a function call, it is recommended to use `unwrapOrElse`.
+   * * Arguments passed to unwrapOr are eagerly evaluated; if you are passing the result of a function call, it is recommended to use {@linkcode unwrapOrElse}.
    * 
    * # Example
    * ```ts

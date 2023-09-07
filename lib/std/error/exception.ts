@@ -15,31 +15,31 @@ export abstract class Exception<T,E> implements Clone {
   protected abstract res(): T|E;
 
   /**
-   * # `isException`
+   * # {@linkcode isException}
    * * It must be defined as it tells whether the stored value is an `Exception`.
    */
   protected abstract isException: boolean;
   
   /**
-   * * Returns `Exception` if the value is an `Exception`,otherwise returns optb.
-   * * Arguments passed to and are eagerly evaluated; if you are passing the result of a function call, it is recommended to use andThen.
+   * * Returns {@linkcode Exception} if the value is an {@linkcode Exception},otherwise returns `optb`.
+   * * Arguments passed to {@linkcode and} are eagerly evaluated; if you are passing the result of a function call, it is recommended to use {@linkcode andThen}.
    */
   public abstract and(optb: this): unknown;
 
   /**
-   * * Returns `Exception` if the object is `Exception`, otherwise calls f with the wrapped value and returns the result.
-   * * Some languages call this operation flatmap.
+   * * Returns {@linkcode Exception} if the object is {@linkcode Exception}, otherwise calls f with the wrapped value and returns the result.
+   * * Some languages call this operation `flatmap`.
    */
   public abstract andThen(f: (xd: T)=> unknown): unknown;
 
   /**
-   * * Returns the `this` if it isn't an `Exception`,otherwise returns optb.
+   * * Returns the `this` if it isn't an {@linkcode Exception},otherwise returns `optb`.
    */
   public or(optb: this): this {
     return this.isException?optb:this.clone();
   }
   /**
-   * * Returns the `this` if it isn't an `Exception`,otherwise calls `f` and returns the result.
+   * * Returns the `this` if it isn't an {@linkcode Exception},otherwise calls `f` and returns the result.
    */
   public orElse(f: (err: E)=> this): this {
     return this.match(_=> this.clone(),f);
@@ -55,15 +55,15 @@ export abstract class Exception<T,E> implements Clone {
   }
   
   /**
-   * * Returns the contained non `Exception` value or a provided default.
-   * * Arguments passed to unwrapOr are eagerly evaluated; if you are passing the result of a function call, it is recommended to use unwrapOrElse.
+   * * Returns the contained non {@linkcode Exception} value or a provided default.
+   * * Arguments passed to {@linkcode unwrapOr} are eagerly evaluated; if you are passing the result of a function call, it is recommended to use {@linkcode unwrapOrElse}.
    */
   public unwrapOr(op: T): T {
     return this.match(t=> t,_=> op);
   }
   
   /**
-   * Returns whether the object contains a non `Exception` value.
+   * Returns whether the object contains a non {@linkcode Exception} value.
    */
   public contains() {
     return !this.isException;
