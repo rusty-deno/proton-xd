@@ -1,7 +1,7 @@
 import { Ok,Err,Result } from "./result.ts";
 
 
-export async function $result<T>(f: ()=> Promise<T>): Promise<Result<T,Error>> {
+export async function $result<T,E=Err>(f: ()=> Promise<T>): Promise<Result<T,E>> {
   try {
     return Ok(await f());
   } catch (err) {
@@ -9,10 +9,10 @@ export async function $result<T>(f: ()=> Promise<T>): Promise<Result<T,Error>> {
   }
 }
 
-export function $resultSync<T>(f: ()=> T) {
+export function $resultSync<T,E=Err>(f: ()=> T) {
   try {
-    return Ok<T,Err>(f());
+    return Ok<T,E>(f());
   } catch (error) {
-    return Err<T,Err>(error);
+    return Err<T,E>(error);
   }
 }
