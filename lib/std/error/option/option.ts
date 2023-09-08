@@ -33,8 +33,11 @@ export class Option<T> extends Exception<T,None> {
 
 
   /**
-   * * Returns `None` if the value is `None`,otherwise returns `optb`.
-   * * Arguments passed to {@linkcode and} are eagerly evaluated; if you are passing the result of a function call, it is recommended to use {@linkcode andThen}.
+   * Returns `None` if the value is `None`,otherwise returns {@linkcode optb}.
+   * 
+   * Arguments passed to {@linkcode and} are eagerly evaluated.
+   * 
+   * If you are passing the result of a function call, it is recommended to use {@linkcode andThen}.
    * 
    * # Example
    * ```ts
@@ -48,8 +51,9 @@ export class Option<T> extends Exception<T,None> {
   }
   
   /**
-   * * Returns `None` if the option is `None`, otherwise calls f with the wrapped value and returns the result.
-   * * some languages call this operation `flatmap`.
+   * Returns `None` if the option is `None`, otherwise calls {@linkcode f} with the wrapped value and returns the result.
+   * 
+   * Some languages call this operation `flatmap`.
    * 
    * # Example
    * ```ts
@@ -62,7 +66,7 @@ export class Option<T> extends Exception<T,None> {
   }
 
   /**
-   * * Returns the {@linkcode Option} if it contains a value,otherwise returns `optb`.
+   * Returns the {@linkcode Option} if it contains a value, otherwise returns {@linkcode optb}.
    * 
    * # Example
    * ```ts
@@ -75,7 +79,7 @@ export class Option<T> extends Exception<T,None> {
   }
 
   /**
-   * * Returns the {@linkcode Option} if it contains a value, otherwise calls `f` and returns the result.
+   * Returns the {@linkcode Option} if it contains a value, otherwise calls {@linkcode f} and returns the result.
    * 
    * # Example
    * ```ts
@@ -83,15 +87,15 @@ export class Option<T> extends Exception<T,None> {
    * $assertEq(xd.orElse(()=> Some(69)),Some(69));
    * ```
    */
-  public override orElse(op: (err: None)=> this): this {
-    return this.match(_=> this.clone(),op);
+  public override orElse(f: (err: None)=> this): this {
+    return this.match(_=> this.clone(),f);
   }
 
   /**
-   * * Returns the contained `Some` value.
+   * Returns the contained `Some` value.
    * 
    * # Panics
-   * * Panics if the value is a `None` with a custom panic message provided by `msg`.
+   * Panics if the value is a `None` with a custom panic message provided by {@linkcode msg}.
    * 
    * # Example
    * ```ts
@@ -104,10 +108,10 @@ export class Option<T> extends Exception<T,None> {
   }
 
   /**
-   * * Returns the contained `None` value.
+   * Returns the contained `None` value.
    * 
    * # Panics
-   * * Panics if the value is `Some` with a custom `callback`.
+   * Panics if the value is `Some` with a custom {@linkcode callback}.
    * 
    * # Example
    * ```ts
@@ -120,7 +124,7 @@ export class Option<T> extends Exception<T,None> {
   }
   
   /**
-   * * Inserts the given `Some` value in the current {@linkcode Option}
+   * Inserts the given `Some` value in the current {@linkcode Option}
    * # Example
    * ```ts
    * const xd=None(null);
@@ -134,7 +138,7 @@ export class Option<T> extends Exception<T,None> {
   }
 
   /**
-   * * Returns the contained `Some` value or Inserts the given `Some` value in the current {@linkcode Option} and returns it.
+   * Returns the contained `Some` value or Inserts the given `Some` value in the current {@linkcode Option} and returns it.
    * # Example
    * ```ts
    * const xd=None(null);
@@ -146,8 +150,11 @@ export class Option<T> extends Exception<T,None> {
   }
 
   /**
-   * * Returns the contained `Some` value or a provided default.
-   * * Arguments passed to {@linkcode unwrapOr} are eagerly evaluated; if you are passing the result of a function call, it is recommended to use {@linkcode unwrapOrElse}.
+   * Returns the contained `Some` value or a provided default {@linkcode optb}.
+   * 
+   * Arguments passed to {@linkcode unwrapOr} are eagerly evaluated;
+   * 
+   * if you are passing the result of a function call, it is recommended to use {@linkcode unwrapOrElse}.
    * 
    * # Example
    * ```ts
@@ -155,13 +162,16 @@ export class Option<T> extends Exception<T,None> {
    * $assertEq(xd.unwrapOr(69),Some(69));
    * ```
    */
-  public override unwrapOr(op: T): T {
-    return this.match(s=> s,_=> op);
+  public override unwrapOr(optb: T): T {
+    return this.match(s=> s,_=> optb);
   }
 
   /**
-   * * Returns the contained `Some` value.
-   * * Because this function may panic, its use is generally discouraged. Instead, prefer to use pattern matching and handle the None case explicitly, or call {@linkcode unwrapOr}, {@linkcode unwrapOrElse}.
+   * Returns the contained `Some` value.
+   * 
+   * Because this function may panic, its use is generally discouraged.
+   * 
+   * Instead, prefer to use pattern matching and handle the None case explicitly, or call {@linkcode unwrapOr}, {@linkcode unwrapOrElse}.
    * # Panics
    * Panics if the self value equals `None`.
    * # Example
@@ -175,7 +185,7 @@ export class Option<T> extends Exception<T,None> {
   }
 
   /**
-   * Returns the contained `Some` value or if the value is `None` calls `f` and returns the result.
+   * Returns the contained `Some` value or if the value is `None` calls {@linkcode f} and returns the result.
    * # Example
    * ```ts
    * const xd=None(null);
