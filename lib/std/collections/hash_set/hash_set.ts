@@ -11,7 +11,9 @@ export class HashSet<T> extends Iter<T> {
   }
 
   public static formIter<T>(iter: Iterable<T>) {
-    return new HashSet(...iter);
+    const set=new HashSet<T>();
+    set.set=new Set(iter);
+    return set;
   }
 
   public get size() {

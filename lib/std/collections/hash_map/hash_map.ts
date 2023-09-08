@@ -6,7 +6,6 @@ import { HashSet } from '../hash_set/hash_set.ts';
 import { Clone } from '../../clone.ts';
 
 /**
- * A HashMap implemented with quadratic probing and SIMD lookup.
  * An improved version of Map with extra type safety
  * 
  * # Example
@@ -27,12 +26,14 @@ export class HashMap<K,V> extends Iter<Entry<K,V>> implements Clone {
    * Constructs a HashMap from an iterable.
    * # Example
    * ```ts
-   * const arr=new Vec(["xd",69],["69",0]);
-   * const map=new HashMap(arr);
+   * const iter=new Vec(["xd",69],["69",0]);
+   * const map=HashMap.fromIter(iter);
    * ```
    */
   public static fromIter<K,V>(iter: Iterable<Entry<K,V>>) {
-    return new HashMap(...iter);
+    const map=new HashMap<K,V>();
+    map.unordered_map=new Map(iter);
+    return map;
   }
 
   public static form<K,V>(map: Iterable<Entry<K,V>>) {
@@ -43,11 +44,14 @@ export class HashMap<K,V> extends Iter<Entry<K,V>> implements Clone {
    * Constructs a HashMap from an Record.
    * # Example
    * ```ts
-   * const map=new HashMap({
-   *    xd: 69
+   * const map=HashMap.fromRecord({
+   *    xd: 69,
+   *    xD: 69
    * });
+   * ```
    */
-  public static formRecord<K extends string|number|symbol,V>(record: Record<K,V>) {
+  // deno-lint-ignore no-explicit-any
+  public static formRecord<K extends keyof any,V>(record: Record<K,V>) {
     const map=new HashMap<K,V>();
     for(const key in record) map.set(key,record[key]);
     return map;
@@ -102,7 +106,7 @@ export class HashMap<K,V> extends Iter<Entry<K,V>> implements Clone {
    * ```
    */
   public has(key: K) {
-    return !!this.unordered_map.get(key);
+    return this.unordered_map.has(key);
   }
 
   /**

@@ -3,7 +3,6 @@ import { Vec,HashMap,Option,Result } from "../mod.ts";
 import { PathBuf } from "../path.ts";
 
 
-
 export const args=Vec.fromArr(Deno.args);
 
 /**
@@ -94,7 +93,7 @@ export function removeVar(k: string): Option<string> {
  * @requires `allow-read` permission.
  * @category Runtime Environment
  */
-export function setCurrentDir(path: PathBuf) {
+export function setCurrentDir(path: PathBuf): Result<void,Deno.errors.NotFound|Deno.errors.PermissionDenied> {
   return $resultSync(()=> Deno.chdir(path));
 }
 
