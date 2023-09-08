@@ -1,6 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import { HashMap } from "../../mod.ts";
-import { Entry } from "../../collections/hash_map/mod.ts";
+import { Entry,HashMap } from "../../../collections/hash_map/mod.ts";
 
 type UnorderedMap<K,V>=(K extends keyof any?Record<K,V>:Iterable<Entry<K,V>>)|Iterable<Entry<K,V>>;
 
