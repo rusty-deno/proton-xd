@@ -38,7 +38,7 @@ export class XD {
     };
   }
   /**
-   * @description A reference to the properties of the webview
+   * A reference to the properties of the webview
    */
   public get window(): WindowAttributes {
     return this.windowAttrs;
@@ -52,7 +52,7 @@ export class XD {
     };
   }
   /**
-   * @description A reference to the properties of the webview
+   * A reference to the properties of the webview
    */
   public get webview(): WebViewAttributes {
     return this.webviewAttrs;
@@ -60,8 +60,9 @@ export class XD {
   
 
   /**
-   * Initializes the webview..
-   * updating window or webview after spawning the window doesn't affect them
+   * Initializes the webview.
+   * 
+   * Updating window or webview after spawning the window doesn't affect them
    */
   public spawn() {
     lib.init(

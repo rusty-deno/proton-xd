@@ -6,7 +6,7 @@ import { HashSet } from '../hash_set/hash_set.ts';
 import { Clone } from '../../clone.ts';
 
 /**
- * An improved version of Map with extra type safety
+ * An improved version of native {@linkcode Map} with extra type safety
  * 
  * # Example
  * ```ts

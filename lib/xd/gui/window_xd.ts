@@ -7,7 +7,7 @@ const {symbols}=lib;//dynamic library
 const encoder=new TextEncoder;
 
 /**
- * Encodes the given string into a buffer {Uint8Array}
+ * Encodes the given string into a buffer {@linkcode Uint8Array}
  */
 function encode(str: string) {
   return encoder.encode(str.endsWith("\0")?str:str+"\0");
