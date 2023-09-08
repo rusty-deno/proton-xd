@@ -8,7 +8,7 @@
             "type": "lldb",
             "request": "launch",
             "name": "Debug",
-            "program": "${workspaceFolder}/<executable file>",
+            "program": "$C:/Users/trish/.deno/bin/deno.exe",
             "args": [],
             "cwd": "${workspaceFolder}"
         }

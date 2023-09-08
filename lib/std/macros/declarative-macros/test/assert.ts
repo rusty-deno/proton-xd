@@ -1,4 +1,4 @@
-import { $panic } from "../error/panics.ts";
+import { $panic } from "../mod.ts";
 
 
 export function $assert(condition: boolean,msg="assertion failed!") {
