@@ -2,10 +2,10 @@
 import { Option,None,Some } from '../option/option.ts';
 import { Exception } from '../exception.ts';
 import { $panic } from "../../mod.ts";
+import { Res } from './mod.ts';
 
 export type Ok<T>=T;
-export type Err<E extends Error=Error>=E;
-export type Res<T,E>={ ok: T }|{ err: E };
+export type Err<E=Error>=E;
 
 
 export class Result<T,E> extends Exception<T,E> {
@@ -18,7 +18,7 @@ export class Result<T,E> extends Exception<T,E> {
 
   protected match<T1,E1>(t: (t: T)=> T1,e: (e: E)=> E1): T1|E1 {
     const res=this._result as any;
-    return Object.hasOwn(this._result,"ok")?t(res.ok):e(res.err);
+    return Object.hasOwn(res,"ok")?t(res.ok):e(res.err);
   }
 
   protected res(): any {
@@ -31,8 +31,9 @@ export class Result<T,E> extends Exception<T,E> {
   }
 
   /**
-   * * Returns `Err` if the value is `Err`,otherwise returns `optb`.
-   * * Arguments passed to {@linkcode and} are eagerly evaluated; if you are passing the result of a function call, it is recommended to use {@linkcode andThen}.
+   * Returns `Err` if the value is `Err`,otherwise returns {@linkcode optb}.
+   * 
+   * Arguments passed to {@linkcode and} are eagerly evaluated; if you are passing the result of a function call, it is recommended to use {@linkcode andThen}.
    * 
    * # Example
    * ```ts
@@ -46,8 +47,9 @@ export class Result<T,E> extends Exception<T,E> {
   }
 
   /**
-   * * Returns `Err` if the option is `Err`, otherwise calls f with the wrapped value and returns the result.
-   * * some languages call this operation `flatmap`.
+   * Returns `Err` if the option is `Err`, otherwise calls {@linkcode f} with the wrapped value and returns the result.
+   * 
+   * Some languages call this operation `flatmap`.
    * 
    * # Example
    * ```ts
@@ -60,7 +62,7 @@ export class Result<T,E> extends Exception<T,E> {
   }
 
   /**
-   * * Returns the {@linkcode Result} if it contains a value,otherwise returns `optb`.
+   * Returns the {@linkcode Result} if it contains a value,otherwise returns {@linkcode optb}.
    * 
    * # Example
    * ```ts
@@ -73,7 +75,7 @@ export class Result<T,E> extends Exception<T,E> {
   }
 
   /**
-   * * Returns the {@linkcode Result} if it contains a value, otherwise calls `f` and returns the result.
+   * Returns the {@linkcode Result} if it contains a value, otherwise calls {@linkcode f} and returns the result.
    * 
    * # Example
    * ```ts
@@ -81,8 +83,8 @@ export class Result<T,E> extends Exception<T,E> {
    * $assertEq(xd.orElse(()=> Ok(69)),Ok(69));
    * ```
    */
-  public override orElse(op: (err: E)=> this) {
-    return this.match(_=> this.clone(),op);
+  public override orElse(f: (err: E)=> this) {
+    return this.match(_=> this.clone(),f);
   }
 
   public err(): Option<E> {
@@ -94,10 +96,10 @@ export class Result<T,E> extends Exception<T,E> {
   }
 
   /**
-   * * Returns the contained `Ok` value.
+   * Returns the contained `Ok` value.
    * 
    * # Panics
-   * * Panics if the value is a `Err` with a custom panic message provided by `msg`.
+   * Panics if the value is a `Err` with a custom panic message provided by {@linkcode msg}.
    * 
    * # Example
    * ```ts
@@ -110,10 +112,10 @@ export class Result<T,E> extends Exception<T,E> {
   }
 
   /**
-   * * Returns the contained `Err` value.
+   * Returns the contained `Err` value.
    * 
    * # Panics
-   * * Panics if the value is a `Ok` with a custom callback.
+   * Panics if the value is a `Ok` with a custom {@linkcode callback}.
    * 
    * # Example
    * ```ts
@@ -140,7 +142,7 @@ export class Result<T,E> extends Exception<T,E> {
   }
 
   /**
-   * * Inserts the given `Ok` value in the current {@linkcode Result}
+   * Inserts the given `Ok` value in the current {@linkcode Result}
    * # Example
    * ```ts
    * const xd=Err("Err");
@@ -153,7 +155,7 @@ export class Result<T,E> extends Exception<T,E> {
   }
 
   /**
-   * * Returns the contained `Ok` value or Inserts the given `Ok` value in the current {@linkcode Result} and returns it
+   * Returns the contained `Ok` value or Inserts the given `Ok` value in the current {@linkcode Result} and returns it
    * # Example
    * ```ts
    * const xd=Err("Err");
@@ -166,8 +168,9 @@ export class Result<T,E> extends Exception<T,E> {
   }
 
   /**
-   * * Returns the contained `Ok` value.
-   * * Because this function may panic, its use is generally discouraged. Instead, prefer to use pattern matching and handle the None case explicitly, or call {@linkcode unwrapOr}, {@linkcode unwrapOrElse}.
+   * Returns the contained `Ok` value.
+   * 
+   * Because this function may panic, its use is generally discouraged. Instead, prefer to use pattern matching and handle the None case explicitly, or call {@linkcode unwrapOr}, {@linkcode unwrapOrElse}.
    * # Panics
    * Panics if the self value equals `Err`.
    * # Example
@@ -181,8 +184,11 @@ export class Result<T,E> extends Exception<T,E> {
   }
 
   /**
-   * * Returns the contained `Ok` value or a provided default.
-   * * Arguments passed to unwrapOr are eagerly evaluated; if you are passing the result of a function call, it is recommended to use {@linkcode unwrapOrElse}.
+   * Returns the contained `Ok` value or a provided default {@linkcode optb}.
+   * 
+   * Arguments passed to {@linkcode unwrapOr} are eagerly evaluated.
+   * 
+   * If you are passing the result of a function call, it is recommended to use {@linkcode unwrapOrElse}.
    * 
    * # Example
    * ```ts
@@ -190,12 +196,12 @@ export class Result<T,E> extends Exception<T,E> {
    * $assertEq(xd.unwrapOr(69),Ok(69));
    * ```
    */
-  public override unwrapOr(op: T): T {
-    return this.match(t=> t,_=> op);
+  public override unwrapOr(optb: T): T {
+    return this.match(t=> t,_=> optb);
   }
 
   /**
-   * Returns the contained `Ok` value or if the value is `Err` calls `f` and returns the result.
+   * Returns the contained `Ok` value or if the value is `Err` calls {@linkcode f} and returns the result.
    * # Example
    * ```ts
    * const xd=Err("Err");
@@ -206,6 +212,11 @@ export class Result<T,E> extends Exception<T,E> {
     return this.match(t=> t,f);
   }
 
+  /**
+   * Returns the contained value without checking it.
+   * 
+   * #### It may lead the code to undefined behavior.
+   */
   public override unwrapUnchecked(): T|E {
     return this.res();
   }
