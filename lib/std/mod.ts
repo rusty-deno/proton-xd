@@ -22,5 +22,6 @@ export * from "./collections/linear/vector.ts";
 export * from "./collections/hash_map/hash_map.ts";
 
 //macros
-export * from "./macros/mod.ts";
+export * from "./proc-macros/mod.ts";
+export * from "./proc-macros/mod.ts";
 

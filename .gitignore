@@ -5,7 +5,6 @@ target/
 
 todo.md
 
-
 *.lock
 
 **/*.rs.bk
@@ -13,5 +12,5 @@ todo.md
 *.pdb
 
 compilation-time.txt
-
 .vscode/
+.hintrc

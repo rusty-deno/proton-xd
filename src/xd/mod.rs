@@ -28,13 +28,12 @@ use wry::application::{
 
 
 
-///@param {string} str
 #[deno_bindgen]
 pub fn write_to_clipboard(str: &str) {
   Clipboard::new().write_text(str)
 }
 
-///@returns {string}
+
 #[deno_bindgen]
 pub fn read_clipboard()-> String {
   Clipboard::new().read_text().unwrap_or_default()
