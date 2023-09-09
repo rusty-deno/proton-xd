@@ -3,7 +3,7 @@ target/
 *.png
 *.jpeg
 
-todo.*
+todo.md
 
 
 *.lock
