@@ -1,5 +1,5 @@
 // deno-lint-ignore-file
-import { $panic } from "../../mod.ts";
+import { $panic } from "../declarative-macros/mod.ts";
 
 
 
