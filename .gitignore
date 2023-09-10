@@ -1,16 +1,15 @@
 target/
+.vscode/
+
+Cargo.lock
+deno.lock
+**/*.rs.bk
+*.pdb
 
 *.png
 *.jpeg
 
+
 todo.md
-
-*.lock
-
-**/*.rs.bk
-
-*.pdb
-
-compilation-time.txt
-.vscode/
 .hintrc
+compilation-time.txt
