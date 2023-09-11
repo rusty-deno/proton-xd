@@ -83,9 +83,11 @@ export class HashMap<K,V> extends Iter<Entry<K,V>> implements Clone {
   }
   
   /**
-   * * Inserts a key-value pair into the map.
-   * * If the map did not have this key present, [None] is returned.
-   * * If the map did have this key present, the value is updated, and the old value is returned.
+   * Inserts a key-value pair into the map.
+   * 
+   * If the map did not have this key present, `None` is returned.
+   * 
+   * If the map did have this key present, the value is updated, and the old value is returned.
    * # Example
    * ```ts
    * const map=new HashMap<number,string>();
@@ -93,7 +95,9 @@ export class HashMap<K,V> extends Iter<Entry<K,V>> implements Clone {
    * ```
    */
   public set(key: K,value: V) {
+    const prev=this.get(key);
     this.unordered_map.set(key,value);
+    return prev;
   }
 
   /**
