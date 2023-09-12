@@ -4,7 +4,7 @@ import { HashMap } from "../../mod.ts";
 
 
 export class Application {
-  protected _routes=new HashMap<`${Method}/${Route}`,Handler>();
+  protected _routes=new HashMap<`${Method}${Route}`,Handler>();
 
 
   /**
