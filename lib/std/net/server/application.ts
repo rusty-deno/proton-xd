@@ -1,12 +1,10 @@
-// deno-lint-ignore-file
-import { $unimplemented } from "../declarative-macros/mod.ts";
-import { Handler,Route,Method } from "./types/server.ts";
-import { HashMap } from "../mod.ts";
+import { Handler,Route,Method } from "../types/server.ts";
+import { HashMap } from "../../mod.ts";
 
 
 
-export class Server {
-  private _routes=new HashMap<`${Method}/${Route}`,Handler>();
+export class Application {
+  protected _routes=new HashMap<`${Method}/${Route}`,Handler>();
 
 
   /**
@@ -81,6 +79,8 @@ export class Server {
     this.addRoute(route,"PATCH",handler);
   }
 }
+
+
 
 
 
