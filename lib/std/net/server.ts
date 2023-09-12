@@ -6,50 +6,79 @@ import { HashMap } from "../mod.ts";
 
 
 export class Server {
-  private routes=new HashMap<string,Handler>();
+  private _routes=new HashMap<`${Method}/${Route}`,Handler>();
 
 
   /**
-   * Adds a route to the {@linkcode Server} with specified {@linkcode Route}, {@linkcode Method}
+   * Adds a route to the {@linkcode Server} with provided {@linkcode Route}, {@linkcode Method}, {@linkcode Handler}
+   * 
+   * It isn't recommended to use.
    */
   public addRoute(route: Route,method: Method,handler: Handler) {
-    $unimplemented();
+    this._routes.set(`${method}/${route}`,handler);
   }
   
-  public get(route: Route,f: Handler) {
-    $unimplemented();
+  /**
+   * Adds a `GET` route to the {@linkcode Server} with provided {@linkcode Route}, {@linkcode Handler}
+   */
+  public get(route: Route,handler: Handler) {
+    this.addRoute(route,"GET",handler);
   }
 
-  public head(route: Route,f: Handler) {
-    $unimplemented();
+  /**
+   * Adds a `HEAD` route to the {@linkcode Server} with provided {@linkcode Route}, {@linkcode Handler}
+   */
+  public head(route: Route,handler: Handler) {
+    this.addRoute(route,"HEAD",handler);
   }
 
-  public post(route: Route,f: Handler) {
-    $unimplemented();
+  /**
+   * Adds a `POST` route to the {@linkcode Server} with provided {@linkcode Route}, {@linkcode Handler}
+   */
+  public post(route: Route,handler: Handler) {
+    this.addRoute(route,"POST",handler);
   }
 
-  public put(route: Route,f: Handler) {
-    $unimplemented();
+  /**
+   * Adds a `PUT` route to the {@linkcode Server} with provided {@linkcode Route}, {@linkcode Handler}
+   */
+  public put(route: Route,handler: Handler) {
+    this.addRoute(route,"PUT",handler);
   }
 
-  public delete(route: Route,f: Handler) {
-    $unimplemented();
+  /**
+   * Adds a `DELETE` route to the {@linkcode Server} with provided {@linkcode Route}, {@linkcode Handler}
+   */
+  public delete(route: Route,handler: Handler) {
+    this.addRoute(route,"DELETE",handler);
   }
 
-  public connect(route: Route,f: Handler) {
-    $unimplemented();
+  /**
+   * Adds a `CONNECT` route to the {@linkcode Server} with provided {@linkcode Route}, {@linkcode Handler}
+   */
+  public connect(route: Route,handler: Handler) {
+    this.addRoute(route,"CONNECT",handler);
   }
 
-  public options(route: Route,f: Handler) {
-    $unimplemented();
+  /**
+   * Adds a `OPTIONS` route to the {@linkcode Server} with provided {@linkcode Route}, {@linkcode Handler}
+   */
+  public options(route: Route,handler: Handler) {
+    this.addRoute(route,"OPTIONS",handler);
   }
 
-  public trace(route: Route,f: Handler) {
-    $unimplemented();
+  /**
+   * Adds a `TRACE` route to the {@linkcode Server} with provided {@linkcode Route}, {@linkcode Handler}
+   */
+  public trace(route: Route,handler: Handler) {
+    this.addRoute(route,"TRACE",handler);
   }
 
-  public patch(route: Route,f: Handler) {
-    $unimplemented();
+  /**
+   * Adds a `PATCH` route to the {@linkcode Server} with provided {@linkcode Route}, {@linkcode Handler}
+   */
+  public patch(route: Route,handler: Handler) {
+    this.addRoute(route,"PATCH",handler);
   }
 }
 

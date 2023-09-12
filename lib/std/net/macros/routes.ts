@@ -58,15 +58,3 @@ export function PATCH(route: Route) {
   };
 }
 
-
-class XD extends Server {
-
-
-  @GET("/")
-  private xd(_req: Request) {
-    return new Response;
-  }
-}
-
-const _xd=new XD;
-
