@@ -1,1 +1,125 @@
-{"name":"xd","littleEndian":true,"symbols":{"screenshot_sync":{"parameters":["i32","i32","f32"],"result":"str","nonBlocking":false},"save":{"parameters":["str"],"result":"str","nonBlocking":true},"save_sync":{"parameters":["str"],"result":"str","nonBlocking":false},"park_timeout":{"parameters":["f64"],"result":"void","nonBlocking":false},"init":{"parameters":["str","str"],"result":"void","nonBlocking":false},"open_sync":{"parameters":["str"],"result":"str","nonBlocking":false},"park":{"parameters":[],"result":"void","nonBlocking":false},"read_clipboard":{"parameters":[],"result":"str","nonBlocking":false},"alert":{"parameters":["str","str","u8"],"result":"void","nonBlocking":true},"write_to_clipboard":{"parameters":["str"],"result":"void","nonBlocking":false},"sleep":{"parameters":["f32"],"result":"void","nonBlocking":false},"alert_sync":{"parameters":["str","str","u8"],"result":"void","nonBlocking":false},"open":{"parameters":["str"],"result":"str","nonBlocking":true},"screenshot":{"parameters":["i32","i32","f32"],"result":"str","nonBlocking":true}},"typeDefs":{"FileOpenerType":{},"Rgba":{"b":"u8","r":"u8","a":"u8","g":"u8"},"WindowAttrs":{"visible":"bool","decorations":"bool","maximized":"bool","theme":"Theme","inner_size":"Option","minimizable":"bool","always_on_bottom":"bool","max_height":"Option","position":"Option","content_protection":"bool","title":"String","window_icon":"Option","min_height":"Option","focused":"bool","visible_on_all_workspaces":"bool","min_width":"Option","transparent":"bool","maximizable":"bool","always_on_top":"bool","closable":"bool","max_width":"Option","resizable":"bool"},"Position":{"x":"i32","y":"i32"},"Theme":{},"Header":{"value":"String","name":"String"},"Size":{"width":"u32","height":"u32"},"FileDialogOptions":{"typ":"FileOpenerType","filename":"String","location":"String"},"WebViewAttrs":{"visible":"bool","headers":"Option","accept_first_mouse":"bool","autoplay":"bool","clipboard":"bool","url":"Option","devtools":"bool","user_agent":"Option","back_forward_navigation_gestures":"bool","initialization_scripts":"Vec","transparent":"bool","incognito":"bool","background_color":"Option","html":"Option","zoom_hotkeys_enabled":"bool"}},"tsTypes":{"WebViewAttrs":"export type WebViewAttrs = {\n    user_agent: string | undefined | null;\n  visible: boolean;\n  transparent: boolean;\n  background_color: Rgba | undefined | null;\n  zoom_hotkeys_enabled: boolean;\n  initialization_scripts: Array<string>;\n  clipboard: boolean;\n  devtools: boolean;\n  accept_first_mouse: boolean;\n  back_forward_navigation_gestures: boolean;\n  incognito: boolean;\n  autoplay: boolean;\n  html: string | undefined | null;\n  url: string | undefined | null;\n  headers: Array<Header> | undefined | null;\n};","FileOpenerType":"export type FileOpenerType =   \"SingleFile\"  |\n  \"SingleDir\"  |\n  \"MultipleFile\";","Size":"export type Size = {\n    height: number;\n  width: number;\n};","WindowAttrs":"export type WindowAttrs = {\n    inner_size: Size | undefined | null;\n  min_height: number | undefined | null;\n  max_height: number | undefined | null;\n  min_width: number | undefined | null;\n  max_width: number | undefined | null;\n  resizable: boolean;\n  minimizable: boolean;\n  maximizable: boolean;\n  closable: boolean;\n  title: string;\n  maximized: boolean;\n  visible: boolean;\n  transparent: boolean;\n  decorations: boolean;\n  always_on_top: boolean;\n  always_on_bottom: boolean;\n  window_icon: string | undefined | null;\n  theme: Theme;\n  focused: boolean;\n  content_protection: boolean;\n  visible_on_all_workspaces: boolean;\n  position: Position | undefined | null;\n};","Position":"export type Position = {\n    x: number;\n  y: number;\n};","Theme":"export type Theme =   \"Light\"  |\n  \"Dark\";","FileDialogOptions":"export type FileDialogOptions = {\n    location: string;\n  filename: string;\n  typ: FileOpenerType;\n};","Rgba":"export type Rgba = {\n    r: number;\n  g: number;\n  b: number;\n  a: number;\n};","Header":"export type Header = {\n    name: string;\n  value: string;\n};"}}
+{
+  "name": "xd",
+  "littleEndian": true,
+  "symbols": {
+    "screenshot_sync": {
+      "parameters": ["i32", "i32", "f32"],
+      "result": "str",
+      "nonBlocking": false
+    },
+    "save": { "parameters": ["str"], "result": "str", "nonBlocking": true },
+    "save_sync": {
+      "parameters": ["str"],
+      "result": "str",
+      "nonBlocking": false
+    },
+    "park_timeout": {
+      "parameters": ["f64"],
+      "result": "void",
+      "nonBlocking": false
+    },
+    "init": {
+      "parameters": ["str", "str"],
+      "result": "void",
+      "nonBlocking": false
+    },
+    "open_sync": {
+      "parameters": ["str"],
+      "result": "str",
+      "nonBlocking": false
+    },
+    "park": { "parameters": [], "result": "void", "nonBlocking": false },
+    "read_clipboard": {
+      "parameters": [],
+      "result": "str",
+      "nonBlocking": false
+    },
+    "alert": {
+      "parameters": ["str", "str", "u8"],
+      "result": "void",
+      "nonBlocking": true
+    },
+    "write_to_clipboard": {
+      "parameters": ["str"],
+      "result": "void",
+      "nonBlocking": false
+    },
+    "sleep": { "parameters": ["f32"], "result": "void", "nonBlocking": false },
+    "alert_sync": {
+      "parameters": ["str", "str", "u8"],
+      "result": "void",
+      "nonBlocking": false
+    },
+    "open": { "parameters": ["str"], "result": "str", "nonBlocking": true },
+    "screenshot": {
+      "parameters": ["i32", "i32", "f32"],
+      "result": "str",
+      "nonBlocking": true
+    }
+  },
+  "typeDefs": {
+    "FileOpenerType": {},
+    "Rgba": { "b": "u8", "r": "u8", "a": "u8", "g": "u8" },
+    "WindowAttrs": {
+      "visible": "bool",
+      "decorations": "bool",
+      "maximized": "bool",
+      "theme": "Theme",
+      "inner_size": "Option",
+      "minimizable": "bool",
+      "always_on_bottom": "bool",
+      "max_height": "Option",
+      "position": "Option",
+      "content_protection": "bool",
+      "title": "String",
+      "window_icon": "Option",
+      "min_height": "Option",
+      "focused": "bool",
+      "visible_on_all_workspaces": "bool",
+      "min_width": "Option",
+      "transparent": "bool",
+      "maximizable": "bool",
+      "always_on_top": "bool",
+      "closable": "bool",
+      "max_width": "Option",
+      "resizable": "bool"
+    },
+    "Position": { "x": "i32", "y": "i32" },
+    "Theme": {},
+    "Header": { "value": "String", "name": "String" },
+    "Size": { "width": "u32", "height": "u32" },
+    "FileDialogOptions": {
+      "typ": "FileOpenerType",
+      "filename": "String",
+      "location": "String"
+    },
+    "WebViewAttrs": {
+      "visible": "bool",
+      "headers": "Option",
+      "accept_first_mouse": "bool",
+      "autoplay": "bool",
+      "clipboard": "bool",
+      "url": "Option",
+      "devtools": "bool",
+      "user_agent": "Option",
+      "back_forward_navigation_gestures": "bool",
+      "initialization_scripts": "Vec",
+      "transparent": "bool",
+      "incognito": "bool",
+      "background_color": "Option",
+      "html": "Option",
+      "zoom_hotkeys_enabled": "bool"
+    }
+  },
+  "tsTypes": {
+    "WebViewAttrs": "export type WebViewAttrs = {\n    user_agent: string | undefined | null;\n  visible: boolean;\n  transparent: boolean;\n  background_color: Rgba | undefined | null;\n  zoom_hotkeys_enabled: boolean;\n  initialization_scripts: Array<string>;\n  clipboard: boolean;\n  devtools: boolean;\n  accept_first_mouse: boolean;\n  back_forward_navigation_gestures: boolean;\n  incognito: boolean;\n  autoplay: boolean;\n  html: string | undefined | null;\n  url: string | undefined | null;\n  headers: Array<Header> | undefined | null;\n};",
+    "FileOpenerType": "export type FileOpenerType =   \"SingleFile\"  |\n  \"SingleDir\"  |\n  \"MultipleFile\";",
+    "Size": "export type Size = {\n    height: number;\n  width: number;\n};",
+    "WindowAttrs": "export type WindowAttrs = {\n    inner_size: Size | undefined | null;\n  min_height: number | undefined | null;\n  max_height: number | undefined | null;\n  min_width: number | undefined | null;\n  max_width: number | undefined | null;\n  resizable: boolean;\n  minimizable: boolean;\n  maximizable: boolean;\n  closable: boolean;\n  title: string;\n  maximized: boolean;\n  visible: boolean;\n  transparent: boolean;\n  decorations: boolean;\n  always_on_top: boolean;\n  always_on_bottom: boolean;\n  window_icon: string | undefined | null;\n  theme: Theme;\n  focused: boolean;\n  content_protection: boolean;\n  visible_on_all_workspaces: boolean;\n  position: Position | undefined | null;\n};",
+    "Position": "export type Position = {\n    x: number;\n  y: number;\n};",
+    "Theme": "export type Theme =   \"Light\"  |\n  \"Dark\";",
+    "FileDialogOptions": "export type FileDialogOptions = {\n    location: string;\n  filename: string;\n  typ: FileOpenerType;\n};",
+    "Rgba": "export type Rgba = {\n    r: number;\n  g: number;\n  b: number;\n  a: number;\n};",
+    "Header": "export type Header = {\n    name: string;\n  value: string;\n};"
+  }
+}

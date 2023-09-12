@@ -6,7 +6,7 @@ function decode(buffer: Uint8Array): string {
 }
 
 function encode(v: string | Uint8Array): Uint8Array {
-  return typeof v !== "string"?v:encoder.encode(v);
+  return typeof v !== "string" ? v : encoder.encode(v);
 }
 
 function getExt() {
@@ -118,12 +118,10 @@ export const lib = Deno.dlopen(uri, {
     "result": "buffer",
   },
 });
-const { symbols }=lib;
-addEventListener("unload",()=> {
+const { symbols } = lib;
+addEventListener("unload", () => {
   lib.close();
 });
-
-
 export type FileDialogOptions = {
   location: string;
   filename: string;
@@ -155,16 +153,16 @@ export type Theme =
   | "Light"
   | "Dark";
 export type WebViewAttrs = {
-  userAgent: string | undefined | null;
+  user_agent: string | undefined | null;
   visible: boolean;
   transparent: boolean;
-  backgroundColor: Rgba | undefined | null;
-  zoomHotkeysEnabled: boolean;
-  initializationScripts: Array<string>;
+  background_color: Rgba | undefined | null;
+  zoom_hotkeys_enabled: boolean;
+  initialization_scripts: Array<string>;
   clipboard: boolean;
   devtools: boolean;
-  acceptFirstMouse: boolean;
-  backForwardNavigationGestures: boolean;
+  accept_first_mouse: boolean;
+  back_forward_navigation_gestures: boolean;
   incognito: boolean;
   autoplay: boolean;
   html: string | undefined | null;
@@ -172,11 +170,11 @@ export type WebViewAttrs = {
   headers: Array<Header> | undefined | null;
 };
 export type WindowAttrs = {
-  innerSize: Size | undefined | null;
-  minHeight: number | undefined | null;
-  maxHeight: number | undefined | null;
-  minWidth: number | undefined | null;
-  maxWidth: number | undefined | null;
+  inner_size: Size | undefined | null;
+  min_height: number | undefined | null;
+  max_height: number | undefined | null;
+  min_width: number | undefined | null;
+  max_width: number | undefined | null;
   resizable: boolean;
   minimizable: boolean;
   maximizable: boolean;
@@ -186,13 +184,13 @@ export type WindowAttrs = {
   visible: boolean;
   transparent: boolean;
   decorations: boolean;
-  alwaysOnTop: boolean;
-  alwaysOnBottom: boolean;
-  windowIcon: string | undefined | null;
+  always_on_top: boolean;
+  always_on_bottom: boolean;
+  window_icon: string | undefined | null;
   theme: Theme;
   focused: boolean;
-  contentProtection: boolean;
-  visibleOnAllWorkspaces: boolean;
+  content_protection: boolean;
+  visible_on_all_workspaces: boolean;
   position: Position | undefined | null;
 };
 export function alert(a0: string, a1: string, a2: number) {
@@ -236,13 +234,12 @@ export function init(a0: string, a1: string) {
   const result = rawResult;
   return result;
 }
-export async function open(a0: string) {
+export function open(a0: string) {
   const a0_buf = encode(a0);
 
   const rawResult = symbols.open(a0_buf, a0_buf.byteLength);
   const result = rawResult.then(readPointer);
-  const buffer=await result;
-  return decode(buffer);
+  return result.then(decode);
 }
 export function open_sync(a0: string) {
   const a0_buf = encode(a0);
@@ -266,13 +263,12 @@ export function read_clipboard() {
   const result = readPointer(rawResult);
   return decode(result);
 }
-export async function save(a0: string) {
+export function save(a0: string) {
   const a0_buf = encode(a0);
 
   const rawResult = symbols.save(a0_buf, a0_buf.byteLength);
   const result = rawResult.then(readPointer);
-  const buffer=await result;
-  return decode(buffer);
+  return result.then(decode);
 }
 export function save_sync(a0: string) {
   const a0_buf = encode(a0);
@@ -281,11 +277,10 @@ export function save_sync(a0: string) {
   const result = readPointer(rawResult);
   return decode(result);
 }
-export async function screenshot(a0: number, a1: number, a2: number) {
+export function screenshot(a0: number, a1: number, a2: number) {
   const rawResult = symbols.screenshot(a0, a1, a2);
   const result = rawResult.then(readPointer);
-  const buffer=await result;
-  return decode(buffer);
+  return result.then(decode);
 }
 export function screenshot_sync(a0: number, a1: number, a2: number) {
   const rawResult = symbols.screenshot_sync(a0, a1, a2);
