@@ -232,7 +232,7 @@ if (Deno.build.os==="windows") {
   }
 }
 
-export const { symbols,close }=Deno.dlopen(uri, {`
+export const lib=Deno.dlopen(uri, {`
     }
   ${
       Object.keys(signature)
@@ -255,6 +255,10 @@ export const { symbols,close }=Deno.dlopen(uri, {`
         )
         .join(", ")
     },${prototype.substring(1,prototype.length-1)}});
+    const { symbols }=lib;
+    addEventListener("unload",()=> {
+      lib.close();
+    });
 ${
   Object.keys(decl)
   .sort()

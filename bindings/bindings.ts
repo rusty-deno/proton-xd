@@ -44,7 +44,7 @@ if (Deno.build.os === "windows") {
   }
 }
 
-export const { symbols, close } = Deno.dlopen(uri, {
+export const lib = Deno.dlopen(uri, {
   alert: {
     parameters: ["buffer", "usize", "buffer", "usize", "u8"],
     result: "void",
@@ -118,6 +118,12 @@ export const { symbols, close } = Deno.dlopen(uri, {
     "result": "buffer",
   },
 });
+const { symbols }=lib;
+addEventListener("unload",()=> {
+  lib.close();
+});
+
+
 export type FileDialogOptions = {
   location: string;
   filename: string;
