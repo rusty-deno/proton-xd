@@ -21,7 +21,7 @@ import { ListenerOptions, ServerInit, Route } from '../types/server';
  */
 export class Server extends Application {
 
-  constructor(private _options: Deno.ServeOptions|Deno.ServeTlsOptions) {
+  constructor(private _options: Deno.ServeOptions|Deno.ServeTlsOptions={}) {
     super();
   }
 
@@ -39,7 +39,7 @@ export class Server extends Application {
   public init() {
     const _serve=Deno.serve(this._options,(req,info)=> {
       const method=req.method as Method;
-      const route=req.url.substring(req.referrer.length) as Route;
+      const route=new URL(req.url).pathname as Route;
 
       const handler=this._routes.get(`${method}${route}`).unwrapOr(()=> {
         return new Response("Not Found",{ status: 404 });
