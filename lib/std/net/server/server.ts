@@ -9,8 +9,7 @@ import { Method,Route } from '../types/server.ts';
  * # Example
  * ```ts
  * import { Server } from "<net.ts>";
-import { ListenerOptions, ServerInit, Route } from '../types/server';
-import { HashMap } from '../../collections/hash_map/hash_map';
+import { ErrorHandler } from '../types/server';
  * 
  * const port=6969;
  * 
@@ -27,17 +26,71 @@ export class Server extends Application {
     super();
   }
 
-
   /**
-   * Closes the server.
+   * Indicates whether the {@linkcode Server} is still running.
+   * * It is set to `true` when the {@linkcode Server} is closed.
    */
+  public get finished() {
+    return this._finished;
+  }
+
+  /** hostname of the {@linkcode Server} */
+  public get hostname() {
+    return this._options.hostname??"127.0.0.1";
+  }
+  public set hostname(hostname) {
+    this._options.hostname=hostname;
+  }
+  
+  /** A reference to {@linkcode onError} callback. */
+  public get onError() {
+    return this._options.onError;
+  }
+  public set onError(f) {
+    this._options.onError=f;
+  }
+  
+  /** A reference to {@linkcode onListen} callback. */
+  public get onListen() {
+    return this._options.onListen;
+  }
+  public set onListen(onListen) {
+    this._options.onListen=onListen;
+  }
+
+  /** Port of the {@linkcode Server}. */
+  public get port() {
+    return this._options.port??8000;
+  }
+  public set port(port) {
+    this._options.port=port;
+  }
+
+  /** Represents the port's reusability as a `boolean` */
+  public get reusePort() {
+    return !!this._options.reusePort;
+  }
+  public set reusePort(reusePort) {
+    this._options.reusePort=reusePort;
+  }
+
+  /** A reference to the {@linkcode Server}'s {@linkcode AbortSignal} */
+  public get abordSignal() {
+    return this._options.signal;
+  }
+  public set abordSignal(signal) {
+    this._options.signal=signal;
+  }
+
+
+
+
+  /** Closes the {@linkcode Server}. */
   public close() {
     $unimplemented();
   }
   
-  /**
-   * Starts the server.
-   */
+  /** Starts the {@linkcode Server}. */
   public init() {
     const _serve=Deno.serve(this._options,(req,info)=> {
       const method=req.method as Method;
@@ -46,11 +99,12 @@ export class Server extends Application {
       const handler=this._routes.get(`${method}${route}`).unwrapOr(()=> {
         return new Response("Not Found",{ status: 404 });
       });
-
+      
       return handler(req,info);
     });
-    
+    _serve.finished.then(_=> this._finished=true);
   }
 }
+
 
 
