@@ -1,4 +1,4 @@
-import { symbols as lib } from "../../bindings/bindings.ts";
+import { lib } from "../../bindings/bindings.ts";
 
 export type RGBImage={
   height: number;
@@ -24,12 +24,12 @@ export class ImageBuffer {
   /**
    * Encodes the image data to a png image buffer
    */
-  public png=(): Uint8Array=> readPointer(lib.convert(this.bytes,this.bytes.length,this.width,this.height,0,100));
+  public png=(): Uint8Array=> readPointer(lib.symbols.convert(this.bytes,this.bytes.length,this.width,this.height,0,100));
   
   /**
    * Encodes the image data to a jpeg image buffer
    */
-  public jpeg=(quality=100): Uint8Array=> readPointer(lib.convert(this.bytes,this.bytes.length,this.width,this.height,69,quality));
+  public jpeg=(quality=100): Uint8Array=> readPointer(lib.symbols.convert(this.bytes,this.bytes.length,this.width,this.height,69,quality));
 }
 
 function readPointer(v: Deno.PointerValue): Uint8Array {

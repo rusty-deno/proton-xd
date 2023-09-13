@@ -23,5 +23,5 @@ export * from "./collections/hash_map/hash_map.ts";
 
 //macros
 export * from "./proc-macros/mod.ts";
-export * from "./proc-macros/mod.ts";
+export * from "./declarative-macros/mod.ts";
 

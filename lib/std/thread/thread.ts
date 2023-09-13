@@ -1,4 +1,4 @@
-import { symbols } from "../../../bindings/bindings.ts";
+import { lib } from "../../../bindings/bindings.ts";
 import { Some,None } from "../mod.ts";
 
 export class Thread<T> {
@@ -23,7 +23,7 @@ export class Thread<T> {
 
   
   public async spawn(): Promise<T> {
-    symbols.spawn(this.fn.pointer);
+    lib.symbols.spawn(this.fn.pointer);
     this.fn.close();
     // deno-lint-ignore no-explicit-any
     return await this.xd.value as any;

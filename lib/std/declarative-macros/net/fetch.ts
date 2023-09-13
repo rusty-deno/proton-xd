@@ -1,6 +1,6 @@
+import { $result,Result } from "../../error/result/mod.ts";
+import { HttpError } from "../../net/error.ts";
 
-import { $result,Result } from "../../../error/result/mod.ts";
-import { HttpError } from "../../../net/error.ts";
 
 /**
  * An improved version of the native {@linkcode fetch} api
