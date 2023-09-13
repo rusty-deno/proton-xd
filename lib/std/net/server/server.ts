@@ -21,6 +21,8 @@ import { HashMap } from '../../collections/hash_map/hash_map';
  * ```
  */
 export class Server extends Application {
+  private _finished=false;
+
   constructor(private _options: Deno.ServeOptions|Deno.ServeTlsOptions={}) {
     super();
   }
@@ -34,7 +36,7 @@ export class Server extends Application {
   }
   
   /**
-   * Starts the server
+   * Starts the server.
    */
   public init() {
     const _serve=Deno.serve(this._options,(req,info)=> {
@@ -45,11 +47,9 @@ export class Server extends Application {
         return new Response("Not Found",{ status: 404 });
       });
 
-      console.log(`${method}${route}`,this._routes);
-      
-
       return handler(req,info);
     });
+    
   }
 }
 

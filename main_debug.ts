@@ -1,12 +1,10 @@
+import { $fetch } from "./mod.ts";
 
 
-
-const _s=Deno.serve({},(req)=> {
-  console.log(req);
-  return new Response;
-});
-
-
-
+for(let i=199;i<599;i++) {
+  const res=await $fetch("http://localhost:6969/");
+  const response=res.unwrap();
+  console.log(response.status,response.statusText);
+}
 
 
