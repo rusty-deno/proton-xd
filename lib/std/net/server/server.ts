@@ -10,6 +10,7 @@ import { Method,Route } from '../types/server.ts';
  * ```ts
  * import { Server } from "<net.ts>";
 import { ListenerOptions, ServerInit, Route } from '../types/server';
+import { HashMap } from '../../collections/hash_map/hash_map';
  * 
  * const port=6969;
  * 
@@ -20,7 +21,6 @@ import { ListenerOptions, ServerInit, Route } from '../types/server';
  * ```
  */
 export class Server extends Application {
-
   constructor(private _options: Deno.ServeOptions|Deno.ServeTlsOptions={}) {
     super();
   }
@@ -44,6 +44,9 @@ export class Server extends Application {
       const handler=this._routes.get(`${method}${route}`).unwrapOr(()=> {
         return new Response("Not Found",{ status: 404 });
       });
+
+      console.log(`${method}${route}`,this._routes);
+      
 
       return handler(req,info);
     });

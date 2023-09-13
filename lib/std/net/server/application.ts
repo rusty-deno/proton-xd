@@ -13,7 +13,7 @@ export class Application {
    * It isn't recommended to use.
    */
   public addRoute(route: Route,method: Method,handler: Handler) {
-    this._routes.set(`${method}/${route}`,handler);
+    this._routes.set(`${method}${route}`,handler);
   }
   
   /**
