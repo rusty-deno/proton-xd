@@ -1,6 +1,6 @@
 import { Option } from '../../../mod.ts';
-import { Iter } from '../../iter.ts';
-import { LinkedList } from '../linked_list/linked_list.ts';
+import { Iter } from '../iter.ts';
+import { LinkedList } from './linked_list/linked_list.ts';
 
 
 
