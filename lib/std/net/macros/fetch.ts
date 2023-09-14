@@ -1,5 +1,5 @@
 import { $result,Result } from "../../error/result/mod.ts";
-import { HttpError } from "../../net/error.ts";
+import { HttpError } from "../error.ts";
 
 
 /**
