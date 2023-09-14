@@ -1,0 +1,1 @@
+export * from "../lib/std/declarative-macros/panics/mod.ts";

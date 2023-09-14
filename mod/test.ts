@@ -1,0 +1,1 @@
+export * from "../lib/std/declarative-macros/test/mod.ts";
