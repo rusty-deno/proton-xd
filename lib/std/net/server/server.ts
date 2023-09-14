@@ -8,7 +8,7 @@ import { Method,Route } from '../types/server.ts';
  * 
  * # Example
  * ```ts
- * import { Server } from "<net.ts>";
+ * import { Server } from "./mod/net.ts";
 import { ErrorHandler } from '../types/server';
  * 
  * const port=6969;

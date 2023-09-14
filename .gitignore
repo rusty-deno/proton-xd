@@ -13,3 +13,4 @@ deno.lock
 todo.md
 .hintrc
 compilation-time.txt
+bindings.json
