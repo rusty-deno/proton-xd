@@ -1,4 +1,4 @@
-import { HashSet } from "../../collections/hash_set/hash_set.ts";
+import { HashSet } from "../mod.ts";
 
 /**
  * Constructs a {@linkcode HashSet}
