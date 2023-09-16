@@ -11,7 +11,7 @@
   "spawn": {
     "parameters": ["function"],
     "result": "void",
-    "monblocking": true
+    "nonblocking": true
   },
   "convert": {
     "parameters": ["buffer","usize","u32","u32","u8","u8"],

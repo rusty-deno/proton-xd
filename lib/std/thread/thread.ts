@@ -23,10 +23,9 @@ export class Thread<T> {
 
   
   public async spawn(): Promise<T> {
-    lib.symbols.spawn(this.fn.pointer);
+    await lib.symbols.spawn(this.fn.pointer);
     this.fn.close();
-    // deno-lint-ignore no-explicit-any
-    return await this.xd.value as any;
+    return this.xd.value as T;
   }
 
   public terminate() {
