@@ -28,8 +28,8 @@ export class Server extends Application {
   }
 
   /** Initiates a {@linkcode Server} on a new {@linkcode Thread}.*/
-  public static serve(handler: Handler,options: Deno.ServeOptions|Deno.ServeTlsOptions={}) {
-    return Thread.spawn(async ()=> {
+  public static async serve(handler: Handler,options: Deno.ServeOptions|Deno.ServeTlsOptions={}) {
+    return await Thread.spawn(async ()=> {
       const _serve=Deno.serve(options,handler);
       await _serve.finished;
     });

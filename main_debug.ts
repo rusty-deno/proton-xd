@@ -1,6 +1,8 @@
-import {XD} from "./mod/mod.ts";
+import { Server } from "./lib/mod.ts";
 
 
-XD.instantiate("<html><body>hello wrld</body></html>",{
-  title: "my-app"
+Server.serve(()=> {
+  return new Response;
 });
+
+
