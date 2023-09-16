@@ -1,6 +1,7 @@
 import { Application } from './application.ts';
 import { $unimplemented } from '../../declarative-macros/mod.ts';
-import { Method,Route } from '../types/server.ts';
+import { Handler,Method,Route } from '../types/server.ts';
+import { Thread } from "../../mod.ts";
 
 
 /**
@@ -9,7 +10,7 @@ import { Method,Route } from '../types/server.ts';
  * # Example
  * ```ts
  * import { Server } from "./mod/net.ts";
-import { ErrorHandler } from '../types/server';
+ * 
  * 
  * const port=6969;
  * 
@@ -26,6 +27,14 @@ export class Server extends Application {
     super();
   }
 
+  /** Initiates a {@linkcode Server} on a new {@linkcode Thread}.*/
+  public static serve(handler: Handler,options: Deno.ServeOptions|Deno.ServeTlsOptions={}) {
+    return Thread.spawn(async ()=> {
+      const _serve=Deno.serve(options,handler);
+      await _serve.finished;
+    });
+  }
+
   /**
    * Indicates whether the {@linkcode Server} is still running.
    * * It is set to `true` when the {@linkcode Server} is closed.
@@ -36,7 +45,7 @@ export class Server extends Application {
 
   /** hostname of the {@linkcode Server} */
   public get hostname() {
-    return this._options.hostname??"127.0.0.1";
+    return this._options.hostname??"0.0.0.0";
   }
   public set hostname(hostname) {
     this._options.hostname=hostname;
@@ -91,7 +100,7 @@ export class Server extends Application {
   }
   
   /** Starts the {@linkcode Server}. */
-  public init() {
+  public async listen() {
     const _serve=Deno.serve(this._options,(req,info)=> {
       const method=req.method as Method;
       const route=new URL(req.url).pathname as Route;
@@ -102,7 +111,8 @@ export class Server extends Application {
       
       return handler(req,info);
     });
-    _serve.finished.then(_=> this._finished=true);
+    await _serve.finished;
+    this._finished=true;
   }
 }
 
