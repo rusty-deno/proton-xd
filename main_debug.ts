@@ -2,7 +2,6 @@ import { Server } from "./lib/mod.ts";
 
 
 Server.serve(()=> {
-  return new Response;
+  return new Response("xd");
 });
-
 
