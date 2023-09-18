@@ -1,7 +1,11 @@
-pub mod window_builder;
-pub mod webview_builder;
+mod window_builder;
+mod webview_builder;
+mod window;
+
 pub use window_builder::*;
 pub use webview_builder::*;
+pub use window::*;
+
 
 use deno_bindgen::{
   deno_bindgen,
@@ -12,14 +16,15 @@ use wry::application::{
   clipboard::Clipboard,
   event::{
     Event,
-    StartCause,
     WindowEvent
   },
   event_loop::{
     ControlFlow,
     EventLoop
-  },
+  }, window::Window
 };
+
+use crate::ffi::to_str;
 
 
 
@@ -39,25 +44,27 @@ pub fn read_clipboard()-> String {
   Clipboard::new().read_text().unwrap_or_default()
 }
 
-#[deno_bindgen]
-pub fn init(window_atters: &str,webview_atters: &str) {
-  let window_atters: WindowAttrs=from_str(window_atters).unwrap_or_else(|e| panic!("{:?}",e.classify()));
-  let webview_atters: WebViewAttrs=from_str(webview_atters).unwrap_or_else(|e| panic!("{:?}",e));
-  
-  spawn_webview(window_atters,webview_atters).unwrap();
+type PtrSetter=extern "C" fn(*const Window);
+
+#[no_mangle]
+pub extern "C" fn init(window_atters: *const i8,webview_atters: *const i8,setter: PtrSetter) {
+  let window_atters: WindowAttrs=from_str(to_str(window_atters)).unwrap();
+  let webview_atters: WebViewAttrs=from_str(to_str(webview_atters)).unwrap();
+
+  spawn_webview(window_atters,webview_atters,setter).unwrap();
 }
 
 
-
-fn spawn_webview(window_attrs: WindowAttrs,webview_attrs: WebViewAttrs)-> wry::Result<()> {
+fn spawn_webview(window_attrs: WindowAttrs,webview_attrs: WebViewAttrs,setter: PtrSetter)-> wry::Result<()> {
   let event_loop=EventLoop::new();
   let window=window_attrs.build(&event_loop)?;
   let _webview=webview_attrs.build(window)?;
+
+  setter(_webview.window() as *const Window);
   
   event_loop.run(move |event, _, control_flow| {
     *control_flow=ControlFlow::Wait;
     match event {
-      Event::NewEvents(StartCause::Init)=> println!(""),
       Event::WindowEvent {
         event: WindowEvent::CloseRequested,
         ..
@@ -66,6 +73,5 @@ fn spawn_webview(window_attrs: WindowAttrs,webview_attrs: WebViewAttrs)-> wry::R
     }
   });
 }
-
 
 

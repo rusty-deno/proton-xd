@@ -16,5 +16,13 @@
   "convert": {
     "parameters": ["buffer","usize","u32","u32","u8","u8"],
     "result": "buffer"
+  },
+  "init": {
+    "parameters": ["buffer","buffer","function"],
+    "result": "void"
+  },
+  "set_cursor_visible": {
+    "parameters": ["usize"],
+    "result": "void"
   }
 }

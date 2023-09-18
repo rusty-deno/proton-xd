@@ -1,7 +1,12 @@
-import { Server } from "./lib/mod.ts";
+
+// import ProtonXD from "./mod/mod.ts";
 
 
-Server.serve(()=> {
-  return new Response("xd");
-});
+// ProtonXD.XD.instantiate("<html><body>hello wrld</body></html>",{
+//   title: "my-app"
+// });
+
+// console.log("xd");
+
+
 
