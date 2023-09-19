@@ -1,5 +1,5 @@
 use deno_bindgen::deno_bindgen;
-use wry::application::{monitor::{MonitorHandle, VideoMode}, window::UserAttentionType};
+use wry::application::monitor::{MonitorHandle, VideoMode};
 
 use crate::{
   Position,
@@ -22,11 +22,7 @@ pub struct VidMode {
   refresh_rate: u16,
 }
 
-#[deno_bindgen]
-pub enum AttentionType {
-  Critical,
-  Informational,
-}
+
 
 impl From<MonitorHandle> for MonitorData {
   fn from(value: MonitorHandle)-> Self {
@@ -65,13 +61,6 @@ impl VidMode {
   }
 }
 
-impl Into<UserAttentionType> for AttentionType {
-  fn into(self)-> UserAttentionType {
-    match self {
-      AttentionType::Critical=> UserAttentionType::Critical,
-      AttentionType::Informational=> UserAttentionType::Informational,
-    }
-  }
-}
+
 
 

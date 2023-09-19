@@ -2,10 +2,8 @@ use wry::application::window::Window;
 
 use crate::{
   cast,
-  ser::{
-    MonitorData,
-    AttentionType
-  },
+  MonitorData,
+  AttentionType,
   Position,
   Size,
 };
