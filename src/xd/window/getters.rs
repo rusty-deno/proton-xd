@@ -1,5 +1,4 @@
 use wry::application::window::Window;
-
 use crate::{
   cast,
   MonitorData,
@@ -9,8 +8,12 @@ use crate::{
 };
 use deno_bindgen::{
   deno_bindgen,
-  serde_json::{to_string, from_str}
+  serde_json::{
+    to_string,
+    from_str
+  }
 };
+
 
 #[deno_bindgen]
 pub fn available_monitors(ptr: usize)-> String {
