@@ -22,7 +22,7 @@
     "result": "void"
   },
   "set_cursor_visible": {
-    "parameters": ["usize"],
+    "parameters": ["pointer"],
     "result": "void"
   }
 }
