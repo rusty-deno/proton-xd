@@ -24,5 +24,49 @@
   "set_cursor_visible": {
     "parameters": ["pointer"],
     "result": "void"
+  },
+  "drag_window": {
+    "parameters": ["pointer"],
+    "result": "void"
+  },
+  "is_closable": {
+    "parameters": ["pointer"],
+    "result": "bool"
+  },
+  "is_decorated": {
+    "parameters": ["pointer"],
+    "result": "bool"
+  },
+  "is_focused": {
+    "parameters": ["pointer"],
+    "result": "bool"
+  },
+  "is_maximizable": {
+    "parameters": ["pointer"],
+    "result": "bool"
+  },
+  "is_maximized": {
+    "parameters": ["pointer"],
+    "result": "bool"
+  },
+  "is_minimizable": {
+    "parameters": ["pointer"],
+    "result": "bool"
+  },
+  "is_minimized": {
+    "parameters": ["pointer"],
+    "result": "bool"
+  },
+  "is_resizable": {
+    "parameters": ["pointer"],
+    "result": "bool"
+  },
+  "is_visible": {
+    "parameters": ["pointer"],
+    "result": "bool"
+  },
+  "theme": {
+    "parameters": ["pointer"],
+    "result": "bool"
   }
 }
