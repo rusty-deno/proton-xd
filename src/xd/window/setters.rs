@@ -1,10 +1,7 @@
-use deno_bindgen::{
-  serde_json,
-  deno_bindgen
-};
+
 use crate::{
   to_constraints,
-  ffi::to_str, cast
+  ffi::to_str,
 };
 use wry::application::{
   window::Window,
@@ -15,28 +12,7 @@ use wry::application::{
 };
 
 
-#[deno_bindgen]
-pub fn monitor_from_point(ptr: usize,x: f64,y: f64)-> String {
-  unsafe {
-    let monitor=(*cast(ptr)).monitor_from_point(x,y).unwrap();
-    let pos=monitor.position();
-    let size=monitor.size();
 
-    let json=serde_json::json!({
-      "name": monitor.name(),
-      "position": {
-        "x": pos.x,
-        "y": pos.y
-      },
-      "scale_factor": monitor.scale_factor(),
-      "size": {
-        "height": size.height,
-        "width": size.width
-      }
-    });
-    serde_json::to_string(&json).unwrap_or_default()
-  }
-}
 
 #[no_mangle]
 pub unsafe extern "C" fn set_always_on_bottom(ptr: *const Window,always_on_bottom: bool) {
