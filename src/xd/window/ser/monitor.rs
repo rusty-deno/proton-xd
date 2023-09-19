@@ -1,5 +1,8 @@
 use deno_bindgen::deno_bindgen;
-use wry::application::monitor::{MonitorHandle, VideoMode};
+use wry::application::monitor::{
+  MonitorHandle,
+  VideoMode
+};
 
 use crate::{
   Position,
