@@ -16,7 +16,7 @@ use wry::application::{
     Size as size,
     PixelUnit,
     PhysicalPixel,
-    Position as position
+    Position as position, PhysicalPosition,
   },
   error::OsError,
 };
@@ -33,6 +33,16 @@ pub struct Size {
 impl Into<size> for Size {
   fn into(self)-> size {
     size::Physical(PhysicalSize::new(self.width,self.height))
+  }
+}
+
+impl From<PhysicalSize<u32>> for Size {
+  fn from(value: PhysicalSize<u32>)-> Self {
+    let PhysicalSize { width, height }=value;
+    Self {
+      height,
+      width
+    }
   }
 }
 
@@ -56,6 +66,12 @@ impl Into<theme> for Theme {
 pub struct Position {
   pub x: i32,
   pub y: i32
+}
+
+impl From<PhysicalPosition<i32>> for Position {
+  fn from(PhysicalPosition { x,y }: PhysicalPosition<i32>)-> Self {
+    Self { x,y }
+  }
 }
 
 
