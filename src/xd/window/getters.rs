@@ -2,11 +2,16 @@ use wry::application::window::Window;
 
 use crate::{
   cast,
-  ser::MonitorData, Position
+  ser::{
+    MonitorData,
+    AttentionType
+  },
+  Position,
+  Size,
 };
 use deno_bindgen::{
   deno_bindgen,
-  serde_json::to_string
+  serde_json::{to_string, from_str}
 };
 
 #[deno_bindgen]
@@ -92,8 +97,20 @@ pub unsafe extern "C" fn is_minimizable(ptr: *const Window)-> bool {
   (*ptr).is_minimizable()
 }
 
+#[no_mangle]
+pub unsafe extern "C" fn is_minimized(ptr: *const Window)-> bool {
+  (*ptr).is_minimized()
+}
 
+#[no_mangle]
+pub unsafe extern "C" fn is_resizable(ptr: *const Window)-> bool {
+  (*ptr).is_resizable()
+}
 
+#[no_mangle]
+pub unsafe extern "C" fn is_visible(ptr: *const Window)-> bool {
+  (*ptr).is_visible()
+}
 
 #[deno_bindgen]
 pub fn monitor_from_point(ptr: usize,x: f64,y: f64)-> String {
@@ -102,3 +119,68 @@ pub fn monitor_from_point(ptr: usize,x: f64,y: f64)-> String {
     to_string(&MonitorData::from(monitor)).unwrap_or_default()
   }
 }
+
+
+#[deno_bindgen]
+pub fn outer_position(ptr: usize)-> String {
+  unsafe {
+    let pos: Position=(*cast(ptr)).outer_position().unwrap_or_default().into();
+    to_string(&pos).unwrap_or_default()
+  }
+}
+
+#[deno_bindgen]
+pub fn outer_size(ptr: usize)-> String {
+  unsafe {
+    let size: Size=(*cast(ptr)).outer_size().into();
+    to_string(&size).unwrap_or_default()
+  }
+}
+
+#[deno_bindgen]
+pub fn primary_monitor(ptr: usize)-> String {
+  unsafe {
+    let monitor: MonitorData=(*cast(ptr)).primary_monitor().unwrap().into();
+    to_string(&monitor).unwrap_or_default()
+  }
+}
+
+#[deno_bindgen]
+pub fn request_redraw(ptr: usize) {
+  unsafe {
+    (*cast(ptr)).request_redraw();
+  }
+}
+
+#[deno_bindgen]
+pub fn request_user_attention(ptr: usize,request_type: &str) {
+  unsafe {
+    let request_type: AttentionType=from_str(request_type).unwrap_or(AttentionType::Informational);
+    (*cast(ptr)).request_user_attention(Some(request_type.into()));
+  }
+}
+
+#[deno_bindgen]
+pub fn scale_factor(ptr: usize)-> f64 {
+  unsafe {
+    (*cast(ptr)).scale_factor()
+  }
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn theme(ptr: *const Window)-> bool {
+  match (*ptr).theme() {
+    wry::application::window::Theme::Light=> false,
+    _=> true
+  }
+}
+
+#[deno_bindgen]
+pub fn title(ptr: usize)-> String {
+  unsafe {
+    (*cast(ptr)).title()
+  }
+}
+
+
+
