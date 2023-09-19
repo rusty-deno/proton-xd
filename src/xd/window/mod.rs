@@ -1,3 +1,4 @@
+pub mod ser;
 mod setters;
 mod getters;
 pub use setters::*;

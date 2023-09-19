@@ -26,8 +26,8 @@ use wry::application::{
 
 #[deno_bindgen]
 pub struct Size {
-  height: u32,
-  width: u32
+  pub height: u32,
+  pub width: u32
 }
 
 impl Into<size> for Size {
@@ -54,8 +54,8 @@ impl Into<theme> for Theme {
 
 #[deno_bindgen]
 pub struct Position {
-  x: i32,
-  y: i32
+  pub x: i32,
+  pub y: i32
 }
 
 
