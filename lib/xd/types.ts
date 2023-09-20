@@ -75,6 +75,6 @@ export function toContent(content: Content): string {
 /**
  * checks if content is an URL
  */
-export function isURL(content: Content) {
+export function isURL(content: Content): content is URL {
   return content instanceof URL||!content.trimStart().startsWith("<");
 }

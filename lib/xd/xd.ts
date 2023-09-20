@@ -1,17 +1,20 @@
-// deno-lint-ignore-file
+
 import { symbols as lib,read_clipboard,write_to_clipboard } from "../../bindings/bindings.ts";
-import { $unimplemented } from "../mod.ts";
 import { defaultWindowAttrs as dwa,defaultWebViewAttrs as dweba } from "./default.ts";
 import { WebViewAttributes,Content,WindowAttributes,isURL } from "./types.ts";
+import { Window } from './_window.ts';
+
+
 
 /**
  * @class XD handles the webview and the window
  */
-export class XD {
+export class XD extends Window {
   private windowAttrs: WindowAttributes;
   private webviewAttrs: WebViewAttributes;
 
   constructor(content: Content,windowAttrs: WindowAttributes={},webviewAttrs: WebViewAttributes={}) {
+    super();
     this.windowAttrs={
       ...dwa,
       ...windowAttrs
@@ -20,13 +23,22 @@ export class XD {
       ...dweba,
       ...webviewAttrs
     };
-    
-    if(isURL(content)) //if content is an URL then sets the url
-      this.webviewAttrs.url=content.toString();
-    else
-      this.webviewAttrs.html=content as string; //if content is not an URL then it must be html/text
+    this.webviewAttrs[isURL(content)?"url":"html"]=content.toString();
   }
   
+  /**
+   * Initializes the webview.
+   */
+  public spawn() {
+    lib.init(
+      XD.stringify(this.windowAttrs),
+      XD.stringify(this.webviewAttrs),
+      Deno.UnsafePointer.of(this._addrs)
+    );
+  }
+
+
+
   public set window(window: WindowAttributes) {
     this.windowAttrs={
       ...this.windowAttrs,
@@ -40,7 +52,6 @@ export class XD {
     return this.windowAttrs;
   }
 
-
   public set webview(webview: WebViewAttributes) {
     this.webview={
       ...this.webviewAttrs,
@@ -53,15 +64,8 @@ export class XD {
   public get webview(): WebViewAttributes {
     return this.webviewAttrs;
   }
-  
 
-  /**
-   * Initializes the webview.
-   */
-  public spawn() {
-    $unimplemented()
-  }
-  
+
   /**
    * Constructs XD and spawns the webview
    * 
@@ -88,7 +92,8 @@ export type WebViewProperty=keyof WebViewAttributes;
 
 
 /**
- * writes the given string to the clipboard;
+ * Writes the given string to the clipboard.
+ * 
  * just like copy
  */
 export function writeToClipboard(str: string) {
@@ -96,9 +101,9 @@ export function writeToClipboard(str: string) {
 }
 
 /**
- * reads the stored string from the clipboard;
+ * Reads the stored string from the clipboard.
+ * 
  * just like paste
- * @default "\0" - empty string
  */
 export function readClipboard() {
   return read_clipboard();
