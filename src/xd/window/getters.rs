@@ -28,6 +28,8 @@ pub fn available_monitors(ptr: usize)-> String {
   }
 }
 
+
+// todo ----------------------------------
 #[deno_bindgen]
 pub fn current_monitor(ptr: usize)-> String {
   unsafe {
@@ -112,6 +114,8 @@ pub unsafe extern "C" fn is_visible(ptr: usize)-> bool {
   (*cast(ptr)).is_visible()
 }
 
+
+//todo-----------------------------------------------------------------------------------------
 #[deno_bindgen]
 pub fn monitor_from_point(ptr: usize,x: f64,y: f64)-> String {
   unsafe {
@@ -137,6 +141,7 @@ pub fn outer_size(ptr: usize)-> String {
   }
 }
 
+// todo ---------------------------------------------------
 #[deno_bindgen]
 pub fn primary_monitor(ptr: usize)-> String {
   unsafe {
