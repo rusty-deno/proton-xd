@@ -10,8 +10,8 @@ import { Window } from './_window.ts';
  * @class XD handles the webview and the window
  */
 export class XD extends Window {
-  private windowAttrs: WindowAttributes;
-  private webviewAttrs: WebViewAttributes;
+  protected windowAttrs: WindowAttributes;
+  protected webviewAttrs: WebViewAttributes;
 
   constructor(content: Content,windowAttrs: WindowAttributes={},webviewAttrs: WebViewAttributes={}) {
     super();
