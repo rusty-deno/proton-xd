@@ -164,6 +164,7 @@ export const lib = Deno.dlopen(uri, {
   "drag_window": {
     "parameters": ["pointer"],
     "result": "void",
+    "nonblocking": true
   },
   "is_closable": {
     "parameters": ["pointer"],
@@ -302,10 +303,11 @@ export const lib = Deno.dlopen(uri, {
     "result": "void",
   },
 });
-const { symbols } = lib;
+export const { symbols } = lib;
 addEventListener("unload", () => {
   lib.close();
 });
+
 export type AttentionType =
   | "Critical"
   | "Informational";

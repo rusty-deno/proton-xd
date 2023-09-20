@@ -1,4 +1,6 @@
-import * as lib from "../../bindings/bindings.ts";
+// deno-lint-ignore-file
+import { symbols as lib,read_clipboard,write_to_clipboard } from "../../bindings/bindings.ts";
+import { $unimplemented } from "../mod.ts";
 import { defaultWindowAttrs as dwa,defaultWebViewAttrs as dweba } from "./default.ts";
 import { WebViewAttributes,Content,WindowAttributes,isURL } from "./types.ts";
 
@@ -9,12 +11,6 @@ export class XD {
   private windowAttrs: WindowAttributes;
   private webviewAttrs: WebViewAttributes;
 
-  /**
-   * XD - The base class that handles the webview and the window
-   * @param {Content} content defines the initial content of the webview
-   * @param {WindowAttributes} windowAttrs defines the window's properties
-   * @param {WebViewAttributes} webviewAttrs defines the webview's propoerties
-   */
   constructor(content: Content,windowAttrs: WindowAttributes={},webviewAttrs: WebViewAttributes={}) {
     this.windowAttrs={
       ...dwa,
@@ -61,14 +57,9 @@ export class XD {
 
   /**
    * Initializes the webview.
-   * 
-   * Updating window or webview after spawning the window doesn't affect them
    */
   public spawn() {
-    lib.init(
-      JSON.stringify(this.windowAttrs),
-      JSON.stringify(this.webviewAttrs)
-    );
+    $unimplemented()
   }
   
   /**
@@ -101,7 +92,7 @@ export type WebViewProperty=keyof WebViewAttributes;
  * just like copy
  */
 export function writeToClipboard(str: string) {
-  return lib.write_to_clipboard(str);
+  write_to_clipboard(str);
 }
 
 /**
@@ -110,6 +101,6 @@ export function writeToClipboard(str: string) {
  * @default "\0" - empty string
  */
 export function readClipboard() {
-  return lib.read_clipboard();
+  return read_clipboard();
 }
 

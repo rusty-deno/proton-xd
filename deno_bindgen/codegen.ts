@@ -255,7 +255,7 @@ export const lib=Deno.dlopen(uri, {`
         )
         .join(", ")
     },${prototype.substring(1,prototype.length-1)}});
-    const { symbols }=lib;
+    export const { symbols }=lib;
     addEventListener("unload",()=> {
       lib.close();
     });

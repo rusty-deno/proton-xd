@@ -23,7 +23,8 @@
   },
   "drag_window": {
     "parameters": ["pointer"],
-    "result": "void"
+    "result": "void",
+    "nonblocking": true
   },
   "is_closable": {
     "parameters": ["pointer"],
