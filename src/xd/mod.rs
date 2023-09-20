@@ -44,23 +44,25 @@ pub fn read_clipboard()-> String {
   Clipboard::new().read_text().unwrap_or_default()
 }
 
-type PtrSetter=extern "C" fn(*const Window);
+
 
 #[no_mangle]
-pub extern "C" fn init(window_atters: *const i8,webview_atters: *const i8,setter: PtrSetter) {
+pub extern "C" fn init(window_atters: *const i8,webview_atters: *const i8,ptr: *mut usize) {
   let window_atters: WindowAttrs=from_str(to_str(window_atters)).unwrap();
   let webview_atters: WebViewAttrs=from_str(to_str(webview_atters)).unwrap();
 
-  spawn_webview(window_atters,webview_atters,setter).unwrap();
+  spawn_webview(window_atters,webview_atters,ptr).unwrap();
 }
 
 
-fn spawn_webview(window_attrs: WindowAttrs,webview_attrs: WebViewAttrs,setter: PtrSetter)-> wry::Result<()> {
+fn spawn_webview(window_attrs: WindowAttrs,webview_attrs: WebViewAttrs,ptr: *mut usize)-> wry::Result<()> {
   let event_loop=EventLoop::new();
   let window=window_attrs.build(&event_loop)?;
-  let _webview=webview_attrs.build(window)?;
+  let webview=webview_attrs.build(window)?;
 
-  setter(_webview.window() as *const Window);
+  unsafe {
+    (*ptr)=webview.window() as *const Window as usize;
+  }
   
   event_loop.run(move |event, _, control_flow| {
     *control_flow=ControlFlow::Wait;

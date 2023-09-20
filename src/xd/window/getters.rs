@@ -1,4 +1,3 @@
-use wry::application::window::Window;
 use crate::{
   cast,
   MonitorData,
@@ -51,8 +50,8 @@ pub fn cursor_position(ptr: usize)-> String {
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn drag_window(ptr: *const Window) {
-  (*ptr).drag_window().unwrap_or(())
+pub unsafe extern "C" fn drag_window(ptr: usize) {
+  (*cast(ptr)).drag_window().unwrap_or(())
 }
 
 #[deno_bindgen]
@@ -69,48 +68,48 @@ pub fn inner_position(ptr: usize)-> String {
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn is_closable(ptr: *const Window)-> bool {
-  (*ptr).is_closable()
+pub unsafe extern "C" fn is_closable(ptr: usize)-> bool {
+  (*cast(ptr)).is_closable()
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn is_decorated(ptr: *const Window)-> bool {
-  (*ptr).is_decorated()
+pub unsafe extern "C" fn is_decorated(ptr: usize)-> bool {
+  (*cast(ptr)).is_decorated()
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn is_focused(ptr: *const Window)-> bool {
-  (*ptr).is_focused()
+pub unsafe extern "C" fn is_focused(ptr: usize)-> bool {
+  (*cast(ptr)).is_focused()
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn is_maximizable(ptr: *const Window)-> bool {
-  (*ptr).is_maximizable()
+pub unsafe extern "C" fn is_maximizable(ptr: usize)-> bool {
+  (*cast(ptr)).is_maximizable()
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn is_maximized(ptr: *const Window)-> bool {
-  (*ptr).is_maximized()
+pub unsafe extern "C" fn is_maximized(ptr: usize)-> bool {
+  (*cast(ptr)).is_maximized()
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn is_minimizable(ptr: *const Window)-> bool {
-  (*ptr).is_minimizable()
+pub unsafe extern "C" fn is_minimizable(ptr: usize)-> bool {
+  (*cast(ptr)).is_minimizable()
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn is_minimized(ptr: *const Window)-> bool {
-  (*ptr).is_minimized()
+pub unsafe extern "C" fn is_minimized(ptr: usize)-> bool {
+  (*cast(ptr)).is_minimized()
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn is_resizable(ptr: *const Window)-> bool {
-  (*ptr).is_resizable()
+pub unsafe extern "C" fn is_resizable(ptr: usize)-> bool {
+  (*cast(ptr)).is_resizable()
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn is_visible(ptr: *const Window)-> bool {
-  (*ptr).is_visible()
+pub unsafe extern "C" fn is_visible(ptr: usize)-> bool {
+  (*cast(ptr)).is_visible()
 }
 
 #[deno_bindgen]
@@ -169,8 +168,8 @@ pub fn scale_factor(ptr: usize)-> f64 {
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn theme(ptr: *const Window)-> bool {
-  match (*ptr).theme() {
+pub unsafe extern "C" fn theme(ptr: usize)-> bool {
+  match (*cast(ptr)).theme() {
     wry::application::window::Theme::Light=> false,
     _=> true
   }

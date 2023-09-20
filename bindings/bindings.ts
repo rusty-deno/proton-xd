@@ -158,148 +158,148 @@ export const lib = Deno.dlopen(uri, {
     "result": "buffer",
   },
   "init": {
-    "parameters": ["buffer", "buffer", "function"],
+    "parameters": ["buffer", "buffer", "pointer"],
     "result": "void",
   },
   "drag_window": {
-    "parameters": ["pointer"],
+    "parameters": ["usize"],
     "result": "void",
-    "nonblocking": true
+    "nonblocking": true,
   },
   "is_closable": {
-    "parameters": ["pointer"],
+    "parameters": ["usize"],
     "result": "bool",
   },
   "is_decorated": {
-    "parameters": ["pointer"],
+    "parameters": ["usize"],
     "result": "bool",
   },
   "is_focused": {
-    "parameters": ["pointer"],
+    "parameters": ["usize"],
     "result": "bool",
   },
   "is_maximizable": {
-    "parameters": ["pointer"],
+    "parameters": ["usize"],
     "result": "bool",
   },
   "is_maximized": {
-    "parameters": ["pointer"],
+    "parameters": ["usize"],
     "result": "bool",
   },
   "is_minimizable": {
-    "parameters": ["pointer"],
+    "parameters": ["usize"],
     "result": "bool",
   },
   "is_minimized": {
-    "parameters": ["pointer"],
+    "parameters": ["usize"],
     "result": "bool",
   },
   "is_resizable": {
-    "parameters": ["pointer"],
+    "parameters": ["usize"],
     "result": "bool",
   },
   "is_visible": {
-    "parameters": ["pointer"],
+    "parameters": ["usize"],
     "result": "bool",
   },
   "theme": {
-    "parameters": ["pointer"],
+    "parameters": ["usize"],
     "result": "bool",
   },
   "set_always_on_top": {
-    "parameters": ["pointer", "bool"],
+    "parameters": ["usize", "bool"],
     "result": "void",
   },
   "set_always_on_bottom": {
-    "parameters": ["pointer", "bool"],
+    "parameters": ["usize", "bool"],
     "result": "void",
   },
   "set_closable": {
-    "parameters": ["pointer", "bool"],
+    "parameters": ["usize", "bool"],
     "result": "void",
   },
   "set_content_protection": {
-    "parameters": ["pointer", "bool"],
+    "parameters": ["usize", "bool"],
     "result": "void",
   },
   "set_cursor_grab": {
-    "parameters": ["pointer", "bool"],
+    "parameters": ["usize", "bool"],
     "result": "void",
   },
   "set_cursor_position": {
-    "parameters": ["pointer", "i32", "i32"],
+    "parameters": ["usize", "i32", "i32"],
     "result": "void",
   },
   "set_cursor_visible": {
-    "parameters": ["pointer", "bool"],
+    "parameters": ["usize", "bool"],
     "result": "void",
   },
   "set_decorations": {
-    "parameters": ["pointer", "bool"],
+    "parameters": ["usize", "bool"],
     "result": "void",
   },
   "set_focus": {
-    "parameters": ["pointer"],
+    "parameters": ["usize"],
     "result": "void",
   },
   "set_ignore_cursor_events": {
-    "parameters": ["pointer", "bool"],
+    "parameters": ["usize", "bool"],
     "result": "void",
   },
   "set_ime_position": {
-    "parameters": ["pointer", "i32", "i32"],
+    "parameters": ["usize", "i32", "i32"],
     "result": "void",
   },
   "set_inner_size": {
-    "parameters": ["pointer", "u32", "u32"],
+    "parameters": ["usize", "u32", "u32"],
     "result": "void",
   },
   "set_inner_size_constraints": {
-    "parameters": ["pointer", "i32", "i32", "i32", "i32"],
+    "parameters": ["usize", "i32", "i32", "i32", "i32"],
     "result": "void",
   },
   "set_max_inner_size": {
-    "parameters": ["pointer", "u32", "u32"],
+    "parameters": ["usize", "u32", "u32"],
     "result": "void",
   },
   "set_maximizable": {
-    "parameters": ["pointer", "bool"],
+    "parameters": ["usize", "bool"],
     "result": "void",
   },
   "set_maximized": {
-    "parameters": ["pointer", "bool"],
+    "parameters": ["usize", "bool"],
     "result": "void",
   },
   "set_min_inner_size": {
-    "parameters": ["pointer", "u32", "u32"],
+    "parameters": ["usize", "u32", "u32"],
     "result": "void",
   },
   "set_minimizable": {
-    "parameters": ["pointer", "bool"],
+    "parameters": ["usize", "bool"],
     "result": "void",
   },
   "set_minimized": {
-    "parameters": ["pointer", "bool"],
+    "parameters": ["usize", "bool"],
     "result": "void",
   },
   "set_outer_position": {
-    "parameters": ["pointer", "i32", "i32"],
+    "parameters": ["usize", "i32", "i32"],
     "result": "void",
   },
   "set_resizable": {
-    "parameters": ["pointer", "bool"],
+    "parameters": ["usize", "bool"],
     "result": "void",
   },
   "set_title": {
-    "parameters": ["pointer", "buffer"],
+    "parameters": ["usize", "buffer"],
     "result": "void",
   },
   "set_visible": {
-    "parameters": ["pointer", "bool"],
+    "parameters": ["usize", "bool"],
     "result": "void",
   },
   "set_visible_on_all_workspaces": {
-    "parameters": ["pointer", "bool"],
+    "parameters": ["usize", "bool"],
     "result": "void",
   },
 });
@@ -307,7 +307,6 @@ export const { symbols } = lib;
 addEventListener("unload", () => {
   lib.close();
 });
-
 export type AttentionType =
   | "Critical"
   | "Informational";
