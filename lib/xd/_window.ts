@@ -46,7 +46,7 @@ export abstract class Window {
   }
 
   public innerPosition(): lib.Position {
-    return this._window?JSON.parse(lib.inner_position(this._window)):Window.defaultPos;
+    return this._window?JSON.parse(lib.inner_position(this._window)):this.windowAttrs.innerSize??Window.defaultPos;
   }
 
   public isClosable() {
@@ -89,8 +89,8 @@ export abstract class Window {
     $unimplemented();
   }
 
-  public outerPosition(): lib.Position {
-    return this._window?JSON.parse(lib.outer_position(this._window)):Window.defaultPos;
+  public position(): lib.Position {
+    return this._window?JSON.parse(lib.outer_position(this._window)):this.windowAttrs.position??Window.defaultPos;
   }
 
   public outerSize(): lib.Size {
@@ -116,10 +116,110 @@ export abstract class Window {
   public title() {
     return this._window?lib.title(this._window):"untitled";
   }
+  
+
+  @Window.SetterSingle("alwaysOnTop")
+  public setAlwaysOnTop(alwaysOnTop: boolean) {
+    rust.set_always_on_top(this._window!,alwaysOnTop);
+  }
+
+  @Window.SetterSingle("alwaysOnBottom")
+  public setAlwaysOnBottom(alwaysOnBottom: boolean) {
+    rust.set_always_on_bottom(this._window!,alwaysOnBottom);
+  }
+
+  @Window.SetterSingle("closable")
+  public setClosable(closable: boolean) {
+    rust.set_closable(this._window!,closable);
+  }
+
+  @Window.SetterSingle("contentProtection")
+  public setContentProtection(cotentProtection: boolean) {
+    rust.set_content_protection(this._window!,cotentProtection);
+  }
+
+  public setCursorGrab(grab: boolean) {
+    this._window && rust.set_cursor_grab(this._window,grab);
+  }
+
+  public setCursorIcon() {
+    $unimplemented();
+  }
+  
+  public setCursorPosition(x: number,y: number) {
+    this._window && rust.set_cursor_position(this._window!,x,y);
+  }
+
+  public setCursorVisible(visible: boolean) {
+    this._window && rust.set_cursor_visible(this._window,visible);
+  }
+
+  public setDecorations(decorations: boolean) {
+    this._window?rust.set_decorations(this._window,decorations):this.windowAttrs.decorations=decorations;
+  }
+
+  public setFocus() {
+    this._window?rust.set_focus(this._window):this.windowAttrs.focused=true;
+  }
+
+  public setFullscreen() {
+    $unimplemented();
+  }
+
+  public setIgnoreCursorEvents(ignore: boolean) {
+    this._window && rust.set_ignore_cursor_events(this._window,ignore);
+  }
+  
+  public setImePosition(x: number,y: number) {
+    this._window && rust.set_ime_position(this._window,x,y);
+  }
+
+  @Window.SetterSize("innerPosition")
+  public setInnerPosition(height: number,width: number) {
+    rust.set_inner_size(this._window!,height,width);
+  }
+
+  public setInnerSizeConstraints({minWidth,minHeight,maxWidth,maxHeight}:{minWidth: number,minHeight: number,maxWidth: number,maxHeight: number}) {
+    if(this._window) return rust.set_inner_size_constraints(this._window,minWidth,minHeight,maxWidth,maxHeight);
+    this.windowAttrs={...this.windowAttrs,minWidth,minHeight,maxWidth,maxHeight};
+  }
+
+  @Window.SetterSize("maxInnerSize")
+  public setMaxInnerSize(height: number,width: number) {
+    rust.set_max_inner_size(this._window!,height,width);
+  }
 
 
 
 
+
+
+
+  private static SetterSingle<T>(to: string) {
+    return function(_this: Window,_key: string,fn: PropertyDescriptor) {
+      const original=fn.value;
+
+      fn.value=function(arg: T) {
+        // deno-lint-ignore no-explicit-any
+        _this._window?original(arg):(_this.windowAttrs as any)[to]=arg;
+      }
+  
+      return fn;
+    };
+  }
+  private static SetterSize(to: string) {
+    return function(_this: Window,_key: string,fn: PropertyDescriptor) {
+      const original=fn.value;
+
+      fn.value=function(height: number,width: number) {
+        // deno-lint-ignore no-explicit-any
+        _this._window?original(height,width):(_this.windowAttrs as any)[to]={ height,width };
+      };
+
+      return fn;
+    }
+  }
 }
+
 
 
