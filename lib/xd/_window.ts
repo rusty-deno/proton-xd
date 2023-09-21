@@ -1,8 +1,7 @@
 import { symbols as rust } from "../../bindings/bindings.ts";
 import * as lib from "../../bindings/bindings.ts";
-import { $unimplemented, Option } from "../mod.ts";
-import { Position,Size } from "../../bindings/bindings.ts";
-import { MinSize,SizeConstraints,WindowAttributes,MaxSize,MonitorInfo } from './types.ts';
+import { $unimplemented,Option } from "../mod.ts";
+import { MinSize,SizeConstraints,WindowAttributes,MaxSize,MonitorInfo,Position,Size } from './types/mod.ts';
 
 
 
