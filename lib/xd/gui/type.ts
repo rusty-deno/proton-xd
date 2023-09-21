@@ -6,14 +6,10 @@ export interface FileOpenerOptions {
     type?: FileOpenerType
 }
 
-export enum MessageType {
-    Info,
-    Warning,
-    Error
-}
+export type MessageType="Info"|"Warning"|"Error";
 
 export interface SaveFileOptions {
     filename?: string;
     location?: string;
 }
-  
+
