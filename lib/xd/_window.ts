@@ -1,7 +1,11 @@
 import { symbols as rust } from "../../bindings/bindings.ts";
 import * as lib from "../../bindings/bindings.ts";
 import { $unimplemented, Option } from "../mod.ts";
-import { WindowAttributes } from "./types.ts";
+import { Position,Size,MonitorData } from "../../bindings/bindings.ts";
+import { MinSize,SizeConstraints,WindowAttributes } from './types.ts';
+
+
+
 
 export abstract class Window {
   private static encoder=new TextEncoder;
@@ -19,7 +23,7 @@ export abstract class Window {
   // protected abstract webviewAttrs: WebViewAttributes;
   protected _addrs=new BigUint64Array(1);
 
-  private get _window(): bigint|undefined {
+  private get _window(): bigint {
     return this._addrs[0];
   }
 
@@ -85,11 +89,11 @@ export abstract class Window {
     return this._window?rust.is_visible(this._window):this.windowAttrs.visible!;
   }
 
-  public monitorFromPoint(_x: number,_y: number): lib.MonitorData {
+  public monitorFromPoint(_pos: Position): MonitorData {
     $unimplemented();
   }
 
-  public position(): lib.Position {
+  public position(): Position {
     return this._window?JSON.parse(lib.outer_position(this._window)):this.windowAttrs.position??Window.defaultPos;
   }
 
@@ -118,24 +122,24 @@ export abstract class Window {
   }
   
 
-  @Window.SetterSingle("alwaysOnTop")
+  @Window.Setter("alwaysOnTop")
   public setAlwaysOnTop(alwaysOnTop: boolean) {
-    rust.set_always_on_top(this._window!,alwaysOnTop);
+    rust.set_always_on_top(this._window,alwaysOnTop);
   }
 
-  @Window.SetterSingle("alwaysOnBottom")
+  @Window.Setter("alwaysOnBottom")
   public setAlwaysOnBottom(alwaysOnBottom: boolean) {
-    rust.set_always_on_bottom(this._window!,alwaysOnBottom);
+    rust.set_always_on_bottom(this._window,alwaysOnBottom);
   }
 
-  @Window.SetterSingle("closable")
+  @Window.Setter("closable")
   public setClosable(closable: boolean) {
-    rust.set_closable(this._window!,closable);
+    rust.set_closable(this._window,closable);
   }
 
-  @Window.SetterSingle("contentProtection")
+  @Window.Setter("contentProtection")
   public setContentProtection(cotentProtection: boolean) {
-    rust.set_content_protection(this._window!,cotentProtection);
+    rust.set_content_protection(this._window,cotentProtection);
   }
 
   public setCursorGrab(grab: boolean) {
@@ -147,15 +151,16 @@ export abstract class Window {
   }
   
   public setCursorPosition(x: number,y: number) {
-    this._window && rust.set_cursor_position(this._window!,x,y);
+    this._window && rust.set_cursor_position(this._window,x,y);
   }
 
   public setCursorVisible(visible: boolean) {
     this._window && rust.set_cursor_visible(this._window,visible);
   }
 
+  @Window.Setter("decorations")
   public setDecorations(decorations: boolean) {
-    this._window?rust.set_decorations(this._window,decorations):this.windowAttrs.decorations=decorations;
+    rust.set_decorations(this._window,decorations);
   }
 
   public setFocus() {
@@ -170,56 +175,92 @@ export abstract class Window {
     this._window && rust.set_ignore_cursor_events(this._window,ignore);
   }
   
-  public setImePosition(x: number,y: number) {
+  public setImePosition({x,y}: Position) {
     this._window && rust.set_ime_position(this._window,x,y);
   }
-
-  @Window.SetterSize("innerPosition")
-  public setInnerPosition(height: number,width: number) {
-    rust.set_inner_size(this._window!,height,width);
+  
+  public setInnerPosition({height,width}: Size) {
+    this._window && rust.set_inner_size(this._window,height,width);
   }
 
-  public setInnerSizeConstraints({minWidth,minHeight,maxWidth,maxHeight}:{minWidth: number,minHeight: number,maxWidth: number,maxHeight: number}) {
+  public setInnerSizeConstraints({minWidth,minHeight,maxWidth,maxHeight}: SizeConstraints) {
     if(this._window) return rust.set_inner_size_constraints(this._window,minWidth,minHeight,maxWidth,maxHeight);
     this.windowAttrs={...this.windowAttrs,minWidth,minHeight,maxWidth,maxHeight};
   }
 
-  @Window.SetterSize("maxInnerSize")
-  public setMaxInnerSize(height: number,width: number) {
-    rust.set_max_inner_size(this._window!,height,width);
+  public setMaxInnerSize({height,width}: Size) {
+    this._window && rust.set_max_inner_size(this._window,height,width);
+  }
+
+  @Window.Setter("maximizable")
+  public setMaximizable(maximizable: boolean) {
+    this._window && rust.set_maximizable(this._window,maximizable);
+  }
+
+  @Window.Setter("maximized")
+  public setMaximized(maximized: boolean) {
+    this._window && rust.set_maximized(this._window,maximized);
+  }
+  
+  public setMinInnerSize({ minHeight,minWidth }: MinSize) {
+    if(this._window) return rust.set_min_inner_size(this._window,minHeight,minWidth);
+  }
+
+  @Window.Setter("minimizable")
+  public setMinimizable(minimizable: boolean) {
+    rust.set_minimizable(this._window,minimizable);
+  }
+
+  @Window.Setter("minimized")
+  public setMinimized(minimized: boolean) {
+    rust.set_minimized(this._window,minimized);
+  }
+
+  public setOuterPosition({ x,y }: Position) {
+    this._window && rust.set_outer_position(this._window,x,y);
+  }
+
+  public setProgressBar() {
+    $unimplemented();
+  }
+
+  @Window.Setter("resizable")
+  public setResizable(resizable: boolean) {
+    this._window && rust.set_resizable(this._window,resizable);
+  }
+
+  @Window.Setter("title")
+  public setTitle(title: string) {
+    rust.set_title(this._window,Window.encode(title));
+  }
+  
+  @Window.Setter("visible")
+  public setVisible(visible: boolean) {
+    rust.set_visible(this._window,visible);
+  }
+
+  
+  public setVisibleOnAllWorkspaces(visible: boolean) {
+    this._window?rust.set_visible_on_all_workspaces(this._window,visible):this.windowAttrs.visibleOnAllWorkspaces=visible;
+  }
+
+  public setWindowIcon() {
+    $unimplemented();
   }
 
 
-
-
-
-
-
-  private static SetterSingle<T>(to: string) {
+  private static Setter<T>(key: string) {
     return function(_this: Window,_key: string,fn: PropertyDescriptor) {
       const original=fn.value;
 
       fn.value=function(arg: T) {
         // deno-lint-ignore no-explicit-any
-        _this._window?original(arg):(_this.windowAttrs as any)[to]=arg;
+        _this._window?original(arg):(_this.windowAttrs as any)[key]=arg;
       }
   
       return fn;
     };
   }
-  private static SetterSize(to: string) {
-    return function(_this: Window,_key: string,fn: PropertyDescriptor) {
-      const original=fn.value;
-
-      fn.value=function(height: number,width: number) {
-        // deno-lint-ignore no-explicit-any
-        _this._window?original(height,width):(_this.windowAttrs as any)[to]={ height,width };
-      };
-
-      return fn;
-    }
-  }
 }
-
 
 
