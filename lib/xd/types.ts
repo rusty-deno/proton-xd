@@ -45,7 +45,7 @@ export interface WebViewAttributes {
   transparent?: boolean;
   backgroundColor?: Rgba;
   zoomHotkeysEnabled?: boolean;
-  initializationScripts?: Array<string>;
+  initializationScripts?: string[];
   clipboard?: boolean;
   devtools?: boolean;
   acceptFirstMouse?: boolean;
@@ -69,6 +69,19 @@ export interface MaxSize {
 
 export type SizeConstraints=MaxSize&MinSize;
 
+export interface MonitorInfo {
+  name?: string;
+  position: Position;
+  scale_factor: number;
+  size: Size;
+  modes: VidMode[];
+}
+
+export interface VidMode {
+  size: Size;
+  bit_depth: number;
+  refresh_rate: number;
+}
 
 
 

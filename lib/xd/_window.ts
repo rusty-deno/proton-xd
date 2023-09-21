@@ -2,7 +2,7 @@ import { symbols as rust } from "../../bindings/bindings.ts";
 import * as lib from "../../bindings/bindings.ts";
 import { $unimplemented, Option } from "../mod.ts";
 import { Position,Size,MonitorData } from "../../bindings/bindings.ts";
-import { MinSize,SizeConstraints,WindowAttributes,MaxSize } from './types.ts';
+import { MinSize,SizeConstraints,WindowAttributes,MaxSize,MonitorInfo } from './types.ts';
 
 
 
@@ -32,16 +32,16 @@ export abstract class Window {
   }
 
 
-  public availableMonitors(): lib.MonitorData[] {
+  public availableMonitors(): MonitorInfo[] {
     return this._window?JSON.parse(lib.available_monitors(this._window)):[];
   }
 
-  public currentMonitor(): Option<lib.MonitorData> {
+  public currentMonitor(): Option<MonitorInfo> {
     $unimplemented();
     // return new Option(this._window && JSON.parse(lib.current_monitor(this._window)));
   }
 
-  public cursorPos(): lib.Position {
+  public cursorPos(): Position {
     return this._window?JSON.parse(lib.cursor_position(this._window)):Window.defaultPos;
   }
 
@@ -53,7 +53,7 @@ export abstract class Window {
     $unimplemented()
   }
 
-  public innerPosition(): lib.Position {
+  public innerPosition(): Position {
     return this._window?JSON.parse(lib.inner_position(this._window)):this.windowAttrs.innerSize??Window.defaultPos;
   }
 
