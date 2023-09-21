@@ -1,7 +1,7 @@
 import { symbols as rust } from "../../bindings/bindings.ts";
 import * as lib from "../../bindings/bindings.ts";
 import { $unimplemented, Option } from "../mod.ts";
-import { Position,Size,MonitorData } from "../../bindings/bindings.ts";
+import { Position,Size } from "../../bindings/bindings.ts";
 import { MinSize,SizeConstraints,WindowAttributes,MaxSize,MonitorInfo } from './types.ts';
 
 
@@ -93,7 +93,7 @@ export abstract class Window {
     return this._window?rust.is_visible(this._window):this.windowAttrs.visible!;
   }
 
-  public monitorFromPoint(_pos: Position): MonitorData {
+  public monitorFromPoint(_pos: Position): MonitorInfo {
     $unimplemented();
   }
 

@@ -72,15 +72,15 @@ export type SizeConstraints=MaxSize&MinSize;
 export interface MonitorInfo {
   name?: string;
   position: Position;
-  scale_factor: number;
+  scaleFactor: number;
   size: Size;
   modes: VidMode[];
 }
 
 export interface VidMode {
   size: Size;
-  bit_depth: number;
-  refresh_rate: number;
+  bitDepth: number;
+  refreshRate: number;
 }
 
 

@@ -10,6 +10,7 @@ use crate::{
 };
 
 #[deno_bindgen]
+#[serde(rename_all = "camelCase")]
 pub struct MonitorData {
   name: Option<String>,
   position: Position,
@@ -19,6 +20,7 @@ pub struct MonitorData {
 }
 
 #[deno_bindgen]
+#[serde(rename_all = "camelCase")]
 pub struct VidMode {
   size: Size,
   bit_depth: u16,
@@ -26,12 +28,11 @@ pub struct VidMode {
 }
 
 
-
 impl From<MonitorHandle> for MonitorData {
   fn from(value: MonitorHandle)-> Self {
     let pos=value.position();
     let size=value.size();
-
+    
     Self {
       name: value.name(),
       position: Position { x: pos.x,y: pos.y },
@@ -63,7 +64,3 @@ impl VidMode {
     vec
   }
 }
-
-
-
-
