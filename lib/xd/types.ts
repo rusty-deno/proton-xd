@@ -57,6 +57,21 @@ export interface WebViewAttributes {
   headers?: Array<Header>;
 }
 
+export interface MinSize {
+  minWidth: number;
+  minHeight: number;
+}
+
+export interface MaxSize {
+  maxWidth: number;
+  maxHeight: number;
+}
+
+export type SizeConstraints=MaxSize&MinSize;
+
+
+
+
 /**
  * serializes the Content enum
  */
