@@ -1,15 +1,19 @@
 use wry::{
   webview::WebView,
-  application::window::Window
+  application::window::Window, http::HeaderMap
 };
 use crate::{
   Size,
-  Rgba
+  Rgba,
+  Header
 };
 
 use deno_bindgen::{
   deno_bindgen,
-  serde_json::{to_string, from_str}
+  serde_json::{
+    to_string,
+    from_str
+  }
 };
 
 
@@ -41,15 +45,6 @@ pub fn eval_script(ptr: usize,js: &str) {
 }
 
 #[deno_bindgen]
-pub fn evaluate_script_with_callback(_ptr: usize) {
-  #[allow(warnings)]
-  unsafe {
-    // (*to_ptr(ptr)).evaluate_script_with_callback(js, callback);
-    unimplemented!();
-  }
-}
-
-#[deno_bindgen]
 pub fn webview_inner_size(ptr: usize)-> String {
   unsafe {
     let size: Size=(*to_ptr(ptr)).inner_size().into();
@@ -70,11 +65,15 @@ pub fn load_url(ptr: usize,url: &str) {
 }
 
 #[deno_bindgen]
-pub fn load_url_with_headers(_ptr: usize) {
-  // unsafe {
-  //   (*to_ptr(ptr)).load_url_with_headers(url, headers);
-  // }
-  unimplemented!()
+pub fn load_url_with_headers(ptr: usize,url: &str,headers: &str) {
+  let headers: Vec<Header>=from_str(headers).unwrap();
+  let mut map=HeaderMap::new();
+  for header in headers {
+    map.insert(header.name(),header.value());
+  }
+  unsafe {
+    (*to_ptr(ptr)).load_url_with_headers(url,map)
+  }
 }
 
 #[deno_bindgen]
