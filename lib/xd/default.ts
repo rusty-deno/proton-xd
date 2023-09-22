@@ -1,4 +1,4 @@
-import { WebViewAttributes,WindowAttributes } from './types.ts';
+import { WebViewAttributes,WindowAttributes } from './types/mod.ts';
 
 
 /**
