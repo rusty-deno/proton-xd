@@ -156,7 +156,7 @@ export const lib = Deno.dlopen(bindingsUri, {
     nonblocking: false,
   },
   set_background_color: {
-    parameters: ["usize", "buffer", "usize"],
+    parameters: ["usize", "u8", "u8", "u8", "u8"],
     result: "void",
     nonblocking: false,
   },
@@ -610,10 +610,14 @@ export function screenshot_sync(a0: number, a1: number, a2: number) {
   const result = readPointer(rawResult);
   return decode(result);
 }
-export function set_background_color(a0: bigint, a1: string) {
-  const a1_buf = encode(a1);
-
-  const rawResult = symbols.set_background_color(a0, a1_buf, a1_buf.byteLength);
+export function set_background_color(
+  a0: bigint,
+  a1: number,
+  a2: number,
+  a3: number,
+  a4: number,
+) {
+  const rawResult = symbols.set_background_color(a0, a1, a2, a3, a4);
   const result = rawResult;
   return result;
 }

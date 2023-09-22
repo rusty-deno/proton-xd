@@ -4,7 +4,6 @@ use wry::{
 };
 use crate::{
   Size,
-  Rgba,
   Header
 };
 
@@ -69,9 +68,8 @@ pub fn webview_print(ptr: usize) {
 }
 
 #[deno_bindgen]
-pub fn set_background_color(ptr: usize,rgba: &str) {
+pub fn set_background_color(ptr: usize,r: u8,g: u8,b: u8,a: u8) {
   unsafe {
-    let Rgba { r,g,b,a }=from_str(rgba).unwrap_or_default();
     (*to_ptr(ptr)).set_background_color((r,g,b,a)).unwrap_or(());
   }
 }

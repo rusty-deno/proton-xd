@@ -41,7 +41,7 @@ export abstract class WebViewTrait extends WindowTrait {
 
   public setBackgroundColor(color: Color) {
     const rgba=$rgba(color);
-    this._webview?lib.set_background_color(this._webview,JSON.stringify(rgba)):this.webviewAttrs.backgroundColor=rgba;
+    this._webview?lib.set_background_color(this._webview,rgba.r,rgba.g,rgba.b,rgba.a):this.webviewAttrs.backgroundColor=rgba;
   }
 
   public url() {
