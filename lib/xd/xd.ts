@@ -1,15 +1,13 @@
-
 import { symbols as lib,read_clipboard,write_to_clipboard } from "../../bindings/bindings.ts";
 import { defaultWindowAttrs as dwa,defaultWebViewAttrs as dweba } from "./default.ts";
-import { WebViewAttributes,Content,WindowAttributes,isURL } from "./types/mod.ts";
-import { Window } from './mod.ts';
+import { WebViewTrait,isURL,WebViewAttributes,Content,WindowAttributes } from './mod.ts';
 
 
 
 /**
  * @class XD handles the webview and the window
  */
-export class XD extends Window {
+export class XD extends WebViewTrait {
   protected windowAttrs: WindowAttributes;
   protected webviewAttrs: WebViewAttributes;
 

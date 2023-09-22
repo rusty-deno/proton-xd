@@ -6,7 +6,7 @@ import { MinSize,SizeConstraints,WindowAttributes,MaxSize,MonitorInfo,Position,S
 
 
 
-export abstract class Window {
+export abstract class WindowTrait {
   private static encoder=new TextEncoder;
   protected static encode(str: string) {
     return this.encoder.encode(str.endsWith("\0")?str:str+"\0");
@@ -19,8 +19,7 @@ export abstract class Window {
 
 
   protected abstract windowAttrs: WindowAttributes;
-  // protected abstract webviewAttrs: WebViewAttributes;
-  protected _addrs=new BigUint64Array(1);
+  protected abstract _addrs: BigUint64Array;
 
   private get _window(): bigint {
     return this._addrs[0];
@@ -41,7 +40,7 @@ export abstract class Window {
   }
 
   public cursorPos(): Position {
-    return this._window?JSON.parse(lib.cursor_position(this._window)):Window.defaultPos;
+    return this._window?JSON.parse(lib.cursor_position(this._window)):WindowTrait.defaultPos;
   }
 
   public async dragWindow() {
@@ -53,7 +52,7 @@ export abstract class Window {
   }
 
   public innerPosition(): Position {
-    return this._window?JSON.parse(lib.inner_position(this._window)):this.windowAttrs.innerSize??Window.defaultPos;
+    return this._window?JSON.parse(lib.inner_position(this._window)):this.windowAttrs.innerSize??WindowTrait.defaultPos;
   }
 
   public isClosable() {
@@ -97,11 +96,11 @@ export abstract class Window {
   }
 
   public position(): Position {
-    return this._window?JSON.parse(lib.outer_position(this._window)):this.windowAttrs.position??Window.defaultPos;
+    return this._window?JSON.parse(lib.outer_position(this._window)):this.windowAttrs.position??WindowTrait.defaultPos;
   }
 
   public outerSize(): lib.Size {
-    return this._window?JSON.parse(lib.outer_size(this._window)):Window.defaultSize;
+    return this._window?JSON.parse(lib.outer_size(this._window)):WindowTrait.defaultSize;
   }
 
   public requestRedraw() {
@@ -230,7 +229,7 @@ export abstract class Window {
   }
   
   public setTitle(title: string) {
-    this._window?rust.set_title(this._window,Window.encode(title)):this.windowAttrs.title=title;
+    this._window?rust.set_title(this._window,WindowTrait.encode(title)):this.windowAttrs.title=title;
   }
   
   public setVisible(visible: boolean) {
@@ -246,20 +245,6 @@ export abstract class Window {
     $unimplemented();
   }
 
-
-
-  private static Setter<T>(key: string) {
-    return function(_this: Window,_key: string,fn: PropertyDescriptor) {
-      const original=fn.value;
-
-      fn.value=function(arg: T) {
-        // deno-lint-ignore no-explicit-any
-        _this._window?original(arg):(_this.windowAttrs as any)[key]=arg;
-      }
-  
-      return fn;
-    };
-  }
 }
 
 
