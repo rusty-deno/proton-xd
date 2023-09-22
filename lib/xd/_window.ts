@@ -21,11 +21,10 @@ export abstract class WindowTrait {
   protected abstract windowAttrs: WindowAttributes;
   protected abstract _addrs: BigUint64Array;
 
-  private get _window(): bigint {
+  private get _window() {
     return this._addrs[0];
   }
-  // deno-lint-ignore ban-types
-  private set _window_(window: {}) {
+  private set _window_(window: WindowAttributes) {
     Object.assign(this.windowAttrs,window);
   }
 
@@ -175,8 +174,8 @@ export abstract class WindowTrait {
     this._window && rust.set_ime_position(this._window,x,y);
   }
   
-  public setInnerPosition(size: Size) {
-    this._window?rust.set_inner_size(this._window,size.height,size.width):this._window_=size;
+  public setInnerSize(size: Size) {
+    this._window?rust.set_inner_size(this._window,size.height,size.width):this._window_.innerSize=size;
   }
 
   public setInnerSizeConstraints(size: SizeConstraints) {
