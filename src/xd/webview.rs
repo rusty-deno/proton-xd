@@ -16,8 +16,6 @@ use deno_bindgen::{
   }
 };
 
-
-
 pub fn to_ptr(ptr: usize)-> *const WebView {
   ptr as *const WebView
 }
@@ -28,14 +26,6 @@ pub fn clear_all_browsing_data(ptr: usize) {
     (*to_ptr(ptr)).clear_all_browsing_data().unwrap_or(());
   }
 }
-
-#[deno_bindgen]
-pub fn close_devtools(ptr: usize) {
-  unsafe {
-    (*to_ptr(ptr)).close_devtools();
-  }
-}
-
 
 #[deno_bindgen]
 pub fn eval_script(ptr: usize,js: &str) {
@@ -50,11 +40,6 @@ pub fn webview_inner_size(ptr: usize)-> String {
     let size: Size=(*to_ptr(ptr)).inner_size().into();
     to_string(&size).unwrap_or_default()
   }
-}
-
-#[no_mangle]
-pub unsafe extern "C" fn is_devtools_open(ptr: usize)-> bool {
-  (*to_ptr(ptr)).is_devtools_open()
 }
 
 #[deno_bindgen]
@@ -73,13 +58,6 @@ pub fn load_url_with_headers(ptr: usize,url: &str,headers: &str) {
   }
   unsafe {
     (*to_ptr(ptr)).load_url_with_headers(url,map)
-  }
-}
-
-#[deno_bindgen]
-pub fn open_devtools(ptr: usize) {
-  unsafe {
-    (*to_ptr(ptr)).open_devtools();
   }
 }
 

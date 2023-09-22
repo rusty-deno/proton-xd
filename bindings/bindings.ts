@@ -60,6 +60,12 @@ export const lib = Deno.dlopen(uri, {
     result: "buffer",
     nonblocking: false,
   },
+  clear_all_browsing_data: {
+    parameters: ["usize"],
+    result: "void",
+    nonblocking: false,
+  },
+  close_devtools: { parameters: ["usize"], result: "void", nonblocking: false },
   current_monitor: {
     parameters: ["usize"],
     result: "buffer",
@@ -70,10 +76,25 @@ export const lib = Deno.dlopen(uri, {
     result: "buffer",
     nonblocking: false,
   },
+  eval_script: {
+    parameters: ["usize", "buffer", "usize"],
+    result: "void",
+    nonblocking: false,
+  },
   fullscreen: { parameters: ["usize"], result: "void", nonblocking: false },
   inner_position: {
     parameters: ["usize"],
     result: "buffer",
+    nonblocking: false,
+  },
+  load_url: {
+    parameters: ["usize", "buffer", "usize"],
+    result: "void",
+    nonblocking: false,
+  },
+  load_url_with_headers: {
+    parameters: ["usize", "buffer", "usize", "buffer", "usize"],
+    result: "void",
     nonblocking: false,
   },
   monitor_from_point: {
@@ -86,6 +107,7 @@ export const lib = Deno.dlopen(uri, {
     result: "buffer",
     nonblocking: true,
   },
+  open_devtools: { parameters: ["usize"], result: "void", nonblocking: false },
   open_sync: {
     parameters: ["buffer", "usize"],
     result: "buffer",
@@ -132,13 +154,27 @@ export const lib = Deno.dlopen(uri, {
     result: "buffer",
     nonblocking: false,
   },
+  set_background_color: {
+    parameters: ["usize", "buffer", "usize"],
+    result: "void",
+    nonblocking: false,
+  },
   sleep: { parameters: ["f32"], result: "void", nonblocking: false },
   title: { parameters: ["usize"], result: "buffer", nonblocking: false },
+  url: { parameters: ["usize"], result: "buffer", nonblocking: false },
+  webview_inner_size: {
+    parameters: ["usize"],
+    result: "buffer",
+    nonblocking: false,
+  },
+  webview_print: { parameters: ["usize"], result: "void", nonblocking: false },
+  window: { parameters: ["usize"], result: "usize", nonblocking: false },
   write_to_clipboard: {
     parameters: ["buffer", "usize"],
     result: "void",
     nonblocking: false,
   },
+  zoom: { parameters: ["usize", "f64"], result: "void", nonblocking: false },
   "confirm": {
     "parameters": ["buffer", "buffer", "u8"],
     "result": "bool",
@@ -326,7 +362,7 @@ export type Header = {
 export type MonitorData = {
   name: string | undefined | null;
   position: Position;
-  scale_factor: number;
+  scaleFactor: number;
   size: Size;
   modes: Array<VidMode>;
 };
@@ -349,8 +385,8 @@ export type Theme =
   | "Dark";
 export type VidMode = {
   size: Size;
-  bit_depth: number;
-  refresh_rate: number;
+  bitDepth: number;
+  refreshRate: number;
 };
 export type WebViewAttrs = {
   user_agent: string | undefined | null;
@@ -426,6 +462,16 @@ export function available_monitors(a0: bigint) {
   const result = readPointer(rawResult);
   return decode(result);
 }
+export function clear_all_browsing_data(a0: bigint) {
+  const rawResult = symbols.clear_all_browsing_data(a0);
+  const result = rawResult;
+  return result;
+}
+export function close_devtools(a0: bigint) {
+  const rawResult = symbols.close_devtools(a0);
+  const result = rawResult;
+  return result;
+}
 export function current_monitor(a0: bigint) {
   const rawResult = symbols.current_monitor(a0);
   const result = readPointer(rawResult);
@@ -436,6 +482,13 @@ export function cursor_position(a0: bigint) {
   const result = readPointer(rawResult);
   return decode(result);
 }
+export function eval_script(a0: bigint, a1: string) {
+  const a1_buf = encode(a1);
+
+  const rawResult = symbols.eval_script(a0, a1_buf, a1_buf.byteLength);
+  const result = rawResult;
+  return result;
+}
 export function fullscreen(a0: bigint) {
   const rawResult = symbols.fullscreen(a0);
   const result = rawResult;
@@ -445,6 +498,27 @@ export function inner_position(a0: bigint) {
   const rawResult = symbols.inner_position(a0);
   const result = readPointer(rawResult);
   return decode(result);
+}
+export function load_url(a0: bigint, a1: string) {
+  const a1_buf = encode(a1);
+
+  const rawResult = symbols.load_url(a0, a1_buf, a1_buf.byteLength);
+  const result = rawResult;
+  return result;
+}
+export function load_url_with_headers(a0: bigint, a1: string, a2: string) {
+  const a1_buf = encode(a1);
+  const a2_buf = encode(a2);
+
+  const rawResult = symbols.load_url_with_headers(
+    a0,
+    a1_buf,
+    a1_buf.byteLength,
+    a2_buf,
+    a2_buf.byteLength,
+  );
+  const result = rawResult;
+  return result;
 }
 export function monitor_from_point(a0: bigint, a1: number, a2: number) {
   const rawResult = symbols.monitor_from_point(a0, a1, a2);
@@ -457,6 +531,11 @@ export function open(a0: string) {
   const rawResult = symbols.open(a0_buf, a0_buf.byteLength);
   const result = rawResult.then(readPointer);
   return result.then(decode);
+}
+export function open_devtools(a0: bigint) {
+  const rawResult = symbols.open_devtools(a0);
+  const result = rawResult;
+  return result;
 }
 export function open_sync(a0: string) {
   const a0_buf = encode(a0);
@@ -540,6 +619,13 @@ export function screenshot_sync(a0: number, a1: number, a2: number) {
   const result = readPointer(rawResult);
   return decode(result);
 }
+export function set_background_color(a0: bigint, a1: string) {
+  const a1_buf = encode(a1);
+
+  const rawResult = symbols.set_background_color(a0, a1_buf, a1_buf.byteLength);
+  const result = rawResult;
+  return result;
+}
 export function sleep(a0: number) {
   const rawResult = symbols.sleep(a0);
   const result = rawResult;
@@ -550,10 +636,35 @@ export function title(a0: bigint) {
   const result = readPointer(rawResult);
   return decode(result);
 }
+export function url(a0: bigint) {
+  const rawResult = symbols.url(a0);
+  const result = readPointer(rawResult);
+  return decode(result);
+}
+export function webview_inner_size(a0: bigint) {
+  const rawResult = symbols.webview_inner_size(a0);
+  const result = readPointer(rawResult);
+  return decode(result);
+}
+export function webview_print(a0: bigint) {
+  const rawResult = symbols.webview_print(a0);
+  const result = rawResult;
+  return result;
+}
+export function window(a0: bigint) {
+  const rawResult = symbols.window(a0);
+  const result = rawResult;
+  return result;
+}
 export function write_to_clipboard(a0: string) {
   const a0_buf = encode(a0);
 
   const rawResult = symbols.write_to_clipboard(a0_buf, a0_buf.byteLength);
+  const result = rawResult;
+  return result;
+}
+export function zoom(a0: bigint, a1: number) {
+  const rawResult = symbols.zoom(a0, a1);
   const result = rawResult;
   return result;
 }

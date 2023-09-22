@@ -194,22 +194,22 @@ function readPointer(v: any): Uint8Array {
   return buf;
 }
 
-const url=new URL(\`./bin/\${Deno.build.target\}.\${getExt()}\`, import.meta.url);
+const bindingsUrl=new URL(\`./bin/\${Deno.build.target\}.\${getExt()}\`, import.meta.url);
 ${
       typeof options?.releaseURL==="string"
        ?`
 import { dlopen, FetchOptions } from "https://deno.land/x/plug@1.0.1/mod.ts";
-let uri=url.toString();
-if (!uri.endsWith("/"))uri+="/";
+let bindingsUri=bindingsUrl.toString();
+if (!bindingsUri.endsWith("/"))bindingsUri+="/";
 
-let darwin: string|{ aarch64: string; x86_64: string }=uri;
+let darwin: string|{ aarch64: string; x86_64: string }=bindingsUri;
 
 const opts: FetchOptions={
   name: "${name}",
   url: {
     darwin,
-    windows: uri,
-    linux: uri,
+    windows: bindingsUri,
+    linux: bindingsUri,
   },
   suffixes: {
     darwin: {
@@ -221,18 +221,18 @@ const opts: FetchOptions={
 export const { symbols,close }=await dlopen(opts, {
   `
        :`
-let uri=url.pathname;
+let bindingsUri=bindingsUrl.pathname;
 
 // https://docs.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-loadlibrarya#parameters
 if (Deno.build.os==="windows") {
-  uri=uri.replace(/\\//g, "\\\\");
+  bindingsUri=bindingsUri.replace(/\\//g, "\\\\");
   // Remove leading slash
-  if (uri.startsWith("\\\\")) {
-    uri=uri.slice(1);
+  if (bindingsUri.startsWith("\\\\")) {
+    bindingsUri=bindingsUri.slice(1);
   }
 }
 
-export const lib=Deno.dlopen(uri, {`
+export const lib=Deno.dlopen(bindingsUri, {`
     }
   ${
       Object.keys(signature)
