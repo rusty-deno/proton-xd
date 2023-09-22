@@ -31,20 +31,23 @@ function readPointer(v: any): Uint8Array {
   return buf;
 }
 
-const url = new URL(`./bin/${Deno.build.target}.${getExt()}`, import.meta.url);
+const bindingsUrl = new URL(
+  `./bin/${Deno.build.target}.${getExt()}`,
+  import.meta.url,
+);
 
-let uri = url.pathname;
+let bindingsUri = bindingsUrl.pathname;
 
 // https://docs.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-loadlibrarya#parameters
 if (Deno.build.os === "windows") {
-  uri = uri.replace(/\//g, "\\");
+  bindingsUri = bindingsUri.replace(/\//g, "\\");
   // Remove leading slash
-  if (uri.startsWith("\\")) {
-    uri = uri.slice(1);
+  if (bindingsUri.startsWith("\\")) {
+    bindingsUri = bindingsUri.slice(1);
   }
 }
 
-export const lib = Deno.dlopen(uri, {
+export const lib = Deno.dlopen(bindingsUri, {
   alert: {
     parameters: ["buffer", "usize", "buffer", "usize", "u8"],
     result: "void",
@@ -65,7 +68,6 @@ export const lib = Deno.dlopen(uri, {
     result: "void",
     nonblocking: false,
   },
-  close_devtools: { parameters: ["usize"], result: "void", nonblocking: false },
   current_monitor: {
     parameters: ["usize"],
     result: "buffer",
@@ -107,7 +109,6 @@ export const lib = Deno.dlopen(uri, {
     result: "buffer",
     nonblocking: true,
   },
-  open_devtools: { parameters: ["usize"], result: "void", nonblocking: false },
   open_sync: {
     parameters: ["buffer", "usize"],
     result: "buffer",
@@ -467,11 +468,6 @@ export function clear_all_browsing_data(a0: bigint) {
   const result = rawResult;
   return result;
 }
-export function close_devtools(a0: bigint) {
-  const rawResult = symbols.close_devtools(a0);
-  const result = rawResult;
-  return result;
-}
 export function current_monitor(a0: bigint) {
   const rawResult = symbols.current_monitor(a0);
   const result = readPointer(rawResult);
@@ -531,11 +527,6 @@ export function open(a0: string) {
   const rawResult = symbols.open(a0_buf, a0_buf.byteLength);
   const result = rawResult.then(readPointer);
   return result.then(decode);
-}
-export function open_devtools(a0: bigint) {
-  const rawResult = symbols.open_devtools(a0);
-  const result = rawResult;
-  return result;
 }
 export function open_sync(a0: string) {
   const a0_buf = encode(a0);

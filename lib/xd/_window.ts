@@ -14,8 +14,8 @@ export abstract class WindowTrait {
   protected static stringify(obj: object) {
     return this.encode(JSON.stringify(obj));
   }
-  private static readonly defaultPos={ x: 0,y: 0 };
-  private static readonly defaultSize={ height: 0,width: 0 };
+  protected static readonly defaultPos={ x: 0,y: 0 };
+  protected static readonly defaultSize={ height: 0,width: 0 };
 
 
   protected abstract windowAttrs: WindowAttributes;
