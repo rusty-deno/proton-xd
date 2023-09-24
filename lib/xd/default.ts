@@ -1,4 +1,4 @@
-import { WebViewAttributes,WindowAttributes } from './types/mod.ts';
+import { WebViewAttributes,WindowAttributes,FileOpenerOptions,SaveFileOptions } from './types/mod.ts';
 
 
 /**
@@ -43,3 +43,18 @@ export function confirmDefaultVal(main: any,def: any): any {
   for(const key in def) main[key]??=def[key];
   return main;
 }
+
+
+/**
+ * Default value of FileOpenerOptions
+ */
+export const defaultFileOpenerOptions={
+  location: Deno.env.get("HOME")??"/home",
+  filename: "",
+  type: "SingleFile"
+} satisfies FileOpenerOptions;
+
+export const defaultSaveFileOptions={
+  filename: "",
+  location: Deno.env.get("HOME")??"/home"
+} satisfies SaveFileOptions;
