@@ -1,18 +1,22 @@
 import { WebViewAttributes,WindowTrait,Size } from './mod.ts';
 import * as lib from '../../bindings/bindings.ts';
 import { Color,$rgba } from "../screencapture/color.ts";
-import { $unimplemented, Option } from '../mod.ts';
+import { $unimplemented,Option } from '../mod.ts';
 
+export abstract class WebView {
+  protected webviewAttrs: WebViewAttributes={};
 
-export abstract class WebViewTrait extends WindowTrait {
-  protected _addrs=new BigUint64Array(2);
-  protected abstract webviewAttrs: WebViewAttributes;
+  protected _window=new class extends WindowTrait {
+    protected windowAttrs={};
+    public _addrs=new BigUint64Array(2);
+
+    protected get _window(): bigint {
+      return this._addrs[0];
+    }
+  };
   
   private get _webview() {
-    return this._addrs[1];
-  }
-  private set _webview_(webview: WebViewAttributes) {
-    Object.assign(this.webviewAttrs,webview);
+    return this._window._addrs[1];
   }
   
   public clearAllBrowsingData() {
@@ -45,7 +49,7 @@ export abstract class WebViewTrait extends WindowTrait {
   }
 
   public url() {
-    return new Option(this._webview && lib.url(this._webview));
+    return new Option((this._webview && lib.url(this._webview))||null);
   }
 
   public window() {

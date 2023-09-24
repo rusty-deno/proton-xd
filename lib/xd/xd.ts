@@ -1,15 +1,16 @@
 import { symbols as lib,read_clipboard,write_to_clipboard } from "../../bindings/bindings.ts";
 import { defaultWindowAttrs as dwa,defaultWebViewAttrs as dweba } from "./default.ts";
-import { WebViewTrait,isURL,WebViewAttributes,Content,WindowAttributes } from './mod.ts';
+import { WebView,isURL,WebViewAttributes,Content,WindowAttributes } from './mod.ts';
+import { stringify } from "./encode.ts";
 
 
 
 /**
  * @class XD handles the webview and the window
  */
-export class XD extends WebViewTrait {
+export class XD extends WebView {
   protected windowAttrs: WindowAttributes;
-  protected webviewAttrs: WebViewAttributes;
+  protected override webviewAttrs: WebViewAttributes;
 
   constructor(content: Content,windowAttrs: WindowAttributes={},webviewAttrs: WebViewAttributes={}) {
     super();
@@ -25,13 +26,13 @@ export class XD extends WebViewTrait {
   }
   
   /**
-   * Initializes the webview.
+   * Spawns the webview.
    */
   public spawn() {
     lib.init(
-      XD.stringify(this.windowAttrs),
-      XD.stringify(this.webviewAttrs),
-      Deno.UnsafePointer.of(this._addrs)
+      stringify(this.windowAttrs),
+      stringify(this.webviewAttrs),
+      Deno.UnsafePointer.of(this._window._addrs)
     );
   }
 

@@ -2,28 +2,18 @@ import { symbols as rust } from "../../bindings/bindings.ts";
 import * as lib from "../../bindings/bindings.ts";
 import { $unimplemented,Option } from "../mod.ts";
 import { MinSize,SizeConstraints,WindowAttributes,MaxSize,MonitorInfo,Position,Size } from './types/mod.ts';
-
+import { encode } from "./encode.ts";
 
 
 
 export abstract class WindowTrait {
-  private static encoder=new TextEncoder;
-  protected static encode(str: string) {
-    return this.encoder.encode(str.endsWith("\0")?str:str+"\0");
-  }
-  protected static stringify(obj: object) {
-    return this.encode(JSON.stringify(obj));
-  }
-  protected static readonly defaultPos={ x: 0,y: 0 };
-  protected static readonly defaultSize={ height: 0,width: 0 };
+  public static readonly defaultPos={ x: 0,y: 0 };
+  public static readonly defaultSize={ height: 0,width: 0 };
 
 
   protected abstract windowAttrs: WindowAttributes;
-  protected abstract _addrs: BigUint64Array;
+  protected abstract get _window(): bigint;
 
-  private get _window() {
-    return this._addrs[0];
-  }
   private set _window_(window: WindowAttributes) {
     Object.assign(this.windowAttrs,window);
   }
@@ -228,7 +218,7 @@ export abstract class WindowTrait {
   }
   
   public setTitle(title: string) {
-    this._window?rust.set_title(this._window,WindowTrait.encode(title)):this.windowAttrs.title=title;
+    this._window?rust.set_title(this._window,encode(title)):this.windowAttrs.title=title;
   }
   
   public setVisible(visible: boolean) {
