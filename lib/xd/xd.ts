@@ -1,7 +1,9 @@
 import { symbols as lib,read_clipboard,write_to_clipboard } from "../../bindings/bindings.ts";
 import { defaultWindowAttrs as dwa,defaultWebViewAttrs as dweba } from "./default.ts";
-import { WebView,isURL,WebViewAttributes,Content,WindowAttributes } from './mod.ts';
+import { WebViewAttributes,WindowAttributes } from './mod.ts';
+import { isURL,Content } from "./types/mod.ts";
 import { stringify } from "./encode.ts";
+import { WebView } from "./webview.ts";
 
 
 

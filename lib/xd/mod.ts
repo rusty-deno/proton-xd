@@ -1,6 +1,6 @@
 export * from "./xd.ts";
-export * from "./types/mod.ts";
-export * from "./_webview.ts";
+export * from "./types/window.ts";
+export * from "./webview.ts";
 export * from "./window/window.ts";
 
 

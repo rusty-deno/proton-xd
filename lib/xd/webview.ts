@@ -2,12 +2,13 @@ import * as lib from '../../bindings/bindings.ts';
 import { Color,$rgba } from "../screencapture/color.ts";
 import { Option } from '../mod.ts';
 
-import { WebViewAttributes,Size } from './mod.ts';
+import { WebViewAttributes } from './mod.ts';
 import { WindowXD,WindowTrait } from './window/mod.ts';
+import { Size } from "./types/dpi.ts";
 
 
 
-export abstract class WebView {
+export class WebView {
   protected webviewAttrs: WebViewAttributes={};
 
   protected _window=new class extends WindowTrait {

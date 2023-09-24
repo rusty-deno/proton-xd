@@ -20,7 +20,7 @@ export * from "./error/mod.ts";
 //frequently used
 export * from "./collections/linear/vector.ts";
 export * from "./collections/hash_map/hash_map.ts";
-export * from "./net/server/mod.ts";
+export * from "./net/server/server.ts";
 
 //macros
 export * from "./proc-macros/mod.ts";
