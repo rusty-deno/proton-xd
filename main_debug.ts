@@ -10,9 +10,9 @@ const xd=new XD("<html><body>hello wrld</body></html>",{
 xd.window.setMaximizable(false);
 
 
-console.log(xd);
 
-setTimeout(()=> console.log(xd.window),20000)
+
+setTimeout(()=> console.log(xd.window),1000);
 
 
 

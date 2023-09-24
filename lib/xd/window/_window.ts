@@ -182,8 +182,6 @@ export abstract class WindowTrait {
   }
   
   public setMaximizable(maximizable: boolean) {
-    console.log(this._window?rust.set_maximizable(this._window,maximizable):this.windowAttrs.maximizable=maximizable);
-    
     this._window?rust.set_maximizable(this._window,maximizable):this.windowAttrs.maximizable=maximizable;
   }
 

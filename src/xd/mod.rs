@@ -15,16 +15,20 @@ use deno_bindgen::{
   serde_json::from_str
 };
 
-use wry::application::{
-  clipboard::Clipboard,
-  event::{
-    Event,
-    WindowEvent
+use wry::{
+  application::{
+    clipboard::Clipboard,
+    event::{
+      Event,
+      WindowEvent
+    },
+    event_loop::{
+      ControlFlow,
+      EventLoop
+    },
+    window::Window
   },
-  event_loop::{
-    ControlFlow,
-    EventLoop
-  }, window::Window
+  webview::WebView
 };
 
 use crate::ffi::to_str;
@@ -65,6 +69,7 @@ fn spawn_webview(window_attrs: WindowAttrs,webview_attrs: WebViewAttrs,ptr: *mut
 
   unsafe {
     (*ptr)=webview.window() as *const Window as usize;
+    (*ptr.offset(1))=&webview as *const WebView as usize;
   }
   
   event_loop.run(move |event, _, control_flow| {
