@@ -57,7 +57,7 @@ export class WebView {
     return new Option((this._webview && lib.url(this._webview))||null);
   }
 
-  public window() {
+  public get window() {
     return new WindowXD(this._window._addrs[0]);
   }
 
