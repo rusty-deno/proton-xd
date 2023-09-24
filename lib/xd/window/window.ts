@@ -1,8 +1,8 @@
 import * as lib from "../../../bindings/bindings.ts";
-import { confirmDefaultVal, defaultFileOpenerOptions, defaultSaveFileOptions } from "../default.ts";
-import { encode } from "../encode.ts";
-import { FileOpenerOptions, MessageType,SaveFileOptions,WindowAttributes } from "../types/window.ts";
+import { MessageType,WindowAttributes } from "../types/window.ts";
+import { confirmDefaultVal,defaultFileOpenerOptions,defaultSaveFileOptions } from "../default.ts";
 import { WindowTrait } from './_window.ts';
+import { encode } from "../encode.ts";
 
 
 
@@ -72,7 +72,7 @@ export class WindowXD extends WindowTrait {
   /**
    * Shows a choose-file pop-up window returning the file path
    */
-  public static async chooseFile(options: FileOpenerOptions={}) {
+  public static async chooseFile(options=defaultFileOpenerOptions) {
     const opt=confirmDefaultVal(options,defaultFileOpenerOptions);
     return await lib.open(JSON.stringify(opt));
   }
@@ -80,7 +80,7 @@ export class WindowXD extends WindowTrait {
   /**
    * Shows a choose-file pop-up window returning the file path
    */
-  public static chooseFileSync(options: FileOpenerOptions={}) {
+  public static chooseFileSync(options=defaultFileOpenerOptions) {
     const opt=confirmDefaultVal(options,defaultFileOpenerOptions);
     return  lib.open_sync(JSON.stringify(opt));
   }
@@ -88,14 +88,14 @@ export class WindowXD extends WindowTrait {
   /**
    * Shows a save-file pop-up window returning the file path
    */
-  public static async save(options: SaveFileOptions=defaultSaveFileOptions) {
+  public static async save(options=defaultSaveFileOptions) {
     return await lib.save(JSON.stringify(options));
   }
 
   /**
    * Shows a save-file pop-up window returning the file path
    */
-  public static saveSync(options: SaveFileOptions=defaultSaveFileOptions) {
+  public static saveSync(options=defaultSaveFileOptions) {
     return lib.save_sync(JSON.stringify(options));
   }
 

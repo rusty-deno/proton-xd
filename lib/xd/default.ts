@@ -4,7 +4,7 @@ import { WebViewAttributes,WindowAttributes,FileOpenerOptions,SaveFileOptions } 
 /**
  * Default value of the window properties
  */
-export const defaultWindowAttrs={
+export const defaultWindowAttrs: WindowAttributes={
   resizable: true,
   minimizable: true,
   maximizable: true,
@@ -20,12 +20,12 @@ export const defaultWindowAttrs={
   focused: true,
   contentProtection: false,
   visibleOnAllWorkspaces: false,
-} satisfies WindowAttributes;
+};
 
 /**
  * Default value of the webview properties
  */
-export const defaultWebViewAttrs={
+export const defaultWebViewAttrs: WebViewAttributes={
   visible: true,
   transparent: false,
   zoomHotkeysEnabled: false,
@@ -36,7 +36,7 @@ export const defaultWebViewAttrs={
   backForwardNavigationGestures: false,
   incognito: false,
   autoplay: true,
-} satisfies WebViewAttributes;
+};
 
 // deno-lint-ignore no-explicit-any
 export function confirmDefaultVal(main: any,def: any): any {
@@ -48,13 +48,11 @@ export function confirmDefaultVal(main: any,def: any): any {
 /**
  * Default value of FileOpenerOptions
  */
-export const defaultFileOpenerOptions={
+export const defaultFileOpenerOptions: FileOpenerOptions={
   location: Deno.env.get("HOME")??"/home",
-  filename: "",
   type: "SingleFile"
-} satisfies FileOpenerOptions;
+};
 
-export const defaultSaveFileOptions={
-  filename: "",
+export const defaultSaveFileOptions: SaveFileOptions={
   location: Deno.env.get("HOME")??"/home"
-} satisfies SaveFileOptions;
+};
