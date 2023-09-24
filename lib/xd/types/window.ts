@@ -42,13 +42,7 @@ export interface WebViewAttributes {
   autoplay?: boolean;
   html?: string;
   url?: string|URL;
-  headers?: Array<Header>;
-}
-
-
-export interface Header {
-  name: string;
-  value: string;
+  headers?: Array<Record<string,string>>;
 }
 
 export interface Rgba {

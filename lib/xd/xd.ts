@@ -9,7 +9,7 @@ import { stringify } from "./encode.ts";
  * @class XD handles the webview and the window
  */
 export class XD extends WebView {
-  constructor(content: Content,windowAttrs: WindowAttributes={},webviewAttrs: WebViewAttributes={}) {
+  constructor(content: Content,webviewAttrs: WebViewAttributes={},windowAttrs: WindowAttributes={}) {
     super();
     this._window.windowAttrs={
       ...dwa,
