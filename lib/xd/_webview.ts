@@ -11,7 +11,7 @@ export abstract class WebView {
   protected webviewAttrs: WebViewAttributes={};
 
   protected _window=new class extends WindowTrait {
-    protected windowAttrs={};
+    public windowAttrs={};
     public _addrs=new BigUint64Array(2);
 
     protected get _window(): bigint {

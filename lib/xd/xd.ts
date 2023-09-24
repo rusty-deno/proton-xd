@@ -9,12 +9,9 @@ import { stringify } from "./encode.ts";
  * @class XD handles the webview and the window
  */
 export class XD extends WebView {
-  protected windowAttrs: WindowAttributes;
-  protected override webviewAttrs: WebViewAttributes;
-
   constructor(content: Content,windowAttrs: WindowAttributes={},webviewAttrs: WebViewAttributes={}) {
     super();
-    this.windowAttrs={
+    this._window.windowAttrs={
       ...dwa,
       ...windowAttrs
     };
@@ -30,7 +27,7 @@ export class XD extends WebView {
    */
   public spawn() {
     lib.init(
-      stringify(this.windowAttrs),
+      stringify(this._window.windowAttrs),
       stringify(this.webviewAttrs),
       Deno.UnsafePointer.of(this._window._addrs)
     );
