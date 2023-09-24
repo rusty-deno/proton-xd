@@ -1,5 +1,8 @@
 use deno_bindgen::deno_bindgen;
-use std::str::FromStr;
+use std::{
+  str::FromStr,
+  collections::HashMap
+};
 
 
 use wry::{
@@ -13,8 +16,8 @@ use wry::{
   },
   http::{
     HeaderMap,
-    HeaderValue,
-    HeaderName
+    HeaderName,
+    HeaderValue
   }
 };
 
@@ -32,21 +35,7 @@ impl Default for Rgba {
   }
 }
 
-
-#[deno_bindgen]
-pub struct Header {
-  name: String,
-  value: String
-}
-
-impl Header {
-  pub fn name(&self)-> HeaderName {
-    HeaderName::from_str(&self.name).unwrap()
-  }
-  pub fn value(&self)-> HeaderValue {
-    HeaderValue::from_str(&self.value).unwrap()
-  }
-}
+pub type Headers=HashMap<String,String>;
 
 #[deno_bindgen]
 pub struct WebViewAttrs {
@@ -70,7 +59,7 @@ pub struct WebViewAttrs {
   pub autoplay: bool,
   pub html: Option<String>,
   pub url: Option<String>,
-  pub headers: Option<Vec<Header>>
+  pub headers: Option<Headers>
 }
 
 
@@ -109,7 +98,7 @@ impl WebViewAttrs {
       autoplay,
       html,
       url: to_url(url),
-      headers: to_header_map(headers),
+      headers: to_header_map_opt(headers),
       ..Default::default()
     };
     
@@ -130,12 +119,11 @@ fn to_url(url: Option<String>)-> Option<Url> {
   Url::from_str(&url?).ok()
 }
 
-fn to_header_map(headers: Option<Vec<Header>>)-> Option<HeaderMap> {
-  let headers=headers?;
-  let mut map=HeaderMap::new();
-  
-  for header in headers {
-    map.insert(header.name(),header.value());
-  }
-  Some(map)
+fn to_header_map_opt(headers: Option<Headers>)-> Option<HeaderMap> {
+  Some(to_header_map(headers?))
+}
+
+pub fn to_header_map(headers: Headers)-> HeaderMap {
+  let iter=headers.iter().map(|(name,val)| (HeaderName::from_str(&name).unwrap(),HeaderValue::from_str(&val).unwrap()));
+  HeaderMap::from_iter(iter)
 }

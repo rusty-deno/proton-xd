@@ -36,34 +36,6 @@ export class XD extends WebViewTrait {
   }
 
 
-
-  public set window(window: WindowAttributes) {
-    this.windowAttrs={
-      ...this.windowAttrs,
-      ...window
-    };
-  }
-  /**
-   * A reference to the properties of the webview
-   */
-  public get window(): WindowAttributes {
-    return this.windowAttrs;
-  }
-
-  public set webview(webview: WebViewAttributes) {
-    this.webview={
-      ...this.webviewAttrs,
-      ...webview
-    };
-  }
-  /**
-   * A reference to the properties of the webview
-   */
-  public get webview(): WebViewAttributes {
-    return this.webviewAttrs;
-  }
-
-
   /**
    * Constructs XD and spawns the webview
    * 

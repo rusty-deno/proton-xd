@@ -1,10 +1,10 @@
 use wry::{
   webview::WebView,
-  application::window::Window, http::HeaderMap
+  application::window::Window,
 };
 use crate::{
   Size,
-  Header
+  to_header_map
 };
 
 use deno_bindgen::{
@@ -50,13 +50,9 @@ pub fn load_url(ptr: usize,url: &str) {
 
 #[deno_bindgen]
 pub fn load_url_with_headers(ptr: usize,url: &str,headers: &str) {
-  let headers: Vec<Header>=from_str(headers).unwrap();
-  let mut map=HeaderMap::new();
-  for header in headers {
-    map.insert(header.name(),header.value());
-  }
+  let headers=from_str(headers).unwrap();
   unsafe {
-    (*to_ptr(ptr)).load_url_with_headers(url,map)
+    (*to_ptr(ptr)).load_url_with_headers(url,to_header_map(headers))
   }
 }
 
