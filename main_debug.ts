@@ -2,9 +2,12 @@
 import { XD } from "./mod/mod.ts";
 
 
-XD.instantiate("<html><body>hello wrld</body></html>",{
-  title: "my-app"
+const xd=new XD("<html><body>hello wrld</body></html>",{},{
+  devtools: true
 });
 
-// console.log("xd");
 
+xd.setBackgroundColor("#ff00ff");
+
+
+xd.spawn();

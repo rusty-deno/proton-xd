@@ -1,16 +1,15 @@
-import { symbols as rust } from "../../bindings/bindings.ts";
-import * as lib from "../../bindings/bindings.ts";
-import { $unimplemented,Option } from "../mod.ts";
-import { MinSize,SizeConstraints,WindowAttributes,MaxSize,MonitorInfo,Position,Size } from './types/mod.ts';
-import { encode } from "./encode.ts";
+import { symbols as rust } from "../../../bindings/bindings.ts";
+import * as lib from "../../../bindings/bindings.ts";
+import { $unimplemented,Option } from "../../mod.ts";
+import { MinSize,SizeConstraints,WindowAttributes,MaxSize,MonitorInfo,Position,Size } from '../types/mod.ts';
+import { encode } from "../encode.ts";
 
 
 
 export abstract class WindowTrait {
   public static readonly defaultPos={ x: 0,y: 0 };
   public static readonly defaultSize={ height: 0,width: 0 };
-
-
+  
   protected abstract windowAttrs: WindowAttributes;
   protected abstract get _window(): bigint;
 

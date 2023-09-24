@@ -1,7 +1,9 @@
-import { WebViewAttributes,WindowTrait,Size } from './mod.ts';
+import { WebViewAttributes,Size } from './mod.ts';
 import * as lib from '../../bindings/bindings.ts';
 import { Color,$rgba } from "../screencapture/color.ts";
-import { $unimplemented,Option } from '../mod.ts';
+import { Option } from '../mod.ts';
+import { WindowXD,WindowTrait } from './window/mod.ts';
+
 
 export abstract class WebView {
   protected webviewAttrs: WebViewAttributes={};
@@ -53,7 +55,7 @@ export abstract class WebView {
   }
 
   public window() {
-    $unimplemented();
+    return new WindowXD(this._window._addrs[0]);
   }
 
   public zoom(scaleFactor: number) {
