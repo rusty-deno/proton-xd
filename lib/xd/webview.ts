@@ -58,7 +58,8 @@ export class WebView {
   }
 
   public get window() {
-    return new WindowXD(this._window._addrs[0]);
+    const {_addrs,windowAttrs}=this._window;
+    return new WindowXD(_addrs[0],windowAttrs);
   }
 
   public zoom(scaleFactor: number) {
