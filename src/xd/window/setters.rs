@@ -1,4 +1,4 @@
-use deno_bindgen::deno_bindgen;
+use deno_bindgen::{deno_bindgen, serde_json::from_str};
 use crate::{
   to_constraints,
   ffi::to_str,
@@ -38,9 +38,12 @@ pub unsafe extern "C" fn set_cursor_grab(ptr: usize,grab: bool) {
   (*cast(ptr)).set_cursor_grab(grab).unwrap_or(())
 }
 
-#[no_mangle]
-pub unsafe extern "C" fn set_cursor_icon(_ptr: usize) {
-  unimplemented!()
+#[deno_bindgen]
+pub fn set_cursor_icon(ptr: usize,cursor: &str) {
+  let cursor=from_str(cursor).unwrap();
+  unsafe {
+    (*cast(ptr)).set_cursor_icon(cursor);
+  }
 }
 
 #[no_mangle]
@@ -132,8 +135,8 @@ pub unsafe extern "C" fn set_outer_position(ptr: usize,x: i32,y: i32) {
   (*cast(ptr)).set_outer_position(PhysicalPosition::new(x,y))
 }
 
-#[no_mangle]
-pub unsafe extern "C" fn set_progress_bar(_ptr: usize) {
+#[deno_bindgen]
+pub fn set_progress_bar(_ptr: usize)-> String {
   unimplemented!()
 }
 
@@ -157,10 +160,9 @@ pub unsafe extern "C" fn set_visible_on_all_workspaces(ptr: usize,visible: bool)
   (*cast(ptr)).set_visible_on_all_workspaces(visible)
 }
 
-#[no_mangle]
-pub unsafe extern "C" fn set_window_icon(_ptr: usize) {
+#[deno_bindgen]
+pub fn set_window_icon(_ptr: usize)-> String {
   unimplemented!()
 }
-
 
 
