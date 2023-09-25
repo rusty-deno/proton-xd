@@ -17,5 +17,6 @@ setTimeout(()=> console.log(xd.window),1000);
 
 xd.spawn();
 
+console.log("xd");
 
 

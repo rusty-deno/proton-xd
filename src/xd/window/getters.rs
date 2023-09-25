@@ -3,7 +3,7 @@ use crate::{
   MonitorData,
   AttentionType,
   Position,
-  Size,
+  Size, FullScreen,
 };
 use deno_bindgen::{
   deno_bindgen,
@@ -57,8 +57,11 @@ pub unsafe extern "C" fn drag_window(ptr: usize) {
 }
 
 #[deno_bindgen]
-pub fn fullscreen(_ptr: usize) {
-  unimplemented!()
+pub fn fullscreen(ptr: usize)-> String {
+  unsafe {
+    let fullscreen: FullScreen=(*cast(ptr)).fullscreen().into();
+    to_string(&fullscreen).unwrap()
+  }
 }
 
 #[deno_bindgen]

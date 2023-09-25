@@ -85,3 +85,43 @@ fn spawn_webview(window_attrs: WindowAttrs,webview_attrs: WebViewAttrs,ptr: *mut
 }
 
 
+
+
+#[cfg(test)]
+mod tests {
+  use wry::{
+    application::{
+      event_loop::{
+        EventLoop,
+        ControlFlow,
+      },
+      window::WindowBuilder,
+      event::{
+        Event,
+        WindowEvent
+      }
+    },
+    webview::WebViewBuilder,
+  };
+
+
+  #[test]
+  fn xd() {
+    let event_loop=EventLoop::new();
+    let window=WindowBuilder::new().build(&event_loop).unwrap();
+    let _webview=WebViewBuilder::new(window).unwrap();
+
+    event_loop.run(move |event, _, control_flow| {
+      *control_flow=ControlFlow::Wait;
+      match event {
+        Event::WindowEvent {
+          event: WindowEvent::CloseRequested,
+          ..
+        }=> *control_flow=ControlFlow::Exit,
+        _=> (),
+      }
+    });
+  }
+}
+
+
