@@ -1,8 +1,8 @@
-
+use deno_bindgen::deno_bindgen;
 use crate::{
   to_constraints,
   ffi::to_str,
-  cast
+  cast,
 };
 use wry::application::dpi::{
   PhysicalPosition,
@@ -58,13 +58,15 @@ pub unsafe extern "C" fn set_decorations(ptr: usize,decorations: bool) {
   (*cast(ptr)).set_decorations(decorations)
 }
 
-#[no_mangle]
-pub unsafe extern "C" fn set_focus(ptr: usize) {
-  (*cast(ptr)).set_focus()
+#[deno_bindgen]
+pub fn set_focus(ptr: usize) {
+  unsafe {
+    (*cast(ptr)).set_focus();
+  }
 }
 
-#[no_mangle]
-pub unsafe extern "C" fn set_fullscreen(_ptr: usize) {
+#[deno_bindgen]
+pub fn set_fullscreen(_ptr: usize,_fullscreen: &str)-> String {
   unimplemented!()
 }
 
