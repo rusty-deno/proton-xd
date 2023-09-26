@@ -1,4 +1,4 @@
-import { lib } from "../../../bindings/bindings.ts";
+import * as lib from "../../../bindings/bindings.ts";
 import { Some,None } from "../mod.ts";
 
 
@@ -74,6 +74,10 @@ export class Thread<T> {
    */
   public static async spawn<T>(callback: ()=> T,name?: string) {
     return await new Thread(callback,name).spawn();
+  }
+
+  public static sleep(duration: number) {
+    lib.sleep(duration);
   }
 }
 

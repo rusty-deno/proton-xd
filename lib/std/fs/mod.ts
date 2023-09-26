@@ -128,7 +128,7 @@ export function writeFileSync(path: PathBuf,data: Uint8Array,options?: Deno.Writ
   return $resultSync(()=> Deno.writeFileSync(path,data,options));
 }
 
-export async function writeTextFile(path: PathBuf,data: ReadableStream<string>,options?: Deno.WriteFileOptions) {
+export async function writeTextFile(path: PathBuf,data: string|ReadableStream<string>,options?: Deno.WriteFileOptions) {
   return await $result(async ()=> await Deno.writeTextFile(path,data,options));
 }
 
