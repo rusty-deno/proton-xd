@@ -177,8 +177,8 @@ export const lib = Deno.dlopen(bindingsUri, {
     nonblocking: false,
   },
   set_window_icon: {
-    parameters: ["usize"],
-    result: "buffer",
+    parameters: ["usize", "buffer", "usize"],
+    result: "void",
     nonblocking: false,
   },
   sleep: { parameters: ["f32"], result: "void", nonblocking: false },
@@ -670,10 +670,12 @@ export function set_progress_bar(a0: bigint) {
   const result = readPointer(rawResult);
   return decode(result);
 }
-export function set_window_icon(a0: bigint) {
-  const rawResult = symbols.set_window_icon(a0);
-  const result = readPointer(rawResult);
-  return decode(result);
+export function set_window_icon(a0: bigint, a1: string) {
+  const a1_buf = encode(a1);
+
+  const rawResult = symbols.set_window_icon(a0, a1_buf, a1_buf.byteLength);
+  const result = rawResult;
+  return result;
 }
 export function sleep(a0: number) {
   const rawResult = symbols.sleep(a0);

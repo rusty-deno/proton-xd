@@ -18,7 +18,7 @@ use deno_bindgen::{
 };
 
 
-pub fn dialog<'a>(title: &'a str,message: &'a str,typ: u8)-> MessageDialog<'a> {
+fn dialog<'a>(title: &'a str,message: &'a str,typ: u8)-> MessageDialog<'a> {
   MessageDialog::new().set_title(title).set_text(message).set_type(get_typ(typ))
 }
 

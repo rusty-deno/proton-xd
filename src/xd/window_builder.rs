@@ -170,7 +170,7 @@ fn window_builder(window: WindowAttributes)-> WindowBuilder {
 fn to_size(size: Option<Size>)-> Option<size> {
   Some(size?.into())
 }
-pub fn to_icon<P: AsRef<std::path::Path>>(path: Option<P>)-> Option<Icon> {
+pub(crate) fn to_icon<P: AsRef<std::path::Path>>(path: Option<P>)-> Option<Icon> {
   let img=image::open(path?).unwrap_or_default().to_rgb8();
   Icon::from_rgba(img.to_vec(),img.width(),img.height()).ok()
 }
