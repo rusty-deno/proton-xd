@@ -67,3 +67,39 @@ export interface SaveFileOptions {
   location?: string;
 }
 
+
+export type CursorIcon="Default"|
+"Crosshair"|
+"Hand"|
+"Arrow"|
+"Move"|
+"Text"|
+"Wait"|
+"Help"|
+"Progress"|
+"NotAllowed"|
+"ContextMenu"|
+"Cell"|
+"VerticalText"|
+"Alias"|
+"Copy"|
+"NoDrop"|
+"Grab"|
+"Grabbing"|
+"AllScroll"|
+"ZoomIn"|
+"ZoomOut"|
+"EResize"|
+"NResize"|
+"NeResize"|
+"NwResize"|
+"SResize"|
+"SeResize"|
+"SwResize"|
+"WResize"|
+"EwResize"|
+"NsResize"|
+"NeswResize"|
+"NwseResize"|
+"ColResize"|
+"owResize";

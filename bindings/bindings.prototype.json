@@ -98,10 +98,6 @@
     "parameters": ["usize","bool"],
     "result": "void"
   },
-  "set_focus": {
-    "parameters": ["usize"],
-    "result": "void"
-  },
   "set_ignore_cursor_events": {
     "parameters": ["usize","bool"],
     "result": "void"

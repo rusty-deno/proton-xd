@@ -3,6 +3,7 @@ import * as lib from "../../../bindings/bindings.ts";
 import { $unimplemented,Option } from "../../mod.ts";
 import { MinSize,SizeConstraints,WindowAttributes,MaxSize,MonitorInfo,Position,Size } from '../types/mod.ts';
 import { encode } from "../encode.ts";
+import { CursorIcon } from "../mod.ts";
 
 
 
@@ -131,8 +132,8 @@ export abstract class WindowTrait {
     this._window && rust.set_cursor_grab(this._window,grab);
   }
 
-  public setCursorIcon() {
-    $unimplemented();
+  public setCursorIcon(icon: CursorIcon) {
+    this._window && lib.set_cursor_icon(this._window,icon);
   }
   
   public setCursorPosition(x: number,y: number) {
@@ -148,7 +149,7 @@ export abstract class WindowTrait {
   }
 
   public setFocus() {
-    this._window?rust.set_focus(this._window):this.windowAttrs.focused=true;
+    this._window?lib.set_focus(this._window):this.windowAttrs.focused=true;
   }
 
   public setFullscreen() {

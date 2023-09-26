@@ -58,7 +58,9 @@ pub extern "C" fn init(window_atters: *const i8,webview_atters: *const i8,ptr: *
   let window_atters: WindowAttrs=from_str(to_str(window_atters)).unwrap();
   let webview_atters: WebViewAttrs=from_str(to_str(webview_atters)).unwrap();
 
-  spawn_webview(window_atters,webview_atters,ptr).unwrap();
+  spawn_webview(window_atters,webview_atters,ptr).unwrap_or_else(|e| {
+    panic!("{:?}",e)
+  });
 }
 
 

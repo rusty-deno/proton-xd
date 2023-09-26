@@ -48,18 +48,6 @@ export class XD extends WebView {
   }
 }
 
-/**
- * possible keys of WindowAttributes
- * @type {WindowAttributes}
- */
-export type WindowProperty=keyof WindowAttributes;
-
-/**
- * possible keys of WebViewAttributes
- * @type {WebViewAttributes}
- */
-export type WebViewProperty=keyof WebViewAttributes;
-
 
 /**
  * Writes the given string to the clipboard.

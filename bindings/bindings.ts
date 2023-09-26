@@ -83,7 +83,7 @@ export const lib = Deno.dlopen(bindingsUri, {
     result: "void",
     nonblocking: false,
   },
-  fullscreen: { parameters: ["usize"], result: "void", nonblocking: false },
+  fullscreen: { parameters: ["usize"], result: "buffer", nonblocking: false },
   inner_position: {
     parameters: ["usize"],
     result: "buffer",
@@ -158,6 +158,27 @@ export const lib = Deno.dlopen(bindingsUri, {
   set_background_color: {
     parameters: ["usize", "u8", "u8", "u8", "u8"],
     result: "void",
+    nonblocking: false,
+  },
+  set_cursor_icon: {
+    parameters: ["usize", "buffer", "usize"],
+    result: "void",
+    nonblocking: false,
+  },
+  set_focus: { parameters: ["usize"], result: "void", nonblocking: false },
+  set_fullscreen: {
+    parameters: ["usize", "buffer", "usize"],
+    result: "buffer",
+    nonblocking: false,
+  },
+  set_progress_bar: {
+    parameters: ["usize"],
+    result: "buffer",
+    nonblocking: false,
+  },
+  set_window_icon: {
+    parameters: ["usize"],
+    result: "buffer",
     nonblocking: false,
   },
   sleep: { parameters: ["f32"], result: "void", nonblocking: false },
@@ -275,10 +296,6 @@ export const lib = Deno.dlopen(bindingsUri, {
     "parameters": ["usize", "bool"],
     "result": "void",
   },
-  "set_focus": {
-    "parameters": ["usize"],
-    "result": "void",
-  },
   "set_ignore_cursor_events": {
     "parameters": ["usize", "bool"],
     "result": "void",
@@ -356,10 +373,18 @@ export type FileOpenerType =
   | "SingleFile"
   | "SingleDir"
   | "MultipleFile";
-export type Header = {
-  name: string;
-  value: string;
-};
+export type FullScreen =
+  | {
+    exclusive: {
+      exclusive: VidMode;
+    };
+  }
+  | {
+    borderless: {
+      borderless: MonitorData | undefined | null;
+    };
+  }
+  | "none";
 export type MonitorData = {
   name: string | undefined | null;
   position: Position;
@@ -390,28 +415,28 @@ export type VidMode = {
   refreshRate: number;
 };
 export type WebViewAttrs = {
-  user_agent: string | undefined | null;
+  userAgent: string | undefined | null;
   visible: boolean;
   transparent: boolean;
-  background_color: Rgba | undefined | null;
-  zoom_hotkeys_enabled: boolean;
-  initialization_scripts: Array<string>;
+  backgroundColor: Rgba | undefined | null;
+  zoomHotkeysEnabled: boolean;
+  initializationScripts: Array<string>;
   clipboard: boolean;
   devtools: boolean;
-  accept_first_mouse: boolean;
-  back_forward_navigation_gestures: boolean;
+  acceptFirstMouse: boolean;
+  backForwardNavigationGestures: boolean;
   incognito: boolean;
   autoplay: boolean;
   html: string | undefined | null;
   url: string | undefined | null;
-  headers: Array<Header> | undefined | null;
+  headers: Headers | undefined | null;
 };
 export type WindowAttrs = {
-  inner_size: Size | undefined | null;
-  min_height: number | undefined | null;
-  max_height: number | undefined | null;
-  min_width: number | undefined | null;
-  max_width: number | undefined | null;
+  innerSize: Size | undefined | null;
+  minHeight: number | undefined | null;
+  maxHeight: number | undefined | null;
+  minWidth: number | undefined | null;
+  maxWidth: number | undefined | null;
   resizable: boolean;
   minimizable: boolean;
   maximizable: boolean;
@@ -421,13 +446,13 @@ export type WindowAttrs = {
   visible: boolean;
   transparent: boolean;
   decorations: boolean;
-  always_on_top: boolean;
-  always_on_bottom: boolean;
-  window_icon: string | undefined | null;
+  alwaysOnTop: boolean;
+  alwaysOnBottom: boolean;
+  windowIcon: string | undefined | null;
   theme: Theme;
   focused: boolean;
-  content_protection: boolean;
-  visible_on_all_workspaces: boolean;
+  contentProtection: boolean;
+  visibleOnAllWorkspaces: boolean;
   position: Position | undefined | null;
 };
 export function alert(a0: string, a1: string, a2: number) {
@@ -487,8 +512,8 @@ export function eval_script(a0: bigint, a1: string) {
 }
 export function fullscreen(a0: bigint) {
   const rawResult = symbols.fullscreen(a0);
-  const result = rawResult;
-  return result;
+  const result = readPointer(rawResult);
+  return decode(result);
 }
 export function inner_position(a0: bigint) {
   const rawResult = symbols.inner_position(a0);
@@ -620,6 +645,35 @@ export function set_background_color(
   const rawResult = symbols.set_background_color(a0, a1, a2, a3, a4);
   const result = rawResult;
   return result;
+}
+export function set_cursor_icon(a0: bigint, a1: string) {
+  const a1_buf = encode(a1);
+
+  const rawResult = symbols.set_cursor_icon(a0, a1_buf, a1_buf.byteLength);
+  const result = rawResult;
+  return result;
+}
+export function set_focus(a0: bigint) {
+  const rawResult = symbols.set_focus(a0);
+  const result = rawResult;
+  return result;
+}
+export function set_fullscreen(a0: bigint, a1: string) {
+  const a1_buf = encode(a1);
+
+  const rawResult = symbols.set_fullscreen(a0, a1_buf, a1_buf.byteLength);
+  const result = readPointer(rawResult);
+  return decode(result);
+}
+export function set_progress_bar(a0: bigint) {
+  const rawResult = symbols.set_progress_bar(a0);
+  const result = readPointer(rawResult);
+  return decode(result);
+}
+export function set_window_icon(a0: bigint) {
+  const rawResult = symbols.set_window_icon(a0);
+  const result = readPointer(rawResult);
+  return decode(result);
 }
 export function sleep(a0: number) {
   const rawResult = symbols.sleep(a0);
