@@ -3,6 +3,7 @@ use crate::{
   to_constraints,
   ffi::to_str,
   cast,
+  to_icon
 };
 use wry::application::dpi::{
   PhysicalPosition,
@@ -161,8 +162,11 @@ pub unsafe extern "C" fn set_visible_on_all_workspaces(ptr: usize,visible: bool)
 }
 
 #[deno_bindgen]
-pub fn set_window_icon(_ptr: usize)-> String {
-  unimplemented!()
+pub fn set_window_icon(ptr: usize,path: &str) {
+  unsafe {
+    let icon=to_icon(path.into());
+    (*cast(ptr)).set_window_icon(icon);
+  }
 }
 
 
