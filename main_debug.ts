@@ -1,9 +1,12 @@
-import { LinkedList } from './mod/collections.ts';
+import { XD,$url } from "./mod/mod.ts";
 
 
-const ll=new LinkedList(69,0,69,1000);
+const app=new XD($url("./index.html",import.meta.url));
 
 
-// console.log(ll.toString(),ll.back);
-console.log(ll);
+app.window.setWindowIcon($url("./next.ico",import.meta.url));
 
+
+
+
+app.spawn();

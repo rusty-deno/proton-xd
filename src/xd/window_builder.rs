@@ -6,7 +6,7 @@ use wry::application::{
     Window,
     WindowBuilder,
     Theme as theme,
-    Icon,
+    Icon as icon,
     WindowAttributes,
     WindowSizeConstraints,
   },
@@ -15,7 +15,8 @@ use wry::application::{
     Size as size,
     PixelUnit,
     PhysicalPixel,
-    Position as position, PhysicalPosition,
+    Position as position,
+    PhysicalPosition,
   },
   error::OsError,
 };
@@ -73,6 +74,31 @@ impl From<PhysicalPosition<i32>> for Position {
   }
 }
 
+#[deno_bindgen]
+pub enum Icon {
+  ImgBuff {
+    rgba: Vec<u8>,
+    height: u32,
+    width: u32
+  },
+  Url {
+    url: String
+  }
+}
+
+impl Into<Option<icon>> for Icon {
+  fn into(self)-> Option<icon> {
+    let (rgba,height,width)=match self {
+      Icon::ImgBuff { rgba, height, width }=> (rgba,height,width),
+      Icon::Url { url }=> {
+        let img=image::open(url).unwrap_or_default();
+        (img.as_rgba8()?.to_vec(),img.height(),img.width())
+      }
+    };
+    icon::from_rgba(rgba,width,height).ok()
+  }
+}
+
 
 #[deno_bindgen]
 #[serde(rename_all = "camelCase")]
@@ -93,7 +119,7 @@ pub struct WindowAttrs {
   decorations: bool,
   always_on_top: bool,
   always_on_bottom: bool,
-  window_icon: Option<String>,
+  window_icon: Icon,
   theme: Theme,
   focused: bool,
   content_protection: bool,
@@ -126,8 +152,8 @@ impl WindowAttrs {
       transparent,
       visible,
       visible_on_all_workspaces,
-      window_icon,
-      position
+      position,
+      window_icon
     }=self;
 
     let window=WindowAttributes {
@@ -145,7 +171,7 @@ impl WindowAttrs {
       transparent,
       visible,
       preferred_theme: Some(theme.into()),
-      window_icon: to_icon(window_icon),
+      window_icon: window_icon.into(),
       visible_on_all_workspaces,
       inner_size: to_size(inner_size),
       inner_size_constraints: to_constraints(min_width,min_height,max_width,max_height),
@@ -170,10 +196,6 @@ fn window_builder(window: WindowAttributes)-> WindowBuilder {
 fn to_size(size: Option<Size>)-> Option<size> {
   Some(size?.into())
 }
-pub(crate) fn to_icon<P: AsRef<std::path::Path>>(path: Option<P>)-> Option<Icon> {
-  let img=image::open(path?).unwrap_or_default().to_rgb8();
-  Icon::from_rgba(img.to_vec(),img.width(),img.height()).ok()
-}
 
 pub fn to_constraints(min_width: Option<i32>,min_height: Option<i32>,max_width: Option<i32>,max_height: Option<i32>)-> WindowSizeConstraints {
   let to_pixel=|s: Option<i32>| Some(PixelUnit::Physical(PhysicalPixel::new(s?)));
@@ -187,3 +209,4 @@ fn to_position(pos: Option<Position>)-> Option<position> {
     wry::application::dpi::PhysicalPosition { x,y }
   ))
 }
+

@@ -1,9 +1,12 @@
-use deno_bindgen::{deno_bindgen, serde_json::from_str};
+use deno_bindgen::{
+  deno_bindgen,
+  serde_json::from_str
+};
 use crate::{
   to_constraints,
   ffi::to_str,
   cast,
-  to_icon
+  Icon
 };
 use wry::application::dpi::{
   PhysicalPosition,
@@ -162,10 +165,10 @@ pub unsafe extern "C" fn set_visible_on_all_workspaces(ptr: usize,visible: bool)
 }
 
 #[deno_bindgen]
-pub fn set_window_icon(ptr: usize,path: &str) {
+pub fn set_window_icon(ptr: usize,icon: &str) {
   unsafe {
-    let icon=to_icon(path.into());
-    (*cast(ptr)).set_window_icon(icon);
+    let icon: Icon=from_str(icon).unwrap();
+    (*cast(ptr)).set_window_icon(icon.into());
   }
 }
 

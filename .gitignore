@@ -8,6 +8,8 @@ deno.lock
 
 *.png
 *.jpeg
+*.ico
+*.svg
 
 
 todo.md

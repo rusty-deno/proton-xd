@@ -17,8 +17,7 @@ export abstract class WindowTrait {
   private set _window_(window: WindowAttributes) {
     Object.assign(this.windowAttrs,window);
   }
-
-
+  
   public availableMonitors(): MonitorInfo[] {
     return this._window?JSON.parse(lib.available_monitors(this._window)):[];
   }
@@ -230,8 +229,8 @@ export abstract class WindowTrait {
     this._window?rust.set_visible_on_all_workspaces(this._window,visible):this.windowAttrs.visibleOnAllWorkspaces=visible;
   }
 
-  public setWindowIcon() {
-    $unimplemented();
+  public setWindowIcon(url: URL) {
+    this._window?lib.set_window_icon(this._window,url.href):this.windowAttrs.windowIcon=url.href;
   }
 
 }
