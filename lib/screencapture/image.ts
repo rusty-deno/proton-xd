@@ -1,6 +1,6 @@
 import { lib } from "../../bindings/bindings.ts";
 
-export type RGBImage={
+export type RGBAImage={
   height: number;
   width: number
   bytes: Uint8Array;
@@ -15,7 +15,7 @@ export class ImageBuffer {
   public height: number;
   public bytes: Uint8Array;
 
-  constructor(img: RGBImage) {
+  constructor(img: RGBAImage) {
     this.bytes=img.bytes;
     this.height=img.height;
     this.width=img.width;

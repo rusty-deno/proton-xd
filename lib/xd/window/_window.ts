@@ -4,6 +4,7 @@ import { $unimplemented,Option } from "../../mod.ts";
 import { MinSize,SizeConstraints,WindowAttributes,MaxSize,MonitorInfo,Position,Size } from '../types/mod.ts';
 import { encode } from "../encode.ts";
 import { CursorIcon } from "../mod.ts";
+import { RGBAImage,ImageBuffer } from '../../screencapture/image.ts';
 
 
 
@@ -229,8 +230,8 @@ export abstract class WindowTrait {
     this._window?rust.set_visible_on_all_workspaces(this._window,visible):this.windowAttrs.visibleOnAllWorkspaces=visible;
   }
 
-  public setWindowIcon(url: URL) {
-    this._window?lib.set_window_icon(this._window,url.href):this.windowAttrs.windowIcon=url.href;
+  public setWindowIcon(icon: string|URL|RGBAImage|ImageBuffer) {
+    this._window?lib.set_window_icon(this._window,JSON.stringify(icon)):this.windowAttrs.windowIcon=icon;
   }
 
 }

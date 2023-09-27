@@ -1,4 +1,5 @@
 import { Theme,Position,Size } from "./mod.ts";
+import { ImageBuffer,RGBAImage } from '../../screencapture/image.ts';
 
 
 export interface WindowAttributes {
@@ -22,7 +23,7 @@ export interface WindowAttributes {
   focused?: boolean;
   contentProtection?: boolean;
   visibleOnAllWorkspaces?: boolean;
-  windowIcon?: string;
+  windowIcon?: string|URL|ImageBuffer|RGBAImage;
   position?: Position;
 }
 
