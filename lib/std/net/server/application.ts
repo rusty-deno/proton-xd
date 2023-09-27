@@ -8,7 +8,7 @@ export class Application {
 
 
   /**
-   * Adds a route to the {@linkcode Server} with provided {@linkcode Route}, {@linkcode Method}, {@linkcode Handler}
+   * Adds a route to the {@linkcode Server} with provided {@linkcode route}, {@linkcode method} and {@linkcode handler}
    * 
    * It isn't recommended to use.
    */

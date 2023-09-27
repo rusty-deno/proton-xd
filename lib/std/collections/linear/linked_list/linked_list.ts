@@ -1,4 +1,4 @@
-import { Option,None,Some } from "../../../mod.ts";
+import { Option,None,Some, $unimplemented } from "../../../mod.ts";
 import { List } from "../List.ts";
 import { Node } from "./mod.ts";
 
@@ -6,15 +6,30 @@ import { Node } from "./mod.ts";
 export class LinkedList<T> extends List<T> {
   private head: Option<Node<T>>=None(null);
   private size=0;
+  private _tail=new WeakRef(this.head);
 
   constructor(...nodes: T[]) {
     super();
-    for(let i=nodes.length;i>0;) this.pushFront(nodes[--i]);
+    let current=this.head;
+
+    nodes.forEach((node,i)=> {
+      current.value=new Node(node);
+      i===nodes.length-1?this._tail=new WeakRef(current):current=current.value.next;
+    });
+
+    this.size=nodes.length;
   }
 
   public static fromArray<T>(arr: T[]) {
     const ll=new LinkedList<T>();
-    for(let i=arr.length;i>0;) ll.pushFront(arr[--i]);
+    let current=ll.head;
+
+    arr.forEach((node,i)=> {
+      current.value=new Node(node);
+      i===arr.length-1?ll._tail=new WeakRef(current):current=current.value.next;
+    });
+
+    ll.size=arr.length;
     return ll;
   }
   
@@ -26,12 +41,12 @@ export class LinkedList<T> extends List<T> {
     for(let iter=this.head.value;iter&&iter.next;iter=iter.next.value) yield iter.data;
   }
 
-  public [Symbol.toStringTag]() {
+  public get [Symbol.toStringTag]() {
     return [...this].join(" => ");
   }
 
   public toString() {
-    return this[Symbol.toStringTag]();
+    return this[Symbol.toStringTag];
   }
 
   public get length() {
@@ -43,20 +58,13 @@ export class LinkedList<T> extends List<T> {
   }
 
   public get back(): Option<Node<T>> {
-    if(!this.head.value) return None(null);
-
-    let current=this.head.value;
-
-    while(current.next.value) current=current.next.value;
-    return Some(current);
+    return this._tail.deref()!;
   }
 
   private set tail(node: Option<Node<T>>) {
-    if(!this.head.value) return;
-    let current=this.head.value;
-
-    while(current.next.value) current=current.next.value;
-    current.next=node;
+    this._tail.deref()!.value!.next=node;
+    this._tail=new WeakRef(this._tail.deref()!.value!.next);
+    this.size++;
   }
 
   public pushFront(data: T) {
@@ -65,23 +73,15 @@ export class LinkedList<T> extends List<T> {
   }
 
   public pushBack(data: T) {
-    if(!this.head.value) {
-      this.pushFront(data);
-      return;
-    }
     this.tail=Some(new Node(data));
     this.size++;
   }
 
   public popBack() {
-    if(!this.head.value) return Option.None;
-    let current=this.head.value;
-
-    while(current.next.value?.next.value) current=current.next.value;
-    const last=new Option(current.next.value?.data);
-    current.next=None(null);
-    this.size--;
-    return last;
+    // const last=this._tail.deref()?.value;
+    
+    // return new Option(last?.data);
+    $unimplemented();
   }
 
   public popFront() {

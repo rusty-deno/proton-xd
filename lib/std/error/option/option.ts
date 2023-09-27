@@ -235,6 +235,6 @@ export function Some<T>(val: T) {
 /**
  * Use it for extream type safety
  */
-export function None<T>(val: None): Option<T> {
+export function None<T>(val: None=null): Option<T> {
   return new Option<T>(val);
 }
