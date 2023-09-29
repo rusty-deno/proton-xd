@@ -5,6 +5,7 @@ import { MinSize,SizeConstraints,WindowAttributes,MaxSize,MonitorInfo,Position,S
 import { encode } from "../encode.ts";
 import { CursorIcon } from "../mod.ts";
 import { RGBAImage,ImageBuffer } from '../../screencapture/image.ts';
+import { serIcon } from '../../serde/window_attr.ts';
 
 
 
@@ -231,9 +232,8 @@ export abstract class WindowTrait {
   }
 
   public setWindowIcon(icon: string|URL|RGBAImage|ImageBuffer) {
-    this._window?lib.set_window_icon(this._window,JSON.stringify(icon)):this.windowAttrs.windowIcon=icon;
+    lib.set_window_icon(this._window,JSON.stringify(serIcon(icon)));
   }
-
 }
 
 

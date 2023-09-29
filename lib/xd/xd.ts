@@ -4,6 +4,7 @@ import { WebViewAttributes,WindowAttributes } from './mod.ts';
 import { isURL,Content } from "./types/mod.ts";
 import { stringify } from "./encode.ts";
 import { WebView } from "./webview.ts";
+import { serWindowAttrs } from "../serde/window_attr.ts";
 
 
 
@@ -29,7 +30,7 @@ export class XD extends WebView {
    */
   public spawn() {
     lib.init(
-      stringify(this._window.windowAttrs),
+      stringify(serWindowAttrs(this._window.windowAttrs)),
       stringify(this.webviewAttrs),
       Deno.UnsafePointer.of(this._window._addrs)
     );

@@ -124,6 +124,10 @@ mod tests {
       }
     });
   }
+
+  fn _event_loop() {
+    
+  }
 }
 
 

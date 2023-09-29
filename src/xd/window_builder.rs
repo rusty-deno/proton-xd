@@ -22,8 +22,6 @@ use wry::application::{
 };
 
 
-
-
 #[deno_bindgen]
 pub struct Size {
   pub height: u32,
@@ -90,7 +88,7 @@ impl Into<Option<icon>> for Icon {
   fn into(self)-> Option<icon> {
     let (rgba,height,width)=match self {
       Icon::ImgBuff { rgba, height, width }=> (rgba,height,width),
-      Icon::Url { url }=> {
+      Icon::Url{ url }=> {
         let img=image::open(url).unwrap_or_default();
         (img.as_rgba8()?.to_vec(),img.height(),img.width())
       }
@@ -209,4 +207,3 @@ fn to_position(pos: Option<Position>)-> Option<position> {
     wry::application::dpi::PhysicalPosition { x,y }
   ))
 }
-

@@ -1,0 +1,1 @@
+export * as windowAttrs from "./window_attr.ts";
