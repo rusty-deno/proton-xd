@@ -1,8 +1,8 @@
 import { Theme,Position,Size } from "./mod.ts";
-import { ImageBuffer,RGBAImage } from '../../screencapture/image.ts';
+import { ImageBuffer } from '../../screencapture/image.ts';
 
 
-export type Icon=string|URL|ImageBuffer|RGBAImage;
+export type Icon=string|URL|ImageBuffer|{ height: number,width: number,rgba: Uint8Array };
 export interface WindowAttributes {
   innerSize?: Size;
   minHeight?: number;

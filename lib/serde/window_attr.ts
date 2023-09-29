@@ -4,16 +4,16 @@ import { WindowAttributes,Icon } from '../xd/types/window.ts';
 
 export function serIcon(icon: Icon) {
   const windowIcon=icon instanceof URL || typeof icon==="string"?
-    { url: icon }
+    { Url: { url: icon } }
   :icon instanceof ImageBuffer?
-    { rgba: icon.bytes,height: icon.height,width: icon.width }
-  :icon;
-  
+    { ImgBuff: { rgba: icon.bytes,height: icon.height,width: icon.width } }
+  :{ ImgBuff: icon };
   return windowIcon;
 }
 
 export function serWindowAttrs(attrs: WindowAttributes) {
-  return attrs.windowIcon?Object.assign(attrs,{ windowIcon: attrs.windowIcon && serIcon(attrs.windowIcon) }):attrs;
+  if(attrs.windowIcon) attrs.windowIcon=serIcon(attrs.windowIcon) as unknown as Icon;
+  return attrs;
 }
 
 

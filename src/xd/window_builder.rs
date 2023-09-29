@@ -117,7 +117,7 @@ pub struct WindowAttrs {
   decorations: bool,
   always_on_top: bool,
   always_on_bottom: bool,
-  window_icon: Icon,
+  window_icon: Option<Icon>,
   theme: Theme,
   focused: bool,
   content_protection: bool,
@@ -169,7 +169,7 @@ impl WindowAttrs {
       transparent,
       visible,
       preferred_theme: Some(theme.into()),
-      window_icon: window_icon.into(),
+      window_icon: to_icon(window_icon),
       visible_on_all_workspaces,
       inner_size: to_size(inner_size),
       inner_size_constraints: to_constraints(min_width,min_height,max_width,max_height),
@@ -206,4 +206,9 @@ fn to_position(pos: Option<Position>)-> Option<position> {
   Some(position::Physical(
     wry::application::dpi::PhysicalPosition { x,y }
   ))
+}
+
+
+fn to_icon(icon: Option<Icon>)-> Option<icon> {
+  icon?.into()
 }
