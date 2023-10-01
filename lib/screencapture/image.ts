@@ -1,16 +1,16 @@
 import { lib } from "../../bindings/bindings.ts";
 
-export type RGBAImage={
+export interface RGBAImage {
   height: number;
   width: number
   rgba: Uint8Array;
-};
+}
 
 /**
  * * This is an image represented by a width and height and a container of channel data.
  * * It provides direct access to its pixels and various convertions
  */
-export class ImageBuffer {
+export class ImageBuffer implements RGBAImage {
   public width: number;
   public height: number;
   public rgba: Uint8Array;
@@ -24,12 +24,16 @@ export class ImageBuffer {
   /**
    * Encodes the image data to a png image buffer
    */
-  public png=(): Uint8Array=> readPointer(lib.symbols.convert(this.rgba,this.rgba.length,this.width,this.height,0,100));
+  public png() {
+    return readPointer(lib.symbols.convert(this.rgba,this.rgba.length,this.width,this.height,0,100));
+  }
   
   /**
    * Encodes the image data to a jpeg image buffer
    */
-  public jpeg=(quality=100): Uint8Array=> readPointer(lib.symbols.convert(this.rgba,this.rgba.length,this.width,this.height,69,quality));
+  public jpeg(quality=100) {
+    return readPointer(lib.symbols.convert(this.rgba,this.rgba.length,this.width,this.height,69,quality));
+  }
 }
 
 function readPointer(v: Deno.PointerValue): Uint8Array {

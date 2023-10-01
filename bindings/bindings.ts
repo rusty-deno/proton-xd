@@ -385,6 +385,11 @@ export type FullScreen =
     };
   }
   | "none";
+export type Img = {
+  rgba: Array<number>;
+  height: number;
+  width: number;
+};
 export type MonitorData = {
   name: string | undefined | null;
   position: Position;
@@ -448,7 +453,7 @@ export type WindowAttrs = {
   decorations: boolean;
   alwaysOnTop: boolean;
   alwaysOnBottom: boolean;
-  windowIcon: string | undefined | null;
+  windowIcon: Img | undefined | null;
   theme: Theme;
   focused: boolean;
   contentProtection: boolean;

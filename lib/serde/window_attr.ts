@@ -1,19 +1,19 @@
-import { ImageBuffer } from "../mod.ts";
 import { WindowAttributes,Icon } from '../xd/types/window.ts';
+import { RGBAImage } from '../screencapture/image.ts';
+import { $todo } from '../mod.ts';
 
 
-export function serIcon(icon: Icon) {
-  const windowIcon=icon instanceof URL || typeof icon==="string"?
-    { Url: { url: icon } }
-  :icon instanceof ImageBuffer?
-    { ImgBuff: { rgba: icon.bytes,height: icon.height,width: icon.width } }
-  :{ ImgBuff: icon };
-  return windowIcon;
+export function serIcon(icon: Icon): RGBAImage {
+  if(isRGBAImg(icon)) return icon;
+  return $todo();
 }
 
 export function serWindowAttrs(attrs: WindowAttributes) {
-  if(attrs.windowIcon) attrs.windowIcon=serIcon(attrs.windowIcon) as unknown as Icon;
+  if(attrs.windowIcon) attrs.windowIcon=serIcon(attrs.windowIcon);
   return attrs;
 }
 
+function isRGBAImg(icon: Icon): icon is RGBAImage {
+  return !(typeof icon==="string"||icon instanceof URL);
+}
 
