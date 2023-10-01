@@ -6,12 +6,12 @@ use crate::{
   to_constraints,
   ffi::to_str,
   cast,
-  Icon
+  Img
 };
-use wry::application::dpi::{
+use wry::application::{dpi::{
   PhysicalPosition,
   PhysicalSize
-};
+}, window::Icon};
 
 
 
@@ -167,8 +167,8 @@ pub unsafe extern "C" fn set_visible_on_all_workspaces(ptr: usize,visible: bool)
 #[deno_bindgen]
 pub fn set_window_icon(ptr: usize,icon: &str) {
   unsafe {
-    let icon: Icon=from_str(icon).unwrap();
-    (*cast(ptr)).set_window_icon(icon.into());
+    let Img { rgba,height,width }=from_str(icon).unwrap_or_default();
+    (*cast(ptr)).set_window_icon(Icon::from_rgba(rgba,width,height).ok())
   }
 }
 

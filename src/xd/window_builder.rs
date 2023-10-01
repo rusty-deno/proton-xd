@@ -6,7 +6,7 @@ use wry::application::{
     Window,
     WindowBuilder,
     Theme as theme,
-    Icon as icon,
+    Icon,
     WindowAttributes,
     WindowSizeConstraints,
   },
@@ -73,28 +73,11 @@ impl From<PhysicalPosition<i32>> for Position {
 }
 
 #[deno_bindgen]
-pub enum Icon {
-  ImgBuff {
-    rgba: Vec<u8>,
-    height: u32,
-    width: u32
-  },
-  Url {
-    url: String
-  }
-}
-
-impl Into<Option<icon>> for Icon {
-  fn into(self)-> Option<icon> {
-    let (rgba,height,width)=match self {
-      Icon::ImgBuff { rgba, height, width }=> (rgba,height,width),
-      Icon::Url{ url }=> {
-        let img=image::open(url).unwrap_or_default();
-        (img.as_rgba8()?.to_vec(),img.height(),img.width())
-      }
-    };
-    icon::from_rgba(rgba,width,height).ok()
-  }
+#[derive(Default)]
+pub struct  Img {
+  pub rgba: Vec<u8>,
+  pub height: u32,
+  pub width: u32
 }
 
 
@@ -117,7 +100,7 @@ pub struct WindowAttrs {
   decorations: bool,
   always_on_top: bool,
   always_on_bottom: bool,
-  window_icon: Option<Icon>,
+  window_icon: Option<Img>,
   theme: Theme,
   focused: bool,
   content_protection: bool,
@@ -208,7 +191,7 @@ fn to_position(pos: Option<Position>)-> Option<position> {
   ))
 }
 
-
-fn to_icon(icon: Option<Icon>)-> Option<icon> {
-  icon?.into()
+fn to_icon(icon: Option<Img>)-> Option<Icon> {
+  let Img { height,width,rgba }=icon?;
+  Icon::from_rgba(rgba,width,height).ok()
 }

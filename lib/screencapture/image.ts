@@ -3,7 +3,7 @@ import { lib } from "../../bindings/bindings.ts";
 export type RGBAImage={
   height: number;
   width: number
-  bytes: Uint8Array;
+  rgba: Uint8Array;
 };
 
 /**
@@ -13,10 +13,10 @@ export type RGBAImage={
 export class ImageBuffer {
   public width: number;
   public height: number;
-  public bytes: Uint8Array;
+  public rgba: Uint8Array;
 
   constructor(img: RGBAImage) {
-    this.bytes=img.bytes;
+    this.rgba=img.rgba;
     this.height=img.height;
     this.width=img.width;
   }
@@ -24,12 +24,12 @@ export class ImageBuffer {
   /**
    * Encodes the image data to a png image buffer
    */
-  public png=(): Uint8Array=> readPointer(lib.symbols.convert(this.bytes,this.bytes.length,this.width,this.height,0,100));
+  public png=(): Uint8Array=> readPointer(lib.symbols.convert(this.rgba,this.rgba.length,this.width,this.height,0,100));
   
   /**
    * Encodes the image data to a jpeg image buffer
    */
-  public jpeg=(quality=100): Uint8Array=> readPointer(lib.symbols.convert(this.bytes,this.bytes.length,this.width,this.height,69,quality));
+  public jpeg=(quality=100): Uint8Array=> readPointer(lib.symbols.convert(this.rgba,this.rgba.length,this.width,this.height,69,quality));
 }
 
 function readPointer(v: Deno.PointerValue): Uint8Array {
