@@ -1,4 +1,6 @@
+// deno-lint-ignore-file
 // import { XD,$url } from "./mod/mod.ts";
+import { CString } from './lib/std/ffi/c_string.ts';
 
 
 // const app=new XD($url("./index.html",import.meta.url));
@@ -18,4 +20,15 @@
 // console.log(await file.arrayBuffer());
 
 
+const dl=Deno.dlopen("./target/release/xd.dll",{
+  spawn: {
+    parameters: ["buffer"],
+    result: "void"
+  }
+});
 
+const lib=dl.symbols;
+
+
+
+dl.close();
