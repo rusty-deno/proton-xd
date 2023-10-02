@@ -24,6 +24,7 @@ export class file {
     return $resultSync(()=> new file(Deno.openSync(path,options)));
   }
 
+
   public async metadata() {
     return await $result(async ()=>  await this.fs.stat());
   }

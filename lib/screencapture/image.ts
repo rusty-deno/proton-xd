@@ -1,4 +1,7 @@
 import { lib } from "../../bindings/bindings.ts";
+import { $todo } from "../mod.ts";
+import { $result } from "../std/error/result/macros.ts";
+import { PathBuf } from "../std/path.ts";
 
 export interface RGBAImage {
   height: number;
@@ -33,6 +36,13 @@ export class ImageBuffer implements RGBAImage {
    */
   public jpeg(quality=100) {
     return readPointer(lib.symbols.convert(this.rgba,this.rgba.length,this.width,this.height,69,quality));
+  }
+
+  public async open(path: PathBuf) {
+    return await $result(async ()=> {
+      const _blob=await Deno.readFile(path);
+      $todo();
+    });
   }
 }
 
