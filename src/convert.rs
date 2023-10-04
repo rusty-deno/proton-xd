@@ -3,6 +3,7 @@ use image::{
   codecs::*,
   ColorType::Rgba8,
 };
+use std::slice;
 
 
 #[no_mangle]
@@ -28,5 +29,16 @@ fn _convert(bytes: Vec<u8>,width: u32,height: u32,format: u8,quality: u8)-> Opti
     _=> jpeg::JpegEncoder::new_with_quality(w,quality).encode(img,width,height,Rgba8)
   }.unwrap();
   Some(buff)
+}
+
+
+
+
+
+#[no_mangle]
+pub unsafe extern "C" fn image_from_buff(buffer: *const u8,len: usize) {
+  let buffer=slice::from_raw_parts(buffer,len);
+  let _img=image::load_from_memory(buffer).unwrap_or_default();
+  
 }
 
