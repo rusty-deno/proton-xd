@@ -26,5 +26,5 @@ fn ss(x: i32,y: i32,delay: f32)-> String {
     img.bytes[i+2]=b;
     img.bytes[i+3]=255;
   }
-  format!("{{\"height\": {},\"width\": {},\"bytes\": {:?}}}",img.height,img.width,img.bytes)
+  format!("{{\"height\": {},\"width\": {},\"rgba\": {:?}}}",img.height,img.width,img.bytes)
 }
