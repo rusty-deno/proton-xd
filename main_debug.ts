@@ -20,15 +20,8 @@ import { CString } from './lib/std/ffi/c_string.ts';
 // console.log(await file.arrayBuffer());
 
 
-const dl=Deno.dlopen("./target/release/xd.dll",{
-  spawn: {
-    parameters: ["buffer"],
-    result: "void"
-  }
-});
-
-const lib=dl.symbols;
+const xd=new Uint8Array();
 
 
 
-dl.close();
+

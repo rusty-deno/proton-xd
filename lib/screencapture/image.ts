@@ -35,13 +35,25 @@ export class ImageBuffer implements RGBAImage {
    * Encodes the image data to a jpeg image buffer
    */
   public jpeg(quality=100) {
-    return readPointer(lib.symbols.convert(this.rgba,this.rgba.length,this.width,this.height,69,quality));
+    const ptr=lib.symbols.convert(this.rgba,this.rgba.length,this.width,this.height,69,quality);
+    console.log(ptr);
+    
+    return readPointer(ptr);
   }
 
-  public async open(path: PathBuf) {
+  public static async open(path: PathBuf) {
     return await $result(async ()=> {
       const _blob=await Deno.readFile(path);
       $todo();
+    });
+  }
+  
+  public static async fromURL(url: PathBuf) {
+    return await $result(async ()=> {
+      const res=await fetch(url);
+      const _buff=await (await res.blob()).arrayBuffer();
+      
+
     });
   }
 }
