@@ -49,12 +49,12 @@ impl Size {
 
 #[wasm_bindgen]
 pub fn image_from_buff(buffer: &[u8])-> Size {
-  let img=load_from_memory(buffer).unwrap_or_default();
+  let img=load_from_memory(buffer).unwrap_or_default().to_rgb8();
 
   Size {
     height: img.height(),
     width: img.width(),
-    rgba: img.into_bytes()
+    rgba: img.into_vec()
   }
 }
 
