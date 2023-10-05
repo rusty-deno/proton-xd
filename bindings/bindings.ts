@@ -211,10 +211,6 @@ export const lib = Deno.dlopen(bindingsUri, {
     "result": "void",
     "nonblocking": true,
   },
-  "convert": {
-    "parameters": ["buffer", "usize", "u32", "u32", "u8", "u8"],
-    "result": "buffer",
-  },
   "init": {
     "parameters": ["buffer", "buffer", "pointer"],
     "result": "void",

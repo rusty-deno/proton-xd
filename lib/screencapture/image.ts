@@ -1,7 +1,10 @@
-import { lib } from "../../bindings/bindings.ts";
 import { $todo } from "../mod.ts";
 import { $result } from "../std/error/result/macros.ts";
 import { PathBuf } from "../std/path.ts";
+import { instantiate,convert } from "../../image/lib/rs_lib.generated.js";
+
+await instantiate();
+
 
 export interface RGBAImage {
   height: number;
@@ -24,21 +27,45 @@ export class ImageBuffer implements RGBAImage {
     this.width=img.width;
   }
 
-  /**
-   * Encodes the image data to a png image buffer
-   */
+  /** Encodes the image data to a png image buffer */
   public png() {
-    return readPointer(lib.symbols.convert(this.rgba,this.rgba.length,this.width,this.height,0,100));
+    return this.convert(0);
+  }
+
+  /** Encodes the image data to a gif image buffer */
+  public gif() {
+    return this.convert(1);
   }
   
-  /**
-   * Encodes the image data to a jpeg image buffer
-   */
+  /** Encodes the image data to a tga image buffer */
+  public tga() {
+    return this.convert(2);
+  }
+  
+  /** Encodes the image data to a jpeg image buffer */
   public jpeg(quality=100) {
-    const ptr=lib.symbols.convert(this.rgba,this.rgba.length,this.width,this.height,69,quality);
-    console.log(ptr);
-    
-    return readPointer(ptr);
+    return this.convert(3,quality);
+  }
+
+  
+  /** Encodes the image data to a bmp image buffer */
+  public bmp() {
+    return this.convert(4);
+  }
+
+  
+  /** Encodes the image data to a ico image buffer */
+  public ico() {
+    return this.convert(5);
+  }
+
+  /** Encodes the image data to a farbfeld image buffer */
+  public farbfeld() {
+    return this.convert(6);
+  }
+
+  private convert(format: 0|1|2|3|4|5|6,quality=100) {
+    return convert(this.rgba,this.height,this.width,format,quality);
   }
 
   public static async open(path: PathBuf) {
@@ -56,19 +83,4 @@ export class ImageBuffer implements RGBAImage {
 
     });
   }
-}
-
-function readPointer(v: Deno.PointerValue): Uint8Array {
-  if(v===null) return new Uint8Array;
-
-  const ptr=new Deno.UnsafePointerView(v);
-  const lengthBe=new Uint8Array(4);
-
-  const view=new DataView(lengthBe.buffer);
-  ptr.copyInto(lengthBe,0);
-
-  const buf=new Uint8Array(view.getUint32(0));
-  ptr.copyInto(buf,4);
-
-  return buf;
 }
