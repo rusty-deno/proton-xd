@@ -1,3 +1,4 @@
+// deno-lint-ignore-file
 import { $result } from "../std/error/result/macros.ts";
 import { PathBuf } from "../std/path.ts";
 import { instantiate,convert, image_from_buff } from "../../image/lib/rs_lib.generated.js";
@@ -27,43 +28,43 @@ export class ImageBuffer implements RGBAImage {
   }
 
   /** Encodes the image data to a png image buffer */
-  public png() {
-    return this.convert(0);
+  public async png() {
+    return await this.convert(0);
   }
 
   /** Encodes the image data to a gif image buffer */
-  public gif() {
-    return this.convert(1);
+  public async gif() {
+    return await this.convert(1);
   }
   
   /** Encodes the image data to a tga image buffer */
-  public tga() {
-    return this.convert(2);
+  public async tga() {
+    return await this.convert(2);
   }
   
   /** Encodes the image data to a jpeg image buffer */
-  public jpeg(quality=100) {
-    return this.convert(3,quality);
+  public async jpeg(quality=100) {
+    return await this.convert(3,quality);
   }
 
   
   /** Encodes the image data to a bmp image buffer */
-  public bmp() {
-    return this.convert(4);
+  public async bmp() {
+    return await this.convert(4);
   }
 
   
   /** Encodes the image data to a ico image buffer */
-  public ico() {
-    return this.convert(5);
+  public async ico() {
+    return await this.convert(5);
   }
 
   /** Encodes the image data to a farbfeld image buffer */
-  public farbfeld() {
-    return this.convert(6);
+  public async farbfeld() {
+    return await this.convert(6);
   }
 
-  private convert(format: 0|1|2|3|4|5|6,quality=100) {
+  private async convert(format: 0|1|2|3|4|5|6,quality=100) {
     return convert(this.rgba,this.height,this.width,format,quality);
   }
 
