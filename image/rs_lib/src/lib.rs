@@ -20,11 +20,10 @@ fn _convert(rgba: Vec<u8>,height: u32,width: u32,format: u8,quality: u8)-> Optio
   match format {
     0=> png::PngEncoder::new_with_quality(w,png::CompressionType::Best,png::FilterType::NoFilter).encode(img,width,height,Rgba8),
     1=> gif::GifEncoder::new(w).encode(img,width,height,Rgba8),
-    // 2=> webp::WebPEncoder::new_with_quality(w,webp::WebPQuality::lossless()).encode(img,width,height,Rgba8),
-    4=> tga::TgaEncoder::new(w).encode(img,width,height,Rgba8),
-    5=> bmp::BmpEncoder::new(w).encode(img,width,height,Rgba8),
-    6=> ico::IcoEncoder::new(w).encode(img,width,height,Rgba8),
-    7=> farbfeld::FarbfeldEncoder::new(w).encode(img,width,height),
+    2=> tga::TgaEncoder::new(w).encode(img,width,height,Rgba8),
+    4=> bmp::BmpEncoder::new(w).encode(img,width,height,Rgba8),
+    5=> ico::IcoEncoder::new(w).encode(img,width,height,Rgba8),
+    6=> farbfeld::FarbfeldEncoder::new(w).encode(img,width,height),
     _=> jpeg::JpegEncoder::new_with_quality(w,quality).encode(img,width,height,Rgba8)
   }.unwrap();
   
