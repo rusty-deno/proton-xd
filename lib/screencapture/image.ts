@@ -1,7 +1,6 @@
-import { $todo } from "../mod.ts";
 import { $result } from "../std/error/result/macros.ts";
 import { PathBuf } from "../std/path.ts";
-import { instantiate,convert } from "../../image/lib/rs_lib.generated.js";
+import { instantiate,convert, image_from_buff } from "../../image/lib/rs_lib.generated.js";
 
 await instantiate();
 
@@ -70,17 +69,18 @@ export class ImageBuffer implements RGBAImage {
 
   public static async open(path: PathBuf) {
     return await $result(async ()=> {
-      const _blob=await Deno.readFile(path);
-      $todo();
+      const buff=await Deno.readFile(path);
+      const { height,width,rgba }=image_from_buff(buff);
+      return new ImageBuffer({ height,width,rgba });
     });
   }
   
   public static async fromURL(url: PathBuf) {
     return await $result(async ()=> {
       const res=await fetch(url);
-      const _buff=await (await res.blob()).arrayBuffer();
-      
-
+      const blob=await res.blob();
+      const { height,width,rgba }=image_from_buff(new Uint8Array(await blob.arrayBuffer()));
+      return new ImageBuffer({ height,width,rgba });
     });
   }
 }
