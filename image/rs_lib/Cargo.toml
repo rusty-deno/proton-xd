@@ -13,4 +13,5 @@ lto = true
 opt-level = "z"
 
 [dependencies]
+image = { version = "0.24.7" }
 wasm-bindgen = "=0.2.84"

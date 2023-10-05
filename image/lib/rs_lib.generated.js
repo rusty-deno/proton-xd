@@ -1,22 +1,142 @@
 // @generated file from wasmbuild -- do not edit
 // deno-lint-ignore-file
 // deno-fmt-ignore-file
-// source-hash: 281fbc79e080dca66f11a3f11b69120e0e8b8285
+// source-hash: 7686e38de965d2e11a7c32524834d97a5b5a3a22
 let wasm;
-let cachedInt32Memory0;
-let cachedUint8Memory0;
+
+const cachedTextDecoder = new TextDecoder("utf-8", {
+  ignoreBOM: true,
+  fatal: true,
+});
+
+cachedTextDecoder.decode();
+
+let cachedUint8Memory0 = null;
+
+function getUint8Memory0() {
+  if (cachedUint8Memory0 === null || cachedUint8Memory0.byteLength === 0) {
+    cachedUint8Memory0 = new Uint8Array(wasm.memory.buffer);
+  }
+  return cachedUint8Memory0;
+}
+
+function getStringFromWasm0(ptr, len) {
+  return cachedTextDecoder.decode(getUint8Memory0().subarray(ptr, ptr + len));
+}
+
+let WASM_VECTOR_LEN = 0;
+
+function passArray8ToWasm0(arg, malloc) {
+  const ptr = malloc(arg.length * 1);
+  getUint8Memory0().set(arg, ptr / 1);
+  WASM_VECTOR_LEN = arg.length;
+  return ptr;
+}
+
+let cachedInt32Memory0 = null;
+
+function getInt32Memory0() {
+  if (cachedInt32Memory0 === null || cachedInt32Memory0.byteLength === 0) {
+    cachedInt32Memory0 = new Int32Array(wasm.memory.buffer);
+  }
+  return cachedInt32Memory0;
+}
+
+function getArrayU8FromWasm0(ptr, len) {
+  return getUint8Memory0().subarray(ptr / 1, ptr / 1 + len);
+}
 /**
- * @param {number} a
- * @param {number} b
- * @returns {number}
+ * @param {Uint8Array} rgba
+ * @param {number} height
+ * @param {number} width
+ * @param {number} format
+ * @param {number} quality
+ * @returns {Uint8Array}
  */
-export function add(a, b) {
-  const ret = wasm.add(a, b);
-  return ret;
+export function convert(rgba, height, width, format, quality) {
+  try {
+    const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+    const ptr0 = passArray8ToWasm0(rgba, wasm.__wbindgen_malloc);
+    const len0 = WASM_VECTOR_LEN;
+    wasm.convert(retptr, ptr0, len0, height, width, format, quality);
+    var r0 = getInt32Memory0()[retptr / 4 + 0];
+    var r1 = getInt32Memory0()[retptr / 4 + 1];
+    var v1 = getArrayU8FromWasm0(r0, r1).slice();
+    wasm.__wbindgen_free(r0, r1 * 1);
+    return v1;
+  } finally {
+    wasm.__wbindgen_add_to_stack_pointer(16);
+  }
+}
+
+/**
+ * @param {Uint8Array} buffer
+ * @returns {Size}
+ */
+export function image_from_buff(buffer) {
+  const ptr0 = passArray8ToWasm0(buffer, wasm.__wbindgen_malloc);
+  const len0 = WASM_VECTOR_LEN;
+  const ret = wasm.image_from_buff(ptr0, len0);
+  return Size.__wrap(ret);
+}
+
+const SizeFinalization = new FinalizationRegistry((ptr) =>
+  wasm.__wbg_size_free(ptr)
+);
+/** */
+export class Size {
+  static __wrap(ptr) {
+    const obj = Object.create(Size.prototype);
+    obj.ptr = ptr;
+    SizeFinalization.register(obj, obj.ptr, obj);
+    return obj;
+  }
+
+  __destroy_into_raw() {
+    const ptr = this.ptr;
+    this.ptr = 0;
+    SizeFinalization.unregister(this);
+    return ptr;
+  }
+
+  free() {
+    const ptr = this.__destroy_into_raw();
+    wasm.__wbg_size_free(ptr);
+  }
+  /**
+   * @returns {number}
+   */
+  get height() {
+    const ret = wasm.__wbg_get_size_height(this.ptr);
+    return ret >>> 0;
+  }
+  /**
+   * @param {number} arg0
+   */
+  set height(arg0) {
+    wasm.__wbg_set_size_height(this.ptr, arg0);
+  }
+  /**
+   * @returns {number}
+   */
+  get width() {
+    const ret = wasm.__wbg_get_size_width(this.ptr);
+    return ret >>> 0;
+  }
+  /**
+   * @param {number} arg0
+   */
+  set width(arg0) {
+    wasm.__wbg_set_size_width(this.ptr, arg0);
+  }
 }
 
 const imports = {
-  __wbindgen_placeholder__: {},
+  __wbindgen_placeholder__: {
+    __wbindgen_throw: function (arg0, arg1) {
+      throw new Error(getStringFromWasm0(arg0, arg1));
+    },
+  },
 };
 
 /**
@@ -53,7 +173,7 @@ let lastLoadPromise;
  * @param {InstantiateOptions=} opts
  * @returns {Promise<{
  *   instance: WebAssembly.Instance;
- *   exports: { add: typeof add }
+ *   exports: { convert: typeof convert; image_from_buff: typeof image_from_buff; Size : typeof Size  }
  * }>}
  */
 export function instantiateWithInstance(opts) {
@@ -81,7 +201,7 @@ export function instantiateWithInstance(opts) {
 }
 
 function getWasmInstanceExports() {
-  return { add };
+  return { convert, image_from_buff, Size };
 }
 
 /** Gets if the Wasm module has been instantiated. */

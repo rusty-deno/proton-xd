@@ -1,3 +1,3 @@
-import { LinkedList } from './linked_list.ts';
+import { LinkedList } from "./mod.ts";
 
 export class DoublyLinkedList<T,U=T> extends LinkedList<[T,U]> {}
