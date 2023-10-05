@@ -1,7 +1,7 @@
 // @generated file from wasmbuild -- do not edit
 // deno-lint-ignore-file
 // deno-fmt-ignore-file
-// source-hash: 7686e38de965d2e11a7c32524834d97a5b5a3a22
+// source-hash: c876e0ac25a71ee5a43e51892e863e96b77f490a
 let wasm;
 
 const cachedTextDecoder = new TextDecoder("utf-8", {
@@ -128,6 +128,22 @@ export class Size {
    */
   set width(arg0) {
     wasm.__wbg_set_size_width(this.ptr, arg0);
+  }
+  /**
+   * @returns {Uint8Array}
+   */
+  get rgba() {
+    try {
+      const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+      wasm.size_rgba(retptr, this.ptr);
+      var r0 = getInt32Memory0()[retptr / 4 + 0];
+      var r1 = getInt32Memory0()[retptr / 4 + 1];
+      var v0 = getArrayU8FromWasm0(r0, r1).slice();
+      wasm.__wbindgen_free(r0, r1 * 1);
+      return v0;
+    } finally {
+      wasm.__wbindgen_add_to_stack_pointer(16);
+    }
   }
 }
 
