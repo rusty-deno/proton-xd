@@ -10,7 +10,6 @@ export class LinkedList<T> extends List<T> {
 
   constructor(...nodes: T[]) {
     super();
-    
     for(const node of nodes) this.putBack(new Node(node,null));
 
     this.size=nodes.length;
@@ -38,7 +37,12 @@ export class LinkedList<T> extends List<T> {
   }
 
   private putBack(node: Node<T>) {
-    this.tail.value?this.tail.insert(node):this.tail.value!.next=Some(node);
+    this.tail.value!=null?this.tail.value.next.insert(node):this.tail.insert(node);
+    this._tail=new WeakRef(this.tail.value?.next?this.tail.value.next:this.tail);
+  }
+
+  private putFront(data: T) {
+    this.head=Some(new Node(data,this.head.value));
   }
 
   public get [Symbol.toStringTag]() {
@@ -74,7 +78,7 @@ export class LinkedList<T> extends List<T> {
   }
 
   public pushBack(data: T) {
-    this.tail=Some(new Node(data));
+    this.putBack(new Node(data,null));
     this.size++;
   }
 
@@ -92,21 +96,22 @@ export class LinkedList<T> extends List<T> {
     return new Option(entity);
   }
 
-  public append(other: Iterable<T>) {
-    const ll=new LinkedList(...other);
-    this.tail=new Option(ll.front.value);
-    this.size+=ll.size;
+  public append(other: LinkedList<T>) {
+    if(!other.head.value) return;
+    this.putBack(other.head.value);
+    this._tail=other._tail;
+    this.size+=other.size;
   }
       
-  public appendFront(other: Iterable<T>) {
-    for(const iter of other) {
-      this.pushFront(iter);
-      this.size++;
-    }
+  public appendFront(other: LinkedList<T>) {
+    this.head.value && other.putBack(this.head.value);
+    this.head=other.head;
+    this.size=other.size;
   }
 
   public empty() {
     this.head=None(null);
+    this._tail=new WeakRef(this.head);
     this.size=0;
   }
 
@@ -115,14 +120,30 @@ export class LinkedList<T> extends List<T> {
   }
 
   public reverse() {
-    const ll=new LinkedList<T>;
-    for(const node of this) ll.pushFront(node);
+    this.head=LinkedList._reverse(this.head);
+  }
+
+  public toReversed() {
+    const ll=new LinkedList<T>();
+    ll.head=LinkedList._reverse(this.head);
+    ll.size=this.size;
     return ll;
   }
 
-  public toReverse() {
-    this.head=this.reverse().head;
+  private static _reverse<T>(head: Option<Node<T>>) {
+    let current=new WeakRef(head),prev=None<Node<T>>(),next=None<Node<T>>();
+
+    while(current.deref()?.value) {
+      next=current.deref()!.value!.next;
+      current.deref()!.value!.next=prev;
+
+      prev=current.deref()!;
+      current=new WeakRef(next);
+    }
+    return prev;
   }
+
+
 
   public at(index: number) {
     if(index<0) index+=this.size;
