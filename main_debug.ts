@@ -5,12 +5,10 @@ import { LinkedList } from './lib/std/collections/linear/linked_list/linked_list
 const xd=[0,1,2,3,4,5,69];
 const ll=new LinkedList<number>();
 
-// ll.pushBack(69);
 ll.appendFront(LinkedList.fromArray(xd));
 
-ll.reverse();
 
 
-console.log(ll.toString());
+console.log(ll.at(-4).value);
 
 
