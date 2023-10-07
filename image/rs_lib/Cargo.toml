@@ -14,5 +14,4 @@ opt-level = "z"
 
 [dependencies]
 image = { version = "0.24.7" }
-screenshoter = "0.1.1"
 wasm-bindgen = "=0.2.84"

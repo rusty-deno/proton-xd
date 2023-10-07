@@ -31,26 +31,25 @@ fn _convert(rgba: Vec<u8>,height: u32,width: u32,format: u8,quality: u8)-> Optio
 }
 
 #[wasm_bindgen]
-pub struct Size {
+pub struct Img {
   pub height: u32,
   pub width: u32,
   rgba: Vec<u8>
 }
 
 #[wasm_bindgen]
-impl Size {
+impl Img {
   #[wasm_bindgen(getter)]
   pub fn rgba(&self)-> Vec<u8> {
     self.rgba.clone()
   }
 }
 
-
 #[wasm_bindgen]
-pub fn image_from_buff(buffer: &[u8])-> Size {
+pub fn image_from_buff(buffer: &[u8])-> Img {
   let img=load_from_memory(buffer).unwrap_or_default().to_rgb8();
 
-  Size {
+  Img {
     height: img.height(),
     width: img.width(),
     rgba: img.into_vec()
