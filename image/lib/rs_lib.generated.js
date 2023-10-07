@@ -1,7 +1,7 @@
 // @generated file from wasmbuild -- do not edit
 // deno-lint-ignore-file
 // deno-fmt-ignore-file
-// source-hash: a7a0905d5d95149bf4222febedc27676934ea1c0
+// source-hash: 9626110cb88658a710b594a849491d32b69676fd
 let wasm;
 
 const cachedTextDecoder = new TextDecoder("utf-8", {
@@ -71,63 +71,63 @@ export function convert(rgba, height, width, format, quality) {
 
 /**
  * @param {Uint8Array} buffer
- * @returns {Size}
+ * @returns {Img}
  */
 export function image_from_buff(buffer) {
   const ptr0 = passArray8ToWasm0(buffer, wasm.__wbindgen_malloc);
   const len0 = WASM_VECTOR_LEN;
   const ret = wasm.image_from_buff(ptr0, len0);
-  return Size.__wrap(ret);
+  return Img.__wrap(ret);
 }
 
-const SizeFinalization = new FinalizationRegistry((ptr) =>
-  wasm.__wbg_size_free(ptr)
+const ImgFinalization = new FinalizationRegistry((ptr) =>
+  wasm.__wbg_img_free(ptr)
 );
 /** */
-export class Size {
+export class Img {
   static __wrap(ptr) {
-    const obj = Object.create(Size.prototype);
+    const obj = Object.create(Img.prototype);
     obj.ptr = ptr;
-    SizeFinalization.register(obj, obj.ptr, obj);
+    ImgFinalization.register(obj, obj.ptr, obj);
     return obj;
   }
 
   __destroy_into_raw() {
     const ptr = this.ptr;
     this.ptr = 0;
-    SizeFinalization.unregister(this);
+    ImgFinalization.unregister(this);
     return ptr;
   }
 
   free() {
     const ptr = this.__destroy_into_raw();
-    wasm.__wbg_size_free(ptr);
+    wasm.__wbg_img_free(ptr);
   }
   /**
    * @returns {number}
    */
   get height() {
-    const ret = wasm.__wbg_get_size_height(this.ptr);
+    const ret = wasm.__wbg_get_img_height(this.ptr);
     return ret >>> 0;
   }
   /**
    * @param {number} arg0
    */
   set height(arg0) {
-    wasm.__wbg_set_size_height(this.ptr, arg0);
+    wasm.__wbg_set_img_height(this.ptr, arg0);
   }
   /**
    * @returns {number}
    */
   get width() {
-    const ret = wasm.__wbg_get_size_width(this.ptr);
+    const ret = wasm.__wbg_get_img_width(this.ptr);
     return ret >>> 0;
   }
   /**
    * @param {number} arg0
    */
   set width(arg0) {
-    wasm.__wbg_set_size_width(this.ptr, arg0);
+    wasm.__wbg_set_img_width(this.ptr, arg0);
   }
   /**
    * @returns {Uint8Array}
@@ -135,7 +135,7 @@ export class Size {
   get rgba() {
     try {
       const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-      wasm.size_rgba(retptr, this.ptr);
+      wasm.img_rgba(retptr, this.ptr);
       var r0 = getInt32Memory0()[retptr / 4 + 0];
       var r1 = getInt32Memory0()[retptr / 4 + 1];
       var v0 = getArrayU8FromWasm0(r0, r1).slice();
@@ -189,7 +189,7 @@ let lastLoadPromise;
  * @param {InstantiateOptions=} opts
  * @returns {Promise<{
  *   instance: WebAssembly.Instance;
- *   exports: { convert: typeof convert; image_from_buff: typeof image_from_buff; Size : typeof Size  }
+ *   exports: { convert: typeof convert; image_from_buff: typeof image_from_buff; Img : typeof Img  }
  * }>}
  */
 export function instantiateWithInstance(opts) {
@@ -217,7 +217,7 @@ export function instantiateWithInstance(opts) {
 }
 
 function getWasmInstanceExports() {
-  return { convert, image_from_buff, Size };
+  return { convert, image_from_buff, Img };
 }
 
 /** Gets if the Wasm module has been instantiated. */
