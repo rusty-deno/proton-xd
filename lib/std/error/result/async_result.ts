@@ -1,7 +1,4 @@
-// deno-lint-ignore-file
 import { Result } from "./result.ts";
-import { AsyncException } from '../async_exception.ts';
-import { Option } from "../mod.ts";
 
 
 export class AsyncResult<T,E> extends Promise<Result<T,E>> {
