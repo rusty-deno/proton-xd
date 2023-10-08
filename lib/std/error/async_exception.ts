@@ -1,10 +1,14 @@
-// deno-lint-ignore-file no-explicit-any
 import { Clone } from '../clone.ts';
 import { Exception } from './exception.ts';
 
 
 /** Async variation of {@linkcode Exception}. */
-export abstract class AsyncException<T extends any,E> extends Promise<Exception<T,E>> implements Clone {
+export class AsyncException<T,E> extends Promise<Exception<T,E>> implements Clone {
+
+  constructor(res: Promise<Exception<T,E>>) {
+    super(resolve=> resolve(res));
+  }
+
   /**
    * * Returns {@linkcode Exception} if the value is an {@linkcode Exception},otherwise returns `optb`.
    * * Arguments passed to {@linkcode and} are eagerly evaluated; if you are passing the result of a function call, it is recommended to use {@linkcode andThen}.
