@@ -1,6 +1,6 @@
 import { $result,$resultSync } from '../error/result/mod.ts';
 import { PathBuf } from '../path.ts';
-import { file } from './file.ts';
+import { FsFile } from './file.ts';
 
 export * from "./directory_builder.ts";
 export * from "./file.ts";
@@ -161,18 +161,18 @@ export function truncateSync(name: string,len?: number) {
 }
 
 export function open(path: string, options?: Deno.OpenOptions) {
-  return file.open(path,options);
+  return FsFile.open(path,options);
 }
 
 
 export function openSync(path: string, options?: Deno.OpenOptions) {
-  return file.openSync(path,options);
+  return FsFile.openSync(path,options);
 }
 
 export function create(path: string) {
-  return file.create(path);
+  return FsFile.create(path);
 }
 
 export function createSync(path: string) {
-  return file.createSync(path);
+  return FsFile.createSync(path);
 }

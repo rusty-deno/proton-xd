@@ -1,7 +1,7 @@
 import { $result,$resultSync } from "../error/result/mod.ts";
 import { $option,$optionSync } from "../error/option/mod.ts";
 
-export class file {
+export class FsFile {
   private fs: Deno.FsFile;
   constructor(f: Deno.FsFile) {
     this.fs=f;
@@ -9,19 +9,19 @@ export class file {
   
 
   public static create(path: string) {
-    return $result(async ()=> new file(await Deno.create(path)));
+    return $result(async ()=> new FsFile(await Deno.create(path)));
   }
 
   public static createSync(path: string) {
-    return $resultSync(()=> new file(Deno.createSync(path)));
+    return $resultSync(()=> new FsFile(Deno.createSync(path)));
   }
   
   public static open(path: string,options?: Deno.OpenOptions) {
-    return $result(async ()=> new file(await Deno.open(path,options)));
+    return $result(async ()=> new FsFile(await Deno.open(path,options)));
   }
 
   public static openSync(path: string,options?: Deno.OpenOptions) {
-    return $resultSync(()=> new file(Deno.openSync(path,options)));
+    return $resultSync(()=> new FsFile(Deno.openSync(path,options)));
   }
 
 
