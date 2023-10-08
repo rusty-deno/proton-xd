@@ -8,16 +8,16 @@ export class file {
   }
   
 
-  public static async create(path: string) {
-    return await $result(async ()=> new file(await Deno.create(path)));
+  public static create(path: string) {
+    return $result(async ()=> new file(await Deno.create(path)));
   }
 
   public static createSync(path: string) {
     return $resultSync(()=> new file(Deno.createSync(path)));
   }
   
-  public static async open(path: string,options?: Deno.OpenOptions) {
-    return await $result(async ()=> new file(await Deno.open(path,options)));
+  public static open(path: string,options?: Deno.OpenOptions) {
+    return $result(async ()=> new file(await Deno.open(path,options)));
   }
 
   public static openSync(path: string,options?: Deno.OpenOptions) {
@@ -25,16 +25,16 @@ export class file {
   }
 
 
-  public async metadata() {
-    return await $result(async ()=>  await this.fs.stat());
+  public metadata() {
+    return $result(async ()=>  await this.fs.stat());
   }
 
   public metadataSync() {
     return $resultSync(()=> this.fs.statSync());
   }
 
-  public async truncate(len?: number) {
-    return await $result(async ()=> await this.fs.truncate(len));
+  public truncate(len?: number) {
+    return $result(async ()=> await this.fs.truncate(len));
   }
 
   public truncateSync(len?: number) {
@@ -61,8 +61,8 @@ export class file {
     });
   }
 
-  public async write(buf: Uint8Array) {
-    return await $result(()=> this.fs.write(buf));
+  public write(buf: Uint8Array) {
+    return $result(()=> this.fs.write(buf));
   }
 
   public writeSync(buf: Uint8Array) {
