@@ -12,3 +12,4 @@ export function $fetch(inp: string|URL|Request,init?: RequestInit): AsyncResult<
     return res;
   });
 }
+

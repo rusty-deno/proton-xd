@@ -1,12 +1,21 @@
-import { XD,$url } from './mod/mod.ts';
+import { Server } from "./lib/mod.ts";
+
+
+const app=new Server;
+
+
+app.get("/",()=> {
+  
 
 
 
-const xd=new XD($url("./index.html",import.meta.url),{},{
-  title: "Document",
-  closable: false
+  return new Response;
 });
 
 
-xd.spawn();
+app.listen();
+
+
+
+
 

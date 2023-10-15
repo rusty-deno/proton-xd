@@ -1,6 +1,7 @@
 import { Handler,Route,Method } from "../types/server.ts";
 import { HashMap } from "../../mod.ts";
-
+// deno-lint-ignore no-unused-vars
+import { Server } from "./server.ts";
 
 
 export class Application {
