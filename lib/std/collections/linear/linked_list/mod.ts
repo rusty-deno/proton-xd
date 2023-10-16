@@ -1,5 +1,6 @@
 import { Option } from "../../../mod.ts";
 export * from "./linked_list.ts";
+export * from "./doubly_linked_list.ts";
 export * from "./macros.ts";
 
 export class Node<T> {
