@@ -1,7 +1,8 @@
 import { Iter } from "../iter.ts";
-import { $unimplemented,Option } from "../../mod.ts";
+import { Option } from "../../mod.ts";
 import { Vec } from "../mod.ts";
 import { Node,TreversalAlgorithm } from "./mod.ts";
+import { DoublyLinkedList } from '../linear/linked_list/doubly_linked_list.ts';
 
 
 
@@ -54,9 +55,29 @@ export class BinaryTree<T> extends Iter<T> {
     return Iter.fromIterable(this.preIter());
   }
 
-  // deno-lint-ignore require-yield
+
   private *postIter(): Iterable<T> {
-    $unimplemented();
+    if(!this.root.value) return;
+    const stack=new DoublyLinkedList([this.root,0]);
+    
+    while(stack.length) {
+      const [temp,i]=stack.at(-1).value!;
+      stack.popBack();
+
+      if(temp.containsNone()) continue;
+
+      switch(i) {
+        case 0: 
+          stack.pushBack([temp,1]);
+          if(temp.value?.left.contains()) stack.pushBack([temp.value.left,0]);
+        break;
+        case 1:
+          stack.pushBack([temp,2]);
+          if(temp.value?.right.contains()) stack.pushBack([temp.value.right,0]);
+        break;
+        default: yield temp.value!.data;
+      }
+    }
   }
   public postorderedIter() {
     return Iter.fromIterable(this.postIter());
@@ -80,12 +101,12 @@ export class BinaryTree<T> extends Iter<T> {
     }
   }
 
-  public toPreOrderedVec() {
-    return Vec.fromIter(this);
+  public override toVec(algo?: TreversalAlgorithm) {
+    return Vec.fromIter(this.iter(algo));
   }
 
-  public toPreOrderedArray() {
-    return [...this];
+  public override toArray(algo?: TreversalAlgorithm) {
+    return Array.from(this.iter(algo));
   }
 
 }
