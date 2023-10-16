@@ -9,6 +9,17 @@ export type Enumerate<T>=Iterable<[index: number,item: T]>;
 export abstract class Iter<T> implements Iterable<T> {
   abstract next(): T;
   abstract [Symbol.iterator](): Iterator<T>;
+
+  public static fromIterable<T>(iter: Iterable<T>): Iter<T> {
+    return new class extends Iter<T> {
+      next(): T {
+        return this[Symbol.iterator]().next().value;
+      }
+      [Symbol.iterator](): Iterator<T> {
+        return iter[Symbol.iterator]();
+      }
+    };
+  }
    
   public forEach(f: (value: T,index: number,iter: this)=> void) {
     let i=0;
@@ -49,8 +60,8 @@ export abstract class Iter<T> implements Iterable<T> {
     return filtered;
   }
 
-  public map<O>(fn: (element: T,index: number)=> O) {
-    const map=new Vec;
+  public map<U>(fn: (element: T,index: number)=> U): Vec<U> {
+    const map=new Vec<U>();
 
     for(const [index,element] of this.enumerate()) {
       map.push(fn(element,index));
