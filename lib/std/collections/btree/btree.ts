@@ -18,7 +18,15 @@ export class BinaryTree<T> extends Iter<T> {
   }
   
   *[Symbol.iterator](): Iterator<T> {
-    
+    if(!this.root.value) return;
+    const stack=[];
+    for(let current=this.root;current.value||stack.length;current=current.value!.right) {
+      for(;current.value;current=current.value.left) stack.push(current);
+
+      current=stack.pop()!;
+
+      yield current.value!.data;
+    }
   }
 
   [Symbol.toStringTag]() {
@@ -48,13 +56,12 @@ export class BinaryTree<T> extends Iter<T> {
   }
 
   public toPreOrderedVec() {
-    return new Vec(...this);
+    return Vec.fromIter(this);
   }
 
   public toPreOrderedArray() {
     return [...this];
   }
-  
 
 }
 
