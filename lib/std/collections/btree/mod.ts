@@ -19,6 +19,7 @@ export interface Child<T> {
   right?: Node<T>;
 }
 
-
+type Algo=("prE"|"post"|"in")|("preorder"|"postorder"|"inorder");
+export type TreversalAlgorithm=Lowercase<Algo>|Uppercase<Algo>;
 
 

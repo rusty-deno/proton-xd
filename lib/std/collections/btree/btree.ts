@@ -1,7 +1,7 @@
 import { Iter } from "../iter.ts";
-import { Option } from "../../mod.ts";
+import { $unimplemented,Option } from "../../mod.ts";
 import { Vec } from "../mod.ts";
-import { Node } from "./mod.ts";
+import { Node,TreversalAlgorithm } from "./mod.ts";
 
 
 
@@ -28,21 +28,46 @@ export class BinaryTree<T> extends Iter<T> {
       yield current.value!.data;
     }
   }
-
-  [Symbol.toStringTag]() {
-    // deno-lint-ignore prefer-const
-    let str="";
-
-    // deno-lint-ignore no-unused-vars
-    for(const node of this);
-    return str;
+  
+  public iter(algo: TreversalAlgorithm="in"): Iter<T> {
+    switch(algo) {
+      case "pre":case "PRE":case "preorder":case "PREORDER": return this.preorderedIter();
+      case "post":case "POST":case "postorder":case "POSTORDER": return this.postorderedIter();
+      default: return this;
+    }
+  }
+  
+  public inorderedIter(): Iter<T> {
+    return this;
   }
 
-  public toString() {
-    return this[Symbol.toStringTag]();
+  private *preIter(): Iterable<T> {
+    const nodes=[this.root.value];
+    for(const node of nodes) {
+      if(!node) break;
+      yield node.data;
+      if(node.left.value) nodes.push(node.left.value);
+      if(node.right.value) nodes.push(node.right.value);
+    }
+  }
+  public preorderedIter() {
+    return Iter.fromIterable(this.preIter());
+  }
+
+  // deno-lint-ignore require-yield
+  private *postIter(): Iterable<T> {
+    $unimplemented();
+  }
+  public postorderedIter() {
+    return Iter.fromIterable(this.postIter());
   }
 
 
+
+
+  public override map<U>(f: (element: T,index: number)=> U,algo: TreversalAlgorithm="in"): Vec<U> {
+    return this.iter(algo).map(f);
+  }
   
   public treversePre(f: (data: T,node: Node<T>)=> void) {
     const nodes=[this.root.value];
