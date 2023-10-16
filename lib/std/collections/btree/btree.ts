@@ -2,7 +2,8 @@ import { Iter } from "../iter.ts";
 import { Option } from "../../mod.ts";
 import { Vec } from "../mod.ts";
 import { Node,TreversalAlgorithm } from "./mod.ts";
-import { DoublyLinkedList } from '../linear/linked_list/doubly_linked_list.ts';
+import { DoublyLinkedList,LinkedList } from "../linear/linked_list/mod.ts";
+
 
 
 
@@ -20,11 +21,12 @@ export class BinaryTree<T> extends Iter<T> {
   
   *[Symbol.iterator](): Iterator<T> {
     if(!this.root.value) return;
-    const stack=[];
-    for(let current=this.root;current.value||stack.length;current=current.value!.right) {
-      for(;current.value;current=current.value.left) stack.push(current);
+    const stack=new LinkedList<Node<T>>();
 
-      current=stack.pop()!;
+    for(let current=this.root;current.contains()||stack.length;current=current.value!.right) {
+      for(;current.value;current=current.value.left) stack.pushBack(current.value);
+
+      current=stack.popBack()!;
 
       yield current.value!.data;
     }
@@ -43,12 +45,13 @@ export class BinaryTree<T> extends Iter<T> {
   }
 
   private *preIter(): Iterable<T> {
-    const nodes=[this.root.value];
+    const nodes=new LinkedList(this.root.value);
     for(const node of nodes) {
       if(!node) break;
       yield node.data;
-      if(node.left.value) nodes.push(node.left.value);
-      if(node.right.value) nodes.push(node.right.value);
+
+      if(node.left.contains()) nodes.pushBack(node.left.value);
+      if(node.right.contains()) nodes.pushBack(node.right.value);
     }
   }
   public preorderedIter() {
@@ -91,13 +94,13 @@ export class BinaryTree<T> extends Iter<T> {
   }
   
   public treversePre(f: (data: T,node: Node<T>)=> void) {
-    const nodes=[this.root.value];
+    const nodes=new LinkedList(this.root.value);
     for(const node of nodes) {
       if(!node) break;
       f(node.data,node);
 
-      if(node.left.value) nodes.push(node.left.value);
-      if(node.right.value) nodes.push(node.right.value);
+      if(node.left.value) nodes.pushBack(node.left.value);
+      if(node.right.value) nodes.pushBack(node.right.value);
     }
   }
 
