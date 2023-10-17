@@ -1,9 +1,6 @@
 // import { Server } from "./lib/mod.ts";
-import { Option } from "./lib/mod.ts";
-import { BinaryTree } from './lib/std/collections/btree/btree.ts';
-import { Some } from './lib/std/error/option/option.ts';
-
-
+import { Option, Some } from "./lib/mod.ts";
+import { BinaryTree } from "./mod/collections.ts";
 // const app=new Server;
 
 
@@ -39,6 +36,7 @@ const tree=new BinaryTree({
     right: Option.None
   })
 });
+
 
 console.log(...tree);
 

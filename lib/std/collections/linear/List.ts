@@ -1,9 +1,8 @@
 import { Option } from "../../mod.ts";
-import { Iter } from '../iter.ts';
 
 
 
-export abstract class List<T> extends Iter<T> {
+export abstract class List<T> {
   abstract [Symbol.iterator](): Iterator<T>;
   abstract next(): T;
   /**

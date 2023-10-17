@@ -2,7 +2,7 @@ import { Iter } from "../iter.ts";
 import { Option } from "../../mod.ts";
 import { Vec } from "../mod.ts";
 import { Node,TreversalAlgorithm } from "./mod.ts";
-import { DoublyLinkedList,LinkedList } from "../linear/linked_list/mod.ts";
+import { LinkedList } from "../linear/linked_list/mod.ts";
 
 
 export class BinaryTree<T> extends Iter<Node<T>> {
@@ -59,7 +59,7 @@ export class BinaryTree<T> extends Iter<Node<T>> {
 
   private *postIter(): Iterable<Node<T>> {
     if(!this.root.value) return;
-    const stack=new DoublyLinkedList([this.root,0]);
+    const stack=new LinkedList<[Option<Node<T>>,number]>([this.root,0]);
     
     while(stack.length) {
       const [temp,i]=stack.at(-1).value!;
