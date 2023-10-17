@@ -5,9 +5,7 @@ import { Node,TreversalAlgorithm } from "./mod.ts";
 import { DoublyLinkedList,LinkedList } from "../linear/linked_list/mod.ts";
 
 
-
-
-export class BinaryTree<T> extends Iter<T> {
+export class BinaryTree<T> extends Iter<Node<T>> {
   root: Option<Node<T>>;
 
   constructor(root?: Node<T>) {
@@ -15,11 +13,11 @@ export class BinaryTree<T> extends Iter<T> {
     this.root=new Option(root);
   }
 
-  next(): T {
+  next(): Node<T> {
     return this[Symbol.iterator]().next().value;
   }
   
-  *[Symbol.iterator](): Iterator<T> {
+  *[Symbol.iterator](): Iterator<Node<T>> {
     if(!this.root.value) return;
     const stack=new LinkedList<Node<T>>();
 
@@ -28,11 +26,11 @@ export class BinaryTree<T> extends Iter<T> {
 
       current=stack.popBack()!;
 
-      yield current.value!.data;
+      yield current.value!;
     }
   }
   
-  public iter(algo: TreversalAlgorithm="in"): Iter<T> {
+  public iter(algo: TreversalAlgorithm="in"): Iter<Node<T>> {
     switch(algo) {
       case "pre":case "PRE":case "preorder":case "PREORDER": return this.preorderedIter();
       case "post":case "POST":case "postorder":case "POSTORDER": return this.postorderedIter();
@@ -40,15 +38,15 @@ export class BinaryTree<T> extends Iter<T> {
     }
   }
   
-  public inorderedIter(): Iter<T> {
+  public inorderedIter(): Iter<Node<T>> {
     return this;
   }
 
-  private *preIter(): Iterable<T> {
+  private *preIter(): Iterable<Node<T>> {
     const nodes=new LinkedList(this.root.value);
     for(const node of nodes) {
       if(!node) break;
-      yield node.data;
+      yield node;
 
       if(node.left.contains()) nodes.pushBack(node.left.value);
       if(node.right.contains()) nodes.pushBack(node.right.value);
@@ -59,7 +57,7 @@ export class BinaryTree<T> extends Iter<T> {
   }
 
 
-  private *postIter(): Iterable<T> {
+  private *postIter(): Iterable<Node<T>> {
     if(!this.root.value) return;
     const stack=new DoublyLinkedList([this.root,0]);
     
@@ -78,7 +76,7 @@ export class BinaryTree<T> extends Iter<T> {
           stack.pushBack([temp,2]);
           if(temp.value?.right.contains()) stack.pushBack([temp.value.right,0]);
         break;
-        default: yield temp.value!.data;
+        default: yield temp.value!;
       }
     }
   }
@@ -86,22 +84,12 @@ export class BinaryTree<T> extends Iter<T> {
     return Iter.fromIterable(this.postIter());
   }
 
-
-
-
-  public override map<U>(f: (element: T,index: number)=> U,algo: TreversalAlgorithm="in"): Vec<U> {
+  public override map<U>(f: (element: Node<T>,index: number)=> U,algo?: TreversalAlgorithm): Vec<U> {
     return this.iter(algo).map(f);
   }
   
-  public treversePre(f: (data: T,node: Node<T>)=> void) {
-    const nodes=new LinkedList(this.root.value);
-    for(const node of nodes) {
-      if(!node) break;
-      f(node.data,node);
-
-      if(node.left.value) nodes.pushBack(node.left.value);
-      if(node.right.value) nodes.pushBack(node.right.value);
-    }
+  public treverse(f: (data: T,node: Node<T>)=> void,algo?: TreversalAlgorithm) {
+    for(const node of this.iter(algo)) f(node.data,node);
   }
 
   public override toVec(algo?: TreversalAlgorithm) {
@@ -113,7 +101,6 @@ export class BinaryTree<T> extends Iter<T> {
   }
 
 }
-
 
 
 
