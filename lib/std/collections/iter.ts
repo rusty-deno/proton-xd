@@ -1,5 +1,6 @@
 import { Option,None } from "../mod.ts";
 import { Vec } from "../mod.ts";
+import { LinkedList } from './linear/linked_list/linked_list.ts';
 
 
 export type Enumerate<T>=Iterable<[index: number,item: T]>;
@@ -50,27 +51,27 @@ export abstract class Iter<T> implements Iterable<T> {
   }
 
   public filter(fn: (element: T,index: number)=> boolean) {
-    const filtered=new Vec;
+    const filtered=new LinkedList<T>();
 
     for(const [index,element] of this.enumerate()) {
       if(!fn(element,index)) continue;
-      filtered.push(element);
+      filtered.pushBack(element);
     }
 
-    return filtered;
+    return filtered.toVec();
   }
 
-  public map<U>(fn: (element: T,index: number)=> U): Vec<U> {
-    const map=new Vec<U>();
+  public map<U>(fn: (element: T,index: number)=> U) {
+    const map=new LinkedList<U>();
 
     for(const [index,element] of this.enumerate()) {
-      map.push(fn(element,index));
+      map.pushBack(fn(element,index));
     }
     
-    return map;
+    return Vec.fromIter(map);
   }
   
   public toVec() {
-    return new Vec(...this);
+    return Vec.fromIter(this);
   }
 }
