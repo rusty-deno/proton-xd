@@ -85,6 +85,7 @@ export class LinkedList<T> extends List<T> {
 
     this._tail=this._tail.deref()!.value!.prev;
     this.tail.value!.next=None();
+    this.size--;    
 
     return last;
   }
