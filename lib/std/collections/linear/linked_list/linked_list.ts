@@ -37,12 +37,9 @@ export class LinkedList<T> extends List<T> {
   }
 
   private putBack(node: Node<T>) {
-    this.tail.value!=null?this.tail.value.next.insert(node):this.tail.insert(node);
-    this._tail=new WeakRef(this.tail.value?.next?this.tail.value.next:this.tail);
-  }
-
-  private putFront(data: T) {
-    this.head=Some(new Node(data,this.head.value));
+    node.prev=this._tail;
+    this.tail.value?this.tail.value.next.insert(node):this.tail.insert(node);
+    this._tail=new WeakRef(this.tail.value?.next.value?this.tail.value.next:this.tail);
   }
 
   public get [Symbol.toStringTag]() {
@@ -83,12 +80,12 @@ export class LinkedList<T> extends List<T> {
   }
 
   public popBack() {
-    if(!this._tail.deref()!.value) return None<T>();
-
+    if(!this.head.value) return None<T>();
     const last=new Option(this._tail.deref()?.value?.data);
-    this.tail=this._tail.deref()!.value!.prev;
-    this._tail.deref()!.value!.next=None();
-    
+
+    this._tail=this._tail.deref()!.value!.prev;
+    this.tail.value!.next=None();
+
     return last;
   }
 
