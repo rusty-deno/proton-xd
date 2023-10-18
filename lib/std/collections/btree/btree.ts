@@ -1,3 +1,4 @@
+// deno-lint-ignore-file
 import { Iter } from "../iter.ts";
 import { Option } from "../../mod.ts";
 import { Vec } from "../mod.ts";
@@ -18,13 +19,15 @@ export class BinaryTree<T> extends Iter<Node<T>> {
   }
   
   *[Symbol.iterator](): Iterator<Node<T>> {
-    if(!this.root.value) return;
+    if(this.root.containsNone()) return;
     const stack=new LinkedList<Node<T>>();
 
-    for(let current=this.root;current.contains()||stack.length;current=current.value!.right) {
+    for(let current=this.root;current.value||stack.length;current=current.value!.right) {
+      console.log(current.value?.data);
+      
       for(;current.value;current=current.value.left) stack.pushBack(current.value);
 
-      current=stack.popBack()!;
+      current=stack.popBack();
 
       yield current.value!;
     }
