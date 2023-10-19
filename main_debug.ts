@@ -51,7 +51,8 @@ while(!ll.isEmpty()) {
   console.log(ll.popBack().value);
 }
 
-console.log(ll.front,ll);
+let x=0;
+console.log(ll.front,x++);
 
 
 

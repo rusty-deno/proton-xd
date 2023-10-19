@@ -153,13 +153,29 @@ export class LinkedList<T> extends List<T> {
 
 
 
-  public at(index: number) {
+  public override at(index: number) {
     if(index<0) index+=this.size;
     for(let i=0,iter=this.head.value;;iter=iter?.next.value,i++) {
       if(i==index) return new Option(iter?.data);
     }
   }
+
+  public override forEach(f: (element: T,index: number,iter: LinkedList<T>)=> void): void {
+    for(const [i,element] of this.enumerate()) f(element,i,this);
+  }
   
+  public override map<U>(f: (element: T,index: number,iter: LinkedList<T>)=> U): LinkedList<U> {
+    const map=new LinkedList<U>();
+    for(const [i,element] of this.enumerate()) f(element,i,this);
+
+    return map;
+  }
+
+
+
+
+
+
 }
 
 
