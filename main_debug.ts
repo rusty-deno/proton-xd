@@ -45,8 +45,16 @@ import { LinkedList } from './lib/std/collections/linear/linked_list/linked_list
 // console.log(...tree);
 
 
-const ll=new LinkedList(0,1,2,3,4,5,69);
+const ll=new LinkedList(69,1,2,3,4,5);
 
-while(!ll.isEmpty()) console.log(ll.popBack());
+while(!ll.isEmpty()) {
+  console.log(ll.popBack().value);
+}
+
+ll.pushBack(69);
+
+console.log(ll.front,ll);
+
+
 
 
