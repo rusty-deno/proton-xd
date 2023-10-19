@@ -109,6 +109,10 @@ export class AsyncOption<T> extends Promise<Option<T>> {
     (await this).insert(val);
   }
 
+  public async empty() {
+    (await this).empty();
+  }
+
   /**
    * Returns the contained `Some` value or Inserts the given `Some` value in the current {@linkcode Option} and returns it.
    * # Example

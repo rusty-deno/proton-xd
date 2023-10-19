@@ -215,6 +215,18 @@ export class Option<T> extends Exception<T,None> {
     return this.isException;
   }
 
+  /**
+   * Empties the current {@linkcode Option}
+   * # Example
+   * ```ts
+   * const xd=None(null);
+   * $assertEq(xd.empty(),None());
+   * ```
+   */
+  public empty() {
+    this._value=null;
+  }
+
   public static get None() {
     return None<any>(null);
   }
@@ -233,8 +245,8 @@ export function Some<T>(val: T) {
 }
 
 /**
- * Use it for extream type safety
+ * Use it for type safety
  */
-export function None<T>(val: None=null): Option<T> {
+export function None<T=any>(val: None=null): Option<T> {
   return new Option<T>(val);
 }
