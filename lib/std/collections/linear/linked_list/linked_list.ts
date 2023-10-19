@@ -81,6 +81,7 @@ export class LinkedList<T> extends List<T> {
 
   public popBack() {
     const last=new Option(this._tail.deref()?.value?.data);
+    if(!this.head.value) return last;
 
     if(this.head!=this._tail.deref()) {
       this._tail=this._tail.deref()!.value!.prev;
