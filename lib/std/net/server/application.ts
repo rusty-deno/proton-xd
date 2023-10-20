@@ -1,11 +1,13 @@
+// deno-lint-ignore-file no-unused-vars
 import { Handler,Route,Method } from "../types/server.ts";
-import { HashMap } from "../../mod.ts";
-// deno-lint-ignore no-unused-vars
+import { LinkedList,HashMap } from "../../collections/mod.ts";
 import { Server } from "./server.ts";
 
 
+type Token=`${Method}${Route}`;
 export class Application {
-  protected _routes=new HashMap<`${Method}${Route}`,Handler>();
+  protected _routes=new HashMap<Token,Handler>();
+  protected _dyn_routes=new LinkedList<readonly [Token,Handler]>();
 
 
   /**
@@ -13,8 +15,17 @@ export class Application {
    * 
    * It isn't recommended to use.
    */
-  public addRoute(route: Route,method: Method,handler: Handler) {
-    this._routes.set(`${method}${route}`,handler);
+  public addRoute(route: Route|Route[],method: Method,handler: Handler) {
+    if(!(route instanceof Array)) {
+      this.pushRoute(route,method,handler);
+      return;
+    }
+    for(const path of route) this.pushRoute(path,method,handler);
+  }
+
+  private pushRoute(route: Route,method: Method,handler: Handler) {
+    const token: Token=`${method}${route}`;
+    route.match(/\*/)?this._dyn_routes.pushBack([token,handler]):this._routes.set(token,handler);
   }
   
   /**
@@ -78,6 +89,17 @@ export class Application {
    */
   public patch(route: Route,handler: Handler) {
     this.addRoute(route,"PATCH",handler);
+  }
+
+  public getHandler(path: Route,method: Method): Handler {
+    const token: Token=`${method}${path}`;
+    const { value }=this._routes.get(token);
+    if(value) return value;
+
+    for(const [route,handler] of this._routes)
+      if(token.match(new RegExp(route))) return handler;
+
+    return ()=> new Response("Not Found",{ status: 404 });
   }
 }
 

@@ -1,5 +1,4 @@
 import { Application } from './application.ts';
-import { $unimplemented } from '../../declarative-macros/mod.ts';
 import { Handler,Method,Route } from '../types/server.ts';
 import { Thread } from "../../mod.ts";
 
@@ -95,9 +94,7 @@ export class Server extends Application {
 
 
   /** Closes the {@linkcode Server}. */
-  public close() {
-    $unimplemented();
-  }
+  public async close() {}
   
   /** Starts the {@linkcode Server}. */
   public async listen() {
@@ -105,12 +102,11 @@ export class Server extends Application {
       const method=req.method as Method;
       const route=new URL(req.url).pathname as Route;
 
-      const handler=this._routes.get(`${method}${route}`).unwrapOr(()=> {
-        return new Response("Not Found",{ status: 404 });
-      });
+      const handler=this.getHandler(route,method);
       
       return handler(req,info);
     });
+    this.close=()=> _serve.shutdown();
     await _serve.finished;
     this._finished=true;
   }
