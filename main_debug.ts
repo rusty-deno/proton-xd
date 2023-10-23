@@ -13,9 +13,15 @@
 
 
 // app.listen();
+const xd="jhfaj/:aldfhalk(xd|69)/hfla/:xd69";
+const regex=/:|\||(\(\w+\))/;
 
 
-const regex=new RegExp("xd*");
+console.time("regex");
+console.log(xd.match(regex));
+console.timeEnd("regex");
 
-console.log("xd69".match(regex));
+console.time("str");
+console.log(xd.search(regex));
+console.timeEnd("str");
 

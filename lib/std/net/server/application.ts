@@ -5,9 +5,11 @@ import { Server } from "./server.ts";
 
 
 type Token=`${Method}${Route}`;
+const DYNAMIC_TOKEN=/:|\||(\(\w+\))/;
+
 export class Application {
   protected _routes=new HashMap<Token,Handler>();
-  protected _dyn_routes=new LinkedList<readonly [Token,Handler]>();
+  protected _dyn_routes=new LinkedList<readonly [RegExp,Handler]>();
 
 
   /**
@@ -24,8 +26,8 @@ export class Application {
   }
 
   private pushRoute(route: Route,method: Method,handler: Handler) {
-    const token: Token=`${method}${route}`;
-    route.match(/\*/)?this._dyn_routes.pushBack([token,handler]):this._routes.set(token,handler);
+    const token=`${method}${route}` satisfies Token;
+    isDynamic(route)?this._dyn_routes.pushBack([new RegExp(token),handler]):this._routes.set(token,handler);
   }
   
   /**
@@ -97,13 +99,15 @@ export class Application {
     if(value) return value;
 
     for(const [route,handler] of this._routes)
-      if(token.match(new RegExp(route))) return handler;
+      if(token.match(route)) return handler;
 
     return ()=> new Response("Not Found",{ status: 404 });
   }
 }
 
-
+function isDynamic(route: Route) {
+  return Boolean(route.search(DYNAMIC_TOKEN)+1);
+}
 
 
 
