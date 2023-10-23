@@ -94,7 +94,7 @@ export class Application {
   }
 
   public getHandler(path: Route,method: Method): Handler {
-    const token: Token=`${method}${path}`;
+    const token=`${method}${path}` satisfies Token;
     const { value }=this._routes.get(token);
     if(value) return value;
 
@@ -109,5 +109,13 @@ function isDynamic(route: Route) {
   return Boolean(route.search(DYNAMIC_TOKEN)+1);
 }
 
+// "/xd/lolxd/x/lolxd"
+function toRegex(path: Route,method: Method) {
+  const xd=/:\w+/g;
+  
+  const _res=path.match(xd)!;
+  
 
+
+}
 
