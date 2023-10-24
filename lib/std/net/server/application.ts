@@ -7,7 +7,6 @@ import { Req } from '../types/server.ts';
 
 type Token=`${Method}${Route}`;
 const DYNAMIC_TOKEN=/:\w+|(\([\w+\|]+\))/;
-const GLOBAL_DYNAMIC_TOKEN=/:\w+|(\([\w+\|]+\))/g;
 
 export class Application {
   protected _routes=new HashMap<Token,Handler>();
@@ -101,23 +100,18 @@ export class Application {
     const req={
       ..._req,
       params: {}
-    } satisfies Req;
-
-    return this.#handle(token,req,info);
-  }
-
-  #handle(token: Token,req: Req,info: Deno.ServeHandlerInfo) {
+    } as Req;
+    
     const { value }=this._routes.get(token);
     if(value) return value(req,info);
     
     for(const [route,handler,path] of this._dyn_routes) {
-      const tokens=token.match(route);
-      if(!tokens) continue;
-      const matches=path.match(GLOBAL_DYNAMIC_TOKEN);
-
-      console.log(matches,tokens);
+      if(token.search(route)===-1) continue;
+      const params=path.split("/");
+      const tokens=token.split("/");
       
-      
+      for(const [i,param] of params.entries())
+        if(param[0]===':') req.params[param.substring(1)]=tokens[i];
 
       return handler(req,info);
     }
