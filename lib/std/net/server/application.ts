@@ -2,14 +2,16 @@
 import { Handler,Route,Method } from "../types/server.ts";
 import { LinkedList,HashMap } from "../../collections/mod.ts";
 import { Server } from "./server.ts";
+import { Req } from '../types/server.ts';
 
 
 type Token=`${Method}${Route}`;
 const DYNAMIC_TOKEN=/:\w+|(\([\w+\|]+\))/;
+const GLOBAL_DYNAMIC_TOKEN=/:\w+|(\([\w+\|]+\))/g;
 
 export class Application {
   protected _routes=new HashMap<Token,Handler>();
-  protected _dyn_routes=new LinkedList<[RegExp,Handler]>();
+  protected _dyn_routes=new LinkedList<[RegExp,Handler,string]>();
 
 
   /**
@@ -27,7 +29,7 @@ export class Application {
 
   private pushRoute(route: Route,method: Method,handler: Handler) {
     const token=`${method}${route}` satisfies Token;
-    isDynamic(route)?this._dyn_routes.pushBack([toRegex(token),handler]):this._routes.set(token,handler);
+    isDynamic(route)?this._dyn_routes.pushBack([intoRegex(token),handler,route]):this._routes.set(token,handler);
   }
   
   /**
@@ -93,15 +95,32 @@ export class Application {
     this.addRoute(route,"PATCH",handler);
   }
 
-  protected handle(req: Request,info: Deno.ServeHandlerInfo): ReturnType<Handler> {
-    const path=new URL(req.url).pathname as Route;
-    const token=`${req.method as Method}${path}` satisfies Token;
+  protected handle(_req: Request,info: Deno.ServeHandlerInfo) {
+    const path=new URL(_req.url).pathname as Route;
+    const token=`${_req.method as Method}${path}` satisfies Token;
+    const req={
+      ..._req,
+      params: {}
+    } satisfies Req;
 
+    return this.#handle(token,req,info);
+  }
+
+  #handle(token: Token,req: Req,info: Deno.ServeHandlerInfo) {
     const { value }=this._routes.get(token);
     if(value) return value(req,info);
     
-    for(const [route,handler] of this._dyn_routes)
-      if(token.search(route)!==-1) return handler(req,info);
+    for(const [route,handler,path] of this._dyn_routes) {
+      const tokens=token.match(route);
+      if(!tokens) continue;
+      const matches=path.match(GLOBAL_DYNAMIC_TOKEN);
+
+      console.log(matches,tokens);
+      
+      
+
+      return handler(req,info);
+    }
 
     return new Response("Not Found",{ status: 404 });
   }
@@ -115,7 +134,7 @@ function isDynamic(route: Route) {
  * # Panics
  * Panics if {@linkcode path} is not a dynamic route.
  */
-function toRegex(token: Token) {
-  return new RegExp(token.replaceAll(/:\w+/g,"\\w+"));
+function intoRegex(token: Token) {
+  return new RegExp(token.replace(/:\w+/g,"\\w+"));
 }
 
