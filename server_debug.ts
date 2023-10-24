@@ -7,8 +7,11 @@ import { Server } from './lib/std/net/server/server.ts';
 
 const server=new Server({ port: 6969 });
 
-server.get("/",()=> {
-  return new Response();
+
+
+server.get("/:xd",()=> {
+  
+  return new Response("xd");
 });
 
 

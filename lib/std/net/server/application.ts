@@ -5,11 +5,11 @@ import { Server } from "./server.ts";
 
 
 type Token=`${Method}${Route}`;
-const DYNAMIC_TOKEN=/:|\||(\(\w+\))/;
+const DYNAMIC_TOKEN=/:\w+|(\([\w+\|]+\))/;
 
 export class Application {
   protected _routes=new HashMap<Token,Handler>();
-  protected _dyn_routes=new LinkedList<readonly [RegExp,Handler]>();
+  protected _dyn_routes=new LinkedList<[RegExp,Handler]>();
 
 
   /**
@@ -27,7 +27,7 @@ export class Application {
 
   private pushRoute(route: Route,method: Method,handler: Handler) {
     const token=`${method}${route}` satisfies Token;
-    isDynamic(route)?this._dyn_routes.pushBack([new RegExp(token),handler]):this._routes.set(token,handler);
+    isDynamic(route)?this._dyn_routes.pushBack([toRegex(token),handler]):this._routes.set(token,handler);
   }
   
   /**
@@ -93,15 +93,17 @@ export class Application {
     this.addRoute(route,"PATCH",handler);
   }
 
-  public getHandler(path: Route,method: Method): Handler {
-    const token=`${method}${path}` satisfies Token;
+  protected handle(req: Request,info: Deno.ServeHandlerInfo): ReturnType<Handler> {
+    const path=new URL(req.url).pathname as Route;
+    const token=`${req.method as Method}${path}` satisfies Token;
+
     const { value }=this._routes.get(token);
-    if(value) return value;
+    if(value) return value(req,info);
+    
+    for(const [route,handler] of this._dyn_routes)
+      if(token.search(route)!==-1) return handler(req,info);
 
-    for(const [route,handler] of this._routes)
-      if(token.match(route)) return handler;
-
-    return ()=> new Response("Not Found",{ status: 404 });
+    return new Response("Not Found",{ status: 404 });
   }
 }
 
@@ -109,13 +111,11 @@ function isDynamic(route: Route) {
   return Boolean(route.search(DYNAMIC_TOKEN)+1);
 }
 
-// "/xd/lolxd/x/lolxd"
-function toRegex(path: Route,method: Method) {
-  const xd=/:\w+/g;
-  
-  const _res=path.match(xd)!;
-  
-
-
+/**
+ * # Panics
+ * Panics if {@linkcode path} is not a dynamic route.
+ */
+function toRegex(token: Token) {
+  return new RegExp(token.replaceAll(/:\w+/g,"\\w+"));
 }
 

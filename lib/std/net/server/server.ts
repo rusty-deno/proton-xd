@@ -1,5 +1,5 @@
 import { Application } from './application.ts';
-import { Handler,Method,Route } from '../types/server.ts';
+import { Handler } from '../types/server.ts';
 import { Thread } from "../../mod.ts";
 
 
@@ -98,14 +98,8 @@ export class Server extends Application {
   
   /** Starts the {@linkcode Server}. */
   public async listen() {
-    const _serve=Deno.serve(this._options,(req,info)=> {
-      const method=req.method as Method;
-      const route=new URL(req.url).pathname as Route;
+    const _serve=Deno.serve(this._options,(req,info)=> this.handle(req,info));
 
-      const handler=this.getHandler(route,method);
-      
-      return handler(req,info);
-    });
     this.close=()=> _serve.shutdown();
     await _serve.finished;
     this._finished=true;
