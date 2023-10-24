@@ -5,13 +5,8 @@ export type Route=`/${string}`;
 
 
 type Res=Response|Promise<Response>;
+export type Handler=(...xd: [req: Request,info: Deno.ServeHandlerInfo])=> Res;
 
-export type Handler=(
-  (req: Request)=> Res
-)|(
-  (req: Request,connInfo: Deno.ServeHandlerInfo)=> Res
-)|(
-  ()=> Res
-);
-
-
+export interface Req extends Request {
+  params: Record<string,string>;
+}

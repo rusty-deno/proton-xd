@@ -10,8 +10,7 @@ const server=new Server({ port: 6969 });
 
 
 server.get("/:xd",()=> {
-  
-  return new Response("xd");
+  return new Response("xd",{ status: 200 });
 });
 
 
