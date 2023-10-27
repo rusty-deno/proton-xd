@@ -1,5 +1,5 @@
 import * as lib from '../../bindings/bindings.ts';
-import { Color,$rgba } from "../screencapture/color.ts";
+import { Color,$rgba } from "./color.ts";
 import { Option } from '../mod.ts';
 
 import { WebViewAttributes } from './mod.ts';

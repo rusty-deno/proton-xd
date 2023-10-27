@@ -1,5 +1,5 @@
 import { WindowAttributes,Icon } from '../xd/types/window.ts';
-import { RGBAImage } from '../screencapture/image.ts';
+import { RGBAImage } from '../xd/image.ts';
 import { $todo } from '../mod.ts';
 
 
