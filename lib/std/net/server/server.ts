@@ -1,5 +1,4 @@
 import { Application } from './application.ts';
-import { Handler } from '../types/server.ts';
 import { Thread } from "../../mod.ts";
 
 
@@ -27,7 +26,7 @@ export class Server extends Application {
   }
 
   /** Initiates a {@linkcode Server} on a new {@linkcode Thread}.*/
-  public static async serve(handler: Handler,options: Deno.ServeOptions|Deno.ServeTlsOptions={}) {
+  public static async serve(handler: Deno.ServeHandler,options: Deno.ServeOptions|Deno.ServeTlsOptions={}) {
     return await Thread.spawn(async ()=> {
       const _serve=Deno.serve(options,handler);
       await _serve.finished;

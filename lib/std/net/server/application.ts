@@ -1,8 +1,8 @@
 // deno-lint-ignore-file no-unused-vars
-import { Handler,Route,Method } from "../types/server.ts";
-import { LinkedList,HashMap } from "../../collections/mod.ts";
 import { Server } from "./server.ts";
-import { Req } from '../types/server.ts';
+import { Handler,Route,Method,Req } from "../types/server.ts";
+import { LinkedList,HashMap } from "../../collections/mod.ts";
+import { HandlerDecorator,HandlerDescriptor } from "../types/macros.ts";
 
 
 type Token=`${Method}${Route}`;
@@ -94,6 +94,7 @@ export class Application {
     this.addRoute(route,"PATCH",handler);
   }
 
+  /** Handles all requests. */
   protected handle(_req: Request,info: Deno.ServeHandlerInfo) {
     const path=new URL(_req.url).pathname as Route;
     const token=`${_req.method as Method}${path}` satisfies Token;
@@ -118,6 +119,15 @@ export class Application {
 
     return new Response("Not Found",{ status: 404 });
   }
+  //route macros
+
+  public static GET(route: Route): HandlerDecorator {
+    return function(_this: Application,_name: PropertyKey,descriptor: HandlerDescriptor) {
+      _this.get(route,descriptor.value!);
+    };
+  }
+
+
 }
 
 function isDynamic(route: Route) {
