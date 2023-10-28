@@ -2,7 +2,7 @@ import { symbols as lib,read_clipboard,write_to_clipboard,screenshot,screenshot_
 import { defaultWindowAttrs as dwa,defaultWebViewAttrs as dweba } from "./default.ts";
 import { WebViewAttributes,WindowAttributes } from './mod.ts';
 import { isURL,Content } from "./types/mod.ts";
-import { stringify } from "./encode.ts";
+import { stringify } from "../serde/encode.ts";
 import { WebView } from "./webview.ts";
 import { serWindowAttrs } from "../serde/window_attr.ts";
 import { ImageBuffer } from "./image.ts";

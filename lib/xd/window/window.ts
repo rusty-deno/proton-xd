@@ -2,7 +2,7 @@ import * as lib from "../../../bindings/bindings.ts";
 import { MessageType,WindowAttributes } from "../types/window.ts";
 import { confirmDefaultVal,defaultFileOpenerOptions,defaultSaveFileOptions } from "../default.ts";
 import { WindowTrait } from './_window.ts';
-import { encode } from "../encode.ts";
+import { encode } from "../../serde/encode.ts";
 
 
 

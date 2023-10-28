@@ -2,7 +2,7 @@ import { symbols as rust } from "../../../bindings/bindings.ts";
 import * as lib from "../../../bindings/bindings.ts";
 import { $unimplemented,Option } from "../../mod.ts";
 import { MinSize,SizeConstraints,WindowAttributes,MaxSize,MonitorInfo,Position,Size } from '../types/mod.ts';
-import { encode } from "../encode.ts";
+import { encode } from "../../serde/encode.ts";
 import { CursorIcon } from "../mod.ts";
 import { serIcon } from '../../serde/window_attr.ts';
 import { Icon } from '../types/window.ts';

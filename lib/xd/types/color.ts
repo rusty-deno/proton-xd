@@ -1,4 +1,4 @@
-import { Rgba } from "../../bindings/bindings.ts";
+import { Rgba } from "../../../bindings/bindings.ts";
 
 export interface Rgb {
   r: number;
