@@ -47,7 +47,7 @@ async function generate() {
   try {
     conf=JSON.parse(await Deno.readTextFile(metafile));
   } catch(_) {
-    return "//xd";
+    return null;
   }
 
   const cargoTarget=Deno.env.get("CARGO_TARGET_DIR")??"./target";
@@ -77,7 +77,7 @@ const status=await process.status;
 
 if(status.success||typeof flags.release==="string") {
   const str=await generate();
-  await Deno.writeTextFile("bindings/bindings.ts",str);
+  str && await Deno.writeTextFile("bindings/bindings.ts",str);
 }
 
 

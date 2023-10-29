@@ -146,14 +146,19 @@ export const lib = Deno.dlopen(bindingsUri, {
   },
   scale_factor: { parameters: ["usize"], result: "f64", nonblocking: false },
   screenshot: {
-    parameters: ["i32", "i32", "f32"],
+    parameters: ["i32", "i32", "f32", "usize"],
     result: "buffer",
     nonblocking: true,
   },
   screenshot_sync: {
-    parameters: ["i32", "i32", "f32"],
+    parameters: ["i32", "i32", "f32", "usize"],
     result: "buffer",
-    nonblocking: false,
+    nonblocking: true,
+  },
+  screenshotintellijRulezz: {
+    parameters: ["i32", "i32", "f32", "usize"],
+    result: "buffer",
+    nonblocking: true,
   },
   set_background_color: {
     parameters: ["usize", "u8", "u8", "u8", "u8"],
@@ -456,6 +461,9 @@ export type WindowAttrs = {
   visibleOnAllWorkspaces: boolean;
   position: Position | undefined | null;
 };
+export type XD = {
+  xd: number | undefined | null;
+};
 export function alert(a0: string, a1: string, a2: number) {
   const a0_buf = encode(a0);
   const a1_buf = encode(a1);
@@ -626,15 +634,30 @@ export function scale_factor(a0: bigint) {
   const result = rawResult;
   return result;
 }
-export function screenshot(a0: number, a1: number, a2: number) {
-  const rawResult = symbols.screenshot(a0, a1, a2);
+export function screenshot(a0: number, a1: number, a2: number, a3: bigint) {
+  const rawResult = symbols.screenshot(a0, a1, a2, a3);
   const result = rawResult.then(readPointer);
   return result.then(decode);
 }
-export function screenshot_sync(a0: number, a1: number, a2: number) {
-  const rawResult = symbols.screenshot_sync(a0, a1, a2);
-  const result = readPointer(rawResult);
-  return decode(result);
+export function screenshot_sync(
+  a0: number,
+  a1: number,
+  a2: number,
+  a3: bigint,
+) {
+  const rawResult = symbols.screenshot_sync(a0, a1, a2, a3);
+  const result = rawResult.then(readPointer);
+  return result.then(decode);
+}
+export function screenshotintellijRulezz(
+  a0: number,
+  a1: number,
+  a2: number,
+  a3: bigint,
+) {
+  const rawResult = symbols.screenshotintellijRulezz(a0, a1, a2, a3);
+  const result = rawResult.then(readPointer);
+  return result.then(decode);
 }
 export function set_background_color(
   a0: bigint,
