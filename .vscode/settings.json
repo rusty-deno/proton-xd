@@ -1,9 +1,0 @@
-{
-  "deno.enable": true,
-  "deno.lint": true,
-  "deno.unstable": true,
-  "rust-analyzer.linkedProjects": [
-    ".\\image\\rs_lib\\Cargo.toml",
-    ".\\image\\rs_lib\\Cargo.toml"
-  ]
-}
