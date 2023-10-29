@@ -6,25 +6,21 @@ use deno_bindgen::deno_bindgen;
 
 
 #[deno_bindgen(non_blocking)]
-pub fn screenshot(x: i32,y: i32,delay: f32)-> String {
-  ss(x,y,delay)
+pub fn screenshot_opt(x: i32,y: i32,delay: f32,ptr: usize)-> String {
+  ss_opt(x,y,delay,ptr as *mut u32)
 }
 
-#[deno_bindgen]
-pub fn screenshot_sync(x: i32,y: i32,delay: f32)-> String {
-  ss(x,y,delay)
+#[deno_bindgen(non_blocking)]
+pub fn screenshot_sync_opt(x: i32,y: i32,delay: f32,ptr: usize)-> String {
+  ss_opt(x,y,delay,ptr as *mut u32)
 }
 
-//screenshot
-fn ss(x: i32,y: i32,delay: f32)-> String {
+pub fn ss_opt(x: i32,y: i32,delay: f32,ptr: *mut u32)-> String {
   thread::sleep(Duration::from_secs_f32(delay));
-  let mut img=screenshoter::ScreenCapturer::from_point(x,y).unwrap().capture().unwrap();
-
-  for i in (0..img.bytes.len()).step_by(4) {
-    let b=img.bytes[i];//temp var for swaping
-    img.bytes[i]=img.bytes[i+2];
-    img.bytes[i+2]=b;
-    img.bytes[i+3]=255;
+  let img=screenshoter::ScreenCapturer::from_point(x,y).unwrap().capture().unwrap();
+  unsafe {
+    (*ptr)=img.height;
+    (*ptr.offset(1))=img.width;
+    String::from_utf8_unchecked(img.bytes)
   }
-  format!("{{\"height\": {},\"width\": {},\"rgba\": {:?}}}",img.height,img.width,img.bytes)
 }
