@@ -153,12 +153,7 @@ export const lib = Deno.dlopen(bindingsUri, {
   screenshot_sync: {
     parameters: ["i32", "i32", "f32", "usize"],
     result: "buffer",
-    nonblocking: true,
-  },
-  screenshotintellijRulezz: {
-    parameters: ["i32", "i32", "f32", "usize"],
-    result: "buffer",
-    nonblocking: true,
+    nonblocking: false,
   },
   set_background_color: {
     parameters: ["usize", "u8", "u8", "u8", "u8"],
@@ -637,7 +632,7 @@ export function scale_factor(a0: bigint) {
 export function screenshot(a0: number, a1: number, a2: number, a3: bigint) {
   const rawResult = symbols.screenshot(a0, a1, a2, a3);
   const result = rawResult.then(readPointer);
-  return result.then(decode);
+  return result;
 }
 export function screenshot_sync(
   a0: number,
@@ -646,18 +641,8 @@ export function screenshot_sync(
   a3: bigint,
 ) {
   const rawResult = symbols.screenshot_sync(a0, a1, a2, a3);
-  const result = rawResult.then(readPointer);
-  return result.then(decode);
-}
-export function screenshotintellijRulezz(
-  a0: number,
-  a1: number,
-  a2: number,
-  a3: bigint,
-) {
-  const rawResult = symbols.screenshotintellijRulezz(a0, a1, a2, a3);
-  const result = rawResult.then(readPointer);
-  return result.then(decode);
+  const result = readPointer(rawResult);
+  return result;
 }
 export function set_background_color(
   a0: bigint,

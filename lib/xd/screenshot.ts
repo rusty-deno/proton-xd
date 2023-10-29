@@ -1,14 +1,19 @@
-import { ImageBuffer } from "./mod.ts";
+import { $unimplemented } from "../mod.ts";
 
 
-export class Screenshot extends ImageBuffer {
 
-  public async save(path: string) {
-    await Deno.writeFile(path,new Uint8Array());
+export class Screenshot {
+  constructor(
+    public bytes: Uint8Array,
+    public height: number,
+    public width: number
+  ) {}
+
+
+  // deno-lint-ignore require-await
+  public async save(_path: string) {
+    $unimplemented();
   }
-
-
-
 }
 
 
