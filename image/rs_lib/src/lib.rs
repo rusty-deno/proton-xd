@@ -1,3 +1,4 @@
 mod converter;
-pub use converter::*;
+pub(crate) mod color_type;
 
+pub use converter::*;
