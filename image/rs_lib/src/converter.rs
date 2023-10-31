@@ -1,4 +1,3 @@
-use std::fmt::Debug;
 use crate::color_type::ColorType;
 use wasm_bindgen::prelude::wasm_bindgen;
 use image::{
@@ -10,15 +9,14 @@ use image::{
 
 
 
-
 #[wasm_bindgen]
 pub fn convert(rgba: Vec<u8>,height: u32,width: u32,format: u8,quality: u8)-> Vec<u8> {
   _convert(rgba,height,width,format,quality).unwrap_or_default()
 }
 
 #[allow(deprecated)]
-fn _convert(rgba: Vec<u8>,height: u32,width: u32,format: u8,quality: u8)-> Option<Vec<u8>> {
-  let img=&RgbaImage::from_raw(width,height,rgba)?;
+fn _convert(rgba: Vec<u8>,height: u32,width: u32,format: u8,quality: u8)-> Result<Vec<u8>,String> {
+  let img=&RgbaImage::from_raw(width,height,rgba).ok_or("".to_owned())?;
   let mut buff: Vec<u8>=vec![];
   let w=&mut buff;
   
@@ -30,9 +28,9 @@ fn _convert(rgba: Vec<u8>,height: u32,width: u32,format: u8,quality: u8)-> Optio
     5=> ico::IcoEncoder::new(w).encode(img,width,height,Rgba8),
     6=> farbfeld::FarbfeldEncoder::new(w).encode(img,width,height),
     _=> jpeg::JpegEncoder::new_with_quality(w,quality).encode(img,width,height,Rgba8)
-  }.unwrap();
-  
-  Some(buff)
+  }.or_else(|err| Err(err.to_string()))?;
+
+  Some(buff).ok_or("".to_owned())
 }
 
 #[wasm_bindgen]
@@ -62,12 +60,15 @@ pub fn image_from_buff(buffer: &[u8])-> Img {
 }
 
 #[wasm_bindgen]
-pub fn save_image_sync(path: &str,buff: &mut [u8],height: u32,width: u32,color_type: ColorType) {
-  _save_image(path,buff,height,width,color_type).ok();
+pub fn save_image_sync(path: &str,buff: &mut [u8],height: u32,width: u32,color_type: ColorType)-> String {
+  match _save_image(path,buff,height,width,color_type) {
+    Err(err)=> err.to_string(),
+    _=> "".to_owned()
+  }
 }
 
 
-fn _save_image(path: &str,buff: &mut [u8],height: u32,width: u32,color_type: ColorType)-> Result<(),impl Debug> {
+fn _save_image(path: &str,buff: &mut [u8],height: u32,width: u32,color_type: ColorType)-> Result<(),impl std::fmt::Display> {
   let path=match std::path::Path::new(path).is_absolute() {
     true=> std::env::current_dir()?.join(path),
     _=> path.into()
@@ -84,3 +85,5 @@ fn _save_image(path: &str,buff: &mut [u8],height: u32,width: u32,color_type: Col
 
   image::save_buffer(path,buff,width,height,color_type.into())
 }
+
+
