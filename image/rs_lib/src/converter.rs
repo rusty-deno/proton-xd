@@ -86,12 +86,16 @@ fn _save_image(path: &str,buff: &mut [u8],height: u32,width: u32,color_type: Col
 }
 
 fn to_rgba8(buff: &mut [u8]) {
-  for i in (0..buff.len()).step_by(4) {
-    let j=i+2;
+  let mut i=0;
+  let mut j: usize;
+
+  while i<buff.len() {
+    j=i+2;
     buff[i]=buff[i]^buff[j];
     buff[j]=buff[i]^buff[j];
     buff[i]=buff[i]^buff[j];
     buff[i+3]=255;
+    i+=4;
   }
 }
 
