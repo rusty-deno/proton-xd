@@ -1,4 +1,5 @@
 use crate::ser::*;
+use Format::*;
 use wasm_bindgen::prelude::wasm_bindgen;
 use image::{
   RgbaImage,
@@ -12,23 +13,23 @@ use image::{
 
 
 #[wasm_bindgen]
-pub fn convert(rgba: Vec<u8>,height: u32,width: u32,format: u8,quality: u8)-> Vec<u8> {
+pub fn convert(rgba: Vec<u8>,height: u32,width: u32,format: Format,quality: u8)-> Vec<u8> {
   _convert(rgba,height,width,format,quality).unwrap_or_default()
 }
 
 #[allow(deprecated)]
-fn _convert(rgba: Vec<u8>,height: u32,width: u32,format: u8,quality: u8)-> Result<Vec<u8>,String> {
+fn _convert(rgba: Vec<u8>,height: u32,width: u32,format: Format,quality: u8)-> Result<Vec<u8>,String> {
   let img=&RgbaImage::from_raw(width,height,rgba).ok_or("".to_owned())?;
   let mut buff: Vec<u8>=vec![];
   let w=&mut buff;
   
   match format {
-    0=> png::PngEncoder::new_with_quality(w,png::CompressionType::Best,png::FilterType::NoFilter).encode(img,width,height,Rgba8),
-    1=> gif::GifEncoder::new(w).encode(img,width,height,Rgba8),
-    2=> tga::TgaEncoder::new(w).encode(img,width,height,Rgba8),
-    4=> bmp::BmpEncoder::new(w).encode(img,width,height,Rgba8),
-    5=> ico::IcoEncoder::new(w).encode(img,width,height,Rgba8),
-    6=> farbfeld::FarbfeldEncoder::new(w).encode(img,width,height),
+    Png=> png::PngEncoder::new_with_quality(w,png::CompressionType::Best,png::FilterType::NoFilter).encode(img,width,height,Rgba8),
+    Gif=> gif::GifEncoder::new(w).encode(img,width,height,Rgba8),
+    Tga=> tga::TgaEncoder::new(w).encode(img,width,height,Rgba8),
+    Bmp=> bmp::BmpEncoder::new(w).encode(img,width,height,Rgba8),
+    Ico=> ico::IcoEncoder::new(w).encode(img,width,height,Rgba8),
+    Farbfeld=> farbfeld::FarbfeldEncoder::new(w).encode(img,width,height),
     _=> jpeg::JpegEncoder::new_with_quality(w,quality).encode(img,width,height,Rgba8)
   }.or_else(|err| Err(err.to_string()))?;
 
@@ -71,6 +72,15 @@ pub fn save_image_wtih_format_sync(path: &str,buff: &mut [u8],height: u32,width:
   to_res(_save_image(path,buff,height,width,color_type,Ok(format.into())))
 }
 
+#[wasm_bindgen]
+pub async fn save_image(path: &str,buff: &mut [u8],height: u32,width: u32,color_type: ColorType)-> String {
+  to_res(_save_image(path,buff,height,width,color_type,ImageFormat::from_path(path)))
+}
+
+#[wasm_bindgen]
+pub async fn save_image_wtih_format(path: &str,buff: &mut [u8],height: u32,width: u32,color_type: ColorType,format: Format)-> String {
+  to_res(_save_image(path,buff,height,width,color_type,Ok(format.into())))
+}
 
 
 fn _save_image(path: &str,buff: &mut [u8],height: u32,width: u32,color_type: ColorType,fotmat: ImageResult<ImageFormat>)-> Result<(),impl std::fmt::Display> {
