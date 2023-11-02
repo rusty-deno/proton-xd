@@ -32,6 +32,7 @@ fn _convert(rgba: Vec<u8>,height: u32,width: u32,format: Format,quality: u8)-> R
     Farbfeld=> farbfeld::FarbfeldEncoder::new(w).encode(img,width,height),
     _=> jpeg::JpegEncoder::new_with_quality(w,quality).encode(img,width,height,Rgba8)
   }.or_else(|err| Err(err.to_string()))?;
+  
 
   Some(buff).ok_or("".to_owned())
 }
