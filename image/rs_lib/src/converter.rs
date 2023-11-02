@@ -1,10 +1,12 @@
-use crate::color_type::ColorType;
+use crate::ser::*;
 use wasm_bindgen::prelude::wasm_bindgen;
 use image::{
   RgbaImage,
   codecs::*,
   ColorType::Rgba8,
   load_from_memory,
+  ImageFormat,
+  ImageResult,
 };
 
 
@@ -61,29 +63,35 @@ pub fn image_from_buff(buffer: &[u8])-> Img {
 
 #[wasm_bindgen]
 pub fn save_image_sync(path: &str,buff: &mut [u8],height: u32,width: u32,color_type: ColorType)-> String {
-  match _save_image(path,buff,height,width,color_type) {
-    Err(err)=> err.to_string(),
-    _=> "".to_owned()
-  }
+  to_res(_save_image(path,buff,height,width,color_type,ImageFormat::from_path(path)))
+}
+
+#[wasm_bindgen]
+pub fn save_image_wtih_format_sync(path: &str,buff: &mut [u8],height: u32,width: u32,color_type: ColorType,format: Format)-> String {
+  to_res(_save_image(path,buff,height,width,color_type,Ok(format.into())))
 }
 
 
-fn _save_image(path: &str,buff: &mut [u8],height: u32,width: u32,color_type: ColorType)-> Result<(),impl std::fmt::Display> {
+
+fn _save_image(path: &str,buff: &mut [u8],height: u32,width: u32,color_type: ColorType,fotmat: ImageResult<ImageFormat>)-> Result<(),impl std::fmt::Display> {
   let path=match std::path::Path::new(path).is_absolute() {
     true=> std::env::current_dir()?.join(path),
     _=> path.into()
   };
   if color_type.is_brga8() {
-    for i in (0..buff.len()).step_by(4) {
-      let j=i+2;
-      buff[i]=buff[i]^buff[j];
-      buff[j]=buff[i]^buff[j];
-      buff[i]=buff[i]^buff[j];
-      buff[i+3]=255;
-    }
+    to_rgba8(buff)
   }
 
-  image::save_buffer(path,buff,width,height,color_type.into())
+  image::save_buffer_with_format(path,buff,width,height,color_type.into(),fotmat?)
 }
 
+fn to_rgba8(buff: &mut [u8]) {
+  for i in (0..buff.len()).step_by(4) {
+    let j=i+2;
+    buff[i]=buff[i]^buff[j];
+    buff[j]=buff[i]^buff[j];
+    buff[i]=buff[i]^buff[j];
+    buff[i+3]=255;
+  }
+}
 
