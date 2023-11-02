@@ -75,7 +75,7 @@ pub fn save_image_wtih_format_sync(path: &str,buff: &mut [u8],height: u32,width:
 
 fn _save_image(path: &str,buff: &mut [u8],height: u32,width: u32,color_type: ColorType,fotmat: ImageResult<ImageFormat>)-> Result<(),impl std::fmt::Display> {
   let path=match std::path::Path::new(path).is_absolute() {
-    true=> std::env::current_dir()?.join(path),
+    false=> std::env::current_dir()?.join(path),
     _=> path.into()
   };
   if color_type.is_brga8() {
