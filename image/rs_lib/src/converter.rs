@@ -64,23 +64,23 @@ pub fn image_from_buff(buffer: &[u8])-> Img {
 }
 
 #[wasm_bindgen]
-pub fn save_image_sync(path: &str,buff: &mut [u8],height: u32,width: u32,color_type: ColorType)-> String {
-  to_res(_save_image(path,buff,height,width,color_type,ImageFormat::from_path(path)))
+pub fn save_image_sync(path: &str,buff: &mut [u8],height: u32,width: u32,color_type: u8)-> String {
+  to_res(_save_image(path,buff,height,width,color_type.into(),ImageFormat::from_path(path)))
 }
 
 #[wasm_bindgen]
-pub fn save_image_wtih_format_sync(path: &str,buff: &mut [u8],height: u32,width: u32,color_type: ColorType,format: Format)-> String {
-  to_res(_save_image(path,buff,height,width,color_type,Ok(format.into())))
+pub fn save_image_wtih_format_sync(path: &str,buff: &mut [u8],height: u32,width: u32,color_type: u8,format: u8)-> String {
+  to_res(_save_image(path,buff,height,width,color_type.into(),Ok(Format::from(format).into())))
 }
 
 #[wasm_bindgen]
-pub async fn save_image(path: &str,buff: &mut [u8],height: u32,width: u32,color_type: ColorType)-> String {
-  to_res(_save_image(path,buff,height,width,color_type,ImageFormat::from_path(path)))
+pub async fn save_image(path: &str,buff: &mut [u8],height: u32,width: u32,color_type: u8)-> String {
+  to_res(_save_image(path,buff,height,width,color_type.into(),ImageFormat::from_path(path)))
 }
 
 #[wasm_bindgen]
-pub async fn save_image_wtih_format(path: &str,buff: &mut [u8],height: u32,width: u32,color_type: ColorType,format: Format)-> String {
-  to_res(_save_image(path,buff,height,width,color_type,Ok(format.into())))
+pub async fn save_image_wtih_format(path: &str,buff: &mut [u8],height: u32,width: u32,color_type: u8,format: u8)-> String {
+  to_res(_save_image(path,buff,height,width,color_type.into(),Ok(Format::from(format).into())))
 }
 
 

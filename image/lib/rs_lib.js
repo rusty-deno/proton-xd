@@ -189,7 +189,7 @@ function passStringToWasm0(arg, malloc, realloc) {
 * @param {Uint8Array} buff
 * @param {number} height
 * @param {number} width
-* @param {ColorType} color_type
+* @param {number} color_type
 * @returns {string}
 */
 export function save_image_sync(path, buff, height, width, color_type) {
@@ -221,8 +221,8 @@ export function save_image_sync(path, buff, height, width, color_type) {
 * @param {Uint8Array} buff
 * @param {number} height
 * @param {number} width
-* @param {ColorType} color_type
-* @param {Format} format
+* @param {number} color_type
+* @param {number} format
 * @returns {string}
 */
 export function save_image_wtih_format_sync(path, buff, height, width, color_type, format) {
@@ -255,7 +255,7 @@ export function save_image_wtih_format_sync(path, buff, height, width, color_typ
 * @param {Uint8Array} buff
 * @param {number} height
 * @param {number} width
-* @param {ColorType} color_type
+* @param {number} color_type
 * @returns {Promise<string>}
 */
 export function save_image(path, buff, height, width, color_type) {
@@ -275,8 +275,8 @@ export function save_image(path, buff, height, width, color_type) {
 * @param {Uint8Array} buff
 * @param {number} height
 * @param {number} width
-* @param {ColorType} color_type
-* @param {Format} format
+* @param {number} color_type
+* @param {number} format
 * @returns {Promise<string>}
 */
 export function save_image_wtih_format(path, buff, height, width, color_type, format) {
@@ -316,110 +316,10 @@ function __wbg_adapter_42(arg0, arg1, arg2, arg3) {
 
 /**
 */
-export const Format = Object.freeze({
-/**
-* An Image in PNG Format
-*/
-Png:0,"0":"Png",
-/**
-* An Image in JPEG Format
-*/
-Jpeg:1,"1":"Jpeg",
-/**
-* An Image in GIF Format
-*/
-Gif:2,"2":"Gif",
-/**
-* An Image in WEBP Format
-*/
-WebP:3,"3":"WebP",
-/**
-* An Image in general PNM Format
-*/
-Pnm:4,"4":"Pnm",
-/**
-* An Image in TIFF Format
-*/
-Tiff:5,"5":"Tiff",
-/**
-* An Image in TGA Format
-*/
-Tga:6,"6":"Tga",
-/**
-* An Image in DDS Format
-*/
-Dds:7,"7":"Dds",
-/**
-* An Image in BMP Format
-*/
-Bmp:8,"8":"Bmp",
-/**
-* An Image in ICO Format
-*/
-Ico:9,"9":"Ico",
-/**
-* An Image in Radiance HDR Format
-*/
-Hdr:10,"10":"Hdr",
-/**
-* An Image in OpenEXR Format
-*/
-OpenExr:11,"11":"OpenExr",
-/**
-* An Image in farbfeld Format
-*/
-Farbfeld:12,"12":"Farbfeld",
-/**
-* An Image in AVIF format.
-*/
-Avif:13,"13":"Avif",
-/**
-* An Image in QOI format.
-*/
-Qoi:14,"14":"Qoi", });
+export const Format = Object.freeze({ Png:0,"0":"Png",Jpeg:1,"1":"Jpeg",Gif:2,"2":"Gif",WebP:3,"3":"WebP",Pnm:4,"4":"Pnm",Tiff:5,"5":"Tiff",Tga:6,"6":"Tga",Dds:7,"7":"Dds",Bmp:8,"8":"Bmp",Ico:9,"9":"Ico",Hdr:10,"10":"Hdr",OpenExr:11,"11":"OpenExr",Farbfeld:12,"12":"Farbfeld",Avif:13,"13":"Avif",Qoi:14,"14":"Qoi", });
 /**
 */
-export const ColorType = Object.freeze({
-/**
-* Pixel is 8-bit luminance
-*/
-L8:0,"0":"L8",
-/**
-* Pixel is 8-bit luminance with an alpha channel
-*/
-La8:1,"1":"La8",
-/**
-* Pixel contains 8-bit R, G and B channels
-*/
-Rgb8:2,"2":"Rgb8",
-/**
-* Pixel is 8-bit RGB with an alpha channel
-*/
-Rgba8:3,"3":"Rgba8",
-/**
-* Pixel is 16-bit luminance
-*/
-L16:4,"4":"L16",
-/**
-* Pixel is 16-bit luminance with an alpha channel
-*/
-La16:5,"5":"La16",
-/**
-* Pixel is 16-bit RGB
-*/
-Rgb16:6,"6":"Rgb16",
-/**
-* Pixel is 16-bit RGBA
-*/
-Rgba16:7,"7":"Rgba16",
-/**
-* Pixel is 32-bit float RGB
-*/
-Rgb32F:8,"8":"Rgb32F",
-/**
-* Pixel is 32-bit float RGBA
-*/
-Rgba32F:9,"9":"Rgba32F",Brga8:10,"10":"Brga8", });
+export const ColorType = Object.freeze({ L8:0,"0":"L8",La8:1,"1":"La8",Rgb8:2,"2":"Rgb8",Rgba8:3,"3":"Rgba8",L16:4,"4":"L16",La16:5,"5":"La16",Rgb16:6,"6":"Rgb16",Rgba16:7,"7":"Rgba16",Rgb32F:8,"8":"Rgb32F",Rgba32F:9,"9":"Rgba32F",Brga8:10,"10":"Brga8", });
 
 const ImgFinalization = new FinalizationRegistry(ptr => wasm.__wbg_img_free(ptr >>> 0));
 /**
@@ -596,7 +496,7 @@ const imports = {
         __wbindgen_throw: function(arg0, arg1) {
             throw new Error(getStringFromWasm0(arg0, arg1));
         },
-        __wbindgen_closure_wrapper185: function() { return logError(function (arg0, arg1, arg2) {
+        __wbindgen_closure_wrapper184: function() { return logError(function (arg0, arg1, arg2) {
             const ret = makeMutClosure(arg0, arg1, 69, __wbg_adapter_20);
             return ret;
         }, arguments) },

@@ -1,9 +1,7 @@
 // deno-lint-ignore-file
 import { $result } from "../std/error/result/macros.ts";
 import { PathBuf } from "../std/path.ts";
-import { instantiate,convert,image_from_buff } from "../../image/lib/rs_lib.generated.js";
-
-await instantiate();
+import { convert,image_from_buff } from "../../image/lib/rs_lib.js";
 
 
 export interface RGBAImage {
