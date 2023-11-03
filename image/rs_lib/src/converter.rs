@@ -84,7 +84,7 @@ pub async fn save_image_wtih_format(path: &str,buff: &mut [u8],height: u32,width
 }
 
 
-fn _save_image(path: &str,buff: &mut [u8],height: u32,width: u32,color_type: ColorType,fotmat: ImageResult<ImageFormat>)-> Result<(),impl std::fmt::Display> {
+fn _save_image(path: &str,buff: &mut [u8],height: u32,width: u32,color_type: ColorType,format: ImageResult<ImageFormat>)-> Result<(),impl std::fmt::Display> {
   let path=match std::path::Path::new(path).is_absolute() {
     false=> std::env::current_dir()?.join(path),
     _=> path.into()
@@ -92,8 +92,7 @@ fn _save_image(path: &str,buff: &mut [u8],height: u32,width: u32,color_type: Col
   if color_type.is_brga8() {
     to_rgba8(buff)
   }
-
-  image::save_buffer_with_format(path,buff,width,height,color_type.into(),fotmat?)
+  image::save_buffer_with_format(path,buff,width,height,color_type.into(),format?)
 }
 
 fn to_rgba8(buff: &mut [u8]) {

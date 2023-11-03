@@ -1,3 +1,4 @@
+// deno-lint-ignore-file
 
 
 let cachedUint8Memory0 = null;
@@ -316,10 +317,10 @@ function __wbg_adapter_42(arg0, arg1, arg2, arg3) {
 
 /**
 */
-export const Format = Object.freeze({ Png:0,"0":"Png",Jpeg:1,"1":"Jpeg",Gif:2,"2":"Gif",WebP:3,"3":"WebP",Pnm:4,"4":"Pnm",Tiff:5,"5":"Tiff",Tga:6,"6":"Tga",Dds:7,"7":"Dds",Bmp:8,"8":"Bmp",Ico:9,"9":"Ico",Hdr:10,"10":"Hdr",OpenExr:11,"11":"OpenExr",Farbfeld:12,"12":"Farbfeld",Avif:13,"13":"Avif",Qoi:14,"14":"Qoi", });
+export const ColorType = Object.freeze({ L8:0,"0":"L8",La8:1,"1":"La8",Rgb8:2,"2":"Rgb8",Rgba8:3,"3":"Rgba8",L16:4,"4":"L16",La16:5,"5":"La16",Rgb16:6,"6":"Rgb16",Rgba16:7,"7":"Rgba16",Rgb32F:8,"8":"Rgb32F",Rgba32F:9,"9":"Rgba32F",Brga8:10,"10":"Brga8", });
 /**
 */
-export const ColorType = Object.freeze({ L8:0,"0":"L8",La8:1,"1":"La8",Rgb8:2,"2":"Rgb8",Rgba8:3,"3":"Rgba8",L16:4,"4":"L16",La16:5,"5":"La16",Rgb16:6,"6":"Rgb16",Rgba16:7,"7":"Rgba16",Rgb32F:8,"8":"Rgb32F",Rgba32F:9,"9":"Rgba32F",Brga8:10,"10":"Brga8", });
+export const Format = Object.freeze({ Png:0,"0":"Png",Jpeg:1,"1":"Jpeg",Gif:2,"2":"Gif",WebP:3,"3":"WebP",Pnm:4,"4":"Pnm",Tiff:5,"5":"Tiff",Tga:6,"6":"Tga",Dds:7,"7":"Dds",Bmp:8,"8":"Bmp",Ico:9,"9":"Ico",Hdr:10,"10":"Hdr",OpenExr:11,"11":"OpenExr",Farbfeld:12,"12":"Farbfeld",Avif:13,"13":"Avif",Qoi:14,"14":"Qoi", });
 
 const ImgFinalization = new FinalizationRegistry(ptr => wasm.__wbg_img_free(ptr >>> 0));
 /**
