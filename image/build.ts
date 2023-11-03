@@ -6,18 +6,21 @@ const BINDGEN: Cmd=["wasm-bindgen",["--target","deno","--weak-refs","--reference
 
 const run=([cmd,args]: Cmd)=> new Deno.Command(cmd,{
   args,
-  cwd: new URL("./",import.meta.url)
+  cwd: new URL("./",import.meta.url),
+  stdout: "piped",
 }).spawn();
 
 
 async function bindgen() {
-  const status=await run(BINDGEN).status;
-  const path=new URL("./lib/rs_lib.js",import.meta.url);
-
-  const code=await Deno.readFile(path);
-  const buff=[47,47,32,100,101,110,111,45,108,105,110,116,45,105,103,110,111,114,101,45,102,105,108,101,10,...code];// "// deno-lint-ignore-file"+code
+  const process=run(BINDGEN);
+  console.log(process.stdout);
   
-  await Deno.writeFile(path,new Uint8Array(buff));
+  const path=new URL("./lib/rs_lib.js",import.meta.url);
+  const status=await process.status;
+
+
+  const code=await Deno.readTextFile(path);
+  await Deno.writeTextFile(path,"// deno-lint-ignore-file\n"+code);
 
   return status.code;
 }

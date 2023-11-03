@@ -54,21 +54,6 @@ export function save_image(path: string, buff: Uint8Array, height: number, width
 export function save_image_wtih_format(path: string, buff: Uint8Array, height: number, width: number, color_type: number, format: number): Promise<string>;
 /**
 */
-export enum ColorType {
-  L8 = 0,
-  La8 = 1,
-  Rgb8 = 2,
-  Rgba8 = 3,
-  L16 = 4,
-  La16 = 5,
-  Rgb16 = 6,
-  Rgba16 = 7,
-  Rgb32F = 8,
-  Rgba32F = 9,
-  Brga8 = 10,
-}
-/**
-*/
 export enum Format {
   Png = 0,
   Jpeg = 1,
@@ -85,6 +70,21 @@ export enum Format {
   Farbfeld = 12,
   Avif = 13,
   Qoi = 14,
+}
+/**
+*/
+export enum ColorType {
+  L8 = 0,
+  La8 = 1,
+  Rgb8 = 2,
+  Rgba8 = 3,
+  L16 = 4,
+  La16 = 5,
+  Rgb16 = 6,
+  Rgba16 = 7,
+  Rgb32F = 8,
+  Rgba32F = 9,
+  Brga8 = 10,
 }
 /**
 */
