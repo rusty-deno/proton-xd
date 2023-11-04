@@ -1,6 +1,6 @@
-use crate::ser::*;
+use crate::ser::{*, exception::Exception};
 use Format::*;
-use wasm_bindgen::prelude::wasm_bindgen;
+use wasm_bindgen::prelude::*;
 use image::{
   RgbaImage,
   codecs::*,
@@ -11,18 +11,24 @@ use image::{
 
 
 #[wasm_bindgen]
-pub fn convert_sync(mut rgba: Vec<u8>,height: u32,width: u32,format: Format,color_type: u8,quality: u8)-> (String) {
-  if color_type==10 {
-    rgba.to_rgba8()
-  }
+pub fn convert_sync(mut rgba: Vec<u8>,height: u32,width: u32,format: Format,color_type: u8,quality: u8) {
+  rgba.to_rgba8_if_needed(color_type);
+  
 
 
-  _convert(rgba,height,width,format,quality);
-  todo!()
+
+
+  _convert(rgba,height,width,format,quality).to_touple();
+}
+
+#[wasm_bindgen_futures::wasm_bindgen::prelude::wasm_bindgen]
+pub fn convert(mut rgba: Vec<u8>,height: u32,width: u32,format: Format,color_type: u8,quality: u8) {
+  rgba.to_rgba8_if_needed(color_type);
+  _convert(rgba,height,width,format,quality).to_touple();
 }
 
 #[allow(deprecated)]
-fn _convert(rgba: Vec<u8>,height: u32,width: u32,format: Format,quality: u8)-> Res<Vec<u8>> {
+fn _convert(rgba: Vec<u8>,height: u32,width: u32,format: Format,quality: u8)-> exception::Res<Vec<u8>> {
   let img=&RgbaImage::from_raw(width,height,rgba).ok_or("cannot deref null ptr.".to_owned())?;
   let mut buff: Vec<u8>=vec![];
   let w=&mut buff;

@@ -1,34 +1,13 @@
-use std::fmt::Display;
 
-
-#[allow(type_alias_bounds)]
-pub(crate) type Res<T: Default,E: Display=String>=Result<T,E>;
-
-trait Exception<T: Default,E: Display> {
-  fn to_string(&self)-> String;
-  fn to_touple(self)-> (T,String);
-}
-
-impl<T: Default,E: Display> Exception<T,E> for Res<T,E> {
-  fn to_string(&self)-> String {
-    match self {
-      Err(err)=> err.to_string(),
-      _=> "".to_owned()
-    }
-  }
-
-  fn to_touple(self)-> (T,String) {
-    match self {
-      Ok(mut val)=> (std::mem::take(&mut val),"".to_owned()),
-      Err(err)=> (T::default(),err.to_string()),
-    }
-  }
-
-}
 
 
 pub(crate) trait ToRgba {
   fn to_rgba8(&mut self);
+  fn to_rgba8_if_needed(&mut self,color_type: u8) {
+    if color_type==10 {
+      self.to_rgba8();
+    }
+  }
 }
 
 impl ToRgba for Vec<u8> {
@@ -46,3 +25,4 @@ impl ToRgba for Vec<u8> {
     }
   }
 }
+
