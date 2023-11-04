@@ -1,4 +1,4 @@
 mod converter;
-pub mod ser;
+mod ser;
 
 pub use converter::*;

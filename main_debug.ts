@@ -1,7 +1,28 @@
-import { WindowXD } from "./lib/mod.ts";
-import { save_image } from "./image/lib/rs_lib.js";
+// deno-lint-ignore no-explicit-any
+interface Lib extends Deno.DynamicLibrary<any> {
+  [Symbol.dispose](): void;
+}
 
-const { bytes,height,width }=await WindowXD.screenshot(1,1);
+const _lib=Deno.dlopen(new URL("./target/release/xd.dll",import.meta.url),{
+  available_monitors: {
+    parameters: ["usize"],
+    result: "buffer",
+    nonblocking: false,
+  },
+})
 
-await save_image("xd.png",bytes,height,width,10);
+using lib={
+  ..._lib,
+  [Symbol.dispose]() {
+    _lib.close();
+  }
+};
+
+
+console.log(lib);
+
+
+
+
+
 

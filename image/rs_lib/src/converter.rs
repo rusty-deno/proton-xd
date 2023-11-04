@@ -11,16 +11,18 @@ use image::{
 
 
 #[wasm_bindgen]
-pub fn convert(mut rgba: Vec<u8>,height: u32,width: u32,format: Format,color_type: u8,quality: u8)-> Vec<u8> {
+pub fn convert_sync(mut rgba: Vec<u8>,height: u32,width: u32,format: Format,color_type: u8,quality: u8)-> (String) {
   if color_type==10 {
     rgba.to_rgba8()
   }
 
-  _convert(rgba,height,width,format,quality).unwrap_or_default()
+
+  _convert(rgba,height,width,format,quality);
+  ("".to_owned())
 }
 
 #[allow(deprecated)]
-fn _convert(rgba: Vec<u8>,height: u32,width: u32,format: Format,quality: u8)-> Result<Vec<u8>,String> {
+fn _convert(rgba: Vec<u8>,height: u32,width: u32,format: Format,quality: u8)-> Res<Vec<u8>> {
   let img=&RgbaImage::from_raw(width,height,rgba).ok_or("cannot deref null ptr.".to_owned())?;
   let mut buff: Vec<u8>=vec![];
   let w=&mut buff;
@@ -38,20 +40,7 @@ fn _convert(rgba: Vec<u8>,height: u32,width: u32,format: Format,quality: u8)-> R
   Ok(buff)
 }
 
-#[wasm_bindgen]
-pub struct Img {
-  pub height: u32,
-  pub width: u32,
-  rgba: Vec<u8>
-}
 
-#[wasm_bindgen]
-impl Img {
-  #[wasm_bindgen(getter)]
-  pub fn rgba(&self)-> Vec<u8> {
-    self.rgba.clone()
-  }
-}
 
 #[wasm_bindgen]
 pub fn image_from_buff(buffer: &[u8])-> Img {
