@@ -18,7 +18,7 @@ pub fn convert_sync(mut rgba: Vec<u8>,height: u32,width: u32,format: Format,colo
 
 
   _convert(rgba,height,width,format,quality);
-  ("".to_owned())
+  todo!()
 }
 
 #[allow(deprecated)]
