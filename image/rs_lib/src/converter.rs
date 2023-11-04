@@ -1,4 +1,4 @@
-use crate::ser::{*, exception::Exception};
+use crate::ser::*;
 use Format::*;
 use wasm_bindgen::prelude::*;
 use image::{
@@ -28,7 +28,7 @@ pub fn convert(mut rgba: Vec<u8>,height: u32,width: u32,format: Format,color_typ
 }
 
 #[allow(deprecated)]
-fn _convert(rgba: Vec<u8>,height: u32,width: u32,format: Format,quality: u8)-> exception::Res<Vec<u8>> {
+fn _convert(rgba: Vec<u8>,height: u32,width: u32,format: Format,quality: u8)-> Res<Vec<u8>> {
   let img=&RgbaImage::from_raw(width,height,rgba).ok_or("cannot deref null ptr.".to_owned())?;
   let mut buff: Vec<u8>=vec![];
   let w=&mut buff;

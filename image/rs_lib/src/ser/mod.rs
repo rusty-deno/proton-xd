@@ -1,13 +1,14 @@
 mod img;
 mod format;
 mod impls;
-mod res;
-pub(crate) mod exception;
+mod exception;
+
 
 pub use img::*;
 
+
+pub(crate) mod res;
+
 pub(crate) use impls::*;
 pub(crate) use format::*;
-pub(crate) use res::*;
-
-
+pub(crate) use exception::*;
