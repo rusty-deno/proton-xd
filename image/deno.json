@@ -2,6 +2,7 @@
   "tasks": {
     "build": "deno run -A build.ts build",
     "compile": "deno run -A build.ts compile",
-    "bindgen": "deno run -A build.ts bindgen"
+    "bindgen": "deno run -A build.ts bindgen",
+    "clean": "deno run -A build.ts clean"
   }
 }

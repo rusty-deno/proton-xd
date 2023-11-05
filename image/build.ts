@@ -16,15 +16,21 @@ const run=([cmd,args]: Cmd)=> new Deno.Command(cmd,{
 async function bindgen() {
   const process=run(BINDGEN);
   console.log(process.stdout);
+  const { code }=await process.status;
   
-  const path=new URL("./lib/rs_lib.js",import.meta.url);
-  const status=await process.status;
 
+  const cwd=Deno.cwd();
+  Deno.chdir(new URL("./lib/",import.meta.url));
 
-  const code=await Deno.readTextFile(path);
-  await Deno.writeTextFile(path,"// deno-lint-ignore-file\n"+code);
+  for await(const { name } of Deno.readDir("./")) {
+    if(!name.endsWith("s")) continue;
 
-  return status.code;
+    const code=await Deno.readTextFile(name);
+    await Deno.writeTextFile(name,"// deno-lint-ignore-file\n"+code);
+  }
+
+  Deno.chdir(cwd);
+  return code;
 }
 
 async function compile() {
@@ -33,7 +39,7 @@ async function compile() {
 }
 
 async function clean() {
-  const status=await run(CLEAN).status;
+  const { code }=await run(CLEAN).status;
   const cwd=Deno.cwd();
 
   Deno.chdir(new URL("./lib/",import.meta.url));
@@ -42,7 +48,7 @@ async function clean() {
   }
 
   Deno.chdir(cwd);
-  return status.code;
+  return code;
 }
 
 
