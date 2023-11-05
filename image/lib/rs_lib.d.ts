@@ -17,9 +17,9 @@ export function convert_sync(rgba: Uint8Array, height: number, width: number, fo
 * @param {number} format
 * @param {number} color_type
 * @param {number} quality
-* @returns {Uint8Array}
+* @returns {Promise<any>}
 */
-export function convert(rgba: Uint8Array, height: number, width: number, format: number, color_type: number, quality: number): Uint8Array;
+export function convert(rgba: Uint8Array, height: number, width: number, format: number, color_type: number, quality: number): Promise<any>;
 /**
 * @param {Uint8Array} buffer
 * @returns {Img}
