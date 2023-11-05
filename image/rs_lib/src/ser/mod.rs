@@ -12,3 +12,8 @@ pub(crate) mod res;
 pub(crate) use impls::*;
 pub(crate) use format::*;
 pub(crate) use exception::*;
+
+#[wasm_bindgen::prelude::wasm_bindgen]
+struct XD;
+
+
