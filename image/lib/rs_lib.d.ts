@@ -4,54 +4,27 @@
 * @param {Uint8Array} rgba
 * @param {number} height
 * @param {number} width
-* @param {Format} format
+* @param {number} format
+* @param {number} color_type
 * @param {number} quality
 * @returns {Uint8Array}
 */
-export function convert(rgba: Uint8Array, height: number, width: number, format: Format, quality: number): Uint8Array;
+export function convert_sync(rgba: Uint8Array, height: number, width: number, format: number, color_type: number, quality: number): Uint8Array;
+/**
+* @param {Uint8Array} rgba
+* @param {number} height
+* @param {number} width
+* @param {number} format
+* @param {number} color_type
+* @param {number} quality
+* @returns {Uint8Array}
+*/
+export function convert(rgba: Uint8Array, height: number, width: number, format: number, color_type: number, quality: number): Uint8Array;
 /**
 * @param {Uint8Array} buffer
 * @returns {Img}
 */
 export function image_from_buff(buffer: Uint8Array): Img;
-/**
-* @param {string} path
-* @param {Uint8Array} buff
-* @param {number} height
-* @param {number} width
-* @param {number} color_type
-* @returns {string}
-*/
-export function save_image_sync(path: string, buff: Uint8Array, height: number, width: number, color_type: number): string;
-/**
-* @param {string} path
-* @param {Uint8Array} buff
-* @param {number} height
-* @param {number} width
-* @param {number} color_type
-* @param {number} format
-* @returns {string}
-*/
-export function save_image_wtih_format_sync(path: string, buff: Uint8Array, height: number, width: number, color_type: number, format: number): string;
-/**
-* @param {string} path
-* @param {Uint8Array} buff
-* @param {number} height
-* @param {number} width
-* @param {number} color_type
-* @returns {Promise<string>}
-*/
-export function save_image(path: string, buff: Uint8Array, height: number, width: number, color_type: number): Promise<string>;
-/**
-* @param {string} path
-* @param {Uint8Array} buff
-* @param {number} height
-* @param {number} width
-* @param {number} color_type
-* @param {number} format
-* @returns {Promise<string>}
-*/
-export function save_image_wtih_format(path: string, buff: Uint8Array, height: number, width: number, color_type: number, format: number): Promise<string>;
 /**
 */
 export enum Format {
@@ -70,21 +43,6 @@ export enum Format {
   Farbfeld = 12,
   Avif = 13,
   Qoi = 14,
-}
-/**
-*/
-export enum ColorType {
-  L8 = 0,
-  La8 = 1,
-  Rgb8 = 2,
-  Rgba8 = 3,
-  L16 = 4,
-  La16 = 5,
-  Rgb16 = 6,
-  Rgba16 = 7,
-  Rgb32F = 8,
-  Rgba32F = 9,
-  Brga8 = 10,
 }
 /**
 */

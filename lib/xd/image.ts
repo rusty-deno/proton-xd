@@ -63,7 +63,7 @@ export class ImageBuffer implements RGBAImage {
   }
 
   private async convert(format: 0|1|2|3|4|5|6,quality=100) {
-    return convert(this.rgba,this.height,this.width,format,quality);
+    return convert(this.rgba,this.height,this.width,format,3,quality);
   }
 
   public static async open(path: PathBuf) {

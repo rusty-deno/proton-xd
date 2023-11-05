@@ -14,15 +14,15 @@ use wasm_bindgen::{
 
 
 #[wasm_bindgen]
-pub fn convert_sync(mut rgba: Vec<u8>,height: u32,width: u32,format: Format,color_type: u8,quality: u8)-> Vec<u8> {
+pub fn convert_sync(mut rgba: Vec<u8>,height: u32,width: u32,format: u8,color_type: u8,quality: u8)-> Vec<u8> {
   rgba.to_rgba8_if_needed(color_type);
-  _convert(rgba,height,width,format,quality)
+  _convert(rgba,height,width,format.into(),quality)
 }
 
 #[wasm_bindgen_futures::wasm_bindgen::prelude::wasm_bindgen]
-pub fn convert(mut rgba: Vec<u8>,height: u32,width: u32,format: Format,color_type: u8,quality: u8)-> Vec<u8> {
+pub fn convert(mut rgba: Vec<u8>,height: u32,width: u32,format: u8,color_type: u8,quality: u8)-> Vec<u8> {
   rgba.to_rgba8_if_needed(color_type);
-  _convert(rgba,height,width,format,quality)
+  _convert(rgba,height,width,format.into(),quality)
 }
 
 #[allow(deprecated)]
