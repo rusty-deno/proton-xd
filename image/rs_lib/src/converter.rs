@@ -1,5 +1,4 @@
-
-use crate::ser::*;
+use crate::{ser::*,Img};
 use Format::*;
 use image::{
   RgbaImage,
@@ -56,7 +55,7 @@ pub fn image_from_buff(buffer: &[u8])-> Img {
   Img {
     height: img.height(),
     width: img.width(),
-    rgba: img.into_vec()
+    rgba: img.into_vec().into()
   }
 }
 

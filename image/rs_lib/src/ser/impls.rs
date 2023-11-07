@@ -1,6 +1,10 @@
+use std::rc::Rc;
 use image::EncodableLayout;
 use wasm_bindgen::JsValue;
-use wasm_bindgen_futures::js_sys::{Uint8Array, Promise};
+use wasm_bindgen_futures::js_sys::{
+  Uint8Array,
+  Promise
+};
 
 
 pub(crate) trait ToRgba {
@@ -28,18 +32,14 @@ impl ToRgba for Vec<u8> {
   }
 }
 
-// pub(crate) trait ToPromise<T: Into<JsValue>,E: Into<JsValue>=String>: Sized {
-//   fn to_promise(self)-> Result<JsValue,JsValue>;
-// }
+impl ToRgba for Rc<[u8]> {
+  fn to_rgba8(&mut self) {
+    todo!()
+  }
+}
 
-// impl<E: Into<JsValue>> ToPromise<Uint8Array,E> for Result<Vec<u8>,E> {
-//   fn to_promise(self)-> Result<JsValue,JsValue> {
-//     match self {
-//       Ok(res)=> Ok(Uint8Array::from(res.as_slice()).into()),
-//       Err(err)=> Err(err.into()),
-//     }
-//   }
-// }
+
+
 
 pub(crate) trait ToJsValue {
   fn to_js_value(self)-> JsValue;
@@ -51,5 +51,13 @@ impl ToJsValue for Vec<u8> {
   }
 }
 
+pub(crate) trait ToPromise {
+  fn to_promise(self)-> Promise;
+}
 
+impl<S> ToPromise for S where JsValue: From<S> {
+  fn to_promise(self)-> Promise {
+    JsValue::from(self).into()
+  }
+}
 

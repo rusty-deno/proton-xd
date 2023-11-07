@@ -65,3 +65,4 @@ impl From<u8> for Format {
     }
   }
 }
+
