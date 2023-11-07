@@ -1,3 +1,5 @@
+#![allow(unused)]
+
 use crate::{ser::*,Img};
 use Format::*;
 use image::{
@@ -15,14 +17,12 @@ use wasm_bindgen_futures::js_sys::Promise;
 
 
 #[wasm_bindgen]
-pub fn convert_sync(mut rgba: Vec<u8>,height: u32,width: u32,format: u8,color_type: u8,quality: u8)-> Vec<u8> {
-  rgba.to_rgba8_if_needed(color_type);
+pub fn convert_sync(rgba: Vec<u8>,height: u32,width: u32,format: u8,color_type: u8,quality: u8)-> Vec<u8> {
   _convert(rgba,height,width,format.into(),quality).unwrap_throw()
 }
 
 #[wasm_bindgen_futures::wasm_bindgen::prelude::wasm_bindgen]
-pub async fn convert(mut rgba: Vec<u8>,height: u32,width: u32,format: u8,color_type: u8,quality: u8)-> Promise {
-  rgba.to_rgba8_if_needed(color_type);
+pub async fn convert(rgba: Vec<u8>,height: u32,width: u32,format: u8,color_type: u8,quality: u8)-> Promise {
   _convert(rgba,height,width,format.into(),quality).unwrap_throw().to_js_value().into()
 }
 

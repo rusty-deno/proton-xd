@@ -1,8 +1,14 @@
 use std::rc::Rc;
 use crate::ser::*;
 use image::load_from_memory;
-use wasm_bindgen_futures::js_sys::Promise;
-use wasm_bindgen_futures::wasm_bindgen::prelude::wasm_bindgen as async_fn;
+
+use wasm_bindgen_futures::{
+  wasm_bindgen::prelude::wasm_bindgen as async_fn,
+  js_sys::{
+    Promise,
+    Uint8Array
+  }
+};
 
 use wasm_bindgen::{
   prelude::wasm_bindgen,
@@ -14,7 +20,6 @@ use wasm_bindgen::{
 pub struct Img {
   pub height: u32,
   pub width: u32,
-  #[allow(unused)]
   pub(crate) rgba: Rc<[u8]>
 }
 
@@ -33,7 +38,7 @@ impl Img {
   pub fn image_from_buff_sync(buff: &[u8],color_type: u8)-> Self {
     let img=load_from_memory(buff).unwrap_throw().to_rgba8();
     let (height,width)=(img.height(),img.width());
-    let mut rgba: Rc<[u8]>=img.into_vec().into();
+    let rgba: Rc<[u8]>=img.into_vec().into();
     rgba.to_rgba8_if_needed(color_type);
 
     Img {
@@ -44,8 +49,8 @@ impl Img {
   }
 
   #[wasm_bindgen(getter)]
-  pub fn rgba(&self) {
-    unimplemented!()
+  pub fn rgba(&self)-> Uint8Array {
+    Uint8Array::from(self.rgba.as_ref())
   }
 
   // fn writer(&self)-> Result<image::RgbaImage,String> {
@@ -55,7 +60,7 @@ impl Img {
 
   #[wasm_bindgen]
   pub fn to_png(&self) {
-    
+    unimplemented!()
   }
 
 
