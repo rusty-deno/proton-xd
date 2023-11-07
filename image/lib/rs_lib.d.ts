@@ -59,3 +59,37 @@ export class Img {
 */
   width: number;
 }
+/**
+*/
+export class Thread {
+  free(): void;
+/**
+*/
+  constructor();
+/**
+* @returns {number}
+*/
+  static available_parallelism(): number;
+/**
+* @returns {Thread}
+*/
+  static current(): Thread;
+/**
+* @returns {boolean}
+*/
+  static panicking(): boolean;
+/**
+*/
+  static park(): void;
+/**
+* @param {number} duration
+*/
+  static park_timeout(duration: number): void;
+/**
+* @param {number} duration
+*/
+  static sleep(duration: number): void;
+/**
+*/
+  static xd(): void;
+}

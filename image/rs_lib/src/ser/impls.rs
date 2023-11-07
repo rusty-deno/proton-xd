@@ -1,4 +1,5 @@
-
+use wasm_bindgen::JsValue;
+use wasm_bindgen_futures::js_sys::Uint8Array;
 
 
 pub(crate) trait ToRgba {
@@ -26,3 +27,15 @@ impl ToRgba for Vec<u8> {
   }
 }
 
+pub(crate) trait ToPromise<T: Into<JsValue>,E: Into<JsValue>=String>: Sized {
+  fn to_promise(self)-> Result<JsValue,JsValue>;
+}
+
+impl<E: Into<JsValue>> ToPromise<Uint8Array,E> for Result<Vec<u8>,E> {
+  fn to_promise(self)-> Result<JsValue,JsValue> {
+    match self {
+      Ok(res)=> Ok(Uint8Array::from(res.as_slice()).into()),
+      Err(err)=> Err(err.into()),
+    }
+  }
+}

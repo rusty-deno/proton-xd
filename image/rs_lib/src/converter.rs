@@ -11,7 +11,7 @@ use wasm_bindgen::{
   prelude::*,
   UnwrapThrowExt
 };
-use wasm_bindgen_futures::{js_sys::{Promise, Uint8Array}, future_to_promise};
+use wasm_bindgen_futures::{js_sys::Promise, future_to_promise};
 
 
 
@@ -29,12 +29,7 @@ pub fn convert(mut rgba: Vec<u8>,height: u32,width: u32,format: u8,color_type: u
 
 pub async fn _async_convert(mut rgba: Vec<u8>,height: u32,width: u32,format: u8,color_type: u8,quality: u8)-> Result<JsValue,JsValue> {
   rgba.to_rgba8_if_needed(color_type);
-  let buff=_convert(rgba,height,width,format.into(),quality);
-  
-  match buff {
-    Ok(buff)=> Ok(Uint8Array::from(buff.as_slice()).into()),
-    Err(err)=> Err(err.into()),
-  }
+  _convert(rgba,height,width,format.into(),quality).to_promise()
 }
 
 #[allow(deprecated)]
@@ -61,7 +56,7 @@ fn _convert(rgba: Vec<u8>,height: u32,width: u32,format: Format,quality: u8)-> R
 
 #[wasm_bindgen]
 pub fn image_from_buff(buffer: &[u8])-> Img {
-  let img=load_from_memory(buffer).unwrap_or_default().to_rgba8();
+  let img=load_from_memory(buffer).unwrap_throw().to_rgba8();
 
   Img {
     height: img.height(),
