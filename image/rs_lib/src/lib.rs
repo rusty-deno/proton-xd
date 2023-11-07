@@ -6,13 +6,7 @@ pub(crate) use wasm_bindgen::{
   prelude::wasm_bindgen
 };
 
-pub(crate) use wasm_bindgen_futures::{
-  wasm_bindgen::prelude::wasm_bindgen as async_fn,
-  js_sys::{
-    Promise,
-    Uint8Array
-  }
-};
+pub(crate) use wasm_bindgen_futures::wasm_bindgen::prelude::wasm_bindgen as async_fn;
 
 
 

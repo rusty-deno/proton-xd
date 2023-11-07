@@ -4,9 +4,9 @@
 /**
 * @param {Uint8Array} buff
 * @param {number} color_type
-* @returns {Promise<Promise<any>>}
+* @returns {Promise<Img>}
 */
-export function image_from_buff(buff: Uint8Array, color_type: number): Promise<Promise<any>>;
+export function image_from_buff(buff: Uint8Array, color_type: number): Promise<Img>;
 /**
 */
 export class Img {
@@ -26,32 +26,32 @@ export class Img {
 /**
 * @param {Uint8Array} w
 */
-  to_png(w: Uint8Array): void;
+  to_png_sync(w: Uint8Array): void;
 /**
 * @param {Uint8Array} w
 * @param {number} quality
 */
-  to_jpeg(w: Uint8Array, quality: number): void;
+  to_jpeg_sync(w: Uint8Array, quality: number): void;
 /**
 * @param {Uint8Array} w
 */
-  to_gif(w: Uint8Array): void;
+  to_gif_sync(w: Uint8Array): void;
 /**
 * @param {Uint8Array} w
 */
-  to_ico(w: Uint8Array): void;
+  to_ico_sync(w: Uint8Array): void;
 /**
 * @returns {Uint8Array}
 */
-  to_bmp(): Uint8Array;
+  to_bmp_sync(): Uint8Array;
 /**
 * @param {Uint8Array} w
 */
-  to_tga(w: Uint8Array): void;
+  to_tga_sync(w: Uint8Array): void;
 /**
 * @param {Uint8Array} w
 */
-  to_farbfeld(w: Uint8Array): void;
+  to_farbfeld_sync(w: Uint8Array): void;
 /**
 */
   height: number;

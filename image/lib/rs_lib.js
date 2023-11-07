@@ -104,7 +104,7 @@ function getInt32Memory0() {
 /**
 * @param {Uint8Array} buff
 * @param {number} color_type
-* @returns {Promise<Promise<any>>}
+* @returns {Promise<Img>}
 */
 export function image_from_buff(buff, color_type) {
     const ptr0 = passArray8ToWasm0(buff, wasm.__wbindgen_malloc);
@@ -234,54 +234,54 @@ export class Img {
     /**
     * @param {Uint8Array} w
     */
-    to_png(w) {
+    to_png_sync(w) {
         if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
         _assertNum(this.__wbg_ptr);
         var ptr0 = passArray8ToWasm0(w, wasm.__wbindgen_malloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.img_to_png(this.__wbg_ptr, ptr0, len0, w);
+        wasm.img_to_png_sync(this.__wbg_ptr, ptr0, len0, w);
     }
     /**
     * @param {Uint8Array} w
     * @param {number} quality
     */
-    to_jpeg(w, quality) {
+    to_jpeg_sync(w, quality) {
         if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
         _assertNum(this.__wbg_ptr);
         var ptr0 = passArray8ToWasm0(w, wasm.__wbindgen_malloc);
         var len0 = WASM_VECTOR_LEN;
         _assertNum(quality);
-        wasm.img_to_jpeg(this.__wbg_ptr, ptr0, len0, w, quality);
+        wasm.img_to_jpeg_sync(this.__wbg_ptr, ptr0, len0, w, quality);
     }
     /**
     * @param {Uint8Array} w
     */
-    to_gif(w) {
+    to_gif_sync(w) {
         if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
         _assertNum(this.__wbg_ptr);
         var ptr0 = passArray8ToWasm0(w, wasm.__wbindgen_malloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.img_to_gif(this.__wbg_ptr, ptr0, len0, w);
+        wasm.img_to_gif_sync(this.__wbg_ptr, ptr0, len0, w);
     }
     /**
     * @param {Uint8Array} w
     */
-    to_ico(w) {
+    to_ico_sync(w) {
         if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
         _assertNum(this.__wbg_ptr);
         var ptr0 = passArray8ToWasm0(w, wasm.__wbindgen_malloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.img_to_ico(this.__wbg_ptr, ptr0, len0, w);
+        wasm.img_to_ico_sync(this.__wbg_ptr, ptr0, len0, w);
     }
     /**
     * @returns {Uint8Array}
     */
-    to_bmp() {
+    to_bmp_sync() {
         try {
             if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
             const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
             _assertNum(this.__wbg_ptr);
-            wasm.img_to_bmp(retptr, this.__wbg_ptr);
+            wasm.img_to_bmp_sync(retptr, this.__wbg_ptr);
             var r0 = getInt32Memory0()[retptr / 4 + 0];
             var r1 = getInt32Memory0()[retptr / 4 + 1];
             var v1 = getArrayU8FromWasm0(r0, r1).slice();
@@ -294,34 +294,34 @@ export class Img {
     /**
     * @param {Uint8Array} w
     */
-    to_tga(w) {
+    to_tga_sync(w) {
         if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
         _assertNum(this.__wbg_ptr);
         var ptr0 = passArray8ToWasm0(w, wasm.__wbindgen_malloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.img_to_tga(this.__wbg_ptr, ptr0, len0, w);
+        wasm.img_to_tga_sync(this.__wbg_ptr, ptr0, len0, w);
     }
     /**
     * @param {Uint8Array} w
     */
-    to_farbfeld(w) {
+    to_farbfeld_sync(w) {
         if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
         _assertNum(this.__wbg_ptr);
         var ptr0 = passArray8ToWasm0(w, wasm.__wbindgen_malloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.img_to_farbfeld(this.__wbg_ptr, ptr0, len0, w);
+        wasm.img_to_farbfeld_sync(this.__wbg_ptr, ptr0, len0, w);
     }
 }
 
 const imports = {
     __wbindgen_placeholder__: {
-        __wbindgen_copy_to_typed_array: function(arg0, arg1, arg2) {
-            new Uint8Array(arg2.buffer, arg2.byteOffset, arg2.byteLength).set(getArrayU8FromWasm0(arg0, arg1));
-        },
         __wbg_img_new: function() { return logError(function (arg0) {
             const ret = Img.__wrap(arg0);
             return ret;
         }, arguments) },
+        __wbindgen_copy_to_typed_array: function(arg0, arg1, arg2) {
+            new Uint8Array(arg2.buffer, arg2.byteOffset, arg2.byteLength).set(getArrayU8FromWasm0(arg0, arg1));
+        },
         __wbindgen_cb_drop: function(arg0) {
             const obj = arg0.original;
             if (obj.cnt-- == 1) {

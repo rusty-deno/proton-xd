@@ -1,5 +1,5 @@
 import { Theme,Position,Size } from "./mod.ts";
-import { RGBAImage } from '../image.ts';
+import { RGBAImage } from '../image/image.ts';
 
 
 export type Icon=string|URL|RGBAImage;

@@ -1,5 +1,7 @@
-use std::rc::Rc;
 use super::*;
+use std::rc::Rc;
+use wasm_bindgen_futures::js_sys::Uint8Array;
+
 
 use image::{
   load_from_memory,
@@ -48,48 +50,47 @@ impl Img {
 
   #[wasm_bindgen]
   #[allow(deprecated)]
-  pub fn to_png(&self,w: &mut [u8]) {
+  pub fn to_png_sync(&self,w: &mut [u8]) {
     png::PngEncoder::new(w).encode(&self.rgba,self.width,self.height,Rgba8).unwrap_throw()
   }
 
   #[wasm_bindgen]
-  pub fn to_jpeg(&self,w: &mut [u8],quality: u8) {
+  pub fn to_jpeg_sync(&self,w: &mut [u8],quality: u8) {
     jpeg::JpegEncoder::new_with_quality(w,quality).encode(&self.rgba,self.width,self.height,Rgba8).unwrap_throw()
   }
 
   #[wasm_bindgen]
-  pub fn to_gif(&self,w: &mut [u8]) {
+  pub fn to_gif_sync(&self,w: &mut [u8]) {
     gif::GifEncoder::new(w).encode(&self.rgba,self.width,self.height,Rgba8).unwrap_throw();
   }
 
   #[wasm_bindgen]
   #[allow(deprecated)]
-  pub fn to_ico(&self,w: &mut [u8]) {
+  pub fn to_ico_sync(&self,w: &mut [u8]) {
     ico::IcoEncoder::new(w).encode(&self.rgba,self.width,self.height,Rgba8).unwrap_throw()
   }
 
   #[wasm_bindgen]
-  pub fn to_bmp(&self)-> Vec<u8> {
+  pub fn to_bmp_sync(&self)-> Vec<u8> {
     let mut buff=vec![];
     bmp::BmpEncoder::new(&mut buff).encode(&self.rgba,self.width,self.height,Rgba8).unwrap_throw();
     buff
   }
 
   #[wasm_bindgen]
-  pub fn to_tga(&self,w: &mut [u8]) {
+  pub fn to_tga_sync(&self,w: &mut [u8]) {
     tga::TgaEncoder::new(w).encode(&self.rgba,self.width,self.height,Rgba8).unwrap_throw()
   }
 
   #[wasm_bindgen]
-  pub fn to_farbfeld(&self,w: &mut [u8]) {
+  pub fn to_farbfeld_sync(&self,w: &mut [u8]) {
     farbfeld::FarbfeldEncoder::new(w).encode(&self.rgba,self.width,self.height).unwrap_throw()
   }
-
 }
 
 #[async_fn]
-pub async fn image_from_buff(buff: &[u8],color_type: u8)-> Promise {
-  Img::image_from_buff_sync(buff,color_type).to_promise()
+pub async fn image_from_buff(buff: &[u8],color_type: u8)-> Img {
+  Img::image_from_buff_sync(buff,color_type)
 }
 
 

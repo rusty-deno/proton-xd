@@ -3,7 +3,7 @@ import { MessageType,WindowAttributes } from "../types/window.ts";
 import { confirmDefaultVal,defaultFileOpenerOptions,defaultSaveFileOptions } from "../default.ts";
 import { WindowTrait } from './_window.ts';
 import { encode } from "../../serde/encode.ts";
-import { Screenshot } from '../screenshot.ts';
+import { Screenshot } from '../image/screenshot.ts';
 
 
 
