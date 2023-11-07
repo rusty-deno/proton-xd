@@ -2,53 +2,56 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
-* @param {Uint8Array} rgba
-* @param {number} height
-* @param {number} width
-* @param {number} format
+* @param {Uint8Array} buff
 * @param {number} color_type
-* @param {number} quality
-* @returns {Uint8Array}
+* @returns {Promise<Promise<any>>}
 */
-export function convert_sync(rgba: Uint8Array, height: number, width: number, format: number, color_type: number, quality: number): Uint8Array;
-/**
-* @param {Uint8Array} rgba
-* @param {number} height
-* @param {number} width
-* @param {number} format
-* @param {number} color_type
-* @param {number} quality
-* @returns {Promise<any>}
-*/
-export function convert(rgba: Uint8Array, height: number, width: number, format: number, color_type: number, quality: number): Promise<any>;
-/**
-* @param {Uint8Array} buffer
-* @returns {Img}
-*/
-export function image_from_buff(buffer: Uint8Array): Img;
-/**
-*/
-export enum Format {
-  Png = 0,
-  Jpeg = 1,
-  Gif = 2,
-  WebP = 3,
-  Pnm = 4,
-  Tiff = 5,
-  Tga = 6,
-  Dds = 7,
-  Bmp = 8,
-  Ico = 9,
-  Hdr = 10,
-  OpenExr = 11,
-  Farbfeld = 12,
-  Avif = 13,
-  Qoi = 14,
-}
+export function image_from_buff(buff: Uint8Array, color_type: number): Promise<Promise<any>>;
 /**
 */
 export class Img {
   free(): void;
+/**
+* @param {Uint8Array} rgba
+* @param {number} height
+* @param {number} width
+*/
+  constructor(rgba: Uint8Array, height: number, width: number);
+/**
+* @param {Uint8Array} buff
+* @param {number} color_type
+* @returns {Img}
+*/
+  static image_from_buff_sync(buff: Uint8Array, color_type: number): Img;
+/**
+* @param {Uint8Array} w
+*/
+  to_png(w: Uint8Array): void;
+/**
+* @param {Uint8Array} w
+* @param {number} quality
+*/
+  to_jpeg(w: Uint8Array, quality: number): void;
+/**
+* @param {Uint8Array} w
+*/
+  to_gif(w: Uint8Array): void;
+/**
+* @param {Uint8Array} w
+*/
+  to_ico(w: Uint8Array): void;
+/**
+* @returns {Uint8Array}
+*/
+  to_bmp(): Uint8Array;
+/**
+* @param {Uint8Array} w
+*/
+  to_tga(w: Uint8Array): void;
+/**
+* @param {Uint8Array} w
+*/
+  to_farbfeld(w: Uint8Array): void;
 /**
 */
   height: number;
@@ -58,38 +61,4 @@ export class Img {
 /**
 */
   width: number;
-}
-/**
-*/
-export class Thread {
-  free(): void;
-/**
-*/
-  constructor();
-/**
-* @returns {number}
-*/
-  static available_parallelism(): number;
-/**
-* @returns {Thread}
-*/
-  static current(): Thread;
-/**
-* @returns {boolean}
-*/
-  static panicking(): boolean;
-/**
-*/
-  static park(): void;
-/**
-* @param {number} duration
-*/
-  static park_timeout(duration: number): void;
-/**
-* @param {number} duration
-*/
-  static sleep(duration: number): void;
-/**
-*/
-  static xd(): void;
 }

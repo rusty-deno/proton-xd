@@ -22,12 +22,10 @@ impl ToRgba for Rc<[u8]> {
   fn to_rgba8(&self) {
     let buff=self.clone();
     let mut i=0;
-    let mut j: usize;
 
     while i<buff.len() {
-      j=i+2;
       unsafe {
-        ptr::swap(buff[i].to_ptr(),buff[j].to_ptr());
+        ptr::swap(buff[i].to_ptr(),buff[i+2].to_ptr());
         ptr::replace(buff[i+3].to_ptr(),255);
       }
 
@@ -36,7 +34,7 @@ impl ToRgba for Rc<[u8]> {
   }
 }
 
-pub(crate) trait ToMutPtr {
+pub(crate) trait ToMutPtr: Sized {
   fn to_ptr(&self)-> *mut Self {
     self as *const Self as *mut Self
   }

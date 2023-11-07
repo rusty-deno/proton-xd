@@ -1,18 +1,10 @@
 use std::rc::Rc;
-use crate::ser::*;
-use image::load_from_memory;
+use super::*;
 
-use wasm_bindgen_futures::{
-  wasm_bindgen::prelude::wasm_bindgen as async_fn,
-  js_sys::{
-    Promise,
-    Uint8Array
-  }
-};
-
-use wasm_bindgen::{
-  prelude::wasm_bindgen,
-  UnwrapThrowExt
+use image::{
+  load_from_memory,
+  ColorType::Rgba8,
+  codecs::*
 };
 
 
@@ -37,10 +29,11 @@ impl Img {
   #[wasm_bindgen]
   pub fn image_from_buff_sync(buff: &[u8],color_type: u8)-> Self {
     let img=load_from_memory(buff).unwrap_throw().to_rgba8();
-    let (height,width)=(img.height(),img.width());
-    let rgba: Rc<[u8]>=img.into_vec().into();
-    rgba.to_rgba8_if_needed(color_type);
 
+    let (height,width)=(img.height(),img.width());
+    let rgba=Rc::<[u8]>::from(img.into_vec());
+
+    rgba.to_rgba8_if_needed(color_type);
     Img {
       height,
       width,
@@ -53,19 +46,44 @@ impl Img {
     Uint8Array::from(self.rgba.as_ref())
   }
 
-  // fn writer(&self)-> Result<image::RgbaImage,String> {
-  //   image::RgbaImage::from(image::ImageBuffer::from(&vec![]));
-  //   Ok(image::RgbaImage::from_raw(self.width,self.height,self.rgba).ok_or("cannot deref null ptr.".to_owned())?)
-  // }
-
   #[wasm_bindgen]
-  pub fn to_png(&self) {
-    unimplemented!()
+  #[allow(deprecated)]
+  pub fn to_png(&self,w: &mut [u8]) {
+    png::PngEncoder::new(w).encode(&self.rgba,self.width,self.height,Rgba8).unwrap_throw()
   }
 
+  #[wasm_bindgen]
+  pub fn to_jpeg(&self,w: &mut [u8],quality: u8) {
+    jpeg::JpegEncoder::new_with_quality(w,quality).encode(&self.rgba,self.width,self.height,Rgba8).unwrap_throw()
+  }
 
+  #[wasm_bindgen]
+  pub fn to_gif(&self,w: &mut [u8]) {
+    gif::GifEncoder::new(w).encode(&self.rgba,self.width,self.height,Rgba8).unwrap_throw();
+  }
 
+  #[wasm_bindgen]
+  #[allow(deprecated)]
+  pub fn to_ico(&self,w: &mut [u8]) {
+    ico::IcoEncoder::new(w).encode(&self.rgba,self.width,self.height,Rgba8).unwrap_throw()
+  }
 
+  #[wasm_bindgen]
+  pub fn to_bmp(&self)-> Vec<u8> {
+    let mut buff=vec![];
+    bmp::BmpEncoder::new(&mut buff).encode(&self.rgba,self.width,self.height,Rgba8).unwrap_throw();
+    buff
+  }
+
+  #[wasm_bindgen]
+  pub fn to_tga(&self,w: &mut [u8]) {
+    tga::TgaEncoder::new(w).encode(&self.rgba,self.width,self.height,Rgba8).unwrap_throw()
+  }
+
+  #[wasm_bindgen]
+  pub fn to_farbfeld(&self,w: &mut [u8]) {
+    farbfeld::FarbfeldEncoder::new(w).encode(&self.rgba,self.width,self.height).unwrap_throw()
+  }
 
 }
 
@@ -73,7 +91,6 @@ impl Img {
 pub async fn image_from_buff(buff: &[u8],color_type: u8)-> Promise {
   Img::image_from_buff_sync(buff,color_type).to_promise()
 }
-
 
 
 

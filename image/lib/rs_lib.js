@@ -1,10 +1,6 @@
 // deno-lint-ignore-file
 
 
-const cachedTextDecoder = (typeof TextDecoder !== 'undefined' ? new TextDecoder('utf-8', { ignoreBOM: true, fatal: true }) : { decode: () => { throw Error('TextDecoder not available') } } );
-
-if (typeof TextDecoder !== 'undefined') { cachedTextDecoder.decode(); };
-
 let cachedUint8Memory0 = null;
 
 function getUint8Memory0() {
@@ -14,15 +10,24 @@ function getUint8Memory0() {
     return cachedUint8Memory0;
 }
 
-function getStringFromWasm0(ptr, len) {
+function getArrayU8FromWasm0(ptr, len) {
     ptr = ptr >>> 0;
-    return cachedTextDecoder.decode(getUint8Memory0().subarray(ptr, ptr + len));
+    return getUint8Memory0().subarray(ptr / 1, ptr / 1 + len);
 }
 
 function _assertBoolean(n) {
     if (typeof(n) !== 'boolean') {
         throw new Error('expected a boolean argument');
     }
+}
+
+const cachedTextDecoder = (typeof TextDecoder !== 'undefined' ? new TextDecoder('utf-8', { ignoreBOM: true, fatal: true }) : { decode: () => { throw Error('TextDecoder not available') } } );
+
+if (typeof TextDecoder !== 'undefined') { cachedTextDecoder.decode(); };
+
+function getStringFromWasm0(ptr, len) {
+    ptr = ptr >>> 0;
+    return cachedTextDecoder.decode(getUint8Memory0().subarray(ptr, ptr + len));
 }
 
 const CLOSURE_DTORS = new FinalizationRegistry(state => {
@@ -76,21 +81,7 @@ function _assertNum(n) {
 function __wbg_adapter_20(arg0, arg1, arg2) {
     _assertNum(arg0);
     _assertNum(arg1);
-    wasm.closure53_externref_shim(arg0, arg1, arg2);
-}
-
-let cachedInt32Memory0 = null;
-
-function getInt32Memory0() {
-    if (cachedInt32Memory0 === null || cachedInt32Memory0.byteLength === 0) {
-        cachedInt32Memory0 = new Int32Array(wasm.memory.buffer);
-    }
-    return cachedInt32Memory0;
-}
-
-function getArrayU8FromWasm0(ptr, len) {
-    ptr = ptr >>> 0;
-    return getUint8Memory0().subarray(ptr / 1, ptr / 1 + len);
+    wasm.closure46_externref_shim(arg0, arg1, arg2);
 }
 
 let WASM_VECTOR_LEN = 0;
@@ -101,66 +92,26 @@ function passArray8ToWasm0(arg, malloc) {
     WASM_VECTOR_LEN = arg.length;
     return ptr;
 }
-/**
-* @param {Uint8Array} rgba
-* @param {number} height
-* @param {number} width
-* @param {number} format
-* @param {number} color_type
-* @param {number} quality
-* @returns {Uint8Array}
-*/
-export function convert_sync(rgba, height, width, format, color_type, quality) {
-    try {
-        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-        const ptr0 = passArray8ToWasm0(rgba, wasm.__wbindgen_malloc);
-        const len0 = WASM_VECTOR_LEN;
-        _assertNum(height);
-        _assertNum(width);
-        _assertNum(format);
-        _assertNum(color_type);
-        _assertNum(quality);
-        wasm.convert_sync(retptr, ptr0, len0, height, width, format, color_type, quality);
-        var r0 = getInt32Memory0()[retptr / 4 + 0];
-        var r1 = getInt32Memory0()[retptr / 4 + 1];
-        var v2 = getArrayU8FromWasm0(r0, r1).slice();
-        wasm.__wbindgen_free(r0, r1 * 1, 1);
-        return v2;
-    } finally {
-        wasm.__wbindgen_add_to_stack_pointer(16);
+
+let cachedInt32Memory0 = null;
+
+function getInt32Memory0() {
+    if (cachedInt32Memory0 === null || cachedInt32Memory0.byteLength === 0) {
+        cachedInt32Memory0 = new Int32Array(wasm.memory.buffer);
     }
+    return cachedInt32Memory0;
 }
-
 /**
-* @param {Uint8Array} rgba
-* @param {number} height
-* @param {number} width
-* @param {number} format
+* @param {Uint8Array} buff
 * @param {number} color_type
-* @param {number} quality
-* @returns {Promise<any>}
+* @returns {Promise<Promise<any>>}
 */
-export function convert(rgba, height, width, format, color_type, quality) {
-    const ptr0 = passArray8ToWasm0(rgba, wasm.__wbindgen_malloc);
+export function image_from_buff(buff, color_type) {
+    const ptr0 = passArray8ToWasm0(buff, wasm.__wbindgen_malloc);
     const len0 = WASM_VECTOR_LEN;
-    _assertNum(height);
-    _assertNum(width);
-    _assertNum(format);
     _assertNum(color_type);
-    _assertNum(quality);
-    const ret = wasm.convert(ptr0, len0, height, width, format, color_type, quality);
+    const ret = wasm.image_from_buff(ptr0, len0, color_type);
     return ret;
-}
-
-/**
-* @param {Uint8Array} buffer
-* @returns {Img}
-*/
-export function image_from_buff(buffer) {
-    const ptr0 = passArray8ToWasm0(buffer, wasm.__wbindgen_malloc);
-    const len0 = WASM_VECTOR_LEN;
-    const ret = wasm.image_from_buff(ptr0, len0);
-    return Img.__wrap(ret);
 }
 
 function notDefined(what) { return () => { throw new Error(`${what} is not defined`); }; }
@@ -179,24 +130,16 @@ function handleError(f, args) {
         wasm.__wbindgen_exn_store(idx);
     }
 }
-function __wbg_adapter_47(arg0, arg1, arg2, arg3) {
+function __wbg_adapter_48(arg0, arg1, arg2, arg3) {
     _assertNum(arg0);
     _assertNum(arg1);
-    wasm.closure72_externref_shim(arg0, arg1, arg2, arg3);
+    wasm.closure65_externref_shim(arg0, arg1, arg2, arg3);
 }
-
-/**
-*/
-export const Format = Object.freeze({ Png:0,"0":"Png",Jpeg:1,"1":"Jpeg",Gif:2,"2":"Gif",WebP:3,"3":"WebP",Pnm:4,"4":"Pnm",Tiff:5,"5":"Tiff",Tga:6,"6":"Tga",Dds:7,"7":"Dds",Bmp:8,"8":"Bmp",Ico:9,"9":"Ico",Hdr:10,"10":"Hdr",OpenExr:11,"11":"OpenExr",Farbfeld:12,"12":"Farbfeld",Avif:13,"13":"Avif",Qoi:14,"14":"Qoi", });
 
 const ImgFinalization = new FinalizationRegistry(ptr => wasm.__wbg_img_free(ptr >>> 0));
 /**
 */
 export class Img {
-
-    constructor() {
-        throw new Error('cannot invoke `new` directly');
-    }
 
     static __wrap(ptr) {
         ptr = ptr >>> 0;
@@ -254,14 +197,91 @@ export class Img {
         wasm.__wbg_set_img_width(this.__wbg_ptr, arg0);
     }
     /**
+    * @param {Uint8Array} rgba
+    * @param {number} height
+    * @param {number} width
+    */
+    constructor(rgba, height, width) {
+        const ptr0 = passArray8ToWasm0(rgba, wasm.__wbindgen_malloc);
+        const len0 = WASM_VECTOR_LEN;
+        _assertNum(height);
+        _assertNum(width);
+        const ret = wasm.img_new(ptr0, len0, height, width);
+        this.__wbg_ptr = ret >>> 0;
+        return this;
+    }
+    /**
+    * @param {Uint8Array} buff
+    * @param {number} color_type
+    * @returns {Img}
+    */
+    static image_from_buff_sync(buff, color_type) {
+        const ptr0 = passArray8ToWasm0(buff, wasm.__wbindgen_malloc);
+        const len0 = WASM_VECTOR_LEN;
+        _assertNum(color_type);
+        const ret = wasm.img_image_from_buff_sync(ptr0, len0, color_type);
+        return Img.__wrap(ret);
+    }
+    /**
     * @returns {Uint8Array}
     */
     get rgba() {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
+        const ret = wasm.img_rgba(this.__wbg_ptr);
+        return ret;
+    }
+    /**
+    * @param {Uint8Array} w
+    */
+    to_png(w) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
+        var ptr0 = passArray8ToWasm0(w, wasm.__wbindgen_malloc);
+        var len0 = WASM_VECTOR_LEN;
+        wasm.img_to_png(this.__wbg_ptr, ptr0, len0, w);
+    }
+    /**
+    * @param {Uint8Array} w
+    * @param {number} quality
+    */
+    to_jpeg(w, quality) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
+        var ptr0 = passArray8ToWasm0(w, wasm.__wbindgen_malloc);
+        var len0 = WASM_VECTOR_LEN;
+        _assertNum(quality);
+        wasm.img_to_jpeg(this.__wbg_ptr, ptr0, len0, w, quality);
+    }
+    /**
+    * @param {Uint8Array} w
+    */
+    to_gif(w) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
+        var ptr0 = passArray8ToWasm0(w, wasm.__wbindgen_malloc);
+        var len0 = WASM_VECTOR_LEN;
+        wasm.img_to_gif(this.__wbg_ptr, ptr0, len0, w);
+    }
+    /**
+    * @param {Uint8Array} w
+    */
+    to_ico(w) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
+        var ptr0 = passArray8ToWasm0(w, wasm.__wbindgen_malloc);
+        var len0 = WASM_VECTOR_LEN;
+        wasm.img_to_ico(this.__wbg_ptr, ptr0, len0, w);
+    }
+    /**
+    * @returns {Uint8Array}
+    */
+    to_bmp() {
         try {
             if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
             const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
             _assertNum(this.__wbg_ptr);
-            wasm.img_rgba(retptr, this.__wbg_ptr);
+            wasm.img_to_bmp(retptr, this.__wbg_ptr);
             var r0 = getInt32Memory0()[retptr / 4 + 0];
             var r1 = getInt32Memory0()[retptr / 4 + 1];
             var v1 = getArrayU8FromWasm0(r0, r1).slice();
@@ -271,90 +291,37 @@ export class Img {
             wasm.__wbindgen_add_to_stack_pointer(16);
         }
     }
-}
-
-const ThreadFinalization = new FinalizationRegistry(ptr => wasm.__wbg_thread_free(ptr >>> 0));
-/**
-*/
-export class Thread {
-
-    static __wrap(ptr) {
-        ptr = ptr >>> 0;
-        const obj = Object.create(Thread.prototype);
-        obj.__wbg_ptr = ptr;
-        ThreadFinalization.register(obj, obj.__wbg_ptr, obj);
-        return obj;
-    }
-
-    __destroy_into_raw() {
-        const ptr = this.__wbg_ptr;
-        this.__wbg_ptr = 0;
-        ThreadFinalization.unregister(this);
-        return ptr;
-    }
-
-    free() {
-        const ptr = this.__destroy_into_raw();
-        wasm.__wbg_thread_free(ptr);
+    /**
+    * @param {Uint8Array} w
+    */
+    to_tga(w) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
+        var ptr0 = passArray8ToWasm0(w, wasm.__wbindgen_malloc);
+        var len0 = WASM_VECTOR_LEN;
+        wasm.img_to_tga(this.__wbg_ptr, ptr0, len0, w);
     }
     /**
+    * @param {Uint8Array} w
     */
-    constructor() {
-        const ret = wasm.thread_new();
-        this.__wbg_ptr = ret >>> 0;
-        return this;
-    }
-    /**
-    * @returns {number}
-    */
-    static available_parallelism() {
-        const ret = wasm.thread_available_parallelism();
-        return ret >>> 0;
-    }
-    /**
-    * @returns {Thread}
-    */
-    static current() {
-        const ret = wasm.thread_current();
-        return Thread.__wrap(ret);
-    }
-    /**
-    * @returns {boolean}
-    */
-    static panicking() {
-        const ret = wasm.thread_panicking();
-        return ret !== 0;
-    }
-    /**
-    */
-    static park() {
-        wasm.thread_park();
-    }
-    /**
-    * @param {number} duration
-    */
-    static park_timeout(duration) {
-        wasm.thread_park_timeout(duration);
-    }
-    /**
-    * @param {number} duration
-    */
-    static sleep(duration) {
-        wasm.thread_sleep(duration);
-    }
-    /**
-    */
-    static xd() {
-        wasm.thread_xd();
+    to_farbfeld(w) {
+        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+        _assertNum(this.__wbg_ptr);
+        var ptr0 = passArray8ToWasm0(w, wasm.__wbindgen_malloc);
+        var len0 = WASM_VECTOR_LEN;
+        wasm.img_to_farbfeld(this.__wbg_ptr, ptr0, len0, w);
     }
 }
 
 const imports = {
     __wbindgen_placeholder__: {
-        __wbindgen_string_new: function(arg0, arg1) {
-            const ret = getStringFromWasm0(arg0, arg1);
-            return ret;
+        __wbindgen_copy_to_typed_array: function(arg0, arg1, arg2) {
+            new Uint8Array(arg2.buffer, arg2.byteOffset, arg2.byteLength).set(getArrayU8FromWasm0(arg0, arg1));
         },
+        __wbg_img_new: function() { return logError(function (arg0) {
+            const ret = Img.__wrap(arg0);
+            return ret;
+        }, arguments) },
         __wbindgen_cb_drop: function(arg0) {
             const obj = arg0.original;
             if (obj.cnt-- == 1) {
@@ -415,7 +382,7 @@ const imports = {
                     const a = state0.a;
                     state0.a = 0;
                     try {
-                        return __wbg_adapter_47(a, state0.b, arg0, arg1);
+                        return __wbg_adapter_48(a, state0.b, arg0, arg1);
                     } finally {
                         state0.a = a;
                     }
@@ -454,7 +421,7 @@ const imports = {
             return ret;
         },
         __wbindgen_closure_wrapper169: function() { return logError(function (arg0, arg1, arg2) {
-            const ret = makeMutClosure(arg0, arg1, 54, __wbg_adapter_20);
+            const ret = makeMutClosure(arg0, arg1, 47, __wbg_adapter_20);
             return ret;
         }, arguments) },
         __wbindgen_init_externref_table: function() {
