@@ -11,7 +11,7 @@ use wasm_bindgen::{
   prelude::*,
   UnwrapThrowExt
 };
-use wasm_bindgen_futures::{js_sys::Promise, future_to_promise};
+use wasm_bindgen_futures::js_sys::Promise;
 
 
 
@@ -22,14 +22,9 @@ pub fn convert_sync(mut rgba: Vec<u8>,height: u32,width: u32,format: u8,color_ty
 }
 
 #[wasm_bindgen_futures::wasm_bindgen::prelude::wasm_bindgen]
-pub fn convert(mut rgba: Vec<u8>,height: u32,width: u32,format: u8,color_type: u8,quality: u8)-> Promise {
+pub async fn convert(mut rgba: Vec<u8>,height: u32,width: u32,format: u8,color_type: u8,quality: u8)-> Promise {
   rgba.to_rgba8_if_needed(color_type);
-  future_to_promise(_async_convert(rgba,height,width,format,color_type,quality))
-}
-
-pub async fn _async_convert(mut rgba: Vec<u8>,height: u32,width: u32,format: u8,color_type: u8,quality: u8)-> Result<JsValue,JsValue> {
-  rgba.to_rgba8_if_needed(color_type);
-  _convert(rgba,height,width,format.into(),quality).to_promise()
+  _convert(rgba,height,width,format.into(),quality).unwrap_throw().to_js_value().into()
 }
 
 #[allow(deprecated)]
