@@ -1,9 +1,7 @@
 // deno-lint-ignore-file
-import { $result } from "../../std/error/result/macros.ts";
+import { $result,$resultSync } from "../../std/error/result/macros.ts";
 import { PathBuf } from "../../std/path.ts";
-import { $unimplemented } from "../../mod.ts";
-import * as lib from "../../../image/lib/rs_lib.js";
-import { Img } from "../../../image/lib/rs_lib.js";
+import { Img,image_from_buff } from "../../../image/lib/rs_lib.js";
 
 
 export interface RGBAImage {
@@ -19,59 +17,80 @@ export interface RGBAImage {
 export class ImageBuffer {
   private inner: Img;
 
-  constructor({ height,width,rgba }: RGBAImage) {
-    this.inner=new Img(rgba,height,width);
+  constructor(img: RGBAImage|Img) {
+    if(img instanceof Img) {
+      this.inner=img;
+      return;
+    }
+    this.inner=new Img(img.rgba,img.height,img.width);
   }
 
   /** Encodes the image data to a png image buffer */
   public pngSync() {
-    const w=new Uint8Array;
-    this.inner.to_png_sync(w);
-    return w;
+    return $resultSync(()=> {
+      const w=new Uint8Array;
+      this.inner.to_png_sync(w);
+      return w;
+    });
   }
 
   /** Encodes the image data to a gif image buffer */
   public gifSync() {
-    
+    return $resultSync(()=> {
+      const w=new Uint8Array;
+      this.inner.to_gif_sync(w);
+      return w;
+    });
   }
   
   /** Encodes the image data to a tga image buffer */
   public tgaSync() {
-    
+    return $resultSync(()=> {
+      const w=new Uint8Array;
+      this.inner.to_tga_sync(w);
+      return w;
+    });
   }
   
   /** Encodes the image data to a jpeg image buffer */
   public jpegSync(quality=100) {
-    
+    return $resultSync(()=> {
+      const w=new Uint8Array;
+      this.inner.to_jpeg_sync(w,quality);
+      return w;
+    });
   }
 
   
   /** Encodes the image data to a bmp image buffer */
   public bmpSync() {
-    
+    return $resultSync(()=> this.inner.to_bmp_sync());
   }
 
   
   /** Encodes the image data to a ico image buffer */
   public icoSync() {
-    
+    return $resultSync(()=> {
+      const w=new Uint8Array;
+      this.inner.to_ico_sync(w);
+      return w;
+    });
   }
 
   /** Encodes the image data to a farbfeld image buffer */
   public farbfeldSync() {
-    
-  }
-
-  private convert(format: 0|1|2|3|4|5|6,quality=100): Promise<Uint8Array> {
-    return $unimplemented();
+    return $resultSync(()=> {
+      const w=new Uint8Array;
+      this.inner.to_farbfeld_sync(w);
+      return w;
+    });
   }
 
   public static async open(path: PathBuf) {
-    // return await $result(async ()=> {
-    //   const buff=await Deno.readFile(path);
-    //   const { height,width,rgba }=await await lib.image_from_buff(buff,10);
-    //   return new ImageBuffer({ height,width,rgba });
-    // });
+    return await $result(async ()=> {
+      const inner=await image_from_buff(await Deno.readFile(path),0);
+      return new ImageBuffer(inner);
+    });
   }
   
   public static async fromURL(url: PathBuf) {
