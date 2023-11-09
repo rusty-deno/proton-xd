@@ -1,8 +1,5 @@
-use image::EncodableLayout;
-use wasm_bindgen::JsValue;
-use wasm_bindgen_futures::js_sys::Uint8Array;
-
 use std::ptr;
+use image::codecs::png::{CompressionType, FilterType};
 
 
 pub(crate) trait ToRgba {
@@ -19,7 +16,7 @@ impl<S: std::ops::Deref<Target=[u8]>> ToRgba for S {
     for (i,byte) in self.iter().step_by(4).enumerate() {
       unsafe {
         ptr::swap(byte.to_mut_ptr(),self[i+2].to_mut_ptr());
-        ptr::replace(self[i+3].to_mut_ptr(),255);
+        ptr::replace(self[i+3].to_mut_ptr(),u8::MAX);
       }
     }
   }
@@ -39,12 +36,35 @@ impl<S> ToMutPtr for S {}
 
 
 
-pub(crate) trait ToJsValue {
-  fn to_js_value(self)-> JsValue;
+
+
+pub(crate) trait Enum<T> {
+  fn into_enum(self)-> T;
 }
 
-impl ToJsValue for Vec<u8> {
-  fn to_js_value(self)-> JsValue {
-    Uint8Array::from(self.as_bytes()).into()
+impl Enum<CompressionType> for u8 {
+  fn into_enum(self)-> CompressionType {
+    use CompressionType::*;
+    match self {
+      1=> Fast,
+      2=> Best,
+      _=> Default
+    }
   }
 }
+
+impl Enum<FilterType> for u8 {
+  fn into_enum(self)-> FilterType {
+    use FilterType::*;
+    match self {
+      1=> Sub,
+      2=> Up,
+      3=> Avg,
+      4=> Paeth,
+      5=> Adaptive,
+      _=> NoFilter,
+    }
+  }
+}
+
+

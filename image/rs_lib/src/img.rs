@@ -1,5 +1,6 @@
 use super::*;
 use std::rc::Rc;
+use writer::Writer;
 use wasm_bindgen_futures::js_sys::Uint8Array;
 
 
@@ -50,41 +51,67 @@ impl Img {
 
   #[wasm_bindgen]
   #[allow(deprecated)]
-  pub fn to_png_sync(&self,w: &mut [u8]) {
-    png::PngEncoder::new(w).encode(&self.rgba,self.width,self.height,Rgba8).unwrap_throw()
+  pub fn to_png_sync(&self,compression: u8,filter: u8)-> Vec<u8> {
+    let mut w=Writer::new();
+    png::PngEncoder::new_with_quality(&mut w,compression.into_enum(),filter.into_enum())
+    .encode(&self.rgba,self.width,self.height,Rgba8).unwrap_throw();
+
+    w.into()
   }
 
   #[wasm_bindgen]
-  pub fn to_jpeg_sync(&self,w: &mut [u8],quality: u8) {
-    jpeg::JpegEncoder::new_with_quality(w,quality).encode(&self.rgba,self.width,self.height,Rgba8).unwrap_throw()
+  pub fn to_jpeg_sync(&self,quality: u8)-> Vec<u8> {
+    let mut w=Writer::new();
+    jpeg::JpegEncoder::new_with_quality(&mut w,quality)
+    .encode(&self.rgba,self.width,self.height,Rgba8).unwrap_throw();
+
+    w.into()
   }
 
   #[wasm_bindgen]
-  pub fn to_gif_sync(&self,w: &mut [u8]) {
-    gif::GifEncoder::new(w).encode(&self.rgba,self.width,self.height,Rgba8).unwrap_throw();
+  pub fn to_gif_sync(&self)-> Vec<u8> {
+    let mut w=Writer::new();
+    gif::GifEncoder::new(&mut w)
+    .encode(&self.rgba,self.width,self.height,Rgba8).unwrap_throw();
+
+    w.into()
   }
 
   #[wasm_bindgen]
   #[allow(deprecated)]
-  pub fn to_ico_sync(&self,w: &mut [u8]) {
-    ico::IcoEncoder::new(w).encode(&self.rgba,self.width,self.height,Rgba8).unwrap_throw()
+  pub fn to_ico_sync(&self)-> Vec<u8> {
+    let mut w=Writer::new();
+    ico::IcoEncoder::new(&mut w)
+    .encode(&self.rgba,self.width,self.height,Rgba8).unwrap_throw();
+
+    w.into()
   }
 
   #[wasm_bindgen]
   pub fn to_bmp_sync(&self)-> Vec<u8> {
-    let mut buff=vec![];
-    bmp::BmpEncoder::new(&mut buff).encode(&self.rgba,self.width,self.height,Rgba8).unwrap_throw();
-    buff
+    let mut w=Writer::new();
+    bmp::BmpEncoder::new(&mut w)
+    .encode(&self.rgba,self.width,self.height,Rgba8).unwrap_throw();
+
+    w.into()
   }
 
   #[wasm_bindgen]
-  pub fn to_tga_sync(&self,w: &mut [u8]) {
-    tga::TgaEncoder::new(w).encode(&self.rgba,self.width,self.height,Rgba8).unwrap_throw()
+  pub fn to_tga_sync(&self)-> Vec<u8> {
+    let mut w=Writer::new();
+    tga::TgaEncoder::new(&mut w)
+    .encode(&self.rgba,self.width,self.height,Rgba8).unwrap_throw();
+
+    w.into()
   }
 
   #[wasm_bindgen]
-  pub fn to_farbfeld_sync(&self,w: &mut [u8]) {
-    farbfeld::FarbfeldEncoder::new(w).encode(&self.rgba,self.width,self.height).unwrap_throw()
+  pub fn to_farbfeld_sync(&self)-> Vec<u8> {
+    let mut w=Writer::new();
+    farbfeld::FarbfeldEncoder::new(&mut w)
+    .encode(&self.rgba,self.width,self.height).unwrap_throw();
+
+    w.into()
   }
 }
 

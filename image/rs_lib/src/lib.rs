@@ -1,5 +1,7 @@
 mod impls;
 
+
+pub(crate) mod writer;
 pub(crate) use impls::*;
 pub(crate) use wasm_bindgen::{
   UnwrapThrowExt,
