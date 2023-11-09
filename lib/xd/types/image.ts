@@ -19,6 +19,7 @@ export type RgbTouple=[
 
 export type Color=string|Rgb|number|RgbTouple;
 
+
 /**
  * Takes a color as argument and returns its RGBA representation
  * # Example
@@ -58,7 +59,6 @@ export function $hex(color: Rgb|RgbTouple) {
 }
 
 
-
 function hexToRgb(color: number): Rgba {
   return {
     r: color&0xff,
@@ -67,3 +67,9 @@ function hexToRgb(color: number): Rgba {
     a: color.toString().length>6?color&0xffffffff%0x100:0xff,
   };
 }
+
+export type CompressionType="Fast"|"Best"|"Default";
+export type Filter="Sub"|"Up"|"Avg"|"Paeth"|"Adaptive"|"NoFilter";
+
+
+

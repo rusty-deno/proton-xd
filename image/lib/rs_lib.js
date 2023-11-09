@@ -1,20 +1,6 @@
 // deno-lint-ignore-file
 
 
-let cachedUint8Memory0 = null;
-
-function getUint8Memory0() {
-    if (cachedUint8Memory0 === null || cachedUint8Memory0.byteLength === 0) {
-        cachedUint8Memory0 = new Uint8Array(wasm.memory.buffer);
-    }
-    return cachedUint8Memory0;
-}
-
-function getArrayU8FromWasm0(ptr, len) {
-    ptr = ptr >>> 0;
-    return getUint8Memory0().subarray(ptr / 1, ptr / 1 + len);
-}
-
 function _assertBoolean(n) {
     if (typeof(n) !== 'boolean') {
         throw new Error('expected a boolean argument');
@@ -24,6 +10,15 @@ function _assertBoolean(n) {
 const cachedTextDecoder = (typeof TextDecoder !== 'undefined' ? new TextDecoder('utf-8', { ignoreBOM: true, fatal: true }) : { decode: () => { throw Error('TextDecoder not available') } } );
 
 if (typeof TextDecoder !== 'undefined') { cachedTextDecoder.decode(); };
+
+let cachedUint8Memory0 = null;
+
+function getUint8Memory0() {
+    if (cachedUint8Memory0 === null || cachedUint8Memory0.byteLength === 0) {
+        cachedUint8Memory0 = new Uint8Array(wasm.memory.buffer);
+    }
+    return cachedUint8Memory0;
+}
 
 function getStringFromWasm0(ptr, len) {
     ptr = ptr >>> 0;
@@ -78,10 +73,10 @@ function logError(f, args) {
 function _assertNum(n) {
     if (typeof(n) !== 'number') throw new Error('expected a number argument');
 }
-function __wbg_adapter_20(arg0, arg1, arg2) {
+function __wbg_adapter_18(arg0, arg1, arg2) {
     _assertNum(arg0);
     _assertNum(arg1);
-    wasm.closure46_externref_shim(arg0, arg1, arg2);
+    wasm.closure49_externref_shim(arg0, arg1, arg2);
 }
 
 let WASM_VECTOR_LEN = 0;
@@ -101,16 +96,124 @@ function getInt32Memory0() {
     }
     return cachedInt32Memory0;
 }
+
+function getArrayU8FromWasm0(ptr, len) {
+    ptr = ptr >>> 0;
+    return getUint8Memory0().subarray(ptr / 1, ptr / 1 + len);
+}
 /**
 * @param {Uint8Array} buff
-* @param {number} color_type
+* @param {boolean} is_brga
 * @returns {Promise<Img>}
 */
-export function image_from_buff(buff, color_type) {
+export function image_from_buff(buff, is_brga) {
     const ptr0 = passArray8ToWasm0(buff, wasm.__wbindgen_malloc);
     const len0 = WASM_VECTOR_LEN;
-    _assertNum(color_type);
-    const ret = wasm.image_from_buff(ptr0, len0, color_type);
+    _assertBoolean(is_brga);
+    const ret = wasm.image_from_buff(ptr0, len0, is_brga);
+    return ret;
+}
+
+function _assertClass(instance, klass) {
+    if (!(instance instanceof klass)) {
+        throw new Error(`expected instance of ${klass.name}`);
+    }
+    return instance.ptr;
+}
+/**
+* @param {Img} img
+* @param {number} compression
+* @param {number} filter
+* @returns {Promise<Uint8Array>}
+*/
+export function to_png(img, compression, filter) {
+    _assertClass(img, Img);
+    if (img.__wbg_ptr === 0) {
+        throw new Error('Attempt to use a moved value');
+    }
+    _assertNum(compression);
+    _assertNum(filter);
+    const ret = wasm.to_png(img.__wbg_ptr, compression, filter);
+    return ret;
+}
+
+/**
+* @param {Img} img
+* @param {number} quality
+* @returns {Uint8Array}
+*/
+export function to_jpeg(img, quality) {
+    _assertClass(img, Img);
+    if (img.__wbg_ptr === 0) {
+        throw new Error('Attempt to use a moved value');
+    }
+    _assertNum(quality);
+    const ret = wasm.to_jpeg(img.__wbg_ptr, quality);
+    return ret;
+}
+
+/**
+* @param {Img} img
+* @returns {Uint8Array}
+*/
+export function to_gif(img) {
+    _assertClass(img, Img);
+    if (img.__wbg_ptr === 0) {
+        throw new Error('Attempt to use a moved value');
+    }
+    const ret = wasm.to_gif(img.__wbg_ptr);
+    return ret;
+}
+
+/**
+* @param {Img} img
+* @returns {Uint8Array}
+*/
+export function to_ico(img) {
+    _assertClass(img, Img);
+    if (img.__wbg_ptr === 0) {
+        throw new Error('Attempt to use a moved value');
+    }
+    const ret = wasm.to_ico(img.__wbg_ptr);
+    return ret;
+}
+
+/**
+* @param {Img} img
+* @returns {Uint8Array}
+*/
+export function to_bmp(img) {
+    _assertClass(img, Img);
+    if (img.__wbg_ptr === 0) {
+        throw new Error('Attempt to use a moved value');
+    }
+    const ret = wasm.to_bmp(img.__wbg_ptr);
+    return ret;
+}
+
+/**
+* @param {Img} img
+* @returns {Uint8Array}
+*/
+export function to_tga(img) {
+    _assertClass(img, Img);
+    if (img.__wbg_ptr === 0) {
+        throw new Error('Attempt to use a moved value');
+    }
+    const ret = wasm.to_tga(img.__wbg_ptr);
+    return ret;
+}
+
+/**
+* @param {Img} img
+* @returns {Uint8Array}
+*/
+export function to_farbfeld(img) {
+    _assertClass(img, Img);
+    if (img.__wbg_ptr === 0) {
+        throw new Error('Attempt to use a moved value');
+    }
+    const ret = wasm.to_farbfeld(img.__wbg_ptr);
     return ret;
 }
 
@@ -130,10 +233,10 @@ function handleError(f, args) {
         wasm.__wbindgen_exn_store(idx);
     }
 }
-function __wbg_adapter_48(arg0, arg1, arg2, arg3) {
+function __wbg_adapter_53(arg0, arg1, arg2, arg3) {
     _assertNum(arg0);
     _assertNum(arg1);
-    wasm.closure65_externref_shim(arg0, arg1, arg2, arg3);
+    wasm.closure68_externref_shim(arg0, arg1, arg2, arg3);
 }
 
 const ImgFinalization = new FinalizationRegistry(ptr => wasm.__wbg_img_free(ptr >>> 0));
@@ -212,14 +315,14 @@ export class Img {
     }
     /**
     * @param {Uint8Array} buff
-    * @param {number} color_type
+    * @param {boolean} is_brga
     * @returns {Img}
     */
-    static image_from_buff_sync(buff, color_type) {
+    static image_from_buff_sync(buff, is_brga) {
         const ptr0 = passArray8ToWasm0(buff, wasm.__wbindgen_malloc);
         const len0 = WASM_VECTOR_LEN;
-        _assertNum(color_type);
-        const ret = wasm.img_image_from_buff_sync(ptr0, len0, color_type);
+        _assertBoolean(is_brga);
+        const ret = wasm.img_image_from_buff_sync(ptr0, len0, is_brga);
         return Img.__wrap(ret);
     }
     /**
@@ -232,46 +335,82 @@ export class Img {
         return ret;
     }
     /**
-    * @param {Uint8Array} w
+    * @param {number} compression
+    * @param {number} filter
+    * @returns {Uint8Array}
     */
-    to_png_sync(w) {
-        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
-        _assertNum(this.__wbg_ptr);
-        var ptr0 = passArray8ToWasm0(w, wasm.__wbindgen_malloc);
-        var len0 = WASM_VECTOR_LEN;
-        wasm.img_to_png_sync(this.__wbg_ptr, ptr0, len0, w);
+    to_png_sync(compression, filter) {
+        try {
+            if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+            _assertNum(this.__wbg_ptr);
+            _assertNum(compression);
+            _assertNum(filter);
+            wasm.img_to_png_sync(retptr, this.__wbg_ptr, compression, filter);
+            var r0 = getInt32Memory0()[retptr / 4 + 0];
+            var r1 = getInt32Memory0()[retptr / 4 + 1];
+            var v1 = getArrayU8FromWasm0(r0, r1).slice();
+            wasm.__wbindgen_free(r0, r1 * 1, 1);
+            return v1;
+        } finally {
+            wasm.__wbindgen_add_to_stack_pointer(16);
+        }
     }
     /**
-    * @param {Uint8Array} w
     * @param {number} quality
+    * @returns {Uint8Array}
     */
-    to_jpeg_sync(w, quality) {
-        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
-        _assertNum(this.__wbg_ptr);
-        var ptr0 = passArray8ToWasm0(w, wasm.__wbindgen_malloc);
-        var len0 = WASM_VECTOR_LEN;
-        _assertNum(quality);
-        wasm.img_to_jpeg_sync(this.__wbg_ptr, ptr0, len0, w, quality);
+    to_jpeg_sync(quality) {
+        try {
+            if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+            _assertNum(this.__wbg_ptr);
+            _assertNum(quality);
+            wasm.img_to_jpeg_sync(retptr, this.__wbg_ptr, quality);
+            var r0 = getInt32Memory0()[retptr / 4 + 0];
+            var r1 = getInt32Memory0()[retptr / 4 + 1];
+            var v1 = getArrayU8FromWasm0(r0, r1).slice();
+            wasm.__wbindgen_free(r0, r1 * 1, 1);
+            return v1;
+        } finally {
+            wasm.__wbindgen_add_to_stack_pointer(16);
+        }
     }
     /**
-    * @param {Uint8Array} w
+    * @returns {Uint8Array}
     */
-    to_gif_sync(w) {
-        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
-        _assertNum(this.__wbg_ptr);
-        var ptr0 = passArray8ToWasm0(w, wasm.__wbindgen_malloc);
-        var len0 = WASM_VECTOR_LEN;
-        wasm.img_to_gif_sync(this.__wbg_ptr, ptr0, len0, w);
+    to_gif_sync() {
+        try {
+            if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+            _assertNum(this.__wbg_ptr);
+            wasm.img_to_gif_sync(retptr, this.__wbg_ptr);
+            var r0 = getInt32Memory0()[retptr / 4 + 0];
+            var r1 = getInt32Memory0()[retptr / 4 + 1];
+            var v1 = getArrayU8FromWasm0(r0, r1).slice();
+            wasm.__wbindgen_free(r0, r1 * 1, 1);
+            return v1;
+        } finally {
+            wasm.__wbindgen_add_to_stack_pointer(16);
+        }
     }
     /**
-    * @param {Uint8Array} w
+    * @returns {Uint8Array}
     */
-    to_ico_sync(w) {
-        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
-        _assertNum(this.__wbg_ptr);
-        var ptr0 = passArray8ToWasm0(w, wasm.__wbindgen_malloc);
-        var len0 = WASM_VECTOR_LEN;
-        wasm.img_to_ico_sync(this.__wbg_ptr, ptr0, len0, w);
+    to_ico_sync() {
+        try {
+            if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+            _assertNum(this.__wbg_ptr);
+            wasm.img_to_ico_sync(retptr, this.__wbg_ptr);
+            var r0 = getInt32Memory0()[retptr / 4 + 0];
+            var r1 = getInt32Memory0()[retptr / 4 + 1];
+            var v1 = getArrayU8FromWasm0(r0, r1).slice();
+            wasm.__wbindgen_free(r0, r1 * 1, 1);
+            return v1;
+        } finally {
+            wasm.__wbindgen_add_to_stack_pointer(16);
+        }
     }
     /**
     * @returns {Uint8Array}
@@ -292,24 +431,40 @@ export class Img {
         }
     }
     /**
-    * @param {Uint8Array} w
+    * @returns {Uint8Array}
     */
-    to_tga_sync(w) {
-        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
-        _assertNum(this.__wbg_ptr);
-        var ptr0 = passArray8ToWasm0(w, wasm.__wbindgen_malloc);
-        var len0 = WASM_VECTOR_LEN;
-        wasm.img_to_tga_sync(this.__wbg_ptr, ptr0, len0, w);
+    to_tga_sync() {
+        try {
+            if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+            _assertNum(this.__wbg_ptr);
+            wasm.img_to_tga_sync(retptr, this.__wbg_ptr);
+            var r0 = getInt32Memory0()[retptr / 4 + 0];
+            var r1 = getInt32Memory0()[retptr / 4 + 1];
+            var v1 = getArrayU8FromWasm0(r0, r1).slice();
+            wasm.__wbindgen_free(r0, r1 * 1, 1);
+            return v1;
+        } finally {
+            wasm.__wbindgen_add_to_stack_pointer(16);
+        }
     }
     /**
-    * @param {Uint8Array} w
+    * @returns {Uint8Array}
     */
-    to_farbfeld_sync(w) {
-        if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
-        _assertNum(this.__wbg_ptr);
-        var ptr0 = passArray8ToWasm0(w, wasm.__wbindgen_malloc);
-        var len0 = WASM_VECTOR_LEN;
-        wasm.img_to_farbfeld_sync(this.__wbg_ptr, ptr0, len0, w);
+    to_farbfeld_sync() {
+        try {
+            if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
+            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+            _assertNum(this.__wbg_ptr);
+            wasm.img_to_farbfeld_sync(retptr, this.__wbg_ptr);
+            var r0 = getInt32Memory0()[retptr / 4 + 0];
+            var r1 = getInt32Memory0()[retptr / 4 + 1];
+            var v1 = getArrayU8FromWasm0(r0, r1).slice();
+            wasm.__wbindgen_free(r0, r1 * 1, 1);
+            return v1;
+        } finally {
+            wasm.__wbindgen_add_to_stack_pointer(16);
+        }
     }
 }
 
@@ -319,9 +474,6 @@ const imports = {
             const ret = Img.__wrap(arg0);
             return ret;
         }, arguments) },
-        __wbindgen_copy_to_typed_array: function(arg0, arg1, arg2) {
-            new Uint8Array(arg2.buffer, arg2.byteOffset, arg2.byteLength).set(getArrayU8FromWasm0(arg0, arg1));
-        },
         __wbindgen_cb_drop: function(arg0) {
             const obj = arg0.original;
             if (obj.cnt-- == 1) {
@@ -382,7 +534,7 @@ const imports = {
                     const a = state0.a;
                     state0.a = 0;
                     try {
-                        return __wbg_adapter_48(a, state0.b, arg0, arg1);
+                        return __wbg_adapter_53(a, state0.b, arg0, arg1);
                     } finally {
                         state0.a = a;
                     }
@@ -420,8 +572,8 @@ const imports = {
             const ret = wasm.memory;
             return ret;
         },
-        __wbindgen_closure_wrapper169: function() { return logError(function (arg0, arg1, arg2) {
-            const ret = makeMutClosure(arg0, arg1, 47, __wbg_adapter_20);
+        __wbindgen_closure_wrapper185: function() { return logError(function (arg0, arg1, arg2) {
+            const ret = makeMutClosure(arg0, arg1, 50, __wbg_adapter_18);
             return ret;
         }, arguments) },
         __wbindgen_init_externref_table: function() {
