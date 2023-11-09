@@ -1,7 +1,8 @@
 // deno-lint-ignore-file
-import { $result,$resultSync } from "../../std/error/result/macros.ts";
 import { PathBuf } from "../../std/path.ts";
 import { Img,image_from_buff } from "../../../image/lib/rs_lib.js";
+import { $result,$resultSync } from "../../std/error/result/macros.ts";
+
 
 
 export interface RGBAImage {
@@ -24,6 +25,29 @@ export class ImageBuffer {
     }
     this.inner=new Img(img.rgba,img.height,img.width);
   }
+
+  public static open(path: PathBuf) {
+    return $result(async ()=> {
+      const inner=await image_from_buff(await Deno.readFile(path),0);
+      return new ImageBuffer(inner);
+    });
+  }
+  
+  public static fromURL(url: PathBuf) {
+    return $result(async ()=> {
+      const res=await fetch(url);
+      const buff=new Uint8Array(await (await res.blob()).arrayBuffer());
+      return new ImageBuffer(await image_from_buff(buff,0));
+    });
+  }
+
+  public static openSync(path: PathBuf) {
+    return $resultSync(()=> {
+      const inner=Img.image_from_buff_sync(Deno.readFileSync(path),0);
+      return new ImageBuffer(inner);
+    });
+  }
+
 
   /** Encodes the image data to a png image buffer */
   public pngSync() {
@@ -64,7 +88,7 @@ export class ImageBuffer {
   
   /** Encodes the image data to a bmp image buffer */
   public bmpSync() {
-    return $resultSync(()=> this.inner.to_bmp_sync());
+    return $resultSync(this.inner.to_bmp_sync);
   }
 
   
@@ -86,19 +110,5 @@ export class ImageBuffer {
     });
   }
 
-  public static async open(path: PathBuf) {
-    return await $result(async ()=> {
-      const inner=await image_from_buff(await Deno.readFile(path),0);
-      return new ImageBuffer(inner);
-    });
-  }
-  
-  public static async fromURL(url: PathBuf) {
-    // return await $result(async ()=> {
-    //   const res=await fetch(url);
-    //   const blob=await res.blob();
-    //   const { height,width,rgba }={};//image_from_buff(new Uint8Array(await blob.arrayBuffer()),10);
-    //   return new ImageBuffer({ height,width,rgba });
-    // });
-  }
+
 }
