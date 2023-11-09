@@ -120,7 +120,39 @@ pub async fn image_from_buff(buff: &[u8],is_brga: bool)-> Img {
   Img::image_from_buff_sync(buff,is_brga)
 }
 
+#[async_fn]
+pub async fn to_png(img: &Img,compression: u8,filter: u8)-> Uint8Array {
+  Img::to_png_sync(img,compression,filter).as_slice().into()
+}
 
+#[async_fn]
+pub fn to_jpeg(img: &Img,quality: u8)-> Uint8Array {
+  Img::to_jpeg_sync(img,quality).as_slice().into()
+}
 
+#[async_fn]
+pub fn to_gif(img: &Img)-> Uint8Array {
+  Img::to_gif_sync(img).as_slice().into()
+}
+
+#[async_fn]
+pub fn to_ico(img: &Img)-> Uint8Array {
+  Img::to_ico_sync(img).as_slice().into()
+}
+
+#[async_fn]
+pub fn to_bmp(img: &Img)-> Uint8Array {
+  Img::to_bmp_sync(img).as_slice().into()
+}
+
+#[async_fn]
+pub fn to_tga(img: &Img)-> Uint8Array {
+  Img::to_tga_sync(img).as_slice().into()
+}
+
+#[async_fn]
+pub fn to_farbfeld(img: &Img)-> Uint8Array {
+  Img::to_farbfeld_sync(img).as_slice().into()
+}
 
 

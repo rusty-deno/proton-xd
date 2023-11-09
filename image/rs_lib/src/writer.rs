@@ -6,6 +6,7 @@ use std::{
   },
 };
 
+
 #[derive(Default)]
 pub(crate) struct Writer {
   stream: LinkedList<u8>
@@ -38,6 +39,4 @@ impl Into<Vec<u8>> for Writer {
     self.stream.into_iter().collect()
   }
 }
-
-
 
