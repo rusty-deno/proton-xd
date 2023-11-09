@@ -29,13 +29,13 @@ impl Img {
   }
 
   #[wasm_bindgen]
-  pub fn image_from_buff_sync(buff: &[u8],color_type: u8)-> Self {
+  pub fn image_from_buff_sync(buff: &[u8],is_brga: bool)-> Self {
     let img=load_from_memory(buff).unwrap_throw().to_rgba8();
 
     let (height,width)=(img.height(),img.width());
     let rgba=Rc::<[u8]>::from(img.into_vec());
 
-    rgba.to_rgba8_if_needed(color_type);
+    rgba.to_rgba8_if_needed(is_brga);
     Img {
       height,
       width,
@@ -89,9 +89,10 @@ impl Img {
 }
 
 #[async_fn]
-pub async fn image_from_buff(buff: &[u8],color_type: u8)-> Img {
-  Img::image_from_buff_sync(buff,color_type)
+pub async fn image_from_buff(buff: &[u8],is_brga: bool)-> Img {
+  Img::image_from_buff_sync(buff,is_brga)
 }
+
 
 
 

@@ -2,40 +2,37 @@ use image::EncodableLayout;
 use wasm_bindgen::JsValue;
 use wasm_bindgen_futures::js_sys::Uint8Array;
 
-use std::{
-  rc::Rc,
-  ptr
-};
+use std::ptr;
 
 
 pub(crate) trait ToRgba {
   fn to_rgba8(&self);
-  fn to_rgba8_if_needed(&self,color_type: u8) {
-    if color_type==10 {
+  fn to_rgba8_if_needed(&self,is_brga: bool) {
+    if is_brga {
       self.to_rgba8();
     }
   }
 }
 
-impl ToRgba for Rc<[u8]> {
+impl<S: std::ops::Deref<Target=[u8]>> ToRgba for S {
   fn to_rgba8(&self) {
-    let buff=self.clone();
-    let mut i=0;
-
-    while i<buff.len() {
+    for (i,byte) in self.iter().step_by(4).enumerate() {
       unsafe {
-        ptr::swap(buff[i].to_ptr(),buff[i+2].to_ptr());
-        ptr::replace(buff[i+3].to_ptr(),255);
+        ptr::swap(byte.to_mut_ptr(),self[i+2].to_mut_ptr());
+        ptr::replace(self[i+3].to_mut_ptr(),255);
       }
-
-      i+=4;
     }
   }
 }
 
+
 pub(crate) trait ToMutPtr: Sized {
-  fn to_ptr(&self)-> *mut Self {
+  fn to_mut_ptr(&self)-> *mut Self {
     self as *const Self as *mut Self
+  }
+
+  fn as_mut_ptr(&mut self)-> *mut Self {
+    self as *mut Self
   }
 }
 impl<S> ToMutPtr for S {}
