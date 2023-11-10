@@ -3,10 +3,10 @@
 /* eslint-disable */
 /**
 * @param {Uint8Array} buff
-* @param {boolean} is_brga
+* @param {boolean} is_bgra
 * @returns {Promise<Img>}
 */
-export function image_from_buff(buff: Uint8Array, is_brga: boolean): Promise<Img>;
+export function image_from_buff(buff: Uint8Array, is_bgra: boolean): Promise<Img>;
 /**
 * @param {Img} img
 * @param {number} compression
@@ -50,17 +50,18 @@ export function to_farbfeld(img: Img): Promise<Uint8Array>;
 export class Img {
   free(): void;
 /**
-* @param {Uint8Array} rgba
+* @param {Uint8Array} bytes
 * @param {number} height
 * @param {number} width
+* @param {boolean} is_bgra
 */
-  constructor(rgba: Uint8Array, height: number, width: number);
+  constructor(bytes: Uint8Array, height: number, width: number, is_bgra: boolean);
 /**
 * @param {Uint8Array} buff
-* @param {boolean} is_brga
+* @param {boolean} is_bgra
 * @returns {Img}
 */
-  static image_from_buff_sync(buff: Uint8Array, is_brga: boolean): Img;
+  static image_from_buff_sync(buff: Uint8Array, is_bgra: boolean): Img;
 /**
 * @param {number} compression
 * @param {number} filter
@@ -94,10 +95,10 @@ export class Img {
   to_farbfeld_sync(): Uint8Array;
 /**
 */
-  height: number;
+  readonly bytes: Uint8Array;
 /**
 */
-  readonly rgba: Uint8Array;
+  height: number;
 /**
 */
   width: number;

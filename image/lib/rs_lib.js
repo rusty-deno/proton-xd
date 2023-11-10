@@ -76,7 +76,7 @@ function _assertNum(n) {
 function __wbg_adapter_18(arg0, arg1, arg2) {
     _assertNum(arg0);
     _assertNum(arg1);
-    wasm.closure69_externref_shim(arg0, arg1, arg2);
+    wasm.closure70_externref_shim(arg0, arg1, arg2);
 }
 
 let WASM_VECTOR_LEN = 0;
@@ -103,14 +103,14 @@ function getArrayU8FromWasm0(ptr, len) {
 }
 /**
 * @param {Uint8Array} buff
-* @param {boolean} is_brga
+* @param {boolean} is_bgra
 * @returns {Promise<Img>}
 */
-export function image_from_buff(buff, is_brga) {
+export function image_from_buff(buff, is_bgra) {
     const ptr0 = passArray8ToWasm0(buff, wasm.__wbindgen_malloc);
     const len0 = WASM_VECTOR_LEN;
-    _assertBoolean(is_brga);
-    const ret = wasm.image_from_buff(ptr0, len0, is_brga);
+    _assertBoolean(is_bgra);
+    const ret = wasm.image_from_buff(ptr0, len0, is_bgra);
     return ret;
 }
 
@@ -236,7 +236,7 @@ function handleError(f, args) {
 function __wbg_adapter_53(arg0, arg1, arg2, arg3) {
     _assertNum(arg0);
     _assertNum(arg1);
-    wasm.closure88_externref_shim(arg0, arg1, arg2, arg3);
+    wasm.closure89_externref_shim(arg0, arg1, arg2, arg3);
 }
 
 const ImgFinalization = new FinalizationRegistry(ptr => wasm.__wbg_img_free(ptr >>> 0));
@@ -300,38 +300,40 @@ export class Img {
         wasm.__wbg_set_img_width(this.__wbg_ptr, arg0);
     }
     /**
-    * @param {Uint8Array} rgba
+    * @param {Uint8Array} bytes
     * @param {number} height
     * @param {number} width
+    * @param {boolean} is_bgra
     */
-    constructor(rgba, height, width) {
-        const ptr0 = passArray8ToWasm0(rgba, wasm.__wbindgen_malloc);
+    constructor(bytes, height, width, is_bgra) {
+        const ptr0 = passArray8ToWasm0(bytes, wasm.__wbindgen_malloc);
         const len0 = WASM_VECTOR_LEN;
         _assertNum(height);
         _assertNum(width);
-        const ret = wasm.img_new(ptr0, len0, height, width);
+        _assertBoolean(is_bgra);
+        const ret = wasm.img_new(ptr0, len0, height, width, is_bgra);
         this.__wbg_ptr = ret >>> 0;
         return this;
     }
     /**
     * @param {Uint8Array} buff
-    * @param {boolean} is_brga
+    * @param {boolean} is_bgra
     * @returns {Img}
     */
-    static image_from_buff_sync(buff, is_brga) {
+    static image_from_buff_sync(buff, is_bgra) {
         const ptr0 = passArray8ToWasm0(buff, wasm.__wbindgen_malloc);
         const len0 = WASM_VECTOR_LEN;
-        _assertBoolean(is_brga);
-        const ret = wasm.img_image_from_buff_sync(ptr0, len0, is_brga);
+        _assertBoolean(is_bgra);
+        const ret = wasm.img_image_from_buff_sync(ptr0, len0, is_bgra);
         return Img.__wrap(ret);
     }
     /**
     * @returns {Uint8Array}
     */
-    get rgba() {
+    get bytes() {
         if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
         _assertNum(this.__wbg_ptr);
-        const ret = wasm.img_rgba(this.__wbg_ptr);
+        const ret = wasm.img_bytes(this.__wbg_ptr);
         return ret;
     }
     /**
@@ -572,8 +574,8 @@ const imports = {
             const ret = wasm.memory;
             return ret;
         },
-        __wbindgen_closure_wrapper205: function() { return logError(function (arg0, arg1, arg2) {
-            const ret = makeMutClosure(arg0, arg1, 70, __wbg_adapter_18);
+        __wbindgen_closure_wrapper210: function() { return logError(function (arg0, arg1, arg2) {
+            const ret = makeMutClosure(arg0, arg1, 71, __wbg_adapter_18);
             return ret;
         }, arguments) },
         __wbindgen_init_externref_table: function() {
