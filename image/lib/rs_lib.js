@@ -76,7 +76,7 @@ function _assertNum(n) {
 function __wbg_adapter_18(arg0, arg1, arg2) {
     _assertNum(arg0);
     _assertNum(arg1);
-    wasm.closure49_externref_shim(arg0, arg1, arg2);
+    wasm.closure69_externref_shim(arg0, arg1, arg2);
 }
 
 let WASM_VECTOR_LEN = 0;
@@ -140,7 +140,7 @@ export function to_png(img, compression, filter) {
 /**
 * @param {Img} img
 * @param {number} quality
-* @returns {Uint8Array}
+* @returns {Promise<Uint8Array>}
 */
 export function to_jpeg(img, quality) {
     _assertClass(img, Img);
@@ -154,7 +154,7 @@ export function to_jpeg(img, quality) {
 
 /**
 * @param {Img} img
-* @returns {Uint8Array}
+* @returns {Promise<Uint8Array>}
 */
 export function to_gif(img) {
     _assertClass(img, Img);
@@ -167,7 +167,7 @@ export function to_gif(img) {
 
 /**
 * @param {Img} img
-* @returns {Uint8Array}
+* @returns {Promise<Uint8Array>}
 */
 export function to_ico(img) {
     _assertClass(img, Img);
@@ -180,7 +180,7 @@ export function to_ico(img) {
 
 /**
 * @param {Img} img
-* @returns {Uint8Array}
+* @returns {Promise<Uint8Array>}
 */
 export function to_bmp(img) {
     _assertClass(img, Img);
@@ -193,7 +193,7 @@ export function to_bmp(img) {
 
 /**
 * @param {Img} img
-* @returns {Uint8Array}
+* @returns {Promise<Uint8Array>}
 */
 export function to_tga(img) {
     _assertClass(img, Img);
@@ -206,7 +206,7 @@ export function to_tga(img) {
 
 /**
 * @param {Img} img
-* @returns {Uint8Array}
+* @returns {Promise<Uint8Array>}
 */
 export function to_farbfeld(img) {
     _assertClass(img, Img);
@@ -236,7 +236,7 @@ function handleError(f, args) {
 function __wbg_adapter_53(arg0, arg1, arg2, arg3) {
     _assertNum(arg0);
     _assertNum(arg1);
-    wasm.closure68_externref_shim(arg0, arg1, arg2, arg3);
+    wasm.closure88_externref_shim(arg0, arg1, arg2, arg3);
 }
 
 const ImgFinalization = new FinalizationRegistry(ptr => wasm.__wbg_img_free(ptr >>> 0));
@@ -572,8 +572,8 @@ const imports = {
             const ret = wasm.memory;
             return ret;
         },
-        __wbindgen_closure_wrapper185: function() { return logError(function (arg0, arg1, arg2) {
-            const ret = makeMutClosure(arg0, arg1, 50, __wbg_adapter_18);
+        __wbindgen_closure_wrapper205: function() { return logError(function (arg0, arg1, arg2) {
+            const ret = makeMutClosure(arg0, arg1, 70, __wbg_adapter_18);
             return ret;
         }, arguments) },
         __wbindgen_init_externref_table: function() {

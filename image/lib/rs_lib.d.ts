@@ -17,34 +17,34 @@ export function to_png(img: Img, compression: number, filter: number): Promise<U
 /**
 * @param {Img} img
 * @param {number} quality
-* @returns {Uint8Array}
+* @returns {Promise<Uint8Array>}
 */
-export function to_jpeg(img: Img, quality: number): Uint8Array;
+export function to_jpeg(img: Img, quality: number): Promise<Uint8Array>;
 /**
 * @param {Img} img
-* @returns {Uint8Array}
+* @returns {Promise<Uint8Array>}
 */
-export function to_gif(img: Img): Uint8Array;
+export function to_gif(img: Img): Promise<Uint8Array>;
 /**
 * @param {Img} img
-* @returns {Uint8Array}
+* @returns {Promise<Uint8Array>}
 */
-export function to_ico(img: Img): Uint8Array;
+export function to_ico(img: Img): Promise<Uint8Array>;
 /**
 * @param {Img} img
-* @returns {Uint8Array}
+* @returns {Promise<Uint8Array>}
 */
-export function to_bmp(img: Img): Uint8Array;
+export function to_bmp(img: Img): Promise<Uint8Array>;
 /**
 * @param {Img} img
-* @returns {Uint8Array}
+* @returns {Promise<Uint8Array>}
 */
-export function to_tga(img: Img): Uint8Array;
+export function to_tga(img: Img): Promise<Uint8Array>;
 /**
 * @param {Img} img
-* @returns {Uint8Array}
+* @returns {Promise<Uint8Array>}
 */
-export function to_farbfeld(img: Img): Uint8Array;
+export function to_farbfeld(img: Img): Promise<Uint8Array>;
 /**
 */
 export class Img {
