@@ -5,8 +5,7 @@ use deno_bindgen::{
 use crate::{
   to_constraints,
   ffi::to_str,
-  cast,
-  Img
+  cast
 };
 use wry::application::{dpi::{
   PhysicalPosition,
@@ -165,10 +164,10 @@ pub unsafe extern "C" fn set_visible_on_all_workspaces(ptr: usize,visible: bool)
 }
 
 #[deno_bindgen]
-pub fn set_window_icon(ptr: usize,icon: &str) {
+pub fn set_window_icon(ptr: usize,height: u32,width: u32,bytes: usize,len: usize) {
   unsafe {
-    let Img { rgba,height,width }=from_str(icon).unwrap_or_default();
-    (*cast(ptr)).set_window_icon(Icon::from_rgba(rgba,width,height).ok())
+    let bytes=Vec::from_raw_parts(bytes as *mut u8,len,len);
+    (*cast(ptr)).set_window_icon(Icon::from_rgba(bytes,width,height).ok())
   }
 }
 

@@ -4,7 +4,7 @@ import { $todo } from '../mod.ts';
 
 
 export function serIcon(icon: Icon): RGBAImage {
-  if(isRGBAImg(icon)) return {...icon,rgba: Array.from(icon.rgba) as unknown as Uint8Array};
+  if(isRGBAImg(icon)) return {...icon,bytes: Array.from(icon.bytes) as unknown as Uint8Array};
   return $todo();
 }
 

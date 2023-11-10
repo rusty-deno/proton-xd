@@ -75,7 +75,7 @@ impl From<PhysicalPosition<i32>> for Position {
 #[deno_bindgen]
 #[derive(Default)]
 pub struct  Img {
-  pub rgba: Vec<u8>,
+  pub bytes: Vec<u8>,
   pub height: u32,
   pub width: u32
 }
@@ -192,6 +192,6 @@ fn to_position(pos: Option<Position>)-> Option<position> {
 }
 
 fn to_icon(icon: Option<Img>)-> Option<Icon> {
-  let Img { height,width,rgba }=icon?;
-  Icon::from_rgba(rgba,width,height).ok()
+  let Img { height,width,bytes }=icon?;
+  Icon::from_rgba(bytes,width,height).ok()
 }
