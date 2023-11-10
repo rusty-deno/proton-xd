@@ -111,7 +111,7 @@ export class AsyncResult<T,E> extends Promise<Result<T,E>> {
   }
 
   /**
-   * Returns whether the object contains a `Err` value.
+   * Returns whether the object contains an `Err` value.
    */
   public async containsErr() {
     return (await this).containsErr();

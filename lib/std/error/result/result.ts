@@ -135,7 +135,7 @@ export class Result<T,E> extends Exception<T,E> {
   }
 
   /**
-   * Returns whether the object contains a `Err` value.
+   * Returns whether the object contains an `Err` value.
    */
   public containsErr() {
     return this.isException;
