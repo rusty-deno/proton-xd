@@ -213,9 +213,19 @@ export class Result<T,E> extends Exception<T,E> {
   }
 
   /**
+   * Returns the contained `Ok` value or if the value is `Err` throws an exception.
+   * #### Not recommended to use.
+   */
+  public override unwrapOrThrow() {
+    return this.match(t=> t,e=> { throw e });
+  }
+
+
+  /**
    * Returns the contained value without checking it.
    * 
    * #### It may lead the code to undefined behavior.
+   * #### Not recommended to use.
    */
   public override unwrapUnchecked(): T|E {
     return this.res();

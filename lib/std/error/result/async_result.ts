@@ -187,9 +187,18 @@ export class AsyncResult<T,E> extends Promise<Result<T,E>> {
   }
 
   /**
+   * Returns the contained `Ok` value or if the value is `Err` throws an exception.
+   * #### Not recommended to use.
+   */
+  public async unwrapOrThrow() {
+    return (await this).unwrapOrThrow();
+  }
+
+  /**
    * Returns the contained value without checking it.
    * 
    * #### It may lead the code to undefined behavior.
+   * #### Not recommended to use.
    */
   public async unwrapUnchecked() {
     return (await this).unwrapUnchecked();

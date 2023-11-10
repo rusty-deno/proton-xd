@@ -171,7 +171,21 @@ export class AsyncOption<T> extends Promise<Option<T>> {
   public async unwrapOrElse(f: (none: None)=> T) {
     return (await this).unwrapOrElse(f);
   }
-
+  
+  /**
+   * Returns the contained `Some` value or if the value is `None` throws an exception.
+   * #### Not recommended to use.
+   */
+  public async unwrapOrThrow() {
+    return (await this).unwrapOrThrow();
+  }
+  
+  /**
+   * Returns the contained value without checking it.
+   * 
+   * #### It may lead the code to undefined behavior.
+   * #### Not recommended to use.
+   */
   public async unwrapUnchecked() {
     return (await this).unwrapUnchecked();
   }

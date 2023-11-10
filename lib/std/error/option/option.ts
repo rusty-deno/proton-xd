@@ -196,10 +196,23 @@ export class Option<T> extends Exception<T,None> {
     return this.match(s=> s,f);
   }
 
+  /**
+   * Returns the contained `Some` value or if the value is `None` throws an exception.
+   * #### Not recommended to use.
+   */
+  public override unwrapOrThrow(): T {
+    return this.match(some=> some,none=> { throw none });
+  }
+  
+  /**
+   * Returns the contained value without checking it.
+   * 
+   * #### It may lead the code to undefined behavior.
+   * #### Not recommended to use.
+   */
   public override unwrapUnchecked(): T|None {
     return this._value;
   }
-
 
   /**
    * Returns whether the object contains a `Some` value.

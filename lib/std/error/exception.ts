@@ -78,6 +78,10 @@ export abstract class Exception<T,E> implements Clone {
     return this.match(t=> t,f);
   }
 
+  public unwrapOrThrow() {
+    return this.match(t=> t,e=> { throw e });
+  }
+
   public unwrapUnchecked(): T|E {
     return this.res();
   }
