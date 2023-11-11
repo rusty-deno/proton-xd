@@ -1,10 +1,13 @@
-import { LinkedList } from "./mod.ts";
-import { Fn } from '../types.ts';
-import { $unimplemented } from "../mod.ts";
-import { Some,None,Option } from '../error/option/option.ts';
+import { LinkedList } from "../mod.ts";
+import { Fn } from '../../types.ts';
+import { $unimplemented } from "../../mod.ts";
+import { Some,None,Option } from '../../error/option/option.ts';
+import { Inspect } from "./mod.ts";
+import { IterMap } from "./map.ts";
+
 
 export class Iter<T> implements Iterable<T> {
-  constructor(private iter: LinkedList<T>) {
+  constructor(protected iter: LinkedList<T>) {
     this.iter;
   }
 
@@ -90,14 +93,24 @@ export class Iter<T> implements Iterable<T> {
     for(const iter of this) f(iter,i++);
   }
   
-  public inspect(_f: Fn<[element: T],void>) {
-    $unimplemented();
+  public inspect(f: Fn<[element: T],void>) {
+    return new Inspect(this.iter,f);
   }
 
+  public last() {
+    return new Option(this.iter.back.value?.data);
+  }
 
   public get length() {
     return this.iter.length;
   }
+
+  public map<U>(f: Fn<[element: T,index: number],U>) {
+    return new IterMap(this.iter,f);
+  }
+
+
+
 
   public toLinkedList() {
     return this.iter;

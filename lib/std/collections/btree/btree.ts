@@ -1,5 +1,5 @@
 // deno-lint-ignore-file
-import { Iter } from "../iter_trait.ts";
+import { Iter } from "../iter/iter_trait.ts";
 import { Option } from "../../mod.ts";
 import { Vec } from "../mod.ts";
 import { Node,TreversalAlgorithm } from "./mod.ts";

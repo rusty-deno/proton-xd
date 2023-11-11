@@ -1,5 +1,5 @@
 import { Option } from '../../../mod.ts';
-import { Iter } from '../iter_trait.ts';
+import { Iter } from '../iter/iter_trait.ts';
 import { LinkedList } from './linked_list/linked_list.ts';
 
 

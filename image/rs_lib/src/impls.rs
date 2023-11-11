@@ -13,7 +13,7 @@ pub(crate) trait ToRgba {
 
 impl<S: std::ops::Deref<Target=[u8]>> ToRgba for S {
   fn to_rgba8(&self) {
-    let _xd=self.iter();
+    let _xd=self.iter().map(|x| x*69);
 
     for byte in self.iter().step_by(4) {
       unsafe {

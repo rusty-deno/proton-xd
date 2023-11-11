@@ -1,6 +1,6 @@
-import { Option,None, $todo } from "../mod.ts";
-import { Vec } from "../mod.ts";
-import { LinkedList } from './linear/linked_list/linked_list.ts';
+import { Option,None, $todo } from "../../mod.ts";
+import { Vec } from "../../mod.ts";
+import { LinkedList } from '../linear/linked_list/linked_list.ts';
 
 
 export type Enumerate<T>=Iterable<[index: number,item: T]>;

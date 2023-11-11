@@ -1,7 +1,7 @@
 import { Option,None,Some } from "../../../mod.ts";
 import { List } from "../List.ts";
 import { Node } from "./mod.ts";
-import { Iter } from '../../iter.ts';
+import { Iter } from '../../iter/iter.ts';
 
 
 export class LinkedList<T> extends List<T> {
