@@ -1,5 +1,5 @@
 import { Option } from '../../../mod.ts';
-import { IterableTrait } from '../iter/iter_trait.ts';
+import { IterableTrait } from '../iter/iterable_trait.ts';
 import { LinkedList } from './linked_list/linked_list.ts';
 
 

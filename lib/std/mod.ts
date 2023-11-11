@@ -12,7 +12,7 @@ export * as ffi from "./ffi/mod.ts";
 
 //rust features
 export * from "./clone.ts";
-export * from "./collections/iter/iter_trait.ts";
+export * from "./collections/iter/iterable_trait.ts";
 export * from "./thread/thread.ts";
 
 //error handeling

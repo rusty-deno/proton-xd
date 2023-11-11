@@ -2,7 +2,7 @@ import { Clone,Option } from '../../mod.ts';
 import { Entry } from './mod.ts';
 import { HashSet, Vec } from '../mod.ts';
 import { HashMap } from './hash_map.ts';
-import { IterableTrait } from '../iter/iter_trait.ts';
+import { IterableTrait } from '../iter/iterable_trait.ts';
 
 export type HasherFn<K>=(obj: K)=> number;
 

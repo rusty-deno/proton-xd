@@ -1,4 +1,4 @@
-import { IterableTrait } from "../iter/iter_trait.ts";
+import { IterableTrait } from "../iter/iterable_trait.ts";
 import { Option } from "../../mod.ts";
 import { Vec } from "../mod.ts";
 import { Node,TreversalAlgorithm } from "./mod.ts";
