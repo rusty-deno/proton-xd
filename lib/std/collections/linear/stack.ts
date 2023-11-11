@@ -1,11 +1,11 @@
 import { Option } from '../../../mod.ts';
-import { Iter } from '../iter/iter_trait.ts';
+import { IterableTrait } from '../iter/iter_trait.ts';
 import { LinkedList } from './linked_list/linked_list.ts';
 
 
 
 
-export class Stack<T> extends Iter<T> {
+export class Stack<T> extends IterableTrait<T> {
   private data: LinkedList<T>;
   private current=0;
   public readonly size: number;

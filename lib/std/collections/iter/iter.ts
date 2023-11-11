@@ -4,6 +4,13 @@ import { $unimplemented } from "../../mod.ts";
 import { Some,None,Option } from '../../error/option/option.ts';
 import { Inspect } from "./mod.ts";
 import { IterMap } from "./map.ts";
+import { IterMapWhile } from './map_while.ts';
+import { RevIter } from './rev.ts';
+import { SkippedIter } from './skip.ts';
+import { SkipWhile } from './skip_while.ts';
+import { StepBy } from './step_by.ts';
+import { Take } from "./take.ts";
+import { TakeWhile } from "./take_while.ts";
 
 
 export class Iter<T> implements Iterable<T> {
@@ -21,6 +28,10 @@ export class Iter<T> implements Iterable<T> {
 
   [Symbol.iterator](): Iterator<T> {
     return this.iter[Symbol.iterator]();
+  }
+
+  next(): T {
+    return this[Symbol.iterator]().next().value;
   }
   
   public all(f: Fn<[T],boolean>) {
@@ -82,7 +93,7 @@ export class Iter<T> implements Iterable<T> {
     $unimplemented();
   }
   
-  public fold<I>(init: I,f: Fn<[prev: I,element: T],I>) {
+  public fold<U>(init: U,f: Fn<[prev: U,element: T],U>) {
     for(const iter of this) init=f(init,iter);
     
     return init;
@@ -92,7 +103,7 @@ export class Iter<T> implements Iterable<T> {
     let i=0;
     for(const iter of this) f(iter,i++);
   }
-  
+
   public inspect(f: Fn<[element: T],void>) {
     return new Inspect(this.iter,f);
   }
@@ -109,7 +120,69 @@ export class Iter<T> implements Iterable<T> {
     return new IterMap(this.iter,f);
   }
 
+  public mapWhile<U>(f: Fn<[element: T,index: number],Option<U>|U|None>) {
+    return new IterMapWhile(this.iter,f);
+  }
 
+  public position(_f: Fn<[element: T],boolean>) {
+    $unimplemented();
+    return -1;
+  }
+
+  
+  public reduce(f: Fn<[prev: T,current: T],Option<T>|T>): Option<T> {
+    let reduced=None<T>(null);
+
+    for(const element of this) {
+      const fold=f(reduced.unwrapOr(element),this.next());
+      reduced=fold instanceof Option?fold:new Option(fold);
+    }
+    
+    return reduced;
+  }
+  
+  public reverse() {
+    return new RevIter(this.iter);
+  }
+
+  public rfind(f: Fn<[element: T],boolean>) {
+    for(const iter of this) if(f(iter)) return Some(iter);
+
+    return None<T>();
+  }
+
+  public reverseFold<U>(init: U,f: Fn<[prev: U,element: T],U>) {
+    return this.reverse().fold(init,f);
+  }
+
+  public reversedPosition(_f: Fn<[element: T],boolean>) {
+    $unimplemented();
+    return -1;
+  }
+
+  public skip(skip: number) {
+    return new SkippedIter(this.iter,skip);
+  }
+
+  public skipWhile(f: Fn<[element: T],boolean>) {
+    return new SkipWhile(this.iter,f);
+  }
+  
+  public stepBy(step: number) {
+    return new StepBy(this.iter,step);
+  }
+
+  public take(n: number) {
+    return new Take(this.iter,n);
+  }
+
+  public takeWhile(f: Fn<[element: T],boolean>) {
+    return new TakeWhile(this.iter,f);
+  }
+
+  public zip(_iter: Iterable<T>) {
+    $unimplemented();
+  }
 
 
   public toLinkedList() {
@@ -118,4 +191,3 @@ export class Iter<T> implements Iterable<T> {
 }
 
 
-[0].flat();

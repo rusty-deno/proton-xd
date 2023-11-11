@@ -20,9 +20,15 @@
 
 // console.log(lib);
 
-import { WindowXD } from "./lib/mod.ts";
 
-const ss=await WindowXD.screenshot(1,1);
+const xd=["0","1","2","3","4","5","69"];
 
-Deno.writeFileSync("xd.png",ss.pngSync("Best","NoFilter").unwrap());
+xd.reduce((prev,current)=> {
+  console.log(prev,current);
+
+  return prev+current;
+});
+
+
+
 

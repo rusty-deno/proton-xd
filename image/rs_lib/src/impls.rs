@@ -13,32 +13,15 @@ pub(crate) trait ToRgba {
 
 impl<S: std::ops::Deref<Target=[u8]>> ToRgba for S {
   fn to_rgba8(&self) {
-    let _xd=self.iter().map(|x| x*69);
-
     for byte in self.iter().step_by(4) {
       unsafe {
-        let ptr=byte.to_mut_ptr();
+        let ptr=byte as *const u8 as *mut u8;
         ptr::swap(ptr,ptr.offset(2));
         ptr::replace(ptr.offset(3),u8::MAX);
       }
     }
   }
 }
-
-
-pub(crate) trait ToMutPtr: Sized {
-  fn to_mut_ptr(&self)-> *mut Self {
-    self as *const Self as *mut Self
-  }
-
-  fn as_mut_ptr(&mut self)-> *mut Self {
-    self as *mut Self
-  }
-}
-impl<S> ToMutPtr for S {}
-
-
-
 
 
 pub(crate) trait Enum<T> {

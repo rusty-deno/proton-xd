@@ -1,8 +1,8 @@
-import { Iter } from "../iter/iter_trait.ts";
+import { IterableTrait } from "../iter/iter_trait.ts";
 import { Vec } from '../linear/vector.ts';
 
 
-export class HashSet<T> extends Iter<T> {
+export class HashSet<T> extends IterableTrait<T> {
   private set: Set<T>;
 
   constructor(...entries: T[]) {

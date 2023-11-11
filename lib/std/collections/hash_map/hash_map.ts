@@ -1,5 +1,5 @@
 import { Entry } from './mod.ts';
-import { Iter } from '../iter/iter_trait.ts';
+import { IterableTrait } from '../iter/iter_trait.ts';
 import { Option } from '../../mod.ts';
 import { Vec } from '../linear/vector.ts';
 import { HashSet } from '../hash_set/hash_set.ts';
@@ -14,7 +14,7 @@ import { Clone } from '../../clone.ts';
  * $assertEq(map.get(69),Some("xd"));
  * ```
  */
-export class HashMap<K,V> extends Iter<Entry<K,V>> implements Clone {
+export class HashMap<K,V> extends IterableTrait<Entry<K,V>> implements Clone {
   private unordered_map: Map<K,V>;
 
   constructor(...entries: Entry<K,V>[]) {
