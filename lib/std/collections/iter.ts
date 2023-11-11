@@ -1,77 +1,108 @@
-import { Option,None } from "../mod.ts";
-import { Vec } from "../mod.ts";
-import { LinkedList } from './linear/linked_list/linked_list.ts';
+import { LinkedList } from "./mod.ts";
+import { Fn } from '../types.ts';
+import { $unimplemented } from "../mod.ts";
+import { Some,None,Option } from '../error/option/option.ts';
 
-
-export type Enumerate<T>=Iterable<[index: number,item: T]>;
-
-
-
-export abstract class Iter<T> implements Iterable<T> {
-  abstract next(): T;
-  abstract [Symbol.iterator](): Iterator<T>;
-
-  public static fromIterable<T>(iter: Iterable<T>): Iter<T> {
-    return new class extends Iter<T> {
-      next(): T {
-        return this[Symbol.iterator]().next().value;
-      }
-      [Symbol.iterator](): Iterator<T> {
-        return iter[Symbol.iterator]();
-      }
-    };
-  }
-   
-  public forEach(f: (value: T,index: number,iter: this)=> void) {
-    let i=0;
-    for(const iterator of this) {
-      f(iterator,i++,this);
-    }
+export class Iter<T> implements Iterable<T> {
+  constructor(private iter: LinkedList<T>) {
+    this.iter;
   }
 
-  public toArray() {
+  public static default<T>() {
+    return new Iter(new LinkedList<T>());
+  }
+
+  public static fromIterable<T>(iter: Iterable<T>) {
+    return new Iter(LinkedList.fromIter(iter));
+  }
+
+  [Symbol.iterator](): Iterator<T> {
+    return this.iter[Symbol.iterator]();
+  }
+  
+  public all(f: Fn<[T],boolean>) {
+    for(const iter of this) if(!f(iter)) return false;
+
+    return true;
+  }
+
+  public any(f: Fn<[T],boolean>) {
+    for(const iter of this) if(f(iter)) return true;
+
+    return false;
+  }
+
+  public asArray() {
     return [...this];
   }
   
-  public *enumerate(): Enumerate<T> {
-    let i=0;
-    for(const iterator of this) yield [i++,iterator];
+  public chain(iter: Iterable<T>) {
+    this.iter.append(iter instanceof LinkedList?iter:new LinkedList(iter));
+  }
+
+
+  public cycle() {
+    $unimplemented();
+  }
+
+  public enumerate() {
+    $unimplemented();
+  }
+
+  public *filter(f: Fn<[T],boolean>): Iterator<T> {
+    for(const iter of this) if(f(iter)) yield iter;
+  }
+
+  public find(f: Fn<[T],boolean>) {
+    for(const iter of this) if(f(iter)) return Some(iter);
+
+    return None<T>();
+  }
+
+  public findMap<U>(f: Fn<[T],Option<U>>) {
+    for(const iter of this) {
+      const res=f(iter);
+      if(res.contains()) res;
+    }
+
+    return None<T>();
   }
   
-  public reduce(f: (prev: T,current: T,index: number)=> Option<T>|T): Option<T> {
-    let folded: Option<T>=None(null);
-    let i=0;
+  public flatMap<U>(f: Fn<[T],Iterable<U>>) {
+    const iter=Iter.default<U>();
+    for(const element of this) iter.chain(f(element));
 
-    for(const iterator of this) {
-      const fold=f(folded.unwrapOr(iterator),this.next(),++i);
-      folded=fold instanceof Option?fold:new Option(fold);
-    }
-    
-    return folded;
-  }
-
-  public filter(fn: (element: T,index: number)=> boolean) {
-    const filtered=new LinkedList<T>();
-
-    for(const [index,element] of this.enumerate()) {
-      if(!fn(element,index)) continue;
-      filtered.pushBack(element);
-    }
-
-    return filtered.toVec();
-  }
-
-  public map<U>(fn: (element: T,index: number)=> U) {
-    const map=new LinkedList<U>();
-
-    for(const [index,element] of this.enumerate()) {
-      map.pushBack(fn(element,index));
-    }
-    
-    return Vec.fromIter(map);
+    return iter;
   }
   
-  public toVec() {
-    return Vec.fromIter(this);
+  public flatten() {
+    $unimplemented();
+  }
+  
+  public fold<I>(init: I,f: Fn<[prev: I,element: T],I>) {
+    for(const iter of this) init=f(init,iter);
+    
+    return init;
+  }
+  
+  public forEach(f: Fn<[element: T,index: number],void>) {
+    let i=0;
+    for(const iter of this) f(iter,i++);
+  }
+  
+  public inspect(_f: Fn<[element: T],void>) {
+    $unimplemented();
+  }
+
+
+  public get length() {
+    return this.iter.length;
+  }
+
+  public toLinkedList() {
+    return this.iter;
   }
 }
+
+
+[0].flat();

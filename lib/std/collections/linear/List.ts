@@ -9,7 +9,7 @@ export abstract class List<T> implements Iterable<T> {
   abstract next(): T;
 
   public static fromIter<T>(iter: Iterable<T>) {
-    return new class extends List<T> {
+    return new class extends this<T> {
       next(): T {
         return this[Symbol.iterator]().next().value;
       }

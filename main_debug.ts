@@ -20,9 +20,9 @@
 
 // console.log(lib);
 
+import { WindowXD } from "./lib/mod.ts";
 
+const ss=await WindowXD.screenshot(1,1);
 
-
-
-
+Deno.writeFileSync("xd.png",ss.pngSync("Best","NoFilter").unwrap());
 

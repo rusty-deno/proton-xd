@@ -1,6 +1,7 @@
 import { Option,None,Some } from "../../../mod.ts";
 import { List } from "../List.ts";
 import { Node } from "./mod.ts";
+import { Iter } from '../../iter.ts';
 
 
 export class LinkedList<T> extends List<T> {
@@ -26,6 +27,10 @@ export class LinkedList<T> extends List<T> {
 
     ll.size=arr.length;
     return ll;
+  }
+
+  public static fromIter<T>(iter: Iterable<T>): LinkedList<T> {
+    return iter instanceof Iter?iter.toLinkedList():new LinkedList(...iter);
   }
   
   next(): T {

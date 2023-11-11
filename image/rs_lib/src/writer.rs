@@ -40,3 +40,19 @@ impl Into<Vec<u8>> for Writer {
   }
 }
 
+struct XD;
+
+
+impl Iterator for XD {
+  type Item=u8;
+
+  fn next(&mut self)-> Option<Self::Item> {
+    todo!()
+  }
+}
+
+
+fn _xd() {
+  
+  
+}
