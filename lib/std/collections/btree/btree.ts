@@ -1,12 +1,12 @@
-// deno-lint-ignore-file
-import { Iter } from "../iter/iter_trait.ts";
+import { IterableTrait } from "../iter/iter_trait.ts";
 import { Option } from "../../mod.ts";
 import { Vec } from "../mod.ts";
 import { Node,TreversalAlgorithm } from "./mod.ts";
 import { LinkedList } from "../linear/linked_list/mod.ts";
+import { Iter } from "../iter/mod.ts";
 
 
-export class BinaryTree<T> extends Iter<Node<T>> {
+export class BinaryTree<T> extends IterableTrait<Node<T>> {
   root: Option<Node<T>>;
 
   constructor(root?: Node<T>) {
@@ -33,16 +33,16 @@ export class BinaryTree<T> extends Iter<Node<T>> {
     }
   }
   
-  public iter(algo: TreversalAlgorithm="in"): Iter<Node<T>> {
+  public _iter(algo: TreversalAlgorithm="in"): Iter<Node<T>> {
     switch(algo) {
       case "pre":case "PRE":case "preorder":case "PREORDER": return this.preorderedIter();
       case "post":case "POST":case "postorder":case "POSTORDER": return this.postorderedIter();
-      default: return this;
+      default: return super.iter();
     }
   }
   
   public inorderedIter(): Iter<Node<T>> {
-    return this;
+    return super.iter();
   }
 
   private *preIter(): Iterable<Node<T>> {
@@ -83,24 +83,25 @@ export class BinaryTree<T> extends Iter<Node<T>> {
       }
     }
   }
+
   public postorderedIter() {
     return Iter.fromIterable(this.postIter());
   }
 
-  public override map<U>(f: (element: Node<T>,index: number)=> U,algo?: TreversalAlgorithm): Vec<U> {
-    return this.iter(algo).map(f);
+  public map<U>(f: (element: Node<T>,index: number)=> U,algo?: TreversalAlgorithm) {
+    return this._iter(algo).map(f);
   }
   
   public treverse(f: (data: T,node: Node<T>)=> void,algo?: TreversalAlgorithm) {
-    for(const node of this.iter(algo)) f(node.data,node);
+    for(const node of this._iter(algo)) f(node.data,node);
   }
 
   public override toVec(algo?: TreversalAlgorithm) {
-    return Vec.fromIter(this.iter(algo));
+    return Vec.fromIter(this._iter(algo));
   }
 
   public override toArray(algo?: TreversalAlgorithm) {
-    return Array.from(this.iter(algo));
+    return Array.from(this._iter(algo));
   }
 
 }
