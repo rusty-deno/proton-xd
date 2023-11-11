@@ -38,7 +38,7 @@ export class LinkedList<T> extends List<T> {
   }
 
   *[Symbol.iterator](): Iterator<T> {
-    for(let iter=this.head.value;iter&&iter.next;iter=iter.next.value) yield iter.data;
+    for(let iter=this.head.value;iter&&iter.next.value;iter=iter.next.value) yield iter.data;
   }
 
   private putBack(node: Node<T>) {
