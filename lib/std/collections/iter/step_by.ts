@@ -9,7 +9,7 @@ export class StepBy<T> extends Iter<T> {
 
   override *[Symbol.iterator](): Iterator<T> {
     let i=0;
-    for(const iter of this) if(i++%this._step==0) yield iter;
+    for(const iter of this.iter) if(i++%this._step==0) yield iter;
   }
 }
 

@@ -10,7 +10,7 @@ export class SkipWhile<T> extends Iter<T> {
   }
 
   override *[Symbol.iterator](): Iterator<T> {
-    for(const iter of this) {
+    for(const iter of this.iter) {
       if(this.f(iter)) continue;
       yield iter;
     }
