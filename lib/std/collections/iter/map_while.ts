@@ -1,12 +1,11 @@
-import { Iter } from "./iter.ts";
-import { LinkedList } from "../mod.ts";
+import { IterTrait } from "./iter_trait.ts";
 import { Fn } from "../../types.ts";
 import { None,Option } from "../../mod.ts";
 
 
-export class IterMapWhile<T,U> extends Iter<U> {
-  constructor(private _iter: LinkedList<T>,private f: Fn<[T,number],Option<U>|U|None>) {
-    super(new LinkedList);
+export class IterMapWhile<T,U> extends IterTrait<U> {
+  constructor(private _iter: Iterable<T>,private f: Fn<[T,number],Option<U>|U|None>) {
+    super();
   }
   
   override *[Symbol.iterator](): Iterator<U> {
@@ -14,10 +13,8 @@ export class IterMapWhile<T,U> extends Iter<U> {
     for(const iter of this._iter) {
       const _res=this.f(iter,i++);
       const res=_res instanceof Option?_res.value:_res;
-
       if(res==null) break;
-
-      this.iter.pushBack(res);
+      
       yield res;
     }
   }

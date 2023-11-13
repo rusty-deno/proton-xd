@@ -11,6 +11,8 @@ import { SkipWhile } from './skip_while.ts';
 import { StepBy } from './step_by.ts';
 import { Take } from "./take.ts";
 import { TakeWhile } from "./take_while.ts";
+import { Chain } from './chain.ts';
+import { Filter } from './filter.ts';
 
 
 export class Iter<T> implements Iterable<T> {
@@ -26,14 +28,14 @@ export class Iter<T> implements Iterable<T> {
     return new Iter(LinkedList.fromIter(iter));
   }
 
-  [Symbol.iterator](): Iterator<T> {
-    return this.iter[Symbol.iterator]();
+  *[Symbol.iterator](): Iterator<T> {
+    yield* this.iter;
   }
 
-  next(): T {
-    return this[Symbol.iterator]().next().value;
+  public next() {
+    return new Option<T>(this[Symbol.iterator]().next().value);
   }
-  
+
   public all(f: Fn<[T],boolean>) {
     for(const iter of this) if(!f(iter)) return false;
 
@@ -51,7 +53,7 @@ export class Iter<T> implements Iterable<T> {
   }
   
   public chain(iter: Iterable<T>) {
-    this.iter.append(iter instanceof LinkedList?iter:new LinkedList(iter));
+    return new Chain(this.iter,iter instanceof Iter?iter.iter:iter instanceof LinkedList?iter:LinkedList.fromIter(iter));
   }
 
 
@@ -63,12 +65,12 @@ export class Iter<T> implements Iterable<T> {
     $unimplemented();
   }
 
-  public *filter(f: Fn<[T],boolean>): Iterator<T> {
-    for(const iter of this) if(f(iter)) yield iter;
+  public filter(f: Fn<[T],boolean>) {
+    return new Filter(this.iter,f);
   }
 
-  public find(f: Fn<[T],boolean>) {
-    for(const iter of this) if(f(iter)) return Some(iter);
+  public find(f: T|Fn<[T],boolean>) {
+    for(const iter of this) if(f instanceof Function?f(iter):Object.is(iter,f)) return Some(iter);
 
     return None<T>();
   }
@@ -130,15 +132,11 @@ export class Iter<T> implements Iterable<T> {
   }
 
   
-  public reduce(f: Fn<[prev: T,current: T],Option<T>|T>): Option<T> {
-    let reduced=None<T>(null);
+  public reduce(f: Fn<[prev: T,current: T],T>): Option<T> {
+    const first=this.next();
+    if(first.value==null) return first;
 
-    for(const element of this) {
-      const fold=f(reduced.unwrapOr(element),this.next());
-      reduced=fold instanceof Option?fold:new Option(fold);
-    }
-    
-    return reduced;
+    return Some(this.fold(first.value,f));
   }
   
   public reverse() {

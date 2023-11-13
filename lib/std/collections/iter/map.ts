@@ -1,20 +1,15 @@
-import { Iter } from './iter.ts';
-import { LinkedList } from '../linear/linked_list/linked_list.ts';
 import { Fn } from '../../types.ts';
+import { IterTrait } from './iter_trait.ts';
 
 
-export class IterMap<T,U> extends Iter<U> {
-  constructor(private _iter: LinkedList<T>,private f: Fn<[T,number],U>) {
-    super(new LinkedList);
+export class IterMap<T,U> extends IterTrait<U> {
+  constructor(private _iter: Iterable<T>,private f: Fn<[T,number],U>) {
+    super();
   }
   
   override *[Symbol.iterator](): Iterator<U> {
     let i=0;
-    for(const iter of this._iter) {
-      const res=this.f(iter,i++);
-      this.iter.pushBack(res);
-      yield res;
-    }
+    for(const element of this._iter) yield this.f(element,i++);
   }
 }
 
