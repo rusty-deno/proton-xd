@@ -8,10 +8,14 @@ export type HasherFn<K>=(obj: K)=> number;
 
 
 /**
- * A HashTable implemented constant time look-ups.
- * It's desined to be used only in special cases like keyword recognization,
- * Where the keys are limited and known at compile-time..
+ * A HashTable that implementes constant time look-ups.
+ * 
  * It must be used with a custom hash function..
+ * 
+ * Where the keys are limited and known at compile-time..
+ * 
+ * It's desined to be used only in special cases, for example `Keyword Recognization`.
+ * 
  * # Example
  * * Suppose the keys are Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday.
  * * Then the hash-function may be second char of the string & length of the string
