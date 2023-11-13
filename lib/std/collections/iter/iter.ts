@@ -100,7 +100,7 @@ export class Iter<T> implements Iterable<T> {
     
     return init;
   }
-  
+
   public forEach(f: Fn<[element: T,index: number],void>) {
     let i=0;
     for(const iter of this) f(iter,i++);
@@ -131,7 +131,7 @@ export class Iter<T> implements Iterable<T> {
     return -1;
   }
 
-  
+
   public reduce(f: Fn<[prev: T,current: T],T>): Option<T> {
     const first=this.next();
     if(first.value==null) return first;

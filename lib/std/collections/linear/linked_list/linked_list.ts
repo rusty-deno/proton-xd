@@ -30,7 +30,7 @@ export class LinkedList<T> extends List<T> {
   }
 
   public static fromIter<T>(iter: Iterable<T>): LinkedList<T> {
-    return iter instanceof Iter?iter.toLinkedList():new LinkedList(...iter);
+    return iter instanceof LinkedList?iter:iter instanceof Iter?iter.toLinkedList():new LinkedList(...iter);
   }
   
   next(): T {
