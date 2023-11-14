@@ -68,8 +68,8 @@ function hexToRgb(color: number): Rgba {
   };
 }
 
-export type CompressionType="Fast"|"Best"|"Default";
-export type Filter="Sub"|"Up"|"Avg"|"Paeth"|"Adaptive"|"NoFilter";
+export type PngCompressionType="Fast"|"Best"|"Default";
+export type PngFilter="Sub"|"Up"|"Avg"|"Paeth"|"Adaptive"|"NoFilter";
 export type ImageFormat="png"|"jpeg"|"gif"|"webp"|"tga"|"bmp"|"ico"|"farbfeld";
 
 

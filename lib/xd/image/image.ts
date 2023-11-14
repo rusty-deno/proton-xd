@@ -1,5 +1,5 @@
 import { PathBuf } from "../../std/path.ts";
-import { CompressionType,Filter } from "../mod.ts";
+import { PngCompressionType,PngFilter } from "../mod.ts";
 import { Img } from "../../../image/lib/rs_lib.js";
 import * as lib from "../../../image/lib/rs_lib.js";
 import { $result,$resultSync } from "../../std/error/result/macros.ts";
@@ -66,12 +66,12 @@ export class ImageBuffer {
 
 
   /** Encodes the image data to a png image buffer */
-  public png(compression: CompressionType="Default",filter: Filter="NoFilter") {
+  public png(compression: PngCompressionType="Default",filter: PngFilter="NoFilter") {
     return $result(()=> lib.to_png(this.inner,compression_to_u8(compression),filter_to_u8(filter)));
   }
 
   /** Encodes the image data to a png image buffer syncrobyously */
-  public pngSync(compression: CompressionType="Default",filter: Filter="NoFilter") {
+  public pngSync(compression: PngCompressionType="Default",filter: PngFilter="NoFilter") {
     return $resultSync(()=> this.inner.to_png_sync(compression_to_u8(compression),filter_to_u8(filter)));
   }
 
@@ -149,7 +149,7 @@ export class ImageBuffer {
 }
 
 
-function compression_to_u8(compression: CompressionType) {
+function compression_to_u8(compression: PngCompressionType) {
   switch(compression) {
     case "Best": return 2;
     case "Fast": return 1;
@@ -157,7 +157,7 @@ function compression_to_u8(compression: CompressionType) {
   }
 }
 
-function filter_to_u8(filter: Filter) {
+function filter_to_u8(filter: PngFilter) {
   switch(filter) {
     case "Sub": return 1;
     case "Up": return 2;
