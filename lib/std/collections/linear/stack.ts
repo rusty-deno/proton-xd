@@ -1,39 +1,36 @@
 import { Option } from '../../../mod.ts';
-import { IterableTrait } from '../iter/iterable_trait.ts';
 import { LinkedList } from './linked_list/linked_list.ts';
+import { IteratorTrait } from '../iter/iterator_trait.ts';
 
 
 
 
-export class Stack<T> extends IterableTrait<T> {
+export class Stack<T> extends IteratorTrait<T> {
   private data: LinkedList<T>;
   private current=0;
-  public readonly size: number;
 
-  constructor(size: number=16) {
+  constructor(...iter: T[]) {
     super();
-    this.data=new LinkedList();
-    this.size=size;
+    this.data=LinkedList.fromArray(iter);
   }
   
   public get top() {
     return this.current;
   }
-  
 
-  next(): T {
-    return this[Symbol.iterator]().next().value;
+  public get length() {
+    return this.data.length;
   }
-
   
   *[Symbol.iterator](): Iterator<T> {
     for(let entity=this.pop().value;entity;entity=this.pop().value) yield entity;
   }
 
   public static fromArray<T>(arr: T[]) {
-    const stack=new Stack(arr.length);
-    stack.data=LinkedList.fromArray(arr.toReversed());
+    const stack=new Stack<T>();
+    stack.data=LinkedList.fromIterRev(arr);
     stack.current=arr.length;
+  
     return stack;
   }
   
