@@ -1,5 +1,5 @@
-import { Fn } from '../../types.ts';
-import { IterTrait } from './iter_trait.ts';
+import { Fn } from "../../types.ts";
+import { IterTrait} from "./mod.ts";
 
 
 export class IterMap<T,U> extends IterTrait<U> {
@@ -7,11 +7,13 @@ export class IterMap<T,U> extends IterTrait<U> {
     super();
   }
   
-  override *[Symbol.iterator](): Iterator<U> {
+  *[Symbol.iterator]() {
     let i=0;
     for(const element of this._iter) yield this.f(element,i++);
   }
 }
+
+
 
 
 

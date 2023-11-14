@@ -1,22 +1,19 @@
-import { Iter } from "./iter.ts";
-import { LinkedList } from "../mod.ts";
 import { Fn } from "../../types.ts";
+import { IterTrait } from "./mod.ts";
 
-export class TakeWhile<T> extends Iter<T> {
-  constructor(iter: LinkedList<T>,private f: Fn<[T],boolean>) {
-    super(iter);
+export class TakeWhile<T> extends IterTrait<T> {
+  constructor(private _iter: Iterable<T>,private f: Fn<[T],boolean>) {
+    super();
   }
 
   override *[Symbol.iterator](): Iterator<T> {
-    for(const iter of this.iter) {
+    for(const iter of this._iter) {
       if(!this.f(iter)) break;
 
       yield iter;
     }
   }
 }
-
-
 
 
 

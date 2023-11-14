@@ -1,23 +1,22 @@
-import { LinkedList } from "../mod.ts";
-import { Fn } from '../../types.ts';
-import { $unimplemented } from "../../mod.ts";
-import { Some,None,Option } from '../../error/option/option.ts';
-import { Inspect } from "./mod.ts";
-import { IterMap } from "./map.ts";
-import { IterMapWhile } from './map_while.ts';
-import { RevIter } from './rev.ts';
-import { SkippedIter } from './skip.ts';
-import { SkipWhile } from './skip_while.ts';
-import { StepBy } from './step_by.ts';
-import { Take } from "./take.ts";
-import { TakeWhile } from "./take_while.ts";
+import { Rev } from './rev.ts';
 import { Chain } from './chain.ts';
-import { Filter } from './filter.ts';
+import { IterTrait } from "./mod.ts";
+import { Option } from "../../mod.ts";
+import { LinkedList } from '../linear/linked_list/linked_list.ts';
 
 
-export class Iter<T> implements Iterable<T> {
-  constructor(protected iter: LinkedList<T>) {
-    this.iter;
+
+
+export class Iter<T> extends IterTrait<T> {
+  private iter: LinkedList<T>;
+
+  constructor(iter: Iterable<T>) {
+    super();
+    this.iter=Iter.linkedList(iter);
+  }
+
+  private static linkedList<T>(iter: Iterable<T>) {
+    return iter instanceof LinkedList?iter:iter instanceof Iter?iter.iter:LinkedList.fromIter(iter);
   }
 
   public static default<T>() {
@@ -28,86 +27,16 @@ export class Iter<T> implements Iterable<T> {
     return new Iter(LinkedList.fromIter(iter));
   }
 
+  protected get _ll() {
+    return this.iter
+  }
+
   *[Symbol.iterator](): Iterator<T> {
     yield* this.iter;
   }
 
-  public next() {
-    return new Option<T>(this[Symbol.iterator]().next().value);
-  }
-
-  public all(f: Fn<[T],boolean>) {
-    for(const iter of this) if(!f(iter)) return false;
-
-    return true;
-  }
-
-  public any(f: Fn<[T],boolean>) {
-    for(const iter of this) if(f(iter)) return true;
-
-    return false;
-  }
-
-  public asArray() {
-    return [...this];
-  }
-  
-  public chain(iter: Iterable<T>) {
-    return new Chain(this.iter,iter instanceof Iter?iter.iter:iter instanceof LinkedList?iter:LinkedList.fromIter(iter));
-  }
-
-
-  public cycle() {
-    $unimplemented();
-  }
-
-  public enumerate() {
-    $unimplemented();
-  }
-
-  public filter(f: Fn<[T],boolean>) {
-    return new Filter(this.iter,f);
-  }
-
-  public find(f: T|Fn<[T],boolean>) {
-    for(const iter of this) if(f instanceof Function?f(iter):Object.is(iter,f)) return Some(iter);
-
-    return None<T>();
-  }
-
-  public findMap<U>(f: Fn<[T],Option<U>>) {
-    for(const iter of this) {
-      const res=f(iter);
-      if(res.contains()) res;
-    }
-
-    return None<T>();
-  }
-  
-  public flatMap<U>(f: Fn<[T],Iterable<U>>) {
-    const iter=Iter.default<U>();
-    for(const element of this) iter.chain(f(element));
-
-    return iter;
-  }
-  
-  public flatten() {
-    $unimplemented();
-  }
-  
-  public fold<U>(init: U,f: Fn<[prev: U,element: T],U>) {
-    for(const iter of this) init=f(init,iter);
-    
-    return init;
-  }
-
-  public forEach(f: Fn<[element: T,index: number],void>) {
-    let i=0;
-    for(const iter of this) f(iter,i++);
-  }
-
-  public inspect(f: Fn<[element: T],void>) {
-    return new Inspect(this.iter,f);
+  public override chain(iter: Iterable<T>) {
+    return new Chain(this.iter,iter);
   }
 
   public last() {
@@ -118,74 +47,12 @@ export class Iter<T> implements Iterable<T> {
     return this.iter.length;
   }
 
-  public map<U>(f: Fn<[element: T,index: number],U>) {
-    return new IterMap(this.iter,f);
-  }
-
-  public mapWhile<U>(f: Fn<[element: T,index: number],Option<U>|U|None>) {
-    return new IterMapWhile(this.iter,f);
-  }
-
-  public position(_f: Fn<[element: T],boolean>) {
-    $unimplemented();
-    return -1;
-  }
-
-
-  public reduce(f: Fn<[prev: T,current: T],T>): Option<T> {
-    const first=this.next();
-    if(first.value==null) return first;
-
-    return Some(this.fold(first.value,f));
-  }
-  
-  public reverse() {
-    return new RevIter(this.iter);
-  }
-
-  public rfind(f: Fn<[element: T],boolean>) {
-    for(const iter of this) if(f(iter)) return Some(iter);
-
-    return None<T>();
-  }
-
-  public reverseFold<U>(init: U,f: Fn<[prev: U,element: T],U>) {
-    return this.reverse().fold(init,f);
-  }
-
-  public reversedPosition(_f: Fn<[element: T],boolean>) {
-    $unimplemented();
-    return -1;
-  }
-
-  public skip(skip: number) {
-    return new SkippedIter(this.iter,skip);
-  }
-
-  public skipWhile(f: Fn<[element: T],boolean>) {
-    return new SkipWhile(this.iter,f);
-  }
-  
-  public stepBy(step: number) {
-    return new StepBy(this.iter,step);
-  }
-
-  public take(n: number) {
-    return new Take(this.iter,n);
-  }
-
-  public takeWhile(f: Fn<[element: T],boolean>) {
-    return new TakeWhile(this.iter,f);
-  }
-
-  public zip(_iter: Iterable<T>) {
-    $unimplemented();
-  }
-
-
-  public toLinkedList() {
-    return this.iter;
+  public override rev() {
+    return new Rev(this.iter);
   }
 }
+
+
+
 
 

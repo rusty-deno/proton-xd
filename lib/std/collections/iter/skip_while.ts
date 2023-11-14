@@ -1,27 +1,14 @@
-import { Iter } from './iter.ts';
-import { LinkedList } from '../linear/linked_list/linked_list.ts';
 import { Fn } from "../../types.ts";
+import { IterTrait } from './iter_trait.ts';
 
 
-export class SkipWhile<T> extends Iter<T> {
 
-  constructor(iter: LinkedList<T>,private f: Fn<[T],boolean>) {
-    super(iter);
+export class SkipWhile<T> extends IterTrait<T> {
+  constructor(private _iter: Iterable<T>,private f: Fn<[T],boolean>) {
+    super();
   }
-
-  override *[Symbol.iterator](): Iterator<T> {
-    for(const iter of this.iter) {
-      if(this.f(iter)) continue;
-      yield iter;
-    }
+  
+  *[Symbol.iterator](): Iterator<T> {
+    for(const iter of this._iter) if(!this.f(iter)) yield iter;
   }
 }
-
-
-
-
-
-
-
-
-

@@ -177,7 +177,7 @@ export const lib = Deno.dlopen(bindingsUri, {
     nonblocking: false,
   },
   set_window_icon: {
-    parameters: ["usize", "buffer", "usize"],
+    parameters: ["usize", "u32", "u32", "usize", "usize"],
     result: "void",
     nonblocking: false,
   },
@@ -382,7 +382,7 @@ export type FullScreen =
   }
   | "none";
 export type Img = {
-  rgba: Array<number>;
+  bytes: Array<number>;
   height: number;
   width: number;
 };
@@ -455,9 +455,6 @@ export type WindowAttrs = {
   contentProtection: boolean;
   visibleOnAllWorkspaces: boolean;
   position: Position | undefined | null;
-};
-export type XD = {
-  xd: number | undefined | null;
 };
 export function alert(a0: string, a1: string, a2: number) {
   const a0_buf = encode(a0);
@@ -679,10 +676,14 @@ export function set_progress_bar(a0: bigint) {
   const result = readPointer(rawResult);
   return decode(result);
 }
-export function set_window_icon(a0: bigint, a1: string) {
-  const a1_buf = encode(a1);
-
-  const rawResult = symbols.set_window_icon(a0, a1_buf, a1_buf.byteLength);
+export function set_window_icon(
+  a0: bigint,
+  a1: number,
+  a2: number,
+  a3: bigint,
+  a4: bigint,
+) {
+  const rawResult = symbols.set_window_icon(a0, a1, a2, a3, a4);
   const result = rawResult;
   return result;
 }

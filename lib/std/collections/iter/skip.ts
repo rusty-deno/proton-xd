@@ -1,26 +1,22 @@
-import { Iter } from './iter.ts';
-import { LinkedList } from '../linear/linked_list/linked_list.ts';
+import { IterTrait } from './iter_trait.ts';
 
-
-export class SkippedIter<T> extends Iter<T> {
-
-  constructor(iter: LinkedList<T>,private _skip: number) {
-    super(iter);
+export class Skip<T> extends IterTrait<T> {
+  constructor(private _iter: Iterable<T>,private _skip: number) {
+    super();
   }
 
 
-  override *[Symbol.iterator](): Iterator<T> {
-    for(const iter of this.iter) {
+  *[Symbol.iterator](): Iterator<T> {
+    for(const element of this._iter) {
       if(this._skip--) continue;
-
-      yield iter;
+      yield element;
     }
   }
-
-  public override skip(skip: number) {
-    return new SkippedIter(this.iter,this._skip+skip);
-  }
 }
+
+
+
+
 
 
 

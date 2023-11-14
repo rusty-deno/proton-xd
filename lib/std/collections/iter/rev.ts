@@ -1,11 +1,13 @@
-import { Iter } from './iter.ts';
+import { Iter } from "./mod.ts";
 
+export class Rev<T> extends Iter<T> {
+  constructor(iter: Iterable<T>) {
+    super(iter);
+  }
 
-export class RevIter<T> extends Iter<T> {
-  *[Symbol.iterator](): Iterator<T> {
-    for(let iter=this.iter.back.value;iter&&iter.prev.deref()?.value;iter=iter.prev.deref()?.value) yield iter.data;
+  override *[Symbol.iterator]() {
+    for(let iter=super._ll.back.value;iter&&iter.prev.deref()?.value;iter=iter.prev.deref()?.value) yield iter.data;
   }
 }
-
 
 

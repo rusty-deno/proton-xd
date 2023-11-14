@@ -1,6 +1,6 @@
-import { IterableTrait } from "./mod.ts";
+import { IterTrait } from "./mod.ts";
 
-export class Flatten<T,U extends Iterable<T>,I extends Iterable<U>> extends IterableTrait<T> {
+export class Flatten<T,U extends Iterable<T>,I extends Iterable<U>> extends IterTrait<T> {
   constructor(private _iter: I) {
     super();
   }

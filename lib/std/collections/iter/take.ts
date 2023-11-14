@@ -1,23 +1,16 @@
-import { Iter } from "./iter.ts";
-import { LinkedList } from "../mod.ts";
+import { IterTrait } from "./mod.ts";
 
-export class Take<T> extends Iter<T> {
 
-  constructor(iter: LinkedList<T>,private n: number) {
-    super(iter);
+export class Take<T> extends IterTrait<T> {
+  constructor(private _iter: Iterable<T>,private n: number) {
+    super();
   }
 
   override *[Symbol.iterator](): Iterator<T> {
-    for(const iter of this.iter) {
+    for(const iter of this._iter) {
       if(!this.n--) break;
-
       yield iter;
     }
   }
-
-
-
 }
-
-
 

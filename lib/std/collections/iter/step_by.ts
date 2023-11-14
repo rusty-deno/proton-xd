@@ -1,15 +1,13 @@
-import { Iter } from './iter.ts';
-import { LinkedList } from '../linear/linked_list/linked_list.ts';
+import { IterTrait } from "./mod.ts";
 
-
-export class StepBy<T> extends Iter<T> {
-  constructor(iter: LinkedList<T>,private _step: number) {
-    super(iter);
+export class StepBy<T> extends IterTrait<T> {
+  constructor(private _iter: Iterable<T>,private _step: number) {
+    super();
   }
 
   override *[Symbol.iterator](): Iterator<T> {
     let i=0;
-    for(const iter of this.iter) if(i++%this._step==0) yield iter;
+    for(const iter of this._iter) if(i++%this._step===0) yield iter;
   }
 }
 

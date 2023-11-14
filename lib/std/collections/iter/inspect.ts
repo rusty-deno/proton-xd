@@ -1,29 +1,17 @@
-import { Fn } from '../../types.ts';
-import { IterTrait } from './iter_trait.ts';
-
+import { IterTrait } from "./mod.ts";
+import { Fn } from "../../types.ts";
 
 
 export class Inspect<T> extends IterTrait<T> {
-  constructor(private _iter: Iterable<T>,private f: Fn<[element: T],void>) {
+  constructor(private _iter: Iterable<T>,private f: Fn<[T],void>) {
     super();
   }
 
-  override *[Symbol.iterator](): Iterator<T> {
-    for(const iter of this._iter) {
-      this.f(iter);
-      yield iter;
+  *[Symbol.iterator](): Iterator<T> {
+    for(const element of this._iter) {
+      this.f(element);
+      yield element;
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
 

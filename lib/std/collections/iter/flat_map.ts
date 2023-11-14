@@ -1,4 +1,5 @@
-import { IterTrait } from "./iter_trait.ts";
+import { IterTrait } from "./mod.ts";
+import { Rev } from "./rev.ts";
 import { Fn } from "../../types.ts";
 
 
@@ -8,14 +9,16 @@ export class FlatMap<T,U> extends IterTrait<U> {
   }
 
   *[Symbol.iterator](): Iterator<U> {
-    for(const element of this._iter)
-      for(const entity of this.f(element)) yield entity;
+    for(const element of this._iter) yield* this.f(element);
   }
-
-
-
   
+  public override rev(): Rev<U> {
+    return new Rev(this);
+  }
 }
+
+
+
 
 
 
