@@ -1,8 +1,10 @@
-import { Option,None,Enumerate,Clone } from "../../mod.ts";
+import { Enumerate } from "../iter/enumerate.ts";
+import { Option,Clone } from "../../mod.ts";
+import { Iter } from "../mod.ts";
+import { LinkedList } from './linked_list/linked_list.ts';
 
 
 export class Vec<T> extends Array<T> implements Clone {
-
   constructor(...elements: T[]) {
     super(...elements);
   }
@@ -20,24 +22,18 @@ export class Vec<T> extends Array<T> implements Clone {
     for(const iterator of this) f(iterator,i++,this);
   }
 
-  public fold(f: (prev: T,current: T,index: number)=> Option<T>|T): Option<T> {
-    let folded: Option<T>=None(null);
-    let i=0;
-
-    for(const iterator of this) {
-      const fold=f(folded.unwrapOr(iterator),this.next(),++i);
-      folded=fold instanceof Option?fold:new Option(fold);
-    }
-
-    return folded;
+  public fold(init: T,f: (prev: T,current: T,index: number)=> T): T {
+    for(const [i,iter] of this.entries()) init=f(init,iter,i);
+    
+    return init;
   }
 
-  next(): T {
-    return this[Symbol.iterator]().next().value;
+  public next() {
+    return new Option<T>(this[Symbol.iterator]().next().value);
   }
 
-  public enumerate(): Enumerate<T> {
-    return super.entries();
+  public enumerate() {
+    return new Enumerate(this);
   }
 
   public toVec(): Vec<T> {
@@ -64,14 +60,18 @@ export class Vec<T> extends Array<T> implements Clone {
   }
 
   public override map<U>(fn: (element: T,index: number,vec: Vec<T>)=> U): Vec<U> {
-    const vec=new Vec<U>();
-    for(const [index,element] of this.entries()) vec.push(fn(element,index,this));
+    const vec=new LinkedList<U>();
+    for(const [index,element] of this.entries()) vec.pushBack(fn(element,index,this));
     
-    return vec;
+    return vec.toVec();
   }
 
   public delete(index: number) {
     return delete this[index];
+  }
+
+  public iter() {
+    return new Iter(this);
   }
 }
 

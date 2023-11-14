@@ -4,18 +4,18 @@ import { LinkedList } from '../linear/linked_list/linked_list.ts';
 
 
 export class Chain<T> extends IterTrait<T> {
-  constructor(private iter: Iterable<T>,private _iter: Iterable<T>) {
+  constructor(private _iter: Iterable<T>,private __iter: Iterable<T>) {
     super();
   }
   
   *[Symbol.iterator]() {
-    yield* this.iter;
     yield* this._iter;
+    yield* this.__iter;
   }
   
   public override rev() {
-    if(isLL(this.iter)||isLL(this._iter)) {
-      const iter=LinkedList.fromIter(this.iter);
+    if(isLL(this._iter)||isLL(this._iter)) {
+      const iter=LinkedList.fromIter(this._iter);
       iter.append(LinkedList.fromIter(this._iter));
 
       return new Rev(iter);

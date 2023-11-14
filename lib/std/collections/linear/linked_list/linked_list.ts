@@ -32,9 +32,12 @@ export class LinkedList<T> extends List<T> {
   public static fromIter<T>(iter: Iterable<T>): LinkedList<T> {
     return iter instanceof LinkedList?iter:iter instanceof Iter?iter.toLinkedList():new LinkedList(...iter);
   }
-  
-  next(): T {
-    return this[Symbol.iterator]().next().value;
+
+  public static fromIterRev<T>(iter: Iterable<T>) {
+    const self=new LinkedList<T>();
+    for(const element of iter) self.pushFront(element);
+
+    return self;
   }
 
   *[Symbol.iterator](): Iterator<T> {
@@ -133,54 +136,20 @@ export class LinkedList<T> extends List<T> {
   }
 
   public reverse() {
-    this.head=LinkedList._reverse(this.head);
+    this.head=this.rev().toLinkedList().head;
   }
 
   public toReversed() {
-    const ll=new LinkedList<T>();
-    ll.head=LinkedList._reverse(this.head);
-    ll.size=this.size;
-    return ll;
+    return this.rev().toLinkedList();
   }
-
-  private static _reverse<T>(head: Option<Node<T>>) {
-    let current=new WeakRef(head),prev=None<Node<T>>(),next=None<Node<T>>();
-
-    while(current.deref()?.value) {
-      next=current.deref()!.value!.next;
-      current.deref()!.value!.next=prev;
-
-      prev=current.deref()!;
-      current=new WeakRef(next);
-    }
-    return prev;
-  }
-
-
 
   public override at(index: number) {
     if(index<0) index+=this.size;
-    for(let i=0,iter=this.head.value;;iter=iter?.next.value,i++) {
-      if(i==index) return new Option(iter?.data);
-    }
+
+    for(const [i,element] of this.enumerate()) if(i==index) return new Option(element);
+    
+    return None<T>();
   }
-
-  public override forEach(f: (element: T,index: number,iter: LinkedList<T>)=> void): void {
-    for(const [i,element] of this.enumerate()) f(element,i,this);
-  }
-  
-  public override map<U>(f: (element: T,index: number,iter: LinkedList<T>)=> U): LinkedList<U> {
-    const map=new LinkedList<U>();
-    for(const [i,element] of this.enumerate()) f(element,i,this);
-
-    return map;
-  }
-
-
-
-
-
-
 }
 
 

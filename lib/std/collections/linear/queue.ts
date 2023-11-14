@@ -11,11 +11,6 @@ export class Queue<T> extends List<T> {
     this.queue=LinkedList.fromArray(queue);
   }
 
-
-  next(): T {
-    return this[Symbol.iterator]().next().value;
-  }
-
   *[Symbol.iterator](): Iterator<T> {
     for(let entity=this.dequeue().value;entity!=null;entity=this.dequeue().value) yield entity;
   }

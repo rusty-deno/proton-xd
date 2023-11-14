@@ -2,7 +2,7 @@ import { Clone,Option } from '../../mod.ts';
 import { Entry } from './mod.ts';
 import { HashSet, Vec } from '../mod.ts';
 import { HashMap } from './hash_map.ts';
-import { IterableTrait } from '../iter/iterable_trait.ts';
+import { IteratorTrait } from "../mod.ts";
 
 export type HasherFn<K>=(obj: K)=> number;
 
@@ -26,7 +26,7 @@ export type HasherFn<K>=(obj: K)=> number;
  * $assertEq(table.get("Monday"),Some(1));
  * ```
  */
-export class HashTable<K,V> extends IterableTrait<Entry<K,V>> implements Clone {
+export class HashTable<K,V> extends IteratorTrait<Entry<K,V>> implements Clone {
   private table=new Vec<Entry<K,V>>();
   private length=0;
   public readonly hasher: HasherFn<K>;
@@ -77,12 +77,8 @@ export class HashTable<K,V> extends IterableTrait<Entry<K,V>> implements Clone {
     return HashMap.fromIter(this.entries());
   }
 
-  next(): Entry<K,V> {
-    return this[Symbol.iterator]().next().value;
-  }
-
   *[Symbol.iterator](): Iterator<Entry<K,V>> {
-    for(const entry of this.table) yield entry;
+    yield* this.table;
   }
   
   public get capacity(): number {

@@ -8,15 +8,15 @@ import { LinkedList } from '../linear/linked_list/linked_list.ts';
 
 
 export class Iter<T> extends IterTrait<T> {
-  private iter: LinkedList<T>;
+  private _iter: LinkedList<T>;
 
   constructor(iter: Iterable<T>) {
     super();
-    this.iter=Iter.linkedList(iter);
+    this._iter=Iter.linkedList(iter);
   }
 
   private static linkedList<T>(iter: Iterable<T>) {
-    return iter instanceof LinkedList?iter:iter instanceof Iter?iter.iter:LinkedList.fromIter(iter);
+    return iter instanceof LinkedList?iter:iter instanceof Iter?iter._iter:LinkedList.fromIter(iter);
   }
 
   public static default<T>() {
@@ -28,27 +28,31 @@ export class Iter<T> extends IterTrait<T> {
   }
 
   protected get _ll() {
-    return this.iter
+    return this._iter
   }
 
   *[Symbol.iterator](): Iterator<T> {
-    yield* this.iter;
+    yield* this._iter;
   }
 
   public override chain(iter: Iterable<T>) {
-    return new Chain(this.iter,iter);
+    return new Chain(this._iter,iter);
   }
 
   public last() {
-    return new Option(this.iter.back.value?.data);
+    return new Option(this._iter.back.value?.data);
   }
 
   public get length() {
-    return this.iter.length;
+    return this._iter.length;
   }
 
   public override rev() {
-    return new Rev(this.iter);
+    return new Rev(this._iter);
+  }
+
+  public toLinkedList() {
+    return this._iter;
   }
 }
 

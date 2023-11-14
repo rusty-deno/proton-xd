@@ -1,9 +1,9 @@
 import { Entry } from './mod.ts';
-import { IterableTrait } from '../iter/iterable_trait.ts';
 import { Option } from '../../mod.ts';
 import { Vec } from '../linear/vector.ts';
 import { HashSet } from '../hash_set/hash_set.ts';
 import { Clone } from '../../clone.ts';
+import { IteratorTrait } from "../mod.ts";
 
 /**
  * An improved version of native {@linkcode Map} with extra type safety
@@ -14,7 +14,7 @@ import { Clone } from '../../clone.ts';
  * $assertEq(map.get(69),Some("xd"));
  * ```
  */
-export class HashMap<K,V> extends IterableTrait<Entry<K,V>> implements Clone {
+export class HashMap<K,V> extends IteratorTrait<Entry<K,V>> implements Clone {
   private unordered_map: Map<K,V>;
 
   constructor(...entries: Entry<K,V>[]) {
@@ -56,13 +56,9 @@ export class HashMap<K,V> extends IterableTrait<Entry<K,V>> implements Clone {
     for(const key in record) map.set(key,record[key]);
     return map;
   }
-  
-  next(): Entry<K,V> {
-    return this[Symbol.iterator]().next().value;
-  }
 
   *[Symbol.iterator](): Iterator<Entry<K,V>> {
-    for(const entity of this.unordered_map) yield entity;
+    yield* this.unordered_map;
   }
 
   public get size() {
@@ -165,8 +161,10 @@ export class HashMap<K,V> extends IterableTrait<Entry<K,V>> implements Clone {
    */
   public toString() {
     if(this.isEmpty()) return "{}";
+
     let str="{\n\t";
     for(const [key,value] of this) str+=`${key} => ${value}\n`;
+    
     return str+"\n}";
   }
 

@@ -1,21 +1,17 @@
-import { IterableTrait } from "../iter/iterable_trait.ts";
-import { Option } from "../../mod.ts";
 import { Vec } from "../mod.ts";
+import { Iter } from "../iter/mod.ts";
+import { Option } from "../../mod.ts";
+import { IteratorTrait } from "../mod.ts";
 import { Node,TreversalAlgorithm } from "./mod.ts";
 import { LinkedList } from "../linear/linked_list/mod.ts";
-import { Iter } from "../iter/mod.ts";
 
 
-export class BinaryTree<T> extends IterableTrait<Node<T>> {
-  root: Option<Node<T>>;
+export class BinaryTree<T> extends IteratorTrait<Node<T>> {
+  private root: Option<Node<T>>;
 
-  constructor(root?: Node<T>) {
+  constructor(root: Node<T>|null=null) {
     super();
     this.root=new Option(root);
-  }
-
-  next(): Node<T> {
-    return this[Symbol.iterator]().next().value;
   }
   
   *[Symbol.iterator](): Iterator<Node<T>> {

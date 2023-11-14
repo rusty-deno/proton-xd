@@ -1,8 +1,8 @@
-import { IterableTrait } from "../iter/iterable_trait.ts";
 import { Vec } from '../linear/vector.ts';
+import { IteratorTrait } from "../mod.ts";
 
 
-export class HashSet<T> extends IterableTrait<T> {
+export class HashSet<T> extends IteratorTrait<T> {
   private set: Set<T>;
 
   constructor(...entries: T[]) {
@@ -20,12 +20,8 @@ export class HashSet<T> extends IterableTrait<T> {
     return this.set.size;
   }
 
-  next(): T {
-    return this[Symbol.iterator]().next().value;
-  }
-
   *[Symbol.iterator](): Iterator<T> {
-    for(const element of this.set) yield element;
+    yield* this.set;
   }
   
   public add(element: T) {
