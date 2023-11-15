@@ -1,7 +1,7 @@
-import { Rev } from './rev.ts';
-import { Chain } from './chain.ts';
-import { IterTrait } from "./mod.ts";
+
 import { Option } from "../../mod.ts";
+import { Rev,Chain } from "./__mod.ts";
+import { IterTrait } from "./mod.ts";
 import { LinkedList } from '../linear/linked_list/linked_list.ts';
 
 

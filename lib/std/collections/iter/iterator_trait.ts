@@ -1,10 +1,7 @@
-import { Enumerate, Rev } from "./mod.ts";
-import { Iter } from "./iter.ts";
-import { IterMap } from "./map.ts";
 import { Fn } from "../../types.ts";
-import { Inspect } from "./inspect.ts";
 import { Vec } from '../linear/vector.ts';
 import { Option,Some } from "../../mod.ts";
+import { Enumerate,Rev,Iter,IterMap,Inspect } from "./mod.ts";
 
 
 

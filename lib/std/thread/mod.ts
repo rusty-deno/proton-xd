@@ -1,5 +1,5 @@
 export * from "./thread.ts";
-import { Thread } from "../mod.ts";
+import { Thread } from "./thread.ts";
 
 
 

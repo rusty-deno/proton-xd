@@ -1,5 +1,5 @@
 import { Application } from './application.ts';
-import { Thread } from "../../mod.ts";
+import { Thread } from "../../thread/thread.ts";
 
 
 /**

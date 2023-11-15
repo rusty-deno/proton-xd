@@ -1,10 +1,9 @@
 import { Option } from "../../mod.ts";
 import { LinkedList } from './linked_list/linked_list.ts';
-import { List } from "./List.ts";
+import { IteratorTrait } from "../mod.ts";
 
 
-
-export class Queue<T> extends List<T> {
+export class Queue<T> extends IteratorTrait<T> {
   private queue: LinkedList<T>;
   constructor(...queue: T[]) {
     super();

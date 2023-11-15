@@ -1,10 +1,10 @@
 import { Option,None,Some } from "../../../mod.ts";
-import { List } from "../List.ts";
 import { Node } from "./mod.ts";
 import { Iter } from '../../iter/iter.ts';
+import { IteratorTrait } from '../../iter/iterator_trait.ts';
 
 
-export class LinkedList<T> extends List<T> {
+export class LinkedList<T> extends IteratorTrait<T> {
   private head: Option<Node<T>>=None(null);
   private size=0;
   private _tail=new WeakRef(this.head);
@@ -143,7 +143,7 @@ export class LinkedList<T> extends List<T> {
     return this.rev().toLinkedList();
   }
 
-  public override at(index: number) {
+  public at(index: number) {
     if(index<0) index+=this.size;
 
     for(const [i,element] of this.enumerate()) if(i==index) return new Option(element);

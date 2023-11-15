@@ -1,5 +1,4 @@
-import { Rev } from "./rev.ts";
-import { IterTrait } from './mod.ts';
+import { IterTrait,Rev } from './mod.ts';
 import { LinkedList } from '../linear/linked_list/linked_list.ts';
 
 

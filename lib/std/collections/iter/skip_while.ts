@@ -1,5 +1,5 @@
 import { Fn } from "../../types.ts";
-import { IterTrait } from './iter_trait.ts';
+import { IterTrait } from "./mod.ts";
 
 
 

@@ -1,19 +1,9 @@
-import { Chain } from "./mod.ts";
-import { Skip } from "./skip.ts";
-import { Take } from './take.ts';
-import { FlatMap } from "./mod.ts";
+
 import { Fn } from "../../types.ts";
-import { Filter } from "./filter.ts";
-import { StepBy } from "./step_by.ts";
-import { Flatten } from "./flatten.ts";
-import { SkipWhile } from "./skip_while.ts";
-import { TakeWhile } from "./take_while.ts";
-import { IterMapWhile } from "./map_while.ts";
 import { $unimplemented } from "../../mod.ts";// unimplemented
 import { Option,Some,None } from "../../mod.ts";
-import { IteratorTrait } from './iterator_trait.ts';
-
-
+import { Chain,Skip,Take,FlatMap,Filter,StepBy,Flatten,SkipWhile,TakeWhile,IterMapWhile } from "./__mod.ts";
+import { IteratorTrait } from "../mod.ts";
 
 
 export abstract class IterTrait<T> extends IteratorTrait<T> {

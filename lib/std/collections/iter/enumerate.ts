@@ -1,4 +1,4 @@
-import { IterTrait } from "./mod.ts";
+import { IterTrait } from "./iter_trait.ts";
 
 export class Enumerate<T> extends IterTrait<[index: number,element: T]> {
   constructor(private _iter: Iterable<T>) {

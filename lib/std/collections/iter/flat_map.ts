@@ -1,5 +1,4 @@
-import { IterTrait } from "./mod.ts";
-import { Rev } from "./rev.ts";
+import { IterTrait,Rev } from "./mod.ts";
 import { Fn } from "../../types.ts";
 
 
