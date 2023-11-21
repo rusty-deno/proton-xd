@@ -1,8 +1,10 @@
 import { Option,None,Some } from "../../../mod.ts";
 import { Node } from "./mod.ts";
-import { Iter } from '../../iter/iter.ts';
 import { IteratorTrait } from '../../iter/iterator_trait.ts';
 
+abstract class ToLinkedList<T> {
+  public abstract toLinkedList(): LinkedList<T>;
+}
 
 export class LinkedList<T> extends IteratorTrait<T> {
   private head: Option<Node<T>>=None(null);
@@ -30,7 +32,7 @@ export class LinkedList<T> extends IteratorTrait<T> {
   }
 
   public static fromIter<T>(iter: Iterable<T>): LinkedList<T> {
-    return iter instanceof LinkedList?iter:iter instanceof Iter?iter.toLinkedList():new LinkedList(...iter);
+    return iter instanceof LinkedList?iter:iter instanceof ToLinkedList?iter.toLinkedList():new LinkedList(...iter);
   }
 
   public static fromIterRev<T>(iter: Iterable<T>) {
