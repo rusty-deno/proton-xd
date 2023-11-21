@@ -1,4 +1,4 @@
-import { $unimplemented, Option } from "../mod.ts";
+import { None, Option, Some } from "../mod.ts";
 import { Fn } from "../types.ts";
 
 export abstract class IterTrait<T> implements Iterable<T> {
@@ -33,10 +33,16 @@ export abstract class IterTrait<T> implements Iterable<T> {
   }
 
   public cycle() {
-    $unimplemented();
+    return new class Chain extends IterTrait<T> {
+      constructor(private _iter: Iterable<T>) {
+        super();
+      }
+
+      *[Symbol.iterator](): Iterator<T> {
+        for(;;)yield* this._iter;
+      }
+    }(this);
   }
-
-
 
   public enumerate() {
     return new class Enumerate<T> extends IterTrait<[number,T]> {
@@ -51,8 +57,38 @@ export abstract class IterTrait<T> implements Iterable<T> {
     }(this);
   }
 
+  public filter(f: Fn<[element: T],boolean>) {
+    return new class Filter extends IterTrait<T> {
+      constructor(private _iter: Iterable<T>,private f: Fn<[T],boolean>) {
+        super();
+      }
 
+      *[Symbol.iterator](): Iterator<T> {
+        for(const element of this._iter)
+          if(this.f(element)) yield element;
+      }
+    }(this,f);
+  }
 
+  public find(f: Fn<[element: T],boolean>) {
+    for(const iter of this)
+      if(f(iter)) return Some(iter);
+
+    return None<T>();
+  }
+
+  public findMap<U>(f: Fn<[element: T],Option<U>>) {
+    for(const iter of this) {
+      const res=f(iter);
+      if(res.contains()) res;
+    }
+
+    return None<T>();
+  }
+
+  public flatMap<U>(f: Fn<[element: T],Iterable<U>>) {
+    // return new FlatMap(this,f);
+  }
 
 
   public iter() {
