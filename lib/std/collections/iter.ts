@@ -135,6 +135,10 @@ export abstract class IterTrait<T> implements Iterable<T> {
       }
     }(this,f);
   }
+
+  public iter() {
+    return new Iter(this);
+  }
   
   public map<U>(f: Fn<[element: T,index: number],U>) {
     return new class IterMap<T,U> extends IterTrait<U> {
