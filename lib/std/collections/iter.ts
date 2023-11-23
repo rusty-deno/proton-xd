@@ -19,6 +19,19 @@ export abstract class IterTrait<T> implements Iterable<T> {
 
     return false;
   }
+  
+  public chain(other: Iterable<T>) {
+    return new class Chain extends IterTrait<T> {
+      constructor(private _iter: Iterable<T>,private _other: Iterable<T>) {
+        super();
+      }
+
+      *[Symbol.iterator](): Iterator<T> {
+        yield* this._iter;
+      }
+    }(this,other);
+  }
+  
 }
 
 export class Iter<T> extends IterTrait<T> {
