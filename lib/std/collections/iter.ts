@@ -208,6 +208,21 @@ export abstract class IterTrait<T> implements Iterable<T> {
   public rposition(f: Fn<[element: T],boolean>) {
     return this.rev().position(f);
   }
+
+  public skip(skip: number) {
+    return new class Skip<T> extends IterTrait<T> {
+      constructor(private _iter: Iterable<T>,private _skip: number) {
+        super();
+      }
+
+      *[Symbol.iterator](): Iterator<T> {
+        for(const element of this._iter) {
+          if(this._skip-->0) continue;
+          yield element;
+        }
+      }
+    }(this,skip);
+  }
 }
 
 export class Iter<T> extends IterTrait<T> {
