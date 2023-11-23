@@ -32,6 +32,17 @@ export abstract class IterTrait<T> implements Iterable<T> {
     }(this,other);
   }
   
+  public cycle() {
+    return new class Chain extends IterTrait<T> {
+      constructor(private _iter: Iterable<T>) {
+        super();
+      }
+
+      *[Symbol.iterator](): Iterator<T> {
+        for(;;)yield* this._iter;
+      }
+    }(this);
+  }
 }
 
 export class Iter<T> extends IterTrait<T> {
