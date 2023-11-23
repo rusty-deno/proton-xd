@@ -97,6 +97,18 @@ export abstract class IterTrait<T> implements Iterable<T> {
       }
     }(this,f);
   }
+  
+  public static flatten<T>(iter: Iterable<Iterable<T>>) {
+    return new class Flatten<T> extends IterTrait<T> {
+      constructor(private _iter: Iterable<Iterable<T>>) {
+        super();
+      }
+
+      *[Symbol.iterator](): Iterator<T> {
+        for(const element of this._iter) yield* element;
+      }
+    }(iter);
+  }
 }
 
 export class Iter<T> extends IterTrait<T> {
