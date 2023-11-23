@@ -177,6 +177,13 @@ export abstract class IterTrait<T> implements Iterable<T> {
 
     return -1;
   }
+
+  public reduce(f: Fn<[prev: T,current: T],T>): Option<T> {
+    const first=this.next();
+    if(first.value==null) return first;
+
+    return Some(this.fold(first.value,f));
+  }
 }
 
 export class Iter<T> extends IterTrait<T> {
