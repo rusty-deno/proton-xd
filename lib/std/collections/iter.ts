@@ -76,6 +76,15 @@ export abstract class IterTrait<T> implements Iterable<T> {
 
     return None<T>();
   }
+
+  public findMap<U>(f: Fn<[element: T],Option<U>>) {
+    for(const iter of this) {
+      const res=f(iter);
+      if(res.contains()) res;
+    }
+
+    return None<T>();
+  }
 }
 
 export class Iter<T> extends IterTrait<T> {
