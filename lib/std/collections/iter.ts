@@ -290,6 +290,21 @@ export abstract class IterTrait<T> implements Iterable<T> {
   public toVec() {
     return Vec.fromIter(this);
   }
+
+  public zip<B>(other: Iterable<B>) {
+    return new class Zip<T,U> extends IterTrait<[T,U]> {
+      constructor(private _iter: Iterable<T>,private other: Iterable<U>) {
+        super();
+      }
+
+      *[Symbol.iterator](): Iterator<[T,U]> {
+        const first=this._iter[Symbol.iterator]();
+        const second=this.other[Symbol.iterator]();
+        
+        for(let f=first.next(),s=second.next();!(f.done||s.done);f=first.next(),s=second.next()) yield [f.value,s.value];
+      }
+    }(this,other);
+  }
 }
 
 export class Iter<T> extends IterTrait<T> {
