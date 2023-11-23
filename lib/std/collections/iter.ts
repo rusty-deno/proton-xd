@@ -109,6 +109,12 @@ export abstract class IterTrait<T> implements Iterable<T> {
       }
     }(iter);
   }
+
+  public fold<U>(init: U,f: Fn<[prev: U,element: T],U>) {
+    for(const iter of this) init=f(init,iter);
+    
+    return init;
+  }
 }
 
 export class Iter<T> extends IterTrait<T> {
