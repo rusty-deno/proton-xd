@@ -148,6 +148,25 @@ export abstract class IterTrait<T> implements Iterable<T> {
       }
     }(this,f);
   }
+
+  public mapWhile<U>(f: Fn<[element: T,index: number],Option<U>|U|None>) {
+    return new class IterMapWhile<T,U> extends IterTrait<U> {
+      constructor(private _iter: Iterable<T>,private f: Fn<[T,number],U>) {
+        super();
+      }
+      
+      *[Symbol.iterator](): Iterator<U> {
+        let i=0;
+        for(const element of this._iter) {
+          const _res=this.f(element,i++);
+          const res=_res instanceof Option?_res.value:_res;
+          if(res==null) break;
+          
+          yield res;
+        }
+      }
+    }(this,f);
+  }
 }
 
 export class Iter<T> extends IterTrait<T> {
