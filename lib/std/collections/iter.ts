@@ -184,6 +184,18 @@ export abstract class IterTrait<T> implements Iterable<T> {
 
     return Some(this.fold(first.value,f));
   }
+
+  public rev() {
+    return new class Rev<T> extends IterTrait<T> {
+      constructor(private _iter: Iterable<T>) {
+        super();
+      }
+      
+      *[Symbol.iterator](): Iterator<T> {
+        yield $unimplemented();
+      }
+    }(this);
+  }
 }
 
 export class Iter<T> extends IterTrait<T> {
