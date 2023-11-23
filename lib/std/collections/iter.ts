@@ -266,6 +266,22 @@ export abstract class IterTrait<T> implements Iterable<T> {
       }
     }(this,n);
   }
+
+  public takeWhile(f: Fn<[element: T],boolean>) {
+    return new class TakeWhile<T> extends IterTrait<T> {
+      constructor(private _iter: Iterable<T>,private f: Fn<[element: T],boolean>) {
+        super();
+      }
+
+      *[Symbol.iterator](): Iterator<T> {
+        for(const iter of this._iter) {
+          if(!this.f(iter)) break;
+    
+          yield iter;
+        }
+      }
+    }(this,f);
+  }
 }
 
 export class Iter<T> extends IterTrait<T> {
