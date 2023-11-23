@@ -85,6 +85,18 @@ export abstract class IterTrait<T> implements Iterable<T> {
 
     return None<T>();
   }
+
+  public flatMap<U>(f: Fn<[element: T],Iterable<U>>) {
+    return new class FlatMap<T,U> extends IterTrait<U> {
+      constructor(private _iter: Iterable<T>,private f: Fn<[T],Iterable<U>>) {
+        super();
+      }
+
+      *[Symbol.iterator](): Iterator<U> {
+        for(const element of this._iter) yield* this.f(element);
+      }
+    }(this,f);
+  }
 }
 
 export class Iter<T> extends IterTrait<T> {
