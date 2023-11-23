@@ -13,6 +13,12 @@ export abstract class IterTrait<T> implements Iterable<T> {
 
     return true;
   }
+
+  public any(f: Fn<[element: T],boolean>) {
+    for(const iter of this) if(f(iter)) return true;
+
+    return false;
+  }
 }
 
 export class Iter<T> extends IterTrait<T> {
