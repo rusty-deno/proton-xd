@@ -282,6 +282,14 @@ export abstract class IterTrait<T> implements Iterable<T> {
       }
     }(this,f);
   }
+
+  public toArray() {
+    return Array.from(this);
+  }
+
+  public toVec() {
+    return Vec.fromIter(this);
+  }
 }
 
 export class Iter<T> extends IterTrait<T> {
