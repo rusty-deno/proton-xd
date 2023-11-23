@@ -69,6 +69,13 @@ export abstract class IterTrait<T> implements Iterable<T> {
       }
     }(this,f);
   }
+
+  public find(f: Fn<[element: T],boolean>) {
+    for(const iter of this)
+      if(f(iter)) return Some(iter);
+
+    return None<T>();
+  }
 }
 
 export class Iter<T> extends IterTrait<T> {
