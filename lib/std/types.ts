@@ -10,6 +10,3 @@ export interface AsyncFn<P extends Params,R> {
   (...args: P): Promise<R>;
 }
 
-
-
-

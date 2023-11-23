@@ -7,7 +7,8 @@
     "minor": "deno run --allow-read=. --allow-write=. https://deno.land/x/bmp@v0.2.0/cli.ts -m",
     "watch": "deno run --watch -A --unstable main_debug.ts",
     "serve": "deno run --watch --allow-net --allow-read server.ts",
-    "test": "deno run -A tests/test.ts"
+    "test": "deno run -A tests/test.ts",
+    "commit": "deno run -A commit.ts"
   },
   "fmt": {
     "options": {
