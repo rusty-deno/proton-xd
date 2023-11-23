@@ -251,6 +251,21 @@ export abstract class IterTrait<T> implements Iterable<T> {
       }
     }(this,step);
   }
+
+  public take(n: number) {
+    return new class Take<T> extends IterTrait<T> {
+      constructor(private _iter: Iterable<T>,private n: number) {
+        super();
+      }
+
+      *[Symbol.iterator](): Iterator<T> {
+        for(const iter of this._iter) {
+          if(!this.n--) break;
+          yield iter;
+        }
+      }
+    }(this,n);
+  }
 }
 
 export class Iter<T> extends IterTrait<T> {
