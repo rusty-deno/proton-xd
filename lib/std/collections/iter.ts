@@ -204,6 +204,10 @@ export abstract class IterTrait<T> implements Iterable<T> {
   public rfold<U>(init: U,f: Fn<[prev: U,element: T],U>) {
     return this.rev().fold(init,f);
   }
+  
+  public rposition(f: Fn<[element: T],boolean>) {
+    return this.rev().position(f);
+  }
 }
 
 export class Iter<T> extends IterTrait<T> {
