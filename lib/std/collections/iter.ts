@@ -223,6 +223,21 @@ export abstract class IterTrait<T> implements Iterable<T> {
       }
     }(this,skip);
   }
+
+  public skipWhile(f: Fn<[element: T],boolean>) {
+    return new class SkipWhile<T> extends IterTrait<T> {
+      constructor(private _iter: Iterable<T>,private f: Fn<[T],boolean>) {
+        super();
+      }
+
+      *[Symbol.iterator](): Iterator<T> {
+        for(const element of this._iter) {
+          if(this.f(element)) continue;
+          yield element;
+        }
+      }
+    }(this,f);
+  }
 }
 
 export class Iter<T> extends IterTrait<T> {
