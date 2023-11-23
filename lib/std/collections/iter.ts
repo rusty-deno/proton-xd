@@ -238,6 +238,19 @@ export abstract class IterTrait<T> implements Iterable<T> {
       }
     }(this,f);
   }
+  
+  public stepBy(step: number) {
+    return new class StepBy<T> extends IterTrait<T> {
+      constructor(private _iter: Iterable<T>,private _step: number) {
+        super();
+      }
+
+      *[Symbol.iterator](): Iterator<T> {
+        let i=0;
+        for(const iter of this._iter) if(i++%this._step===0) yield iter;
+      }
+    }(this,step);
+  }
 }
 
 export class Iter<T> extends IterTrait<T> {
