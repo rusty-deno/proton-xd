@@ -120,6 +120,21 @@ export abstract class IterTrait<T> implements Iterable<T> {
     let i=0;
     for(const iter of this) f(iter,i++);
   }
+
+  public inspect(f: Fn<[element: T],void>) {
+    return new class Inspect<T> extends IterTrait<T> {
+      constructor(private _iter: Iterable<T>,private f: Fn<[T],void>) {
+        super();
+      }
+      
+      *[Symbol.iterator](): Iterator<T> {
+        for(const element of this._iter) {
+          this.f(element);
+          yield element;
+        }
+      }
+    }(this,f);
+  }
 }
 
 export class Iter<T> extends IterTrait<T> {
