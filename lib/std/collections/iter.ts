@@ -43,6 +43,32 @@ export abstract class IterTrait<T> implements Iterable<T> {
       }
     }(this);
   }
+
+  public enumerate() {
+    return new class Enumerate<T> extends IterTrait<[number,T]> {
+      constructor(private _iter: Iterable<T>) {
+        super();
+      }
+
+      *[Symbol.iterator](): Iterator<[number,T]> {
+        let i=0;
+        for(const element of this._iter) yield [i++,element];
+      }
+    }(this);
+  }
+
+  public filter(f: Fn<[element: T],boolean>) {
+    return new class Filter extends IterTrait<T> {
+      constructor(private _iter: Iterable<T>,private f: Fn<[T],boolean>) {
+        super();
+      }
+
+      *[Symbol.iterator](): Iterator<T> {
+        for(const element of this._iter)
+          if(this.f(element)) yield element;
+      }
+    }(this,f);
+  }
 }
 
 export class Iter<T> extends IterTrait<T> {
