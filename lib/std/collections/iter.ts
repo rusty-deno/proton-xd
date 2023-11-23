@@ -135,6 +135,19 @@ export abstract class IterTrait<T> implements Iterable<T> {
       }
     }(this,f);
   }
+  
+  public map<U>(f: Fn<[element: T,index: number],U>) {
+    return new class IterMap<T,U> extends IterTrait<U> {
+      constructor(private _iter: Iterable<T>,private f: Fn<[T,number],U>) {
+        super();
+      }
+      
+      *[Symbol.iterator](): Iterator<U> {
+        let i=0;
+        for(const element of this._iter) yield this.f(element,i++);
+      }
+    }(this,f);
+  }
 }
 
 export class Iter<T> extends IterTrait<T> {
