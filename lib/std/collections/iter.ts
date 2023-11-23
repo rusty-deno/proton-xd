@@ -115,6 +115,11 @@ export abstract class IterTrait<T> implements Iterable<T> {
     
     return init;
   }
+
+  public forEach(f: Fn<[element: T,index: number],void>) {
+    let i=0;
+    for(const iter of this) f(iter,i++);
+  }
 }
 
 export class Iter<T> extends IterTrait<T> {
