@@ -196,6 +196,10 @@ export abstract class IterTrait<T> implements Iterable<T> {
       }
     }(this);
   }
+
+  public rfind(f: Fn<[element: T],boolean>) {
+    return this.rev().find(f);
+  }
 }
 
 export class Iter<T> extends IterTrait<T> {
