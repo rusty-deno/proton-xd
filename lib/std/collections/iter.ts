@@ -171,6 +171,12 @@ export abstract class IterTrait<T> implements Iterable<T> {
       }
     }(this,f);
   }
+
+  public position(f: Fn<[element: T],boolean>) {
+    for(const [i,element] of this.enumerate()) if(f(element)) i;
+
+    return -1;
+  }
 }
 
 export class Iter<T> extends IterTrait<T> {
