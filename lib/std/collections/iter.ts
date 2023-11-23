@@ -200,6 +200,10 @@ export abstract class IterTrait<T> implements Iterable<T> {
   public rfind(f: Fn<[element: T],boolean>) {
     return this.rev().find(f);
   }
+
+  public rfold<U>(init: U,f: Fn<[prev: U,element: T],U>) {
+    return this.rev().fold(init,f);
+  }
 }
 
 export class Iter<T> extends IterTrait<T> {
