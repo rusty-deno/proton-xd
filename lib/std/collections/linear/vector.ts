@@ -1,4 +1,3 @@
-import { Enumerate } from "../iter/enumerate.ts";
 import { Option,Clone } from "../../mod.ts";
 import { Iter } from "../mod.ts";
 import { LinkedList } from './linked_list/linked_list.ts';
@@ -33,7 +32,7 @@ export class Vec<T> extends Array<T> implements Clone {
   }
 
   public enumerate() {
-    return new Enumerate(this);
+    return this.iter().enumerate();
   }
 
   public toVec(): Vec<T> {
@@ -63,7 +62,7 @@ export class Vec<T> extends Array<T> implements Clone {
     const vec=new LinkedList<U>();
     for(const [index,element] of this.entries()) vec.pushBack(fn(element,index,this));
     
-    return vec.toVec();
+    return Vec.fromIter(vec);
   }
 
   public delete(index: number) {

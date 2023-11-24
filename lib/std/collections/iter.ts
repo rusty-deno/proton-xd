@@ -1,9 +1,10 @@
 import { $unimplemented,None,Option,Some,Vec } from "../mod.ts";
 import { Fn } from "../types.ts";
 
-export abstract class IterTrait<T> implements Iterable<T> {
+
+export abstract class IteratorTrait<T> implements Iterable<T> {
   abstract [Symbol.iterator](): Iterator<T>;
-  
+
   public next() {
     return new Option<T>(this[Symbol.iterator]().next().value);
   }
@@ -19,7 +20,44 @@ export abstract class IterTrait<T> implements Iterable<T> {
 
     return false;
   }
-  
+
+  public fold<U>(init: U,f: Fn<[prev: U,element: T],U>) {
+    for(const iter of this) init=f(init,iter);
+    
+    return init;
+  }
+
+  public forEach(f: Fn<[element: T,index: number],void>) {
+    let i=0;
+    for(const iter of this) f(iter,i++);
+  }
+
+  public iter() {
+    return new Iter(this);
+  }
+
+  public reduce(f: Fn<[prev: T,current: T],T>): Option<T> {
+    const first=this.next();
+    if(first.value==null) return first;
+
+    return Some(this.fold(first.value,f));
+  }
+
+  public toArray() {
+    return Array.from(this);
+  }
+
+  public toVec() {
+    return Vec.from(this);
+  }
+}
+
+
+export abstract class IterTrait<T> extends IteratorTrait<T> {
+  public next() {
+    return new Option<T>(this[Symbol.iterator]().next().value);
+  }
+
   public chain(other: Iterable<T>) {
     return new class Chain extends IterTrait<T> {
       constructor(private _iter: Iterable<T>,private _other: Iterable<T>) {
@@ -110,12 +148,6 @@ export abstract class IterTrait<T> implements Iterable<T> {
     }(iter);
   }
 
-  public fold<U>(init: U,f: Fn<[prev: U,element: T],U>) {
-    for(const iter of this) init=f(init,iter);
-    
-    return init;
-  }
-
   public forEach(f: Fn<[element: T,index: number],void>) {
     let i=0;
     for(const iter of this) f(iter,i++);
@@ -134,10 +166,6 @@ export abstract class IterTrait<T> implements Iterable<T> {
         }
       }
     }(this,f);
-  }
-
-  public iter() {
-    return new Iter(this);
   }
   
   public map<U>(f: Fn<[element: T,index: number],U>) {
@@ -176,13 +204,6 @@ export abstract class IterTrait<T> implements Iterable<T> {
     for(const [i,element] of this.enumerate()) if(f(element)) i;
 
     return -1;
-  }
-
-  public reduce(f: Fn<[prev: T,current: T],T>): Option<T> {
-    const first=this.next();
-    if(first.value==null) return first;
-
-    return Some(this.fold(first.value,f));
   }
 
   public rev() {
@@ -283,14 +304,6 @@ export abstract class IterTrait<T> implements Iterable<T> {
     }(this,f);
   }
 
-  public toArray() {
-    return Array.from(this);
-  }
-
-  public toVec() {
-    return Vec.fromIter(this);
-  }
-
   public zip<B>(other: Iterable<B>) {
     return new class Zip<T,U> extends IterTrait<[T,U]> {
       constructor(private _iter: Iterable<T>,private other: Iterable<U>) {
@@ -316,14 +329,3 @@ export class Iter<T> extends IterTrait<T> {
     yield* this._iter;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
