@@ -7,14 +7,14 @@ export class Node<T> {
   left: Option<Node<T>>;
   right: Option<Node<T>>;
 
-  constructor(data: T,childs: Child<T>={}) {
+  constructor(data: T,children: Children<T>={}) {
     this.data=data;
-    this.left=new Option(childs.left);
-    this.right=new Option(childs.right);
+    this.left=new Option(children.left);
+    this.right=new Option(children.right);
   }
 }
 
-export interface Child<T> {
+export interface Children<T> {
   left?: Node<T>;
   right?: Node<T>;
 }

@@ -1,7 +1,6 @@
 import { Vec } from "../mod.ts";
-import { Iter } from "../iter/mod.ts";
 import { Option } from "../../mod.ts";
-import { IteratorTrait } from "../mod.ts";
+import { IteratorTrait,Iter } from "../mod.ts";
 import { Node,TreversalAlgorithm } from "./mod.ts";
 import { LinkedList } from "../linear/linked_list/mod.ts";
 
@@ -52,7 +51,7 @@ export class BinaryTree<T> extends IteratorTrait<Node<T>> {
     }
   }
   public preorderedIter() {
-    return Iter.fromIterable(this.preIter());
+    return new Iter(this.preIter());
   }
 
 
@@ -81,7 +80,7 @@ export class BinaryTree<T> extends IteratorTrait<Node<T>> {
   }
 
   public postorderedIter() {
-    return Iter.fromIterable(this.postIter());
+    return new Iter(this.postIter());
   }
 
   public map<U>(f: (element: Node<T>,index: number)=> U,algo?: TreversalAlgorithm) {
