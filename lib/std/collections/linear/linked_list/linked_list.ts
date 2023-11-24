@@ -1,6 +1,6 @@
-import { Option,None,Some } from "../../../mod.ts";
 import { Node } from "./mod.ts";
-import { IteratorTrait } from '../../iter/iterator_trait.ts';
+import { IteratorTrait } from "../../iter.ts";
+import { Option,None,Some } from "../../../mod.ts";
 
 abstract class ToLinkedList<T> {
   public abstract toLinkedList(): LinkedList<T>;
@@ -137,12 +137,16 @@ export class LinkedList<T> extends IteratorTrait<T> {
     return !this.size;
   }
 
-  public reverse() {
-    this.head=this.rev().toLinkedList().head;
+  public enumerate() {
+    return this.iter().enumerate();
   }
 
-  public toReversed() {
-    return this.rev().toLinkedList();
+  public rev() {
+    return this.iter().rev();
+  }
+
+  public reverse() {
+    this.head=LinkedList.fromIterRev(this).head;
   }
 
   public at(index: number) {
