@@ -17,4 +17,3 @@ opt-level = "z"
 image = { version = "0.24.7", futures = ["webp-encoder"] }
 wasm-bindgen = "0.2.84"
 wasm-bindgen-futures = "0.4.38"
-wasm_thread = "0.2.0"

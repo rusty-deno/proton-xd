@@ -12,8 +12,3 @@ pub(crate) use wasm_bindgen_futures::wasm_bindgen::prelude::wasm_bindgen as asyn
 
 mod img;
 pub use img::*;
-mod thread;
-pub use thread::*;
-
-
-
