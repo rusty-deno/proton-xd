@@ -169,7 +169,7 @@ export function codegen(
     );
   const prototype=Deno.readTextFileSync("./bindings/bindings.prototype.json").trim();
 
-  return tsFormatter.formatText("bindings/bindings.ts",`
+  return `
 const encoder=new TextEncoder;
 const decoder=new TextDecoder();
 
@@ -255,7 +255,6 @@ export const lib=Deno.dlopen(bindingsUri, {`
         )
         .join(", ")
     },${prototype.substring(1,prototype.length-1)}});
-    
     using dropable={
       [Symbol.dispose]() {
         lib.close();
@@ -263,7 +262,7 @@ export const lib=Deno.dlopen(bindingsUri, {`
       ...lib
     };
     export const { symbols }=dropable;
-
+    
     const fn=Deno.UnsafeCallback.threadSafe({
       parameters: ["buffer","usize"],
       result: "void"
@@ -272,6 +271,7 @@ export const lib=Deno.dlopen(bindingsUri, {`
     });
     fn.unref();
     symbols.set_throw(fn.pointer);
+    
 ${
   Object.keys(decl)
   .sort()
@@ -338,5 +338,5 @@ ${
       })
       .join("\n")
     }
- `);
+ `;
 }
