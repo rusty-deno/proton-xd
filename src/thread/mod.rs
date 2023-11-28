@@ -31,22 +31,20 @@ pub fn spawn(ptr: usize)-> usize {
   }
 }
 
-unsafe fn _join(ptr: Handler) {
-  let handler=Arc::from_raw(ptr);
-
-  Arc::decrement_strong_count(ptr);
-  Arc::into_inner(handler).unwrap_or_throw().join().unwrap()//todo: throw exceptions instead
-}
-
 
 #[deno_bindgen]
 pub fn join(ptr: usize) {
-  unsafe { _join(ptr as Handler) }
+  unsafe {
+    let handler=Arc::from_raw(ptr as Handler);
+
+    Arc::decrement_strong_count(ptr as Handler);
+    Arc::into_inner(handler).unwrap_or_throw().join().unwrap_or_throw()
+  }
 }
 
 #[deno_bindgen(non_blocking)]
 pub async fn join_async(ptr: usize) {
-  unsafe { _join(ptr as Handler) }
+  join(ptr)
 }
 
 

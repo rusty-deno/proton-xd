@@ -1,7 +1,7 @@
 use std::{
   slice,
   str,
-  fmt::Display
+  fmt::Debug
 };
 
 type ThrowFn=unsafe extern "C" fn(*const u8,usize)-> !;
@@ -28,11 +28,11 @@ pub(crate) fn throw(msg: &str)-> ! {
   }
 }
 
-impl<T,E: Display> Exception<T> for Result<T,E> {
+impl<T,E: Debug> Exception<T> for Result<T,E> {
   fn unwrap_or_throw(self)-> T {
     match self {
       Ok(res)=> res,
-      Err(err)=> throw(&err.to_string())
+      Err(err)=> throw(&format!("{err:?}"))
     }
   }
 
@@ -43,6 +43,8 @@ impl<T,E: Display> Exception<T> for Result<T,E> {
     }
   }
 }
+
+
 
 impl<T> Exception<T> for Option<T> {
   fn unwrap_or_throw(self)-> T {
@@ -56,4 +58,5 @@ impl<T> Exception<T> for Option<T> {
     }
   }
 }
+
 
