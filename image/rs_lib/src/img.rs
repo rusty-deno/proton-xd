@@ -1,5 +1,5 @@
 use super::*;
-use std::rc::Rc;
+use std::sync::Arc;
 use writer::Writer;
 use wasm_bindgen_futures::js_sys::Uint8Array;
 
@@ -15,7 +15,7 @@ use image::{
 pub struct Img {
   pub height: u32,
   pub width: u32,
-  pub(crate) bytes: Rc<[u8]>,
+  pub(crate) bytes: Arc<[u8]>,
   is_bgra: bool
 }
 
@@ -36,7 +36,7 @@ impl Img {
     let img=load_from_memory(buff).unwrap_throw().to_rgba8();
 
     let (height,width)=(img.height(),img.width());
-    let bytes=Rc::<[u8]>::from(img.into_vec());
+    let bytes=Arc::<[u8]>::from(img.into_vec());
 
     Img {
       height,

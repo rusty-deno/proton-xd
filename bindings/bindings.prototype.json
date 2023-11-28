@@ -153,5 +153,9 @@
   "set_visible_on_all_workspaces": {
     "parameters": ["usize","bool"],
     "result": "void"
+  },
+  "is_panicking": {
+    "parameters": [],
+    "result": "bool"
   }
 }
