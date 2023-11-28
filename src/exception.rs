@@ -19,7 +19,7 @@ pub unsafe fn set_throw(f: ThrowFn) {
 
 pub(crate) trait Exception<T> {
   fn unwrap_or_throw(self)-> T;
-  fn except(self,msg: &str)-> T;
+  fn unwrap_or_throw_msg(self,msg: &str)-> T;
 }
 
 pub(crate) fn throw(msg: &str)-> ! {
@@ -36,7 +36,7 @@ impl<T,E: Display> Exception<T> for Result<T,E> {
     }
   }
 
-  fn except(self,msg: &str)-> T {
+  fn unwrap_or_throw_msg(self,msg: &str)-> T {
     match self {
       Ok(res)=> res,
       _=> throw(msg)
@@ -46,13 +46,10 @@ impl<T,E: Display> Exception<T> for Result<T,E> {
 
 impl<T> Exception<T> for Option<T> {
   fn unwrap_or_throw(self)-> T {
-    match self {
-      Some(val)=> val,
-      _=> throw("null pointer exception")
-    }
+    self.unwrap_or_throw_msg("null pointer exception")
   }
 
-  fn except(self,msg: &str)-> T {
+  fn unwrap_or_throw_msg(self,msg: &str)-> T {
     match self {
       Some(res)=> res,
       _=> throw(msg)

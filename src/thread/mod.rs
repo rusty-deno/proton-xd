@@ -8,6 +8,8 @@ use std::{
   mem
 };
 use deno_bindgen::deno_bindgen;
+use crate::Exception;
+
 
 type FnPtr=extern "C" fn()-> ();
 type Void=*const ();
@@ -33,7 +35,7 @@ unsafe fn _join(ptr: Handler) {
   let handler=Arc::from_raw(ptr);
 
   Arc::decrement_strong_count(ptr);
-  Arc::into_inner(handler).unwrap().join().unwrap()//todo: throw exceptions instead
+  Arc::into_inner(handler).unwrap_or_throw().join().unwrap()//todo: throw exceptions instead
 }
 
 
