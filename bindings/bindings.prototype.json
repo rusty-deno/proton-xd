@@ -157,5 +157,9 @@
   "is_panicking": {
     "parameters": [],
     "result": "bool"
+  },
+  "set_throw": {
+    "parameters": ["function"],
+    "result": "void"
   }
 }
