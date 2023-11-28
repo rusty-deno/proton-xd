@@ -1,9 +1,14 @@
+use std::{
+  slice,
+  str,
+  fmt::Display
+};
 
-type ThrowFn=unsafe extern "C" fn(*const u8,len: usize)-> !;
+type ThrowFn=unsafe extern "C" fn(*const u8,usize)-> !;
 static mut THROW: ThrowFn=default_throw;
 
 unsafe extern "C" fn default_throw(buff: *const u8,len: usize)-> ! {
-  let xd=std::str::from_utf8_unchecked(std::slice::from_raw_parts(buff,len));
+  let xd=str::from_utf8_unchecked(slice::from_raw_parts(buff,len));
   panic!("{xd}")
 }
 
@@ -13,7 +18,7 @@ pub unsafe fn set_throw(f: ThrowFn) {
 }
 
 pub(crate) trait Exception<T> {
-  fn unwrap_or_throw(&self)-> T;
+  fn unwrap_or_throw(self)-> T;
 }
 
 pub(crate) fn throw(msg: &str)-> ! {
@@ -22,4 +27,12 @@ pub(crate) fn throw(msg: &str)-> ! {
   }
 }
 
+impl<T,E: Display> Exception<T> for Result<T,E> {
+  fn unwrap_or_throw(self)-> T {
+    match self {
+      Ok(res)=> res,
+      Err(err)=> throw(&err.to_string())
+    }
+  }
+}
 
