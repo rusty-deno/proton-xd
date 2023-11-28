@@ -13,7 +13,7 @@ unsafe extern "C" fn default_throw(buff: *const u8,len: usize)-> ! {
 }
 
 #[no_mangle]
-pub unsafe fn set_throw(f: ThrowFn) {
+pub unsafe extern "C" fn set_throw(f: ThrowFn) {
   THROW=f
 }
 

@@ -1,4 +1,4 @@
-import * as lib from "../../../bindings/bindings.ts";
+import { sleep,symbols as lib } from "../../../bindings/bindings.ts";
 import { Some,None } from "../mod.ts";
 
 
@@ -49,7 +49,7 @@ export class Thread<T> {
    * ```
    */
   public async spawn(): Promise<T> {
-    await lib.symbols.spawn(this.fn.pointer);
+    await lib.spawn(this.fn.pointer);
     this.fn.close();
     return this.xd.value as T;
   }
@@ -77,7 +77,7 @@ export class Thread<T> {
   }
 
   public static sleep(duration: number) {
-    lib.sleep(duration);
+    sleep(duration);
   }
 }
 

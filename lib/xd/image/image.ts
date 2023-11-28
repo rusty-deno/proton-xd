@@ -1,5 +1,5 @@
 import { PathBuf } from "../../std/path.ts";
-import { PngCompressionType,PngFilter } from "../mod.ts";
+import { PngCompressionType,PngFilter } from "../types/image.ts";
 import { Img } from "../../../image/lib/rs_lib.js";
 import * as lib from "../../../image/lib/rs_lib.js";
 import { $result,$resultSync } from "../../std/error/result/macros.ts";

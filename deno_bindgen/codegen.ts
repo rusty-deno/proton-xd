@@ -255,10 +255,23 @@ export const lib=Deno.dlopen(bindingsUri, {`
         )
         .join(", ")
     },${prototype.substring(1,prototype.length-1)}});
-    export const { symbols }=lib;
-    addEventListener("unload",()=> {
-      lib.close();
+    
+    using dropable={
+      [Symbol.dispose]() {
+        lib.close();
+      },
+      ...lib
+    };
+    export const { symbols }=dropable;
+
+    const fn=Deno.UnsafeCallback.threadSafe({
+      parameters: ["buffer","usize"],
+      result: "void"
+    },(buff: Deno.PointerValue<unknown>,len: number|bigint)=> {
+      throw buff?decoder.decode(new Uint8Array(Deno.UnsafePointerView.getArrayBuffer(buff,len as number))):"";
     });
+    fn.unref();
+    symbols.set_throw(fn.pointer);
 ${
   Object.keys(decl)
   .sort()

@@ -352,11 +352,30 @@ export const lib = Deno.dlopen(bindingsUri, {
     "parameters": ["usize", "bool"],
     "result": "void",
   },
+  "set_throw": {
+    parameters: ["function"],
+    result: "void"
+  }
 });
-export const { symbols } = lib;
-addEventListener("unload", () => {
-  lib.close();
+using dropable={
+  [Symbol.dispose]() {
+    lib.close();
+  },
+  ...lib
+};
+export const { symbols }=dropable;
+
+const fn=Deno.UnsafeCallback.threadSafe({
+  parameters: ["buffer","usize"],
+  result: "void"
+},(buff: Deno.PointerValue<unknown>,len: number|bigint)=> {
+  throw buff?decoder.decode(new Uint8Array(Deno.UnsafePointerView.getArrayBuffer(buff,len as number))):"";
 });
+fn.unref();
+symbols.set_throw(fn.pointer);
+
+
+
 export type AttentionType =
   | "Critical"
   | "Informational";
@@ -547,12 +566,13 @@ export function monitor_from_point(a0: bigint, a1: number, a2: number) {
   const result = readPointer(rawResult);
   return decode(result);
 }
-export function open(a0: string) {
+export async function open(a0: string) {
   const a0_buf = encode(a0);
 
   const rawResult = symbols.open(a0_buf, a0_buf.byteLength);
   const result = rawResult.then(readPointer);
-  return result.then(decode);
+  const buffer = await result;
+  return decode(buffer);
 }
 export function open_sync(a0: string) {
   const a0_buf = encode(a0);
@@ -607,12 +627,12 @@ export function request_user_attention(a0: bigint, a1: string) {
   const result = rawResult;
   return result;
 }
-export function save(a0: string) {
+export async function save(a0: string) {
   const a0_buf = encode(a0);
 
   const rawResult = symbols.save(a0_buf, a0_buf.byteLength);
-  const result = rawResult.then(readPointer);
-  return result.then(decode);
+  const buffer = await readPointer(rawResult);
+  return decode(buffer);
 }
 export function save_sync(a0: string) {
   const a0_buf = encode(a0);

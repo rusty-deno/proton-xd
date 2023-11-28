@@ -2,7 +2,7 @@ import * as lib from '../../bindings/bindings.ts';
 import { Color,$rgba } from "./types/image.ts";
 import { Option } from '../mod.ts';
 
-import { WebViewAttributes } from './mod.ts';
+import { WebViewAttributes } from "./types/window.ts";
 import { WindowXD,WindowTrait } from './window/mod.ts';
 import { Size } from "./types/dpi.ts";
 
