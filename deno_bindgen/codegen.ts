@@ -255,22 +255,22 @@ export const lib=Deno.dlopen(bindingsUri, {`
         )
         .join(", ")
     },${prototype.substring(1,prototype.length-1)}});
-    using dropable={
-      [Symbol.dispose]() {
-        lib.close();
-      },
-      ...lib
-    };
-    export const { symbols }=dropable;
     
-    const fn=Deno.UnsafeCallback.threadSafe({
-      parameters: ["buffer","usize"],
-      result: "void"
-    },(buff: Deno.PointerValue<unknown>,len: number|bigint)=> {
-      throw buff?decoder.decode(new Uint8Array(Deno.UnsafePointerView.getArrayBuffer(buff,len as number))):"";
-    });
-    fn.unref();
-    symbols.set_throw(fn.pointer);
+export const { symbols }=xd(lib.symbols);
+function xd<T>(symbols: T) {
+  return {
+    [Symbol.dispose]: ()=> lib.close(),
+    symbols
+  };
+}
+const fn=Deno.UnsafeCallback.threadSafe({
+  parameters: ["buffer","usize"],
+  result: "void"
+},(buff: Deno.PointerValue<unknown>,len: number|bigint)=> {
+  throw buff?decoder.decode(new Uint8Array(Deno.UnsafePointerView.getArrayBuffer(buff,len as number))):"";
+});
+fn.unref();
+symbols.set_throw(fn.pointer);
     
 ${
   Object.keys(decl)

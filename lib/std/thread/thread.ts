@@ -49,7 +49,7 @@ export class Thread<T> {
    * ```
    */
   public async spawn(): Promise<T> {
-    await lib.spawn(this.fn.pointer);
+    await lib.spawn(Deno.UnsafePointer.value(this.fn.pointer));
     this.fn.close();
     return this.xd.value as T;
   }
