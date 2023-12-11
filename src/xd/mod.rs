@@ -24,11 +24,12 @@ use wry::{
     },
     event_loop::{
       ControlFlow,
-      EventLoop
+      EventLoopBuilder
     },
-    window::Window
+    window::Window,
+    platform::windows::EventLoopBuilderExtWindows
   },
-  webview::WebView
+  webview::WebView,
 };
 
 
@@ -58,7 +59,7 @@ pub async fn init(window_atters: &str,webview_atters: &str,ptr: usize) {
 
 
 fn spawn_webview(window_attrs: WindowAttrs,webview_attrs: WebViewAttrs,ptr: *mut usize)-> wry::Result<()> {
-  let event_loop=EventLoop::new();
+  let event_loop=EventLoopBuilder::new().with_any_thread(true).build();
   let window=window_attrs.build(&event_loop)?;
   let webview=webview_attrs.build(window)?;
 
