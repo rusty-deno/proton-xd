@@ -31,12 +31,6 @@ use wry::{
   webview::WebView
 };
 
-use crate::ffi::to_str;
-
-
-
-
-
 
 
 
@@ -53,14 +47,13 @@ pub fn read_clipboard()-> String {
 
 
 
-#[no_mangle]
-pub extern "C" fn init(window_atters: *const i8,webview_atters: *const i8,ptr: *mut usize) {
-  let window_atters: WindowAttrs=from_str(to_str(window_atters)).unwrap();
-  let webview_atters: WebViewAttrs=from_str(to_str(webview_atters)).unwrap();
 
-  spawn_webview(window_atters,webview_atters,ptr).unwrap_or_else(|e| {
-    panic!("{:?}",e)
-  });
+#[deno_bindgen(non_blocking)]
+pub async fn init(window_atters: &str,webview_atters: &str,ptr: usize) {
+  let window_atters: WindowAttrs=from_str(window_atters).unwrap();
+  let webview_atters: WebViewAttrs=from_str(webview_atters).unwrap();
+
+  spawn_webview(window_atters,webview_atters,ptr as *mut usize).unwrap();
 }
 
 

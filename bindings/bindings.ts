@@ -32,9 +32,21 @@ function readPointer(v: any): Uint8Array {
   return buf;
 }
 
+const bindingsUrl=new URL(`./bin/${Deno.build.target}.${getExt()}`, import.meta.url);
 
-export const lib=Deno.dlopen(new URL(`./bin/${Deno.build.target}.${getExt()}`,import.meta.url), {
-  alert: { parameters: [ "buffer", "usize", "buffer", "usize", "u8" ], result: "void", nonblocking: true }, alert_sync: { parameters: [ "buffer", "usize", "buffer", "usize", "u8" ], result: "void", nonblocking: false }, available_monitors: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, clear_all_browsing_data: { parameters: [ "usize" ], result: "void", nonblocking: false }, current: { parameters: [  ], result: "void", nonblocking: false }, current_monitor: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, cursor_position: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, eval_script: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, fullscreen: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, inner_position: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, join: { parameters: [ "usize" ], result: "void", nonblocking: false }, join_async: { parameters: [ "usize" ], result: "void", nonblocking: true }, load_url: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, load_url_with_headers: { parameters: [ "usize", "buffer", "usize", "buffer", "usize" ], result: "void", nonblocking: false }, monitor_from_point: { parameters: [ "usize", "f64", "f64" ], result: "buffer", nonblocking: false }, open: { parameters: [ "buffer", "usize" ], result: "buffer", nonblocking: true }, open_sync: { parameters: [ "buffer", "usize" ], result: "buffer", nonblocking: false }, outer_position: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, outer_size: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, park: { parameters: [  ], result: "void", nonblocking: false }, park_timeout: { parameters: [ "f64" ], result: "void", nonblocking: false }, primary_monitor: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, read_clipboard: { parameters: [  ], result: "buffer", nonblocking: false }, request_redraw: { parameters: [ "usize" ], result: "void", nonblocking: false }, request_user_attention: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, save: { parameters: [ "buffer", "usize" ], result: "buffer", nonblocking: true }, save_sync: { parameters: [ "buffer", "usize" ], result: "buffer", nonblocking: false }, scale_factor: { parameters: [ "usize" ], result: "f64", nonblocking: false }, screenshot: { parameters: [ "i32", "i32", "f32", "usize" ], result: "buffer", nonblocking: true }, screenshot_sync: { parameters: [ "i32", "i32", "f32", "usize" ], result: "buffer", nonblocking: false }, set_background_color: { parameters: [ "usize", "u8", "u8", "u8", "u8" ], result: "void", nonblocking: false }, set_cursor_icon: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, set_focus: { parameters: [ "usize" ], result: "void", nonblocking: false }, set_fullscreen: { parameters: [ "usize", "buffer", "usize" ], result: "buffer", nonblocking: false }, set_progress_bar: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, set_window_icon: { parameters: [ "usize", "u32", "u32", "usize", "usize" ], result: "void", nonblocking: false }, sleep: { parameters: [ "f32" ], result: "void", nonblocking: false }, spawn: { parameters: [ "usize" ], result: "usize", nonblocking: false }, title: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, url: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, webview_inner_size: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, webview_print: { parameters: [ "usize" ], result: "void", nonblocking: false }, window: { parameters: [ "usize" ], result: "usize", nonblocking: false }, write_to_clipboard: { parameters: [ "buffer", "usize" ], result: "void", nonblocking: false }, zoom: { parameters: [ "usize", "f64" ], result: "void", nonblocking: false },
+let bindingsUri=bindingsUrl.pathname;
+
+// https://docs.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-loadlibrarya#parameters
+if (Deno.build.os==="windows") {
+  bindingsUri=bindingsUri.replace(/\//g, "\\");
+  // Remove leading slash
+  if (bindingsUri.startsWith("\\")) {
+    bindingsUri=bindingsUri.slice(1);
+  }
+}
+
+export const lib=Deno.dlopen(bindingsUri, {
+  alert: { parameters: [ "buffer", "usize", "buffer", "usize", "u8" ], result: "void", nonblocking: true }, alert_sync: { parameters: [ "buffer", "usize", "buffer", "usize", "u8" ], result: "void", nonblocking: false }, available_monitors: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, clear_all_browsing_data: { parameters: [ "usize" ], result: "void", nonblocking: false }, current: { parameters: [  ], result: "void", nonblocking: false }, current_monitor: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, cursor_position: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, eval_script: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, fullscreen: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, init: { parameters: [ "buffer", "usize", "buffer", "usize", "usize" ], result: "void", nonblocking: true }, inner_position: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, join: { parameters: [ "usize" ], result: "void", nonblocking: false }, join_async: { parameters: [ "usize" ], result: "void", nonblocking: true }, load_url: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, load_url_with_headers: { parameters: [ "usize", "buffer", "usize", "buffer", "usize" ], result: "void", nonblocking: false }, monitor_from_point: { parameters: [ "usize", "f64", "f64" ], result: "buffer", nonblocking: false }, open: { parameters: [ "buffer", "usize" ], result: "buffer", nonblocking: true }, open_sync: { parameters: [ "buffer", "usize" ], result: "buffer", nonblocking: false }, outer_position: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, outer_size: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, park: { parameters: [  ], result: "void", nonblocking: false }, park_timeout: { parameters: [ "f64" ], result: "void", nonblocking: false }, primary_monitor: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, read_clipboard: { parameters: [  ], result: "buffer", nonblocking: false }, request_redraw: { parameters: [ "usize" ], result: "void", nonblocking: false }, request_user_attention: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, save: { parameters: [ "buffer", "usize" ], result: "buffer", nonblocking: true }, save_sync: { parameters: [ "buffer", "usize" ], result: "buffer", nonblocking: false }, scale_factor: { parameters: [ "usize" ], result: "f64", nonblocking: false }, screenshot: { parameters: [ "i32", "i32", "f32", "usize" ], result: "buffer", nonblocking: true }, screenshot_sync: { parameters: [ "i32", "i32", "f32", "usize" ], result: "buffer", nonblocking: false }, set_background_color: { parameters: [ "usize", "u8", "u8", "u8", "u8" ], result: "void", nonblocking: false }, set_cursor_icon: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, set_focus: { parameters: [ "usize" ], result: "void", nonblocking: false }, set_fullscreen: { parameters: [ "usize", "buffer", "usize" ], result: "buffer", nonblocking: false }, set_progress_bar: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, set_window_icon: { parameters: [ "usize", "u32", "u32", "buffer", "usize" ], result: "void", nonblocking: false }, sleep: { parameters: [ "f32" ], result: "void", nonblocking: false }, spawn: { parameters: [ "usize" ], result: "usize", nonblocking: false }, title: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, url: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, webview_inner_size: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, webview_print: { parameters: [ "usize" ], result: "void", nonblocking: false }, window: { parameters: [ "usize" ], result: "usize", nonblocking: false }, write_to_clipboard: { parameters: [ "buffer", "usize" ], result: "void", nonblocking: false }, zoom: { parameters: [ "usize", "f64" ], result: "void", nonblocking: false },
   "confirm": {
     "parameters": ["buffer","buffer","u8"],
     "result": "bool",
@@ -43,10 +55,6 @@ export const lib=Deno.dlopen(new URL(`./bin/${Deno.build.target}.${getExt()}`,im
   "confirm_sync": {
     "parameters": ["buffer","buffer","u8"],
     "result": "bool"
-  },
-  "init": {
-    "parameters": ["buffer","buffer","pointer"],
-    "result": "void"
   },
   "drag_window": {
     "parameters": ["usize"],
@@ -194,17 +202,14 @@ export const lib=Deno.dlopen(new URL(`./bin/${Deno.build.target}.${getExt()}`,im
     "result": "void"
   }
 });
-
+    
 export const { symbols }=xd(lib.symbols);
-
 function xd<T>(symbols: T) {
   return {
     [Symbol.dispose]: ()=> lib.close(),
     symbols
   };
 }
-
-
 const fn=Deno.UnsafeCallback.threadSafe({
   parameters: ["buffer","usize"],
   result: "void"
@@ -213,8 +218,7 @@ const fn=Deno.UnsafeCallback.threadSafe({
 });
 fn.unref();
 symbols.set_throw(fn.pointer);
-
-
+    
 export type AttentionType =   "Critical"  |
   "Informational";
 export type FileDialogOptions = {
@@ -370,6 +374,14 @@ export function fullscreen(a0: bigint) {
   const rawResult=symbols.fullscreen(a0);
   const result=readPointer(rawResult);;
   return decode(result);;
+}
+export function init(a0: string,a1: string,a2: bigint) {
+  const a0_buf=encode((a0));
+const a1_buf=encode((a1));
+
+  const rawResult=symbols.init(a0_buf, a0_buf.byteLength, a1_buf, a1_buf.byteLength, a2);
+  const result=rawResult;;
+  return result;;
 }
 export function inner_position(a0: bigint) {
   
@@ -554,10 +566,10 @@ export function set_progress_bar(a0: bigint) {
   const result=readPointer(rawResult);;
   return decode(result);;
 }
-export function set_window_icon(a0: bigint,a1: number,a2: number,a3: bigint,a4: bigint) {
-  
+export function set_window_icon(a0: bigint,a1: number,a2: number,a3: Uint8Array) {
+  const a3_buf=encode((a3));
 
-  const rawResult=symbols.set_window_icon(a0, a1, a2, a3, a4);
+  const rawResult=symbols.set_window_icon(a0, a1, a2, a3_buf, a3_buf.byteLength);
   const result=rawResult;;
   return result;;
 }

@@ -164,10 +164,9 @@ pub unsafe extern "C" fn set_visible_on_all_workspaces(ptr: usize,visible: bool)
 }
 
 #[deno_bindgen]
-pub fn set_window_icon(ptr: usize,height: u32,width: u32,bytes: usize,len: usize) {
+pub fn set_window_icon(ptr: usize,height: u32,width: u32,bytes: &[u8]) {
   unsafe {
-    let bytes=Vec::from_raw_parts(bytes as *mut u8,len,len);
-    (*cast(ptr)).set_window_icon(Icon::from_rgba(bytes,width,height).ok())
+    (*cast(ptr)).set_window_icon(Icon::from_rgba(bytes.to_vec(),width,height).ok())
   }
 }
 

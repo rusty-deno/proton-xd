@@ -1,5 +1,6 @@
 import { Theme,Position,Size } from "./mod.ts";
 import { RGBAImage } from '../image/image.ts';
+import { ImageBuffer } from '../image/image.ts';
 
 
 export type Icon=string|URL|RGBAImage;
@@ -24,7 +25,7 @@ export interface WindowAttributes {
   focused?: boolean;
   contentProtection?: boolean;
   visibleOnAllWorkspaces?: boolean;
-  windowIcon?: Icon;
+  windowIcon?: ImageBuffer;
   position?: Position;
 }
 

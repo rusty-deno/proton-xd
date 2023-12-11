@@ -18,7 +18,7 @@ compilation-time.txt
 bindings.json
 index.html
 commit.ts
-
+*.exe
 
 
 # not ready

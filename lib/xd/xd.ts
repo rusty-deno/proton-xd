@@ -1,10 +1,8 @@
-import { symbols as lib,read_clipboard,write_to_clipboard} from "../../bindings/bindings.ts";
+import { read_clipboard,write_to_clipboard,init } from "../../bindings/bindings.ts";
 import { defaultWindowAttrs as dwa,defaultWebViewAttrs as dweba } from "./default.ts";
-import { WebViewAttributes,WindowAttributes } from './mod.ts';
+import { WebViewAttributes,WindowAttributes } from './types/window.ts';
 import { isURL,Content } from "./types/mod.ts";
-import { stringify } from "../serde/encode.ts";
 import { WebView } from "./webview.ts";
-import { serWindowAttrs } from "../serde/window_attr.ts";
 
 
 /**
@@ -28,10 +26,10 @@ export class XD extends WebView {
    * Spawns the webview.
    */
   public spawn() {
-    lib.init(
-      stringify(serWindowAttrs(this._window.windowAttrs)),
-      stringify(this.webviewAttrs),
-      Deno.UnsafePointer.of(this._window._addrs)
+    init(
+      JSON.stringify(this._window.windowAttrs),
+      JSON.stringify(this.webviewAttrs),
+      Deno.UnsafePointer.value(Deno.UnsafePointer.of(this._window._addrs)) as bigint
     );
   }
 

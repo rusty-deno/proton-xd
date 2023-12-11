@@ -8,10 +8,6 @@
     "parameters": ["buffer","buffer","u8"],
     "result": "bool"
   },
-  "init": {
-    "parameters": ["buffer","buffer","pointer"],
-    "result": "void"
-  },
   "drag_window": {
     "parameters": ["usize"],
     "result": "void",
