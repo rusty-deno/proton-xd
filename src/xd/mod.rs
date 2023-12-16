@@ -7,7 +7,7 @@ pub use window_builder::*;
 pub use webview_builder::*;
 pub use window::*;
 pub use webview::*;
-
+use std::ptr;
 
 
 use deno_bindgen::{
@@ -24,10 +24,10 @@ use wry::{
     },
     event_loop::{
       ControlFlow,
-      EventLoopBuilder
+      EventLoopBuilder,
+      EventLoop
     },
-    window::Window,
-    platform::windows::EventLoopBuilderExtWindows
+    window::Window
   },
   webview::WebView,
 };
@@ -59,7 +59,7 @@ pub async fn init(window_atters: &str,webview_atters: &str,ptr: usize) {
 
 
 fn spawn_webview(window_attrs: WindowAttrs,webview_attrs: WebViewAttrs,ptr: *mut usize)-> wry::Result<()> {
-  let event_loop=EventLoopBuilder::new().with_any_thread(true).build();
+  let event_loop=EventLoop::new_thread_safe();
   let window=window_attrs.build(&event_loop)?;
   let webview=webview_attrs.build(window)?;
 
@@ -82,46 +82,17 @@ fn spawn_webview(window_attrs: WindowAttrs,webview_attrs: WebViewAttrs,ptr: *mut
 
 
 
-
-#[cfg(test)]
-mod tests {
-  use wry::{
-    application::{
-      event_loop::{
-        EventLoop,
-        ControlFlow,
-      },
-      window::WindowBuilder,
-      event::{
-        Event,
-        WindowEvent
-      }
-    },
-    webview::WebViewBuilder,
-  };
-
-
-  #[test]
-  fn xd() {
-    let event_loop=EventLoop::new();
-    let window=WindowBuilder::new().build(&event_loop).unwrap();
-    let _webview=WebViewBuilder::new(window).unwrap();
-
-    event_loop.run(move |event, _, control_flow| {
-      *control_flow=ControlFlow::Wait;
-      match event {
-        Event::WindowEvent {
-          event: WindowEvent::CloseRequested,
-          ..
-        }=> *control_flow=ControlFlow::Exit,
-        _=> (),
-      }
-    });
-  }
-
-  fn _event_loop() {
-    
-  }
+trait ThredSafeEventLoop {
+  fn new_thread_safe()-> Self;
 }
 
+impl ThredSafeEventLoop for EventLoop<()> {
+  fn new_thread_safe()-> Self {
+    let mut builder=EventLoopBuilder::new();
+    unsafe {
+      ptr::write(ptr::addr_of_mut!(builder) as *mut bool,true);
+    }
+    builder.build()
+  }
+}
 
