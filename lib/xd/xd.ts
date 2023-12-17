@@ -25,8 +25,8 @@ export class XD extends WebView {
   /**
    * Spawns the webview.
    */
-  public spawn() {
-    init(
+  public async spawn() {
+    await init(
       JSON.stringify(this._window.windowAttrs),
       JSON.stringify(this.webviewAttrs),
       Deno.UnsafePointer.value(Deno.UnsafePointer.of(this._window._addrs)) as bigint
