@@ -35,7 +35,7 @@ impl Default for Rgba {
   }
 }
 
-pub type Headers=HashMap<String,String>;
+pub type Headers=HashMap<Box<str>,Box<str>>;
 
 #[deno_bindgen]
 #[serde(rename_all = "camelCase")]
@@ -53,7 +53,7 @@ pub struct WebViewAttrs {
   pub incognito: bool,
   pub autoplay: bool,
   pub html: Option<String>,
-  pub url: Option<String>,
+  pub url: Option<Box<str>>,
   pub headers: Option<Headers>
 }
 
@@ -110,7 +110,7 @@ fn to_rgba(color: Option<Rgba>)-> Option<RGBA> {
   Some((rbga.r,rbga.g,rbga.b,rbga.a))
 }
 
-fn to_url(url: Option<String>)-> Option<Url> {
+fn to_url(url: Option<Box<str>>)-> Option<Url> {
   Url::from_str(&url?).ok()
 }
 

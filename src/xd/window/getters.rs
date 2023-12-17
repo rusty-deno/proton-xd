@@ -2,9 +2,10 @@ use crate::{
   cast,
   MonitorData,
   AttentionType,
-  Position,
-  Size, FullScreen,
+  FullScreen,
+  exception::throw,
 };
+
 use deno_bindgen::{
   deno_bindgen,
   serde_json::{
@@ -13,15 +14,27 @@ use deno_bindgen::{
   }
 };
 
+use wry::application::dpi::{
+  PhysicalPosition,
+  PhysicalSize
+};
 
+use std::{
+  collections::LinkedList,
+  fmt::Debug,
+  mem::ManuallyDrop
+};
+
+
+//TODO: optimized data usage using Box<str>
+//TODO: FFI safe linked_list
 #[deno_bindgen]
 pub fn available_monitors(ptr: usize)-> String {
   unsafe {
-    let iter=(*cast(ptr)).available_monitors();
-    let mut monitors: Vec<MonitorData>=vec![];
+    let mut monitors=LinkedList::<MonitorData>::new();
 
-    for monitor in iter {
-      monitors.push(MonitorData::from(monitor))
+    for monitor in (*cast(ptr)).available_monitors() {
+      monitors.push_back(MonitorData::from(monitor))
     }
 
     to_string(&monitors).unwrap_or_default()
@@ -38,16 +51,11 @@ pub fn current_monitor(ptr: usize)-> String {
   }
 }
 
-#[deno_bindgen]
-pub fn cursor_position(ptr: usize)-> String {
-  unsafe {
-    let pos=(*cast(ptr)).cursor_position().unwrap_or_default();
-    let pos=Position {
-      x: pos.x as i32,
-      y: pos.y as i32
-    };
 
-    to_string(&pos).unwrap_or_default()
+#[deno_bindgen]
+pub fn cursor_position(ptr: usize)-> usize {
+  unsafe {
+    (*cast(ptr)).cursor_position().to_ptr()
   }
 }
 
@@ -65,10 +73,9 @@ pub fn fullscreen(ptr: usize)-> String {
 }
 
 #[deno_bindgen]
-pub fn inner_position(ptr: usize)-> String {
+pub fn inner_position(ptr: usize)-> usize {
   unsafe {
-    let xd: Position=(*cast(ptr)).inner_position().unwrap_or_default().into();
-    to_string(&xd).unwrap_or_default()
+    (*cast(ptr)).inner_position().unwrap_or_default().to_ptr()
   }
 }
 
@@ -129,18 +136,16 @@ pub fn monitor_from_point(ptr: usize,x: f64,y: f64)-> String {
 
 
 #[deno_bindgen]
-pub fn outer_position(ptr: usize)-> String {
+pub fn outer_position(ptr: usize)-> usize {
   unsafe {
-    let pos: Position=(*cast(ptr)).outer_position().unwrap_or_default().into();
-    to_string(&pos).unwrap_or_default()
+    (*cast(ptr)).outer_position().unwrap_or_default().to_ptr()
   }
 }
 
 #[deno_bindgen]
-pub fn outer_size(ptr: usize)-> String {
+pub fn outer_size(ptr: usize)-> usize {
   unsafe {
-    let size: Size=(*cast(ptr)).outer_size().into();
-    to_string(&size).unwrap_or_default()
+    (*cast(ptr)).outer_size().to_ptr()
   }
 }
 
@@ -190,5 +195,31 @@ pub fn title(ptr: usize)-> String {
   }
 }
 
+
+
+trait ToPtr {
+  fn to_ptr(self)-> usize;
+}
+
+impl<T> ToPtr for PhysicalPosition<T> {
+  fn to_ptr(self)-> usize {
+    &ManuallyDrop::new(self) as *const _ as usize
+  }
+}
+
+impl<T: ToPtr,E: Debug> ToPtr for Result<T,E> {
+  fn to_ptr(self)-> usize {
+    match self {
+      Err(err)=> throw(&format!("{err:#?}")),
+      Ok(val)=> val.to_ptr()
+    }
+  }
+}
+
+impl<T> ToPtr for PhysicalSize<T> {
+  fn to_ptr(self)-> usize {
+    &ManuallyDrop::new(self) as *const _ as usize
+  }
+}
 
 

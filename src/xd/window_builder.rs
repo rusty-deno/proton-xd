@@ -53,8 +53,8 @@ pub enum Theme {
 impl Into<theme> for Theme {
   fn into(self)-> theme {
     match self {
-      Theme::Light=> theme::Light,
-      Theme::Dark=> theme::Dark,
+      Self::Light=> theme::Light,
+      Self::Dark=> theme::Dark,
     }
   }
 }
@@ -74,11 +74,12 @@ impl From<PhysicalPosition<i32>> for Position {
 
 #[deno_bindgen]
 #[derive(Default)]
-pub struct  Img {
+pub struct Img {
   pub bytes: Vec<u8>,
   pub height: u32,
   pub width: u32
 }
+
 
 
 #[deno_bindgen]
@@ -159,20 +160,14 @@ impl WindowAttrs {
       position: to_position(position),
       fullscreen: None
     };
-    
-    
-    window_builder(window)
-    .build(event_loop)
+
+    let mut window_builder=WindowBuilder::new();
+    window_builder.window=window;
+
+    window_builder.build(&event_loop)
   }
 }
 
-
-
-fn window_builder(window: WindowAttributes)-> WindowBuilder {
-  let mut window_builder=WindowBuilder::new();
-  window_builder.window=window;
-  window_builder
-}
 
 fn to_size(size: Option<Size>)-> Option<size> {
   Some(size?.into())

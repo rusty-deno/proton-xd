@@ -163,7 +163,7 @@ pub unsafe extern "C" fn set_visible_on_all_workspaces(ptr: usize,visible: bool)
   (*cast(ptr)).set_visible_on_all_workspaces(visible)
 }
 
-#[deno_bindgen]
+#[deno_bindgen(non_blocking)]
 pub fn set_window_icon(ptr: usize,height: u32,width: u32,bytes: &[u8]) {
   unsafe {
     (*cast(ptr)).set_window_icon(Icon::from_rgba(bytes.to_vec(),width,height).ok())
