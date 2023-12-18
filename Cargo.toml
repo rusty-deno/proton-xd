@@ -7,11 +7,10 @@ edition = "2021"
 crate-type = ["cdylib"]
 
 [dependencies]
-serde = { version = "1", features = ["derive"] }
-screenshoter = "0.1.1"
-native-dialog = "0.6.4"
 wry = "0.31.1"
 deno_bindgen = "0.8.1"
+screenshoter = "0.1.1"
+serde = { version = "1", features = ["derive"] }
 
 
 [profile.release]

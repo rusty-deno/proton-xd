@@ -55,22 +55,6 @@ export interface Rgba {
 }
 
 
-export type FileOpenerType="SingleFile"|"SingleDir"|"MultipleFile";
-export type MessageType="Info"|"Warning"|"Error";
-
-export interface FileOpenerOptions {
-  filename?: string;
-  location?: string;
-  type?: FileOpenerType
-}
-
-
-export interface SaveFileOptions {
-  filename?: string;
-  location?: string;
-}
-
-
 export type CursorIcon="Default"|
 "Crosshair"|
 "Hand"|
