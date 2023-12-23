@@ -9,6 +9,10 @@ edition = "2021"
 proc-macro = true
 
 [dependencies]
-deno_bindgen_macro = "0.8.1"
+proc-macro2 = "1.0.71"
 quote = "1.0.33"
 syn = { version = "2.0.42", features = ["full","extra-traits"] }
+
+[dev-dependencies]
+deno_bindgen_macro = "0.8.1"
+
