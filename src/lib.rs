@@ -1,14 +1,15 @@
 mod xd;
-mod screencapture;
-mod thread;
 mod ffi;
+mod thread;
+mod dialog;
 mod exception;
+mod screencapture;
+
 
 pub use xd::*;
-pub use screencapture::*;
 pub use thread::*;
+pub use dialog::*;
+pub use screencapture::*;
 
 pub(crate) use exception::*;
-
-
 
