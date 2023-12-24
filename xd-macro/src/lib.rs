@@ -1,25 +1,44 @@
 extern crate proc_macro;
 
-use syn::{ItemFn, FnArg, Type};
+use syn::{ItemFn, FnArg, Type, punctuated::Punctuated, token::Comma};
 use quote::quote;
 use proc_macro::TokenStream;
+use proc_macro2::TokenStream as Token;
 
 
 #[proc_macro_attribute]
 pub fn method(_attr: TokenStream,input: TokenStream)-> TokenStream {
-  let func=syn::parse::<ItemFn>(input).unwrap();
-  let stmts=func.block.stmts;
+  let f=syn::parse::<ItemFn>(input).unwrap();
 
-  let name=func.sig.ident;
-  let return_type=func.sig.output;
-  let this=this_type(func.sig.inputs.first().expect("This function doesn't have any `this` argument."));
+  let abi=abi(&f);
+  let name=f.sig.ident;
+  let stmts=f.block.stmts;
+  let return_type=f.sig.output;
 
+  let params=f.sig.inputs;
+  let this=params.first().expect("This function doesn't have any `this` argument.");
+  let this_def=this_type(this);
+  let params=params.into_iter().skip(1).collect::<Punctuated<_,Comma>>();
 
   quote! {
-    #[deno_bindgen]
-    pub fn #name (ptr: usize)#return_type {
-      #this;
+    #abi fn #name (ptr: usize,#params)#return_type {
+      #this_def;
       #(#stmts)*
+    }
+  }.into()
+}
+
+
+fn abi(f: &ItemFn)-> Token {
+  let modifier=&f.vis;
+  match &f.sig.abi {
+    None=> quote! {
+      #[deno_bindgen]
+      #modifier 
+    },
+    Some(abi)=> quote! {
+      #[no_mangle]
+      #modifier #abi
     }
   }.into()
 }
@@ -41,7 +60,8 @@ fn this_type(arg: &FnArg)-> proc_macro2::TokenStream {
 
 
   match reference.mutability {
-    Some(_)=> quote! { let #pat_type=unsafe {(ptr as *mut #ty).as_ref().unwrap() } },
+    Some(_)=> quote! { let #pat_type=unsafe {(ptr as *mut #ty).as_mut().unwrap() } },
     _=> quote! { let #pat_type=unsafe {(ptr as *const #ty).as_ref().unwrap() } },
   }.into()
 }
+
