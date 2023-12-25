@@ -1,6 +1,6 @@
 extern crate proc_macro;
 
-use syn::{ItemFn, FnArg, Type, punctuated::Punctuated, token::Comma};
+use syn::*;
 use quote::quote;
 use proc_macro::TokenStream;
 use proc_macro2::TokenStream as Token;
@@ -10,7 +10,7 @@ use proc_macro2::TokenStream as Token;
 pub fn method(_attr: TokenStream,input: TokenStream)-> TokenStream {
   let f=syn::parse::<ItemFn>(input).unwrap();
 
-  let abi=abi(&f);
+  let modifier=modifier(&f);
   let name=f.sig.ident;
   let stmts=f.block.stmts;
   let return_type=f.sig.output;
@@ -18,10 +18,10 @@ pub fn method(_attr: TokenStream,input: TokenStream)-> TokenStream {
   let params=f.sig.inputs;
   let this=params.first().expect("This function doesn't have any `this` argument.");
   let this_def=this_type(this);
-  let params=params.into_iter().skip(1).collect::<Punctuated<_,Comma>>();
+  let params=params.into_iter().skip(1).collect::<punctuated::Punctuated<_,token::Comma>>();
 
   quote! {
-    #abi fn #name (ptr: usize,#params)#return_type {
+    #modifier fn #name (ptr: usize,#params)#return_type {
       #this_def;
       #(#stmts)*
     }
@@ -29,7 +29,7 @@ pub fn method(_attr: TokenStream,input: TokenStream)-> TokenStream {
 }
 
 
-fn abi(f: &ItemFn)-> Token {
+fn modifier(f: &ItemFn)-> Token {
   let modifier=&f.vis;
   match &f.sig.abi {
     None=> quote! {
