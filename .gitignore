@@ -1,6 +1,7 @@
 target/
 .vscode/
 temp/
+xd-macro/tests
 
 Cargo.lock
 deno.lock
