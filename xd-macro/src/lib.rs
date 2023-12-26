@@ -14,6 +14,7 @@ pub fn method(_attr: TokenStream,input: TokenStream)-> TokenStream {
   let name=f.sig.ident;
   let stmts=f.block.stmts;
   let return_type=f.sig.output;
+  let generics=f.sig.generics;
 
   let params=f.sig.inputs;
   let this=params.first().expect("This function doesn't have any `this` argument.");
@@ -21,16 +22,19 @@ pub fn method(_attr: TokenStream,input: TokenStream)-> TokenStream {
   let params=params.into_iter().skip(1).collect::<punctuated::Punctuated<_,token::Comma>>();
 
   quote! {
-    #modifier fn #name (ptr: usize,#params)#return_type {
+    #modifier fn #name #generics(ptr: usize,#params)#return_type {
       #this_def;
       #(#stmts)*
     }
   }.into()
+
+  
 }
 
 
 fn modifier(f: &ItemFn)-> Token {
   let modifier=&f.vis;
+  let unsafety=f.sig.unsafety;
   match &f.sig.abi {
     None=> quote! {
       #[deno_bindgen]
@@ -38,7 +42,7 @@ fn modifier(f: &ItemFn)-> Token {
     },
     Some(abi)=> quote! {
       #[no_mangle]
-      #modifier #abi
+      #modifier #unsafety #abi
     }
   }.into()
 }
