@@ -13,11 +13,15 @@ use gdk::ModifierType;
 
 type AccelHandler=extern "C" fn(*const Dialog);
 
-macro_rules! closure {
-  ($f:ident)=> {
-    move |dialog| $f(dialog as *const _)
+macro_rules! sig_handler_id {
+  ($this: ident.$method: ident($f: ident))=> {
+    unsafe {
+      $this.$method(move |dialog| $f(dialog as *const _)).as_raw()
+    }
   };
 }
+
+
 
 
 #[deno_bindgen]
@@ -141,42 +145,313 @@ pub fn close(this: &Dialog) {
 
 #[method]
 pub extern "C" fn connect_accel_closures_changed(this: &Dialog,f: AccelHandler)-> u64 {
-  unsafe {
-    this.connect_accel_closures_changed(closure!(f)).as_raw()
-  }
+  sig_handler_id!(this.connect_accel_closures_changed(f))
 }
 
 #[method]
 pub extern "C" fn connect_accept_focus_notify(this: &Dialog,f: AccelHandler)-> u64 {
-  unsafe {
-    this.connect_accept_focus_notify(closure!(f)).as_raw()
-  }
+  sig_handler_id!(this.connect_accept_focus_notify(f))
 }
 
 #[method]
 pub extern "C" fn connect_activate_defaults(this: &Dialog,f: AccelHandler)-> u64 {
-  unsafe {
-    this.connect_activate_default(closure!(f)).as_raw()
-  }
+  sig_handler_id!(this.connect_activate_default(f))
 }
 
 #[method]
 pub extern "C" fn connect_activate_focus(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_activate_focus(f))
+}
+
+#[method]
+pub extern "C" fn connect_application_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_application_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_border_width_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_border_width_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_button_press_event(_this: &Dialog,_f: AccelHandler)-> u64 {
+  todo!()
+}
+
+#[method]
+pub extern "C" fn connect_button_release_event(_this: &Dialog)-> bool {
+  todo!()
+}
+
+#[method]
+pub extern "C" fn connect_can_activate_accel(this: &Dialog,f: extern "C" fn(*const Dialog,u32)-> bool)-> u64 {
   unsafe {
-    this.connect_activate_focus(closure!(f)).as_raw()
+    this.connect_can_activate_accel(move|dialog,u| f(dialog as *const _,u)).as_raw()
   }
 }
 
+#[method]
+pub extern "C" fn connect_can_default_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_can_default_notify(f))
+}
 
+#[method]
+pub extern "C" fn connect_can_focus_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_can_focus_notify(f))
+}
 
+#[method]
+pub extern "C" fn connect_check_resize(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_check_resize(f))
+}
 
+#[method]
+pub extern "C" fn connect_close(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_close(f))
+}
 
+#[method]
+pub extern "C" fn connect_composite_child_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_composite_child_notify(f))
+}
 
+#[method]
+pub extern "C" fn connect_decorated_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_decorated_notify(f))
+}
 
+#[method]
+pub extern "C" fn connect_default_height_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_default_height_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_default_width_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_default_width_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_destroy(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_destroy(f))
+}
+
+#[method]
+pub extern "C" fn connect_destroy_with_parent_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_destroy_with_parent_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_events_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_events_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_focus_on_click_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_focus_on_click_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_focus_on_map_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_focus_on_map_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_focus_visible_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_focus_visible_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_grab_focus(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_grab_focus(f))
+}
+
+#[method]
+pub extern "C" fn connect_halign_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_halign_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_height_request_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_height_request_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_hexpand_set_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_hexpand_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_is_focus_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_is_focus_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_margin_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_margin_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_margin_bottom_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_margin_bottom_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_margin_end_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_margin_end_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_margin_start_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_margin_start_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_margin_top_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_margin_top_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_name_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_name_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_no_show_all_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_no_show_all_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_opacity_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_opacity_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_parent_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_parent_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_receives_default_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_receives_default_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_scale_factor_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_scale_factor_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_sensitive_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_sensitive_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_tooltip_markup_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_tooltip_markup_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_tooltip_text_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_tooltip_text_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_valign_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_valign_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_vexpand_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_vexpand_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_vexpand_set_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_vexpand_set_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_visible_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_visible_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_width_request_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_width_request_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_window_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_window_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_hide(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_hide(f))
+}
+
+#[method]
+pub extern "C" fn connect_map(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_map(f))
+}
+
+#[method]
+pub extern "C" fn connect_realize(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_realize(f))
+}
+
+#[method]
+pub extern "C" fn connect_show(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_show(f))
+}
+
+#[method]
+pub extern "C" fn connect_style_updated(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_style_updated(f))
+}
+
+#[method]
+pub extern "C" fn connect_unmap(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_unmap(f))
+}
+
+#[method]
+pub extern "C" fn connect_unrealize(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_unrealize(f))
+}
+
+#[method]
+pub extern "C" fn connect_app_paintable_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_app_paintable_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_expand_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_expand_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_has_default_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_has_default_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_has_focus_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_has_focus_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_has_tooltip_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_has_tooltip_notify(f))
+}
+
+#[method]
+pub extern "C" fn connect_hexpand_notify(this: &Dialog,f: AccelHandler)-> u64 {
+  sig_handler_id!(this.connect_hexpand_notify(f))
+}
 
 
 //d
-
 #[method]
 pub extern "C" fn drag_check_threshold(this: &Dialog,start_x: i32,start_y: i32,current_x: i32,current_y: i32)-> bool {
   this.drag_check_threshold(start_x,start_y,current_x,current_y)
@@ -269,8 +544,14 @@ fn error_bell(this: &Dialog) {
 }
 
 
-//g
+//f
+#[method]
+pub extern "C" fn fullscreen(this: &Dialog) {
+  this.fullscreen()
+}
 
+
+//g
 #[method]
 pub extern "C" fn get_sensitive(this: &Dialog)-> bool {
   this.get_sensitive()
@@ -337,47 +618,141 @@ pub extern "C" fn hides_titlebar_when_maximized(this: &Dialog)-> bool {
   this.hides_titlebar_when_maximized()
 }
 
+
+#[method]
+pub extern "C" fn has_tooltip(this: &Dialog)-> bool {
+  this.has_tooltip()
+}
+
+#[method]
+pub extern "C" fn has_window(this: &Dialog)-> bool {
+  this.has_window()
+}
+
+#[method]
+pub extern "C" fn has_default(this: &Dialog)-> bool {
+  this.has_default()
+}
+
+#[method]
+pub extern "C" fn has_focus(this: &Dialog)-> bool {
+  this.has_focus()
+}
+
+#[method]
+pub extern "C" fn has_grab(this: &Dialog)-> bool {
+  this.has_grab()
+}
+
+#[method]
+pub extern "C" fn has_screen(this: &Dialog)-> bool {
+  this.has_screen()
+}
+
+#[method]
+pub extern "C" fn has_visible_focus(this: &Dialog)-> bool {
+  this.has_visible_focus()
+}
+
+#[method]
+pub fn height(this: &Dialog)-> i32 {
+  this.height_request()
+}
+
+#[method]
+pub extern "C" fn hexpands(this: &Dialog)-> bool {
+  this.hexpands()
+}
+
+#[method]
+pub extern "C" fn halign(_this: &Dialog) {
+  todo!()
+}
+
+#[method]
+pub fn hide(this: &Dialog) {
+  this.hide()
+}
+
+#[method]
+pub extern "C" fn hide_on_delete(this: &Dialog)-> bool {
+  this.hide_on_delete().0
+}
+
+
 //i
 #[method]
-pub extern "C" fn is_active(this: &Dialog)-> bool {
-  this.is_active()
+pub extern "C" fn is_app_paintable(this: &Dialog)-> bool {
+  this.is_app_paintable()
 }
 
 #[method]
-pub extern "C" fn is_decorated(this: &Dialog)-> bool {
-  this.is_decorated()
+pub extern "C" fn is_child_visible(this: &Dialog)-> bool {
+  this.is_child_visible()
 }
 
 #[method]
-pub extern "C" fn is_deletable(this: &Dialog)-> bool {
-  this.is_deletable()
+pub extern "C" fn is_double_buffered(this: &Dialog)-> bool {
+  this.is_double_buffered()
 }
 
 #[method]
-pub extern "C" fn is_maximized(this: &Dialog)-> bool {
-  this.is_maximized()
+pub extern "C" fn is_hexpand_set(this: &Dialog)-> bool {
+  this.is_hexpand_set()
 }
 
 #[method]
-pub extern "C" fn is_mnemonics_visible(this: &Dialog)-> bool {
-  this.is_mnemonics_visible()
+pub extern "C" fn is_mapped(this: &Dialog)-> bool {
+  this.is_mapped()
 }
 
 #[method]
-pub extern "C" fn is_modal(this: &Dialog)-> bool {
-  this.is_modal()
+pub extern "C" fn is_no_show_all(this: &Dialog)-> bool {
+  this.is_no_show_all()
 }
 
 #[method]
-pub extern "C" fn is_resizable(this: &Dialog)-> bool {
-  this.is_resizable()
+pub extern "C" fn is_realized(this: &Dialog)-> bool {
+  this.is_realized()
 }
 
 #[method]
-pub extern "C" fn is_urgency_hint(this: &Dialog)-> bool {
-  this.is_urgency_hint()
+pub extern "C" fn is_vexpand_set(this: &Dialog)-> bool {
+  this.is_vexpand_set()
 }
 
+#[method]
+pub extern "C" fn is_drawable(this: &Dialog)-> bool {
+  this.is_drawable()
+}
+
+#[method]
+pub extern "C" fn is_focus(this: &Dialog)-> bool {
+  this.is_focus()
+}
+
+#[method]
+pub extern "C" fn is_sensitive(this: &Dialog)-> bool {
+  this.is_sensitive()
+}
+
+#[method]
+pub extern "C" fn is_toplevel(this: &Dialog)-> bool {
+  this.is_toplevel()
+}
+
+#[method]
+pub extern "C" fn is_visible(this: &Dialog)-> bool {
+  this.is_visible()
+}
+
+#[method]
+pub extern "C" fn is_composite_child(this: &Dialog)-> bool {
+  this.is_composite_child()
+}
+
+
+//m
 #[method]
 pub extern "C" fn mnemonic_activate(this: &Dialog,keyval: u32,modifier_bits: u32)-> bool {
   GtkWindowExt::mnemonic_activate(this,keyval,ModifierType::from_bits_truncate(modifier_bits))
@@ -388,11 +763,14 @@ pub extern "C" fn must_destroy_with_parent(this: &Dialog)-> bool {
   this.must_destroy_with_parent()
 }
 
+//p
 #[method]
 pub extern "C" fn propagate_key_event(_this: &Dialog)-> bool {
   todo!()
 }
 
+
+//s
 #[method]
 pub extern "C" fn skips_pager_hint(this: &Dialog)-> bool {
   this.skips_pager_hint()
