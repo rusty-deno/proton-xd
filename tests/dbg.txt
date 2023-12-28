@@ -1,1 +1,1 @@
-Information displayed.
+/home/kakashi/Public/project/proton_xd/proton-xd/.gitignore,/home/kakashi/Public/project/proton_xd/proton-xd/Cargo.lock,/home/kakashi/Public/project/proton_xd/proton-xd/Cargo.toml,/home/kakashi/Public/project/proton_xd/proton-xd/README.md,/home/kakashi/Public/project/proton_xd/proton-xd/bindings.json

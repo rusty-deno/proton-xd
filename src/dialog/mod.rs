@@ -1,16 +1,6 @@
+mod fs;
 
 
 
 
-pub fn xd() {
-  dialog_box::information("info");
-}
-
-
-
-
-
-
-
-
-
+pub use fs::*;
