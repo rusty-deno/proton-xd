@@ -8,12 +8,12 @@ crate-type = ["cdylib"]
 
 [dependencies]
 wry = "0.31.1"
-gtk = "=0.16.0"
 tokio = "1.35.0"
 xd-macro = { path = "./xd-macro" }
 screenshoter = "0.1.1"
 deno_bindgen = "0.8.1"
 serde = { version = "1", features = ["derive"] }
+nfd = "0.0.4"
 
 
 [profile.release]
