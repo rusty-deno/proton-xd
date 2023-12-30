@@ -3,7 +3,7 @@ extern crate proc_macro;
 use syn::*;
 use quote::quote;
 use proc_macro::TokenStream;
-use proc_macro2::TokenStream as Token;
+use proc_macro2::TokenStream as TokenStream2;
 
 
 #[proc_macro_attribute]
@@ -32,7 +32,7 @@ pub fn method(_attr: TokenStream,input: TokenStream)-> TokenStream {
 }
 
 
-fn modifier(f: &ItemFn)-> Token {
+fn modifier(f: &ItemFn)-> TokenStream2 {
   let modifier=&f.vis;
   let unsafety=f.sig.unsafety;
   match &f.sig.abi {
@@ -53,19 +53,30 @@ fn this_type(arg: &FnArg)-> proc_macro2::TokenStream {
     FnArg::Typed(typed)=> typed,
     _=> panic!("This macro cannot be used here.")
   };
-  let reference=match pat_type.ty.as_ref() {
-    Type::Reference(reference)=> reference,
-    _=> panic!("This function doesn't have a `this` argument"),
-  };
-  let ty=match reference.elem.as_ref() {
-    Type::Path(p)=> &p.path.segments.first().unwrap().ident,
-    _=> panic!()
-  };
 
+  match pat_type.ty.as_ref() {
+    Type::Path(path)=> quote! {
+      let #pat_type=*Box::from_raw(ptr as *const #path);
+    },
+    Type::Ptr(ptr)=> {
+      let mutability=match &ptr.mutability {
+        Some(_)=> quote! { mut },
+        None=> quote! { const }
+      };
+      let ty=&ptr.elem;
 
-  match reference.mutability {
-    Some(_)=> quote! { let #pat_type=unsafe {(ptr as *mut #ty).as_mut().unwrap() } },
-    _=> quote! { let #pat_type=unsafe {(ptr as *const #ty).as_ref().unwrap() } },
-  }.into()
+      quote! { let #pat_type=ptr as *#mutability #ty }
+    },
+    Type::Reference(reference)=> {
+      let mutability=&reference.mutability;
+      let lifetime=&reference.lifetime;
+      let ty=&reference.elem;
+      
+      quote! {
+        let #pat_type=unsafe { &#lifetime #mutability *(ptr as *#mutability #ty) };
+      }
+    },
+    _=> panic!("This function doesn't have a `this` argument")
+  }
 }
 
