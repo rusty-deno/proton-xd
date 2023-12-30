@@ -27,8 +27,6 @@ pub fn method(_attr: TokenStream,input: TokenStream)-> TokenStream {
       #(#stmts)*
     }
   }.into()
-
-  
 }
 
 
@@ -56,7 +54,7 @@ fn this_type(arg: &FnArg)-> proc_macro2::TokenStream {
 
   match pat_type.ty.as_ref() {
     Type::Path(path)=> quote! {
-      let #pat_type=*Box::from_raw(ptr as *const #path);
+      let #pat_type=unsafe { *Box::from_raw(ptr as *mut #path) }
     },
     Type::Ptr(ptr)=> {
       let mutability=mutability(&ptr.mutability);
@@ -71,7 +69,7 @@ fn this_type(arg: &FnArg)-> proc_macro2::TokenStream {
       let ty=&reference.elem;
       
       quote! {
-        let #pat_type=unsafe { &#lifetime #mut_ *(ptr as *#mutability #ty) };
+        let #pat_type=unsafe { &#lifetime #mut_ *(ptr as *#mutability #ty) }
       }
     },
     _=> panic!("This function doesn't have a `this` argument")
