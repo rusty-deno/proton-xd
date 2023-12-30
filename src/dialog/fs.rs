@@ -39,11 +39,14 @@ pub fn reset_owner(this: &mut FileDialog) {
 }
 
 #[method]
-pub fn set_filename(this: &FileDialog,filename: &str) {
-  // this.set_filename(filename);
+pub fn set_filename(this: &mut FileDialog,filename: &str) {
+  *this=mem::take(this).set_filename(filename);
 }
 
-
+#[method]
+pub fn set_location(this: &mut FileDialog,path: &str) {
+  *this=mem::take(this).set_location(path)
+}
 
 
 

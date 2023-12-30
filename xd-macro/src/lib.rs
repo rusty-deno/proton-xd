@@ -1,6 +1,6 @@
 extern crate proc_macro;
 
-use syn::*;
+use syn::{*, token::Mut};
 use quote::quote;
 use proc_macro::TokenStream;
 use proc_macro2::TokenStream as TokenStream2;
@@ -59,24 +59,31 @@ fn this_type(arg: &FnArg)-> proc_macro2::TokenStream {
       let #pat_type=*Box::from_raw(ptr as *const #path);
     },
     Type::Ptr(ptr)=> {
-      let mutability=match &ptr.mutability {
-        Some(_)=> quote! { mut },
-        None=> quote! { const }
-      };
+      let mutability=mutability(&ptr.mutability);
       let ty=&ptr.elem;
 
       quote! { let #pat_type=ptr as *#mutability #ty }
     },
     Type::Reference(reference)=> {
-      let mutability=&reference.mutability;
+      let mut_=&reference.mutability;
+      let mutability=mutability(mut_);
       let lifetime=&reference.lifetime;
       let ty=&reference.elem;
       
       quote! {
-        let #pat_type=unsafe { &#lifetime #mutability *(ptr as *#mutability #ty) };
+        let #pat_type=unsafe { &#lifetime #mut_ *(ptr as *#mutability #ty) };
       }
     },
     _=> panic!("This function doesn't have a `this` argument")
   }
 }
+
+
+fn mutability(mutablity: &Option<Mut>)-> TokenStream2 {
+  match mutablity {
+    Some(m)=> quote! { #m },
+    None=> quote! { const }
+  }
+}
+
 
