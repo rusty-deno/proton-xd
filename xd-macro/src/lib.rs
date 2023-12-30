@@ -53,23 +53,20 @@ fn this_type(arg: &FnArg)-> proc_macro2::TokenStream {
   };
 
   match pat_type.ty.as_ref() {
-    Type::Path(path)=> quote! {
-      let #pat_type=unsafe { *Box::from_raw(ptr as *mut #path) }
+    Type::Path(_)=> quote! {
+      let #pat_type=unsafe { *Box::from_raw(ptr as *mut _) }
     },
     Type::Ptr(ptr)=> {
       let mutability=mutability(&ptr.mutability);
-      let ty=&ptr.elem;
-
-      quote! { let #pat_type=ptr as *#mutability #ty }
+      quote! { let #pat_type=ptr as *#mutability _ }
     },
     Type::Reference(reference)=> {
       let mut_=&reference.mutability;
       let mutability=mutability(mut_);
       let lifetime=&reference.lifetime;
-      let ty=&reference.elem;
       
       quote! {
-        let #pat_type=unsafe { &#lifetime #mut_ *(ptr as *#mutability #ty) }
+        let #pat_type=unsafe { &#lifetime #mut_ *(ptr as *#mutability _) }
       }
     },
     _=> panic!("This function doesn't have a `this` argument")
