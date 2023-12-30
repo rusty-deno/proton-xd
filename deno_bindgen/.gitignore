@@ -1,4 +1,0 @@
-target/
-example/Cargo.lock
-bindings.json
-.DS_Store
