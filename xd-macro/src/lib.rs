@@ -1,4 +1,4 @@
-#[allow(dead_code)]
+
 mod bindings;
 extern crate proc_macro;
 
@@ -16,18 +16,26 @@ pub fn method(_attr: TokenStream,input: TokenStream)-> TokenStream {
   let f=syn::parse::<ItemFn>(input).unwrap();
 
   let modifier=modifier(&f);
-  let name=f.sig.ident;
-  let stmts=f.block.stmts;
-  let return_type=f.sig.output;
-  let generics=f.sig.generics;
+  let name=&f.sig.ident;
+  let stmts=&f.block.stmts;
+  let return_type=&f.sig.output;
+  let generics=&f.sig.generics;
 
-  let params=f.sig.inputs;
+  let params=&f.sig.inputs;
   let this=params.first().expect("This function doesn't have any `this` argument.");
   let this_def=this_type(this);
-  let params=params.into_iter().skip(1).collect::<punctuated::Punctuated<_,token::Comma>>();
+
+  unsafe {
+    std::ptr::replace(this as *const _ as *mut FnArg,syn::parse(quote! { ptr: usize }.into()).unwrap());
+  };
+
+  save_sig(&f.sig);
+
+
+
 
   quote! {
-    #modifier fn #name #generics (ptr: usize,#params)#return_type {
+    #modifier fn #name #generics (#params)#return_type {
       #this_def;
       #(#stmts)*
     }
@@ -84,6 +92,16 @@ fn mutability(mutablity: &Option<Mut>)-> TokenStream2 {
     Some(m)=> quote! { #m },
     None=> quote! { const }
   }
+}
+
+
+fn save_sig(sig: &Signature) {
+  match &sig.abi {
+    Some(_)=> {},
+    None=> return
+  };
+  
+  bindings::FnSig::new(&sig).save("./xd.json").unwrap()
 }
 
 
