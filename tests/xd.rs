@@ -60,7 +60,7 @@ fn wry_lib() {
 
 #[test]
 fn dialog() {
-  assert!(native_dialog::MessageDialog::new().set_title("xd").show_confirm().unwrap())
+  native_dialog::FileDialog::new().show_open_single_file().unwrap();
 }
 
 
