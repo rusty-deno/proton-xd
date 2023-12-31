@@ -1,9 +1,14 @@
+#[allow(dead_code)]
+mod bindings;
 extern crate proc_macro;
 
-use syn::{*, token::Mut};
+
+use syn::*;
+use token::Mut;
 use quote::quote;
 use proc_macro::TokenStream;
 use proc_macro2::TokenStream as TokenStream2;
+
 
 
 #[proc_macro_attribute]
@@ -22,7 +27,7 @@ pub fn method(_attr: TokenStream,input: TokenStream)-> TokenStream {
   let params=params.into_iter().skip(1).collect::<punctuated::Punctuated<_,token::Comma>>();
 
   quote! {
-    #modifier fn #name #generics(ptr: usize,#params)#return_type {
+    #modifier fn #name #generics (ptr: usize,#params)#return_type {
       #this_def;
       #(#stmts)*
     }
@@ -32,7 +37,7 @@ pub fn method(_attr: TokenStream,input: TokenStream)-> TokenStream {
 
 fn modifier(f: &ItemFn)-> TokenStream2 {
   let modifier=&f.vis;
-  let unsafety=f.sig.unsafety;
+  let unsafety=&f.sig.unsafety;
   match &f.sig.abi {
     None=> quote! {
       #[deno_bindgen]
@@ -80,5 +85,6 @@ fn mutability(mutablity: &Option<Mut>)-> TokenStream2 {
     None=> quote! { const }
   }
 }
+
 
 
