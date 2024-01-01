@@ -55,11 +55,4 @@ pub extern "C" fn msg_dialog_show_confirm(this: MessageDialog)-> bool {
   this.show_confirm().unwrap_or_throw()
 }
 
-#[method]
-pub extern "C" fn xd(_this: &mut MessageDialog,_xd: *const u8,_f: extern "C" fn()) {
-
-}
-
-
-
 

@@ -154,9 +154,11 @@ pub(crate) struct Bindings {
 
 impl Bindings {
   pub(crate) fn open<P: AsRef<Path>>(path: P)-> io::Result<Self> {
+    let bindings=serde_json::from_slice(&fs::read(&path).unwrap_or_default()).unwrap_or_default();
+
     Ok(Self {
       path: path.as_ref().into(),
-      bindings: io_res!(serde_json::from_slice(&fs::read(path)?))?
+      bindings
     })
   }
 
