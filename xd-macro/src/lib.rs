@@ -28,11 +28,7 @@ pub fn method(_attr: TokenStream,input: TokenStream)-> TokenStream {
   unsafe {
     std::ptr::replace(this as *const _ as *mut FnArg,syn::parse(quote! { ptr: usize }.into()).unwrap());
   };
-
   save_sig(&f.sig);
-
-
-
 
   quote! {
     #modifier fn #name #generics (#params)#return_type {
@@ -96,10 +92,9 @@ fn mutability(mutablity: &Option<Mut>)-> TokenStream2 {
 
 
 fn save_sig(sig: &Signature) {
-  match &sig.abi {
-    Some(_)=> {},
-    None=> return
-  };
+  if let None=&sig.abi  {
+    return;
+  }
   
   bindings::FnSig::new(&sig).save("./xd.json").unwrap()
 }

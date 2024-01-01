@@ -17,9 +17,13 @@ use syn::{
   ReturnType as Res
 };
 
+macro_rules! unsupported {
+  ()=> {
+    panic!("unsupported type")
+  }
+}
 
-
-macro_rules! match_vars {
+macro_rules! match_path {
   ($path:expr,$def:expr)=> {
     match $path.to_token_stream().to_string().as_str() {
       "u8"=> Self::U8,
@@ -35,13 +39,22 @@ macro_rules! match_vars {
       "f32"=> Self::F32,
       "f64"=> Self::F64,
       "bool"=> Self::Bool,
-      "function"=> Self::Function,
-      "pointer"=> Self::Pointer,
-      "buffer"=> Self::Buffer,
       _=> $def
     }
   }
 }
+
+macro_rules! match_ptrs {
+  ($ptr:expr)=> {
+    match $ptr.elem.to_token_stream().to_string().as_str() {
+      "u8"=> Self::Buffer,
+      _=> Self::Pointer
+    }
+  };
+}
+
+
+
 
 #[derive(Serialize,Deserialize)]
 #[serde(rename_all="lowercase")]
@@ -67,9 +80,9 @@ pub(crate) enum NativeType {
 impl From<&Type> for NativeType {
   fn from(value: &Type)-> Self {
     match value {
-      Type::Ptr(_)=> Self::Pointer,
-      Type::Path(path)=> match_vars!{path,panic!()},
-      _=> panic!("invalid type")
+      Type::Ptr(ptr)=> match_ptrs!(ptr),
+      Type::Path(path)=> match_path!{path,unsupported!()},
+      _=> unsupported!()
     }
   }
 }
@@ -100,27 +113,17 @@ pub(crate) enum ReturnType {
 
 impl From<&Res> for ReturnType {
   fn from(value: &Res)-> Self {
-    match value {
-      Res::Default=> Default::default(),
-      Res::Type(_,ty)=> {
-        match ty.as_ref() {
-          Type::Ptr(_)=> Self::Pointer,
-          Type::Path(path)=> match_vars!(path,Self::Void),
-          _=> panic!()
-        }
-      },
+    let ty=if let Res::Type(_,ty)=value { ty } else {
+      return Default::default();
+    };
+
+    match ty.as_ref() {
+      Type::Ptr(ptr)=> match_ptrs!(ptr),
+      Type::Path(path)=> match_path!(path,Self::Void),
+      _=> unsupported!()
     }
   }
 }
-
-
-
-
-
-
-
-
-
 
 
 #[derive(Serialize,Deserialize)]
@@ -142,10 +145,8 @@ impl FnSig {
 
     for arg in sig.inputs.iter() {
       match arg {
-        syn::FnArg::Receiver(_)=> panic!(),
-        syn::FnArg::Typed(pat_type)=> {
-          parameters.push(NativeType::from(pat_type.ty.as_ref()));
-        },
+        syn::FnArg::Receiver(_)=> unreachable!(),
+        syn::FnArg::Typed(pat_type)=> parameters.push(pat_type.ty.as_ref().into()),
       }
     }
     
