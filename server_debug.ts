@@ -22,5 +22,3 @@ class XD extends Server {
 if(import.meta.main) XD.main();
 
 
-
-
