@@ -23,6 +23,16 @@ macro_rules! unsupported {
   }
 }
 
+macro_rules! match_fn {
+  ($f:expr)=> {
+    match &$f.abi {
+      None=> unsupported!(),
+      _=> Self::Pointer
+    }
+  }
+}
+
+
 macro_rules! match_path {
   ($path:expr,$def:expr)=> {
     match $path.to_token_stream().to_string().as_str() {
@@ -82,6 +92,7 @@ impl From<&Type> for NativeType {
     match value {
       Type::Ptr(ptr)=> match_ptrs!(ptr),
       Type::Path(path)=> match_path!{path,unsupported!()},
+      Type::BareFn(f)=> match_fn!(f),
       _=> unsupported!()
     }
   }
@@ -120,6 +131,7 @@ impl From<&Res> for ReturnType {
     match ty.as_ref() {
       Type::Ptr(ptr)=> match_ptrs!(ptr),
       Type::Path(path)=> match_path!(path,Self::Void),
+      Type::BareFn(f)=> match_fn!(f),
       _=> unsupported!()
     }
   }
