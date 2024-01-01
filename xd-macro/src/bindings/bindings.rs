@@ -181,8 +181,8 @@ pub(crate) struct FnSig {
 }
 
 
-impl FnSig {
-  pub(crate) fn new(sig: &Signature)-> Self {
+impl From<&Signature> for FnSig {
+  fn from(sig: &Signature) -> Self {
     let mut parameters=Vec::<NativeType>::with_capacity(sig.inputs.len());
 
     for arg in sig.inputs.iter() {
@@ -199,6 +199,4 @@ impl FnSig {
     }
   }
 }
-
-
 

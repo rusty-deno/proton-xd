@@ -95,8 +95,7 @@ fn save_sig(sig: &Signature) {
   if let None=&sig.abi  {
     return;
   }
-  
-  // bindings::FnSig::new(&sig).save("./xd.json").unwrap()
+  let _=bindings::Bindings::append("./temp/xd.json",sig.ident.to_string(),sig.into()).unwrap();
 }
 
 
