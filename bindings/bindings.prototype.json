@@ -1,19 +1,5 @@
 {
-  "theme": {
-    "parameters": [
-      "usize"
-    ],
-    "result": "bool",
-    "nonBlocking": null
-  },
-  "drag_window": {
-    "parameters": [
-      "usize"
-    ],
-    "result": "void",
-    "nonBlocking": null
-  },
-  "set_content_protection": {
+  "set_ignore_cursor_events": {
     "parameters": [
       "usize",
       "bool"
@@ -21,35 +7,19 @@
     "result": "void",
     "nonBlocking": null
   },
-  "set_ime_position": {
-    "parameters": [
-      "usize",
-      "i32",
-      "i32"
-    ],
-    "result": "void",
-    "nonBlocking": null
-  },
-  "set_title": {
-    "parameters": [
-      "usize",
-      "buffer"
-    ],
-    "result": "void",
-    "nonBlocking": null
-  },
-  "is_visible": {
+  "is_minimizable": {
     "parameters": [
       "usize"
     ],
     "result": "bool",
     "nonBlocking": null
   },
-  "is_maximizable": {
+  "set_minimizable": {
     "parameters": [
-      "usize"
+      "usize",
+      "bool"
     ],
-    "result": "bool",
+    "result": "void",
     "nonBlocking": null
   },
   "set_inner_size_constraints": {
@@ -63,13 +33,26 @@
     "result": "void",
     "nonBlocking": null
   },
-  "set_inner_size": {
+  "set_always_on_top": {
     "parameters": [
       "usize",
-      "u32",
-      "u32"
+      "bool"
     ],
     "result": "void",
+    "nonBlocking": null
+  },
+  "set_throw": {
+    "parameters": [
+      "function"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "is_visible": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
     "nonBlocking": null
   },
   "is_focused": {
@@ -79,7 +62,103 @@
     "result": "bool",
     "nonBlocking": null
   },
-  "set_ignore_cursor_events": {
+  "set_content_protection": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "theme": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "set_closable": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_minimized": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "is_maximizable": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "set_outer_position": {
+    "parameters": [
+      "usize",
+      "i32",
+      "i32"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_ime_position": {
+    "parameters": [
+      "usize",
+      "i32",
+      "i32"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_cursor_grab": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_decorations": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_maximizable": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "is_decorated": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "set_min_inner_size": {
+    "parameters": [
+      "usize",
+      "u32",
+      "u32"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_maximized": {
     "parameters": [
       "usize",
       "bool"
@@ -96,120 +175,12 @@
     "result": "bool",
     "nonBlocking": null
   },
-  "set_cursor_grab": {
-    "parameters": [
-      "usize",
-      "bool"
-    ],
-    "result": "void",
-    "nonBlocking": null
-  },
-  "set_visible": {
-    "parameters": [
-      "usize",
-      "bool"
-    ],
-    "result": "void",
-    "nonBlocking": null
-  },
-  "set_minimized": {
-    "parameters": [
-      "usize",
-      "bool"
-    ],
-    "result": "void",
-    "nonBlocking": null
-  },
-  "set_maximized": {
-    "parameters": [
-      "usize",
-      "bool"
-    ],
-    "result": "void",
-    "nonBlocking": null
-  },
-  "is_resizable": {
-    "parameters": [
-      "usize"
-    ],
-    "result": "bool",
-    "nonBlocking": null
-  },
-  "is_panicking": {
-    "parameters": [],
-    "result": "bool",
-    "nonBlocking": null
-  },
-  "set_maximizable": {
-    "parameters": [
-      "usize",
-      "bool"
-    ],
-    "result": "void",
-    "nonBlocking": null
-  },
-  "set_max_inner_size": {
-    "parameters": [
-      "usize",
-      "u32",
-      "u32"
-    ],
-    "result": "void",
-    "nonBlocking": null
-  },
-  "is_maximized": {
-    "parameters": [
-      "usize"
-    ],
-    "result": "bool",
-    "nonBlocking": null
-  },
-  "set_min_inner_size": {
-    "parameters": [
-      "usize",
-      "u32",
-      "u32"
-    ],
-    "result": "void",
-    "nonBlocking": null
-  },
-  "set_throw": {
-    "parameters": [
-      "function"
-    ],
-    "result": "void",
-    "nonBlocking": null
-  },
   "set_resizable": {
     "parameters": [
       "usize",
       "bool"
     ],
     "result": "void",
-    "nonBlocking": null
-  },
-  "set_always_on_top": {
-    "parameters": [
-      "usize",
-      "bool"
-    ],
-    "result": "void",
-    "nonBlocking": null
-  },
-  "set_outer_position": {
-    "parameters": [
-      "usize",
-      "i32",
-      "i32"
-    ],
-    "result": "void",
-    "nonBlocking": null
-  },
-  "is_closable": {
-    "parameters": [
-      "usize"
-    ],
-    "result": "bool",
     "nonBlocking": null
   },
   "set_visible_on_all_workspaces": {
@@ -220,31 +191,7 @@
     "result": "void",
     "nonBlocking": null
   },
-  "set_cursor_position": {
-    "parameters": [
-      "usize",
-      "i32",
-      "i32"
-    ],
-    "result": "void",
-    "nonBlocking": null
-  },
-  "msg_dialog_show_confirm": {
-    "parameters": [
-      "usize"
-    ],
-    "result": "bool",
-    "nonBlocking": null
-  },
-  "set_always_on_bottom": {
-    "parameters": [
-      "usize",
-      "bool"
-    ],
-    "result": "void",
-    "nonBlocking": null
-  },
-  "is_minimizable": {
+  "is_minimized": {
     "parameters": [
       "usize"
     ],
@@ -260,10 +207,52 @@
     "result": "bool",
     "nonBlocking": null
   },
-  "set_decorations": {
+  "is_maximized": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "is_closable": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "msg_dialog_show_confirm": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "set_max_inner_size": {
+    "parameters": [
+      "usize",
+      "u32",
+      "u32"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "is_panicking": {
+    "parameters": [],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "set_always_on_bottom": {
     "parameters": [
       "usize",
       "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "drag_window": {
+    "parameters": [
+      "usize"
     ],
     "result": "void",
     "nonBlocking": null
@@ -276,7 +265,23 @@
     "result": "void",
     "nonBlocking": null
   },
-  "set_minimizable": {
+  "is_resizable": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "set_inner_size": {
+    "parameters": [
+      "usize",
+      "u32",
+      "u32"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_visible": {
     "parameters": [
       "usize",
       "bool"
@@ -284,26 +289,21 @@
     "result": "void",
     "nonBlocking": null
   },
-  "is_decorated": {
-    "parameters": [
-      "usize"
-    ],
-    "result": "bool",
-    "nonBlocking": null
-  },
-  "set_closable": {
+  "set_title": {
     "parameters": [
       "usize",
-      "bool"
+      "buffer"
     ],
     "result": "void",
     "nonBlocking": null
   },
-  "is_minimized": {
+  "set_cursor_position": {
     "parameters": [
-      "usize"
+      "usize",
+      "i32",
+      "i32"
     ],
-    "result": "bool",
+    "result": "void",
     "nonBlocking": null
   }
 }

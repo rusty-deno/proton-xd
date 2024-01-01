@@ -1,93 +1,65 @@
-use wry::{
-  webview::WebView,
-  application::window::Window,
-};
+
+use xd_macro::method;
+use wry::webview::WebView;
+
 use crate::{
   Size,
-  to_header_map
+  to_header_map,
+  exception::Exception
 };
 
 use deno_bindgen::{
   deno_bindgen,
-  serde_json::{
-    to_string,
-    from_str
-  }
+  serde_json as json
 };
 
-fn cast(ptr: usize)-> *const WebView {
-  ptr as *const WebView
+#[method]
+pub fn clear_all_browsing_data(this: &WebView) {
+  this.clear_all_browsing_data().unwrap_or_throw()
 }
 
-#[deno_bindgen]
-pub fn clear_all_browsing_data(ptr: usize) {
-  unsafe {
-    (*cast(ptr)).clear_all_browsing_data().unwrap_or(());
-  }
+#[method]
+pub fn eval_script(this: &WebView,js: &str) {
+  this.evaluate_script(js).unwrap_or_throw()
 }
 
-#[deno_bindgen]
-pub fn eval_script(ptr: usize,js: &str) {
-  unsafe {
-    (*cast(ptr)).evaluate_script(js).unwrap_or(());
-  }
+#[method]
+pub fn webview_inner_size(this: &WebView)-> String {
+  json::to_string(&Size::from(this.inner_size())).unwrap_or_throw()
 }
 
-#[deno_bindgen]
-pub fn webview_inner_size(ptr: usize)-> String {
-  unsafe {
-    let size: Size=(*cast(ptr)).inner_size().into();
-    to_string(&size).unwrap_or_default()
-  }
+#[method]
+pub fn load_url(this: &WebView,url: &str) {
+  this.load_url(url)
 }
 
-#[deno_bindgen]
-pub fn load_url(ptr: usize,url: &str) {
-  unsafe {
-    (*cast(ptr)).load_url(url);
-  }
+#[method]
+pub fn load_url_with_headers(this: &WebView,url: &str,headers: &str) {
+  this.load_url_with_headers(url,to_header_map(json::from_str(headers).unwrap_or_throw()))
 }
 
-#[deno_bindgen]
-pub fn load_url_with_headers(ptr: usize,url: &str,headers: &str) {
-  let headers=from_str(headers).unwrap();
-  unsafe {
-    (*cast(ptr)).load_url_with_headers(url,to_header_map(headers))
-  }
+#[method]
+pub fn webview_print(this: &WebView) {
+  this.print().unwrap_or_throw()
 }
 
-#[deno_bindgen]
-pub fn webview_print(ptr: usize) {
-  unsafe {
-    (*cast(ptr)).print().unwrap_or(());
-  }
+#[method]
+pub fn set_background_color(this: &WebView,r: u8,g: u8,b: u8,a: u8) {
+  this.set_background_color((r,g,b,a)).unwrap_or_throw()
 }
 
-#[deno_bindgen]
-pub fn set_background_color(ptr: usize,r: u8,g: u8,b: u8,a: u8) {
-  unsafe {
-    (*cast(ptr)).set_background_color((r,g,b,a)).unwrap_or(());
-  }
+#[method]
+pub fn url(this: &WebView)-> String {
+  this.url().to_string()
 }
 
-#[deno_bindgen]
-pub fn url(ptr: usize)-> String {
-  unsafe {
-    (*cast(ptr)).url().to_string()
-  }
+#[method]
+pub fn window(this: &WebView)-> usize {
+  this.window() as *const _ as _
 }
 
-#[deno_bindgen]
-pub fn window(ptr: usize)-> usize {
-  unsafe {
-    (*cast(ptr)).window() as *const Window as usize
-  }
-}
-
-#[deno_bindgen]
-pub fn zoom(ptr: usize,zoom: f64) {
-  unsafe {
-    (*cast(ptr)).zoom(zoom);
-  }
+#[method]
+pub fn zoom(this: &WebView,zoom: f64) {
+  this.zoom(zoom)
 }
 

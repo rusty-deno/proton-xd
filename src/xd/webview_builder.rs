@@ -106,8 +106,8 @@ impl WebViewAttrs {
 }
 
 fn to_rgba(color: Option<Rgba>)-> Option<RGBA> {
-  let rbga=color?;
-  Some((rbga.r,rbga.g,rbga.b,rbga.a))
+  let Rgba { r,g,b,a }=color?;
+  Some((r,g,b,a))
 }
 
 fn to_url(url: Option<Box<str>>)-> Option<Url> {
