@@ -3,6 +3,7 @@ use std::{
   fs,
   io,
   collections::HashMap,
+  path::Path,
 };
 
 use quote::ToTokens;
@@ -137,9 +138,38 @@ impl From<&Res> for ReturnType {
   }
 }
 
+macro_rules! io_res {
+  ($res:expr)=> {
+    $res.map_err(|err| io::Error::new(
+      err.io_error_kind().unwrap_or(io::ErrorKind::InvalidInput),
+      err
+    ))
+  };
+}
 
-#[derive(Serialize,Deserialize)]
-pub(crate) struct Bindings(HashMap<Box<str>,FnSig>);
+pub(crate) struct Bindings {
+  path: Box<Path>,
+  bindings: HashMap<Box<str>,FnSig>
+}
+
+impl Bindings {
+  pub(crate) fn open<P: AsRef<Path>>(path: P)-> io::Result<Self> {
+    Ok(Self {
+      path: path.as_ref().into(),
+      bindings: io_res!(serde_json::from_slice(&fs::read(path)?))?
+    })
+  }
+
+  pub(crate) fn save(self)-> io::Result<()> {
+    fs::write(self.path,io_res!(serde_json::to_vec_pretty(&self.bindings))?)
+  }
+
+  pub(crate) fn append<P: AsRef<Path>,S: Into<Box<str>>>(path: P,name: S,sig: FnSig)-> io::Result<()> {
+    let mut this=Self::open(path)?;
+    this.bindings.insert(name.into(),sig);
+    this.save()
+  }
+}
 
 
 #[derive(Serialize,Deserialize,Default)]
@@ -164,14 +194,9 @@ impl FnSig {
     
     FnSig {
       parameters: parameters.into_boxed_slice(),
-      result: (&sig.output).into(),
+      result: From::from(&sig.output),
       non_blocking: sig.asyncness.map(|_| true)
     }
-  }
-
-
-  pub(crate) fn save<P: AsRef<std::path::Path>>(self,path: P)-> io::Result<()> {
-    fs::write(path,serde_json::to_string_pretty(&self)?)
   }
 }
 

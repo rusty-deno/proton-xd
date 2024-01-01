@@ -96,7 +96,7 @@ fn save_sig(sig: &Signature) {
     return;
   }
   
-  bindings::FnSig::new(&sig).save("./xd.json").unwrap()
+  // bindings::FnSig::new(&sig).save("./xd.json").unwrap()
 }
 
 

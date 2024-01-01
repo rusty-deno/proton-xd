@@ -1,7 +1,0 @@
-{
-  "parameters": [
-    "usize"
-  ],
-  "result": "bool",
-  "nonBlocking": null
-}
