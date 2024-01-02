@@ -1,12 +1,42 @@
 {
-  "is_visible": {
+  "set_resizable": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_maximizable": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "is_maximizable": {
     "parameters": [
       "usize"
     ],
     "result": "bool",
     "nonBlocking": null
   },
-  "is_resizable": {
+  "is_maximized": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "is_closable": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "is_visible": {
     "parameters": [
       "usize"
     ],
@@ -25,6 +55,105 @@
       "usize"
     ],
     "result": "bool",
+    "nonBlocking": null
+  },
+  "set_minimizable": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_visible": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_maximized": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_cursor_visible": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "is_focused": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "set_minimized": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "is_minimizable": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "is_decorated": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "is_resizable": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "set_visible_on_all_workspaces": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_ignore_cursor_events": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "is_minimized": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "set_decorations": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
     "nonBlocking": null
   }
 }

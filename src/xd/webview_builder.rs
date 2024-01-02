@@ -1,25 +1,22 @@
-use deno_bindgen::deno_bindgen;
-use std::{
-  str::FromStr,
-  collections::HashMap
-};
 
+use deno_bindgen::deno_bindgen;
+
+use crate::{
+  exception::Exception,
+  header_map
+};
 
 use wry::{
   application::window::Window,
   webview::{
     WebView,
     WebViewBuilder,
-    RGBA,
     WebViewAttributes,
-    Url
-  },
-  http::{
-    HeaderMap,
-    HeaderName,
-    HeaderValue
   }
 };
+
+
+
 
 #[deno_bindgen]
 pub struct Rgba {
@@ -35,7 +32,7 @@ impl Default for Rgba {
   }
 }
 
-pub type Headers=HashMap<Box<str>,Box<str>>;
+pub type Headers=std::collections::HashMap<Box<str>,Box<str>>;
 
 #[deno_bindgen]
 #[serde(rename_all = "camelCase")]
@@ -82,7 +79,7 @@ impl WebViewAttrs {
       user_agent,
       visible,
       transparent,
-      background_color: to_rgba(background_color),
+      background_color: background_color.map(|Rgba { r,g,b,a }| (r,g,b,a)),
       accept_first_mouse,
       zoom_hotkeys_enabled,
       initialization_scripts,
@@ -92,8 +89,8 @@ impl WebViewAttrs {
       incognito,
       autoplay,
       html,
-      url: to_url(url),
-      headers: to_header_map_opt(headers),
+      url: url.and_then(|url| std::str::FromStr::from_str(&url).ok()),
+      headers: headers.map(|h| header_map!(h)),
       ..Default::default()
     };
     
@@ -103,22 +100,4 @@ impl WebViewAttrs {
     webview.build()
   }
 
-}
-
-fn to_rgba(color: Option<Rgba>)-> Option<RGBA> {
-  let Rgba { r,g,b,a }=color?;
-  Some((r,g,b,a))
-}
-
-fn to_url(url: Option<Box<str>>)-> Option<Url> {
-  Url::from_str(&url?).ok()
-}
-
-fn to_header_map_opt(headers: Option<Headers>)-> Option<HeaderMap> {
-  Some(to_header_map(headers?))
-}
-
-pub fn to_header_map(headers: Headers)-> HeaderMap {
-  let iter=headers.iter().map(|(name,val)| (HeaderName::from_str(&name).unwrap(),HeaderValue::from_str(&val).unwrap()));
-  HeaderMap::from_iter(iter)
 }

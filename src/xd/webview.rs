@@ -2,11 +2,12 @@
 use xd_macro::method;
 use wry::webview::WebView;
 
+
 use crate::{
+  Size,
   stringify,
   parse_json,
-  Size,
-  to_header_map,
+  header_map,
   exception::Exception
 };
 
@@ -34,7 +35,8 @@ pub fn load_url(this: &WebView,url: &str) {
 
 #[method]
 pub fn load_url_with_headers(this: &WebView,url: &str,headers: &str) {
-  this.load_url_with_headers(url,to_header_map(parse_json! { headers }))
+  let herders: std::collections::HashMap<Box<str>,Box<str>>=parse_json! { headers };
+  this.load_url_with_headers(url,header_map! { herders })
 }
 
 #[method]

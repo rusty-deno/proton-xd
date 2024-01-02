@@ -86,3 +86,18 @@ macro_rules! parse_json {
     deno_bindgen::serde_json::from_str($str).unwrap_or_throw()
   };
 }
+
+#[macro_export]
+macro_rules! header_map {
+  ($headers:expr)=> {
+    wry::http::HeaderMap::from_iter(
+      $headers.into_iter()
+      .map(|(name,val)|
+        (
+          std::str::FromStr::from_str(&name).unwrap_or_throw(),
+          std::str::FromStr::from_str(&val).unwrap_or_throw()
+        )
+      )
+    )
+  };
+}

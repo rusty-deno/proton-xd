@@ -1,6 +1,10 @@
 
-use crate::{to_constraints, optional_into};
 use deno_bindgen::deno_bindgen;
+
+use crate::{
+  to_constraints,
+  optional_into
+};
 
 use wry::application::{
   event_loop::EventLoop,
@@ -157,7 +161,7 @@ impl WindowAttrs {
       transparent,
       visible,
       preferred_theme: Some(theme.into()),
-      window_icon: to_icon(window_icon),
+      window_icon: window_icon.and_then(|Img { height,width,bytes }| Icon::from_rgba(bytes,width,height).ok()),
       visible_on_all_workspaces,
       inner_size: optional_into!(inner_size),
       inner_size_constraints: to_constraints!(min_width,min_height,max_width,max_height),
@@ -172,10 +176,6 @@ impl WindowAttrs {
   }
 }
 
-fn to_icon(icon: Option<Img>)-> Option<Icon> {
-  let Img { height,width,bytes }=icon?;
-  Icon::from_rgba(bytes,width,height).ok()
-}
 
 
 
