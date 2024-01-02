@@ -1,8 +1,7 @@
-mod ser;
+
 mod setters;
 mod getters;
 
-pub use ser::*;
 pub use setters::*;
 pub use getters::*;
 
