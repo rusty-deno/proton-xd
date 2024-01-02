@@ -1,3 +1,5 @@
+
+use crate::to_constraints;
 use deno_bindgen::deno_bindgen;
 
 use wry::application::{
@@ -8,13 +10,10 @@ use wry::application::{
     Theme as theme,
     Icon,
     WindowAttributes,
-    WindowSizeConstraints,
   },
   dpi::{
     PhysicalSize,
     Size as size,
-    PixelUnit,
-    PhysicalPixel,
     Position as position,
     PhysicalPosition,
   },
@@ -156,7 +155,7 @@ impl WindowAttrs {
       window_icon: to_icon(window_icon),
       visible_on_all_workspaces,
       inner_size: to_size(inner_size),
-      inner_size_constraints: to_constraints(min_width,min_height,max_width,max_height),
+      inner_size_constraints: to_constraints!(min_width,min_height,max_width,max_height),
       position: to_position(position),
       fullscreen: None
     };
@@ -173,10 +172,15 @@ fn to_size(size: Option<Size>)-> Option<size> {
   Some(size?.into())
 }
 
-pub fn to_constraints(min_width: Option<i32>,min_height: Option<i32>,max_width: Option<i32>,max_height: Option<i32>)-> WindowSizeConstraints {
-  let to_pixel=|s: Option<i32>| Some(PixelUnit::Physical(PhysicalPixel::new(s?)));
-  
-  WindowSizeConstraints::new(to_pixel(min_width),to_pixel(min_height),to_pixel(max_width),to_pixel(max_height))
+#[macro_export]
+macro_rules! to_constraints {
+  ($($val:expr),*)=> {
+    wry::application::window::WindowSizeConstraints::new(
+      $(
+        $val.map(|w| wry::application::dpi::PixelUnit::Physical(wry::application::dpi::PhysicalPixel::new(w)))
+      ),*
+    )
+  };
 }
 
 fn to_position(pos: Option<Position>)-> Option<position> {
