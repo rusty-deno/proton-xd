@@ -4,7 +4,7 @@ use deno_bindgen::deno_bindgen;
 
 use crate::{
   exception::Exception,
-  json
+  stringify
 };
 
 use wry::application::window::{
@@ -18,7 +18,7 @@ use wry::application::window::{
 
 #[method]
 pub fn cursor_position(this: &Window)-> String {
-  json! { this.cursor_position().unwrap_or_throw() }
+  stringify! { this.cursor_position().unwrap_or_throw() }
 }
 
 #[method]
@@ -28,7 +28,7 @@ pub fn drag_window(this: &Window) {
 
 #[method]
 pub fn inner_position(this: &Window)-> String {
-  json! { this.inner_position().unwrap_or_throw() }
+  stringify! { this.inner_position().unwrap_or_throw() }
 }
 
 #[method]
@@ -79,12 +79,12 @@ pub unsafe extern "C" fn is_visible(this: &Window)-> bool {
 
 #[method]
 pub fn outer_position(this: &Window)-> String {
-  json! { this.outer_position().unwrap_or_throw() }
+  stringify! { this.outer_position().unwrap_or_throw() }
 }
 
 #[method]
 pub fn outer_size(this: &Window)-> String {
-  json! { this.outer_size() }
+  stringify! { this.outer_size() }
 }
 
 #[method]

@@ -74,8 +74,15 @@ macro_rules! optional_into {
 }
 
 #[macro_export]
-macro_rules! json {
+macro_rules! stringify {
   ($json:expr)=> {
     deno_bindgen::serde_json::to_string(&$json).unwrap_or_throw()
   }
+}
+
+#[macro_export]
+macro_rules! parse_json {
+  ($str:expr)=> {
+    deno_bindgen::serde_json::from_str($str).unwrap_or_throw()
+  };
 }

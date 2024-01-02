@@ -3,15 +3,14 @@ use xd_macro::method;
 use wry::webview::WebView;
 
 use crate::{
+  stringify,
+  parse_json,
   Size,
   to_header_map,
   exception::Exception
 };
 
-use deno_bindgen::{
-  deno_bindgen,
-  serde_json as json
-};
+use deno_bindgen::deno_bindgen;
 
 #[method]
 pub fn clear_all_browsing_data(this: &WebView) {
@@ -25,7 +24,7 @@ pub fn eval_script(this: &WebView,js: &str) {
 
 #[method]
 pub fn webview_inner_size(this: &WebView)-> String {
-  json::to_string(&Size::from(this.inner_size())).unwrap_or_throw()
+  stringify! { Size::from(this.inner_size()) }
 }
 
 #[method]
@@ -35,7 +34,7 @@ pub fn load_url(this: &WebView,url: &str) {
 
 #[method]
 pub fn load_url_with_headers(this: &WebView,url: &str,headers: &str) {
-  this.load_url_with_headers(url,to_header_map(json::from_str(headers).unwrap_or_throw()))
+  this.load_url_with_headers(url,to_header_map(parse_json! { headers }))
 }
 
 #[method]
