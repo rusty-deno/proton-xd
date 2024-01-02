@@ -1,5 +1,5 @@
 
-use crate::to_constraints;
+use crate::{to_constraints, optional_into};
 use deno_bindgen::deno_bindgen;
 
 use wry::application::{
@@ -13,8 +13,8 @@ use wry::application::{
   },
   dpi::{
     PhysicalSize,
-    Size as size,
-    Position as position,
+    Size as Inner,
+    Position as Pos,
     PhysicalPosition,
   },
   error::OsError,
@@ -27,9 +27,9 @@ pub struct Size {
   pub width: u32
 }
 
-impl Into<size> for Size {
-  fn into(self)-> size {
-    size::Physical(PhysicalSize::new(self.width,self.height))
+impl Into<Inner> for Size {
+  fn into(self)-> Inner {
+    Inner::Physical(PhysicalSize::new(self.width,self.height))
   }
 }
 
@@ -65,11 +65,16 @@ pub struct Position {
   pub y: i32
 }
 
-impl From<PhysicalPosition<i32>> for Position {
-  fn from(PhysicalPosition { x,y }: PhysicalPosition<i32>)-> Self {
-    Self { x,y }
+impl Into<Pos> for Position {
+  fn into(self)-> Pos {
+    Pos::Physical(
+      PhysicalPosition::new(self.x,self.y)
+    )
   }
 }
+
+
+
 
 #[deno_bindgen]
 #[derive(Default)]
@@ -154,9 +159,9 @@ impl WindowAttrs {
       preferred_theme: Some(theme.into()),
       window_icon: to_icon(window_icon),
       visible_on_all_workspaces,
-      inner_size: to_size(inner_size),
+      inner_size: optional_into!(inner_size),
       inner_size_constraints: to_constraints!(min_width,min_height,max_width,max_height),
-      position: to_position(position),
+      position: optional_into!(position),
       fullscreen: None
     };
 
@@ -167,30 +172,10 @@ impl WindowAttrs {
   }
 }
 
-
-fn to_size(size: Option<Size>)-> Option<size> {
-  Some(size?.into())
-}
-
-#[macro_export]
-macro_rules! to_constraints {
-  ($($val:expr),*)=> {
-    wry::application::window::WindowSizeConstraints::new(
-      $(
-        $val.map(|w| wry::application::dpi::PixelUnit::Physical(wry::application::dpi::PhysicalPixel::new(w)))
-      ),*
-    )
-  };
-}
-
-fn to_position(pos: Option<Position>)-> Option<position> {
-  let Position { x, y }=pos?;
-  Some(position::Physical(
-    wry::application::dpi::PhysicalPosition { x,y }
-  ))
-}
-
 fn to_icon(icon: Option<Img>)-> Option<Icon> {
   let Img { height,width,bytes }=icon?;
   Icon::from_rgba(bytes,width,height).ok()
 }
+
+
+

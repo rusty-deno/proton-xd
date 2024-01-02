@@ -1,7 +1,11 @@
 
 use xd_macro::method;
-use crate::exception::Exception;
 use deno_bindgen::deno_bindgen;
+
+use crate::{
+  exception::Exception,
+  json
+};
 
 use wry::application::window::{
   Window,
@@ -10,11 +14,6 @@ use wry::application::window::{
 };
 
 
-macro_rules! json {
-  ($json:expr)=> {
-    deno_bindgen::serde_json::to_string(&$json).unwrap_or_throw()
-  }
-}
 
 
 #[method]
