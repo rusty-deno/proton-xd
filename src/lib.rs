@@ -1,5 +1,4 @@
 mod xd;
-mod ffi;
 mod thread;
 mod dialog;
 mod exception;
