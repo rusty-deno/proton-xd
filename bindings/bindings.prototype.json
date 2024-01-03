@@ -12,5 +12,12 @@
     ],
     "result": "bool",
     "nonBlocking": null
+  },
+  "is_visible": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
   }
 }
