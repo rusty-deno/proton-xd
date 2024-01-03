@@ -101,3 +101,16 @@ macro_rules! header_map {
     )
   };
 }
+
+#[macro_export]
+macro_rules! arr {
+  ()=> (
+    Box::into_raw(Vec::<_>::new().into_boxed_slice())
+  );
+  ($($x:expr),+ $(,)?)=> (
+    Box::into_raw(vec![[$($x),+]].into_boxed_slice()) as *mut u8
+  );
+}
+
+
+

@@ -4,11 +4,10 @@ use wry::webview::WebView;
 
 
 use crate::{
-  Size,
-  stringify,
   parse_json,
   header_map,
-  exception::Exception
+  exception::Exception,
+  arr
 };
 
 use deno_bindgen::deno_bindgen;
@@ -24,8 +23,9 @@ pub fn eval_script(this: &WebView,js: &str) {
 }
 
 #[method]
-pub fn webview_inner_size(this: &WebView)-> String {
-  stringify! { Size::from(this.inner_size()) }
+pub fn webview_inner_size(this: &WebView)-> *mut u8 {
+  let size=this.inner_size();
+  arr![size.height,size.width]
 }
 
 #[method]
