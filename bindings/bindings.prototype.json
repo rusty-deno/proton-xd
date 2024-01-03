@@ -6,6 +6,63 @@
     "result": "bool",
     "nonBlocking": null
   },
+  "is_maximizable": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "is_closable": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "is_minimized": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "is_decorated": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "is_minimizable": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "is_resizable": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "set_visible_on_all_workspaces": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "is_visible": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
   "theme": {
     "parameters": [
       "usize"
@@ -13,7 +70,14 @@
     "result": "bool",
     "nonBlocking": null
   },
-  "is_visible": {
+  "is_maximized": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "is_focused": {
     "parameters": [
       "usize"
     ],
