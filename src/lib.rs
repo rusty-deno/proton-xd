@@ -13,5 +13,10 @@ pub use screencapture::*;
 pub(crate) use exception::*;
 
 
+#[deno_bindgen::deno_bindgen]
+pub fn free(ptr: usize) {
+  drop(unsafe { Box::from_raw(ptr as *mut u8) })
+}
+
 
 

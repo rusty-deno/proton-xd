@@ -4,7 +4,7 @@ use deno_bindgen::deno_bindgen;
 
 use crate::{
   exception::Exception,
-  arr
+  dpi
 };
 
 use wry::application::window::{
@@ -19,7 +19,7 @@ use wry::application::window::{
 #[method]
 pub fn cursor_position(this: &Window)-> *mut u8 {
   let pos=this.cursor_position().unwrap_or_throw();
-  arr![pos.x,pos.y]
+  dpi![pos.x,pos.y]
 }
 
 #[method]
@@ -30,7 +30,7 @@ pub fn drag_window(this: &Window) {
 #[method]
 pub fn inner_position(this: &Window)-> *mut u8 {
   let pos=this.inner_position().unwrap_or_throw();
-  arr![pos.x,pos.y]
+  dpi![pos.x,pos.y]
 }
 
 #[method]
@@ -82,13 +82,13 @@ pub unsafe extern "C" fn is_visible(this: &Window)-> bool {
 #[method]
 pub fn outer_position(this: &Window)-> *mut u8 {
   let pos=this.outer_position().unwrap_or_throw();
-  arr![pos.x,pos.y]
+  dpi![pos.x,pos.y]
 }
 
 #[method]
 pub fn outer_size(this: &Window)-> *mut u8 {
   let size=this.outer_size();
-  arr![size.height,size.width]
+  dpi![size.height,size.width]
 }
 
 #[method]

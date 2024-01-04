@@ -7,7 +7,7 @@ use crate::{
   parse_json,
   header_map,
   exception::Exception,
-  arr
+  dpi
 };
 
 use deno_bindgen::deno_bindgen;
@@ -25,7 +25,7 @@ pub fn eval_script(this: &WebView,js: &str) {
 #[method]
 pub fn webview_inner_size(this: &WebView)-> *mut u8 {
   let size=this.inner_size();
-  arr![size.height,size.width]
+  dpi![size.height,size.width]
 }
 
 #[method]

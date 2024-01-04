@@ -103,12 +103,12 @@ macro_rules! header_map {
 }
 
 #[macro_export]
-macro_rules! arr {
+macro_rules! dpi {
   ()=> (
-    Box::into_raw(Vec::<_>::new().into_boxed_slice())
+    Box::into_raw(Box::<[u8]>::new([]))
   );
   ($($x:expr),+ $(,)?)=> (
-    Box::into_raw(vec![[$($x),+]].into_boxed_slice()) as *mut u8
+    Box::into_raw(Box::new([$($x),+])) as *mut u8
   );
 }
 
