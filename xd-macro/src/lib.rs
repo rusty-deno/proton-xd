@@ -12,10 +12,10 @@ use proc_macro2::TokenStream as TokenStream2;
 
 
 #[proc_macro_attribute]
-pub fn method(_attr: TokenStream,input: TokenStream)-> TokenStream {
+pub fn method(attr: TokenStream,input: TokenStream)-> TokenStream {
   let f=syn::parse::<ItemFn>(input).unwrap();
 
-  let modifier=modifier(&f);
+  let modifier=modifier(&f,attr.into());
   let name=&f.sig.ident;
   let stmts=&f.block.stmts;
   let return_type=&f.sig.output;
@@ -39,17 +39,19 @@ pub fn method(_attr: TokenStream,input: TokenStream)-> TokenStream {
 }
 
 
-fn modifier(f: &ItemFn)-> TokenStream2 {
+fn modifier(f: &ItemFn,attr: TokenStream2)-> TokenStream2 {
   let modifier=&f.vis;
+  let asyncness=&f.sig.asyncness;
   let unsafety=&f.sig.unsafety;
+
   match &f.sig.abi {
     None=> quote! {
-      #[deno_bindgen]
-      #modifier 
+      #[deno_bindgen(#attr)]
+      #modifier
     },
     Some(abi)=> quote! {
       #[no_mangle]
-      #modifier #unsafety #abi
+      #modifier #unsafety #abi #asyncness
     }
   }.into()
 }
