@@ -11,18 +11,11 @@ import { $resultSync,Result,Ok } from "../std/error/result/mod.ts";
 
 export class WebView {
   protected webviewAttrs: WebViewAttributes={};
-
-  protected _window=new class extends WindowTrait {
-    public windowAttrs={};
-    public _addrs=new BigUint64Array(1);
-
-    protected get _window(): bigint {
-      return this._addrs[0];
-    }
-  };
+  protected _addrs=new BigUint64Array([0n]);
+  protected _window=new WindowXD(this._addrs);
 
   private get _ptr() {
-    return this._window._addrs[0];
+    return this._addrs[0];
   }
 
   // deno-lint-ignore no-explicit-any
@@ -81,8 +74,7 @@ export class WebView {
   }
 
   public get window() {
-    const {_addrs,windowAttrs}=this._window;
-    return new WindowXD(_addrs[0],windowAttrs);
+    return this._window;
   }
 
   public zoom(scaleFactor: number) {

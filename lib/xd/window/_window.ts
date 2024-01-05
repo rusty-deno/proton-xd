@@ -13,27 +13,27 @@ export abstract class WindowTrait {
   public static readonly defaultSize={ height: 0,width: 0 };
   
   protected abstract windowAttrs: WindowAttributes;
-  protected abstract get _window(): bigint;
+  public abstract get ptr(): bigint;
 
   private set _window_(window: WindowAttributes) {
     Object.assign(this.windowAttrs,window);
   }
   
   public availableMonitors(): MonitorInfo[] {
-    return this._window?JSON.parse(lib.available_monitors(this._window)):[];
+    return this.ptr?JSON.parse(lib.available_monitors(this.ptr)):[];
   }
 
   public currentMonitor(): Option<MonitorInfo> {
     $unimplemented();
-    // return new Option(this._window && JSON.parse(lib.current_monitor(this._window)));
+    // return new Option(this.ptr && JSON.parse(lib.current_monitor(this.ptr)));
   }
 
   public cursorPos(): Position {
-    return this._window?JSON.parse(lib.cursor_position(this._window)):WindowTrait.defaultPos;
+    return this.ptr?JSON.parse(lib.cursor_position(this.ptr)):WindowTrait.defaultPos;
   }
 
   public async dragWindow() {
-    this._window && await rust.drag_window(this._window);
+    this.ptr && await rust.drag_window(this.ptr);
   }
 
   public fullscreen() {
@@ -41,43 +41,43 @@ export abstract class WindowTrait {
   }
 
   public innerPosition(): Position {
-    return this._window?JSON.parse(lib.inner_position(this._window)):this.windowAttrs.innerSize??WindowTrait.defaultPos;
+    return this.ptr?JSON.parse(lib.inner_position(this.ptr)):this.windowAttrs.innerSize??WindowTrait.defaultPos;
   }
 
   public isClosable() {
-    return this._window?rust.is_closable(this._window):this.windowAttrs.closable!;
+    return this.ptr?rust.is_closable(this.ptr):this.windowAttrs.closable!;
   }
 
   public isDecorated() {
-    return this._window?rust.is_decorated(this._window):this.windowAttrs.decorations!;
+    return this.ptr?rust.is_decorated(this.ptr):this.windowAttrs.decorations!;
   }
 
   public isFocused() {
-    return this._window?rust.is_focused(this._window):this.windowAttrs.focused!;
+    return this.ptr?rust.is_focused(this.ptr):this.windowAttrs.focused!;
   }
 
   public isMaximizable() {
-    return this._window?rust.is_maximizable(this._window):this.windowAttrs.maximizable!;
+    return this.ptr?rust.is_maximizable(this.ptr):this.windowAttrs.maximizable!;
   }
 
   public isMaximized() {
-    return this._window?rust.is_maximized(this._window):this.windowAttrs.maximized!;
+    return this.ptr?rust.is_maximized(this.ptr):this.windowAttrs.maximized!;
   }
 
   public isMinimizable() {
-    return this._window?rust.is_minimizable(this._window):this.windowAttrs.minimizable!;
+    return this.ptr?rust.is_minimizable(this.ptr):this.windowAttrs.minimizable!;
   }
 
   public isMinimized() {
-    return this._window?rust.is_minimized(this._window):this.windowAttrs.maximized!;
+    return this.ptr?rust.is_minimized(this.ptr):this.windowAttrs.maximized!;
   }
 
   public isResizable() {
-    return this._window?rust.is_resizable(this._window):this.windowAttrs.resizable!;
+    return this.ptr?rust.is_resizable(this.ptr):this.windowAttrs.resizable!;
   }
 
   public isVisible() {
-    return this._window?rust.is_visible(this._window):this.windowAttrs.visible!;
+    return this.ptr?rust.is_visible(this.ptr):this.windowAttrs.visible!;
   }
 
   public monitorFromPoint(_pos: Position): MonitorInfo {
@@ -85,71 +85,71 @@ export abstract class WindowTrait {
   }
 
   public position(): Position {
-    return this._window?JSON.parse(lib.outer_position(this._window)):this.windowAttrs.position??WindowTrait.defaultPos;
+    return this.ptr?JSON.parse(lib.outer_position(this.ptr)):this.windowAttrs.position??WindowTrait.defaultPos;
   }
 
   public outerSize(): lib.Size {
-    return this._window?JSON.parse(lib.outer_size(this._window)):WindowTrait.defaultSize;
+    return this.ptr?JSON.parse(lib.outer_size(this.ptr)):WindowTrait.defaultSize;
   }
 
   public requestRedraw() {
-    this._window && lib.request_redraw(this._window);
+    this.ptr && lib.request_redraw(this.ptr);
   }
 
   public requestUserAttention(requestType: lib.AttentionType="Informational") {
-    this._window && lib.request_user_attention(this._window,requestType);
+    this.ptr && lib.request_user_attention(this.ptr,requestType);
   }
 
   public scaleFactor() {
-    return this._window?lib.scale_factor(this._window):0;
+    return this.ptr?lib.scale_factor(this.ptr):0;
   }
 
   public theme() {
-    return this._window?rust.theme(this._window)?"Dark":"Light":this.windowAttrs.theme!;
+    return this.ptr?rust.theme(this.ptr)?"Dark":"Light":this.windowAttrs.theme!;
   }
 
   public title() {
-    return this._window?lib.title(this._window):"untitled";
+    return this.ptr?lib.title(this.ptr):"untitled";
   }
   
   public setAlwaysOnTop(alwaysOnTop: boolean) {
-    this._window?rust.set_always_on_top(this._window,alwaysOnTop):this.windowAttrs.alwaysOnTop=alwaysOnTop;
+    this.ptr?rust.set_always_on_top(this.ptr,alwaysOnTop):this.windowAttrs.alwaysOnTop=alwaysOnTop;
   }
   
   public setAlwaysOnBottom(alwaysOnBottom: boolean) {
-    this._window?rust.set_always_on_bottom(this._window,alwaysOnBottom):this.windowAttrs.alwaysOnBottom=alwaysOnBottom;
+    this.ptr?rust.set_always_on_bottom(this.ptr,alwaysOnBottom):this.windowAttrs.alwaysOnBottom=alwaysOnBottom;
   }
   
   public setClosable(closable: boolean) {
-    this._window?rust.set_closable(this._window,closable):this.windowAttrs.closable=closable;
+    this.ptr?rust.set_closable(this.ptr,closable):this.windowAttrs.closable=closable;
   }
   
   public setContentProtection(cotentProtection: boolean) {
-    this._window?rust.set_content_protection(this._window,cotentProtection):this.windowAttrs.contentProtection=cotentProtection;
+    this.ptr?rust.set_content_protection(this.ptr,cotentProtection):this.windowAttrs.contentProtection=cotentProtection;
   }
 
   public setCursorGrab(grab: boolean) {
-    this._window && rust.set_cursor_grab(this._window,grab);
+    this.ptr && rust.set_cursor_grab(this.ptr,grab);
   }
 
   public setCursorIcon(icon: CursorIcon) {
-    this._window && lib.set_cursor_icon(this._window,icon);
+    this.ptr && lib.set_cursor_icon(this.ptr,icon);
   }
   
   public setCursorPosition(x: number,y: number) {
-    this._window && rust.set_cursor_position(this._window,x,y);
+    this.ptr && rust.set_cursor_position(this.ptr,x,y);
   }
 
   public setCursorVisible(visible: boolean) {
-    this._window && rust.set_cursor_visible(this._window,visible);
+    this.ptr && rust.set_cursor_visible(this.ptr,visible);
   }
 
   public setDecorations(decorations: boolean) {
-    this._window?rust.set_decorations(this._window,decorations):this.windowAttrs.decorations=decorations;
+    this.ptr?rust.set_decorations(this.ptr,decorations):this.windowAttrs.decorations=decorations;
   }
 
   public setFocus() {
-    this._window?lib.set_focus(this._window):this.windowAttrs.focused=true;
+    this.ptr?lib.set_focus(this.ptr):this.windowAttrs.focused=true;
   }
 
   public setFullscreen() {
@@ -157,56 +157,56 @@ export abstract class WindowTrait {
   }
 
   public setIgnoreCursorEvents(ignore: boolean) {
-    this._window && rust.set_ignore_cursor_events(this._window,ignore);
+    this.ptr && rust.set_ignore_cursor_events(this.ptr,ignore);
   }
   
   public setImePosition({x,y}: Position) {
-    this._window && rust.set_ime_position(this._window,x,y);
+    this.ptr && rust.set_ime_position(this.ptr,x,y);
   }
   
   public setInnerSize(size: Size) {
-    this._window?rust.set_inner_size(this._window,size.height,size.width):this._window_.innerSize=size;
+    this.ptr?rust.set_inner_size(this.ptr,size.height,size.width):this._window_.innerSize=size;
   }
 
   public setInnerSizeConstraints(size: SizeConstraints) {
-    if(this._window)
-      return rust.set_inner_size_constraints(this._window,size.minWidth,size.minHeight,size.maxWidth,size.maxHeight);
+    if(this.ptr)
+      return rust.set_inner_size_constraints(this.ptr,size.minWidth,size.minHeight,size.maxWidth,size.maxHeight);
     
     this._window_=size;
   }
 
   public setMaxInnerSize(size: MaxSize) {
-    if(this._window)
-      return this._window && rust.set_max_inner_size(this._window,size.maxHeight,size.maxWidth);
+    if(this.ptr)
+      return this.ptr && rust.set_max_inner_size(this.ptr,size.maxHeight,size.maxWidth);
 
     this._window_=size;
   }
   
   public setMaximizable(maximizable: boolean) {
-    this._window?rust.set_maximizable(this._window,maximizable):this.windowAttrs.maximizable=maximizable;
+    this.ptr?rust.set_maximizable(this.ptr,maximizable):this.windowAttrs.maximizable=maximizable;
   }
 
   public setMaximized(maximized: boolean) {
-    this._window?rust.set_maximized(this._window,maximized):this.windowAttrs.maximized=maximized;
+    this.ptr?rust.set_maximized(this.ptr,maximized):this.windowAttrs.maximized=maximized;
   }
   
   public setMinInnerSize(size: MinSize) {
-    if(this._window)
-      return rust.set_min_inner_size(this._window,size.minHeight,size.minWidth);
+    if(this.ptr)
+      return rust.set_min_inner_size(this.ptr,size.minHeight,size.minWidth);
     
     this._window_=size;
   }
   
   public setMinimizable(minimizable: boolean) {
-    this._window?rust.set_minimizable(this._window,minimizable):this.windowAttrs.minimizable=minimizable;
+    this.ptr?rust.set_minimizable(this.ptr,minimizable):this.windowAttrs.minimizable=minimizable;
   }
   
   public setMinimized(minimized: boolean) {
-    this._window && rust.set_minimized(this._window,minimized);
+    this.ptr && rust.set_minimized(this.ptr,minimized);
   }
 
   public setOuterPosition({ x,y }: Position) {
-    this._window && rust.set_outer_position(this._window,x,y);
+    this.ptr && rust.set_outer_position(this.ptr,x,y);
   }
 
   public setProgressBar() {
@@ -214,24 +214,24 @@ export abstract class WindowTrait {
   }
 
   public setResizable(resizable: boolean) {
-    this._window?rust.set_resizable(this._window,resizable):this.windowAttrs.resizable=resizable;
+    this.ptr?rust.set_resizable(this.ptr,resizable):this.windowAttrs.resizable=resizable;
   }
   
   public setTitle(title: string) {
-    this._window?rust.set_title(this._window,encode(title)):this.windowAttrs.title=title;
+    this.ptr?rust.set_title(this.ptr,encode(title)):this.windowAttrs.title=title;
   }
   
   public setVisible(visible: boolean) {
-    this._window?rust.set_visible(this._window,visible):this.windowAttrs.visible=visible;
+    this.ptr?rust.set_visible(this.ptr,visible):this.windowAttrs.visible=visible;
   }
 
   
   public setVisibleOnAllWorkspaces(visible: boolean) {
-    this._window?rust.set_visible_on_all_workspaces(this._window,visible):this.windowAttrs.visibleOnAllWorkspaces=visible;
+    this.ptr?rust.set_visible_on_all_workspaces(this.ptr,visible):this.windowAttrs.visibleOnAllWorkspaces=visible;
   }
 
   public setWindowIcon(icon: ImageBuffer) {
-    this._window?lib.set_window_icon(this._window,icon.height,icon.width,icon.bytes):this.windowAttrs.windowIcon=icon;
+    this.ptr?lib.set_window_icon(this.ptr,icon.height,icon.width,icon.bytes):this.windowAttrs.windowIcon=icon;
   }
 }
 

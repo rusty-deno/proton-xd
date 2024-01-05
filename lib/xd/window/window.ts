@@ -1,8 +1,6 @@
 import * as lib from "../../../bindings/bindings.ts";
-import { MessageType,WindowAttributes } from "../types/window.ts";
-import { confirmDefaultVal,defaultFileOpenerOptions,defaultSaveFileOptions } from "../default.ts";
+import { WindowAttributes } from "../types/window.ts";
 import { WindowTrait } from './_window.ts';
-import { encode } from "../../serde/encode.ts";
 import { Screenshot } from '../image/screenshot.ts';
 
 
@@ -10,8 +8,12 @@ import { Screenshot } from '../image/screenshot.ts';
 
 
 export class WindowXD extends WindowTrait {
-  constructor(protected _window: bigint,protected windowAttrs: WindowAttributes={}) {
+  constructor(private _addr: BigUint64Array,public windowAttrs: WindowAttributes={}) {
     super();
+  }
+  
+  public get ptr() {
+    return this._addr[0];
   }
 
   /**
@@ -39,18 +41,3 @@ export class WindowXD extends WindowTrait {
 }
 
 
-
-
-
-
-
-
-
-
-function encodeEnum(type: MessageType) {
-  switch(type) {
-    case "Info": return 0;
-    case 'Warning': return 1;
-    case 'Error': return 2;
-  }
-}
