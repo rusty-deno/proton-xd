@@ -46,160 +46,203 @@ if (Deno.build.os==="windows") {
 }
 
 export const lib=Deno.dlopen(bindingsUri, {
-  alert: { parameters: [ "buffer", "usize", "buffer", "usize", "u8" ], result: "void", nonblocking: true }, alert_sync: { parameters: [ "buffer", "usize", "buffer", "usize", "u8" ], result: "void", nonblocking: false }, available_monitors: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, clear_all_browsing_data: { parameters: [ "usize" ], result: "void", nonblocking: false }, current: { parameters: [  ], result: "void", nonblocking: false }, current_monitor: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, cursor_position: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, eval_script: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, fullscreen: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, init: { parameters: [ "buffer", "usize", "buffer", "usize", "usize" ], result: "void", nonblocking: true }, inner_position: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, join: { parameters: [ "usize" ], result: "void", nonblocking: false }, join_async: { parameters: [ "usize" ], result: "void", nonblocking: true }, load_url: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, load_url_with_headers: { parameters: [ "usize", "buffer", "usize", "buffer", "usize" ], result: "void", nonblocking: false }, monitor_from_point: { parameters: [ "usize", "f64", "f64" ], result: "buffer", nonblocking: false }, open: { parameters: [ "buffer", "usize" ], result: "buffer", nonblocking: true }, open_sync: { parameters: [ "buffer", "usize" ], result: "buffer", nonblocking: false }, outer_position: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, outer_size: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, park: { parameters: [  ], result: "void", nonblocking: false }, park_timeout: { parameters: [ "f64" ], result: "void", nonblocking: false }, primary_monitor: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, read_clipboard: { parameters: [  ], result: "buffer", nonblocking: false }, request_redraw: { parameters: [ "usize" ], result: "void", nonblocking: false }, request_user_attention: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, save: { parameters: [ "buffer", "usize" ], result: "buffer", nonblocking: true }, save_sync: { parameters: [ "buffer", "usize" ], result: "buffer", nonblocking: false }, scale_factor: { parameters: [ "usize" ], result: "f64", nonblocking: false }, screenshot: { parameters: [ "i32", "i32", "f32", "usize" ], result: "buffer", nonblocking: true }, screenshot_sync: { parameters: [ "i32", "i32", "f32", "usize" ], result: "buffer", nonblocking: false }, set_background_color: { parameters: [ "usize", "u8", "u8", "u8", "u8" ], result: "void", nonblocking: false }, set_cursor_icon: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, set_focus: { parameters: [ "usize" ], result: "void", nonblocking: false }, set_fullscreen: { parameters: [ "usize", "buffer", "usize" ], result: "buffer", nonblocking: false }, set_progress_bar: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, set_window_icon: { parameters: [ "usize", "u32", "u32", "buffer", "usize" ], result: "void", nonblocking: false }, sleep: { parameters: [ "f32" ], result: "void", nonblocking: false }, spawn: { parameters: [ "usize" ], result: "usize", nonblocking: false }, title: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, url: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, webview_inner_size: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, webview_print: { parameters: [ "usize" ], result: "void", nonblocking: false }, window: { parameters: [ "usize" ], result: "usize", nonblocking: false }, write_to_clipboard: { parameters: [ "buffer", "usize" ], result: "void", nonblocking: false }, zoom: { parameters: [ "usize", "f64" ], result: "void", nonblocking: false },
-  "confirm": {
-    "parameters": ["buffer","buffer","u8"],
-    "result": "bool",
-    "nonblocking": true
-  },
-  "confirm_sync": {
-    "parameters": ["buffer","buffer","u8"],
-    "result": "bool"
-  },
-  "drag_window": {
-    "parameters": ["usize"],
+  clear_all_browsing_data: { parameters: [ "usize" ], result: "void", nonblocking: false }, current: { parameters: [  ], result: "void", nonblocking: false }, cursor_position: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, drag_window: { parameters: [ "usize" ], result: "void", nonblocking: false }, eval_script: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, file_dialog_add_filter: { parameters: [ "usize", "buffer", "usize", "buffer", "usize" ], result: "void", nonblocking: false }, file_dialog_remove_all_filters: { parameters: [ "usize" ], result: "void", nonblocking: false }, file_dialog_reset_filename: { parameters: [ "usize" ], result: "void", nonblocking: false }, file_dialog_reset_location: { parameters: [ "usize" ], result: "void", nonblocking: false }, file_dialog_reset_owner: { parameters: [ "usize" ], result: "void", nonblocking: false }, file_dialog_set_filename: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, file_dialog_set_location: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, file_dialog_set_title: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, file_dialog_show_open_multiple_file: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, file_dialog_show_open_single_dir: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, file_dialog_show_open_single_file: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, file_dialog_show_save_single_file: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, free: { parameters: [ "usize" ], result: "void", nonblocking: false }, init: { parameters: [ "buffer", "usize", "buffer", "usize", "usize" ], result: "void", nonblocking: true }, inner_position: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, join: { parameters: [ "usize" ], result: "void", nonblocking: false }, join_async: { parameters: [ "usize" ], result: "void", nonblocking: true }, load_url: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, load_url_with_headers: { parameters: [ "usize", "buffer", "usize", "buffer", "usize" ], result: "void", nonblocking: false }, msg_dialog_reset_owner: { parameters: [ "usize" ], result: "void", nonblocking: false }, msg_dialog_set_text: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, msg_dialog_set_title: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, msg_dialog_show_alert: { parameters: [ "usize" ], result: "void", nonblocking: false }, msg_dialog_xd: { parameters: [ "usize", "u8" ], result: "void", nonblocking: false }, new_file_dialog: { parameters: [  ], result: "usize", nonblocking: false }, new_msg_dialog: { parameters: [  ], result: "usize", nonblocking: false }, outer_position: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, outer_size: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, park: { parameters: [  ], result: "void", nonblocking: false }, park_timeout: { parameters: [ "f64" ], result: "void", nonblocking: false }, read_clipboard: { parameters: [  ], result: "buffer", nonblocking: false }, request_redraw: { parameters: [ "usize" ], result: "void", nonblocking: false }, request_user_attention: { parameters: [ "usize", "u8" ], result: "void", nonblocking: false }, scale_factor: { parameters: [ "usize" ], result: "f64", nonblocking: false }, screenshot: { parameters: [ "i32", "i32", "f32", "usize" ], result: "buffer", nonblocking: true }, screenshot_sync: { parameters: [ "i32", "i32", "f32", "usize" ], result: "buffer", nonblocking: false }, set_background_color: { parameters: [ "usize", "u8", "u8", "u8", "u8" ], result: "void", nonblocking: false }, set_cursor_icon: { parameters: [ "usize", "u8" ], result: "void", nonblocking: false }, set_cursor_position: { parameters: [ "usize", "i32", "i32" ], result: "void", nonblocking: false }, set_focus: { parameters: [ "usize" ], result: "void", nonblocking: false }, set_fullscreen: { parameters: [ "usize", "buffer", "usize" ], result: "buffer", nonblocking: false }, set_ime_position: { parameters: [ "usize", "i32", "i32" ], result: "void", nonblocking: false }, set_inner_size: { parameters: [ "usize", "u32", "u32" ], result: "void", nonblocking: false }, set_inner_size_constraints: { parameters: [ "usize", "i32", "i32", "i32", "i32" ], result: "void", nonblocking: false }, set_max_inner_size: { parameters: [ "usize", "u32", "u32" ], result: "void", nonblocking: false }, set_min_inner_size: { parameters: [ "usize", "u32", "u32" ], result: "void", nonblocking: false }, set_outer_position: { parameters: [ "usize", "i32", "i32" ], result: "void", nonblocking: false }, set_progress_bar: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, set_title: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, set_window_icon: { parameters: [ "usize", "u32", "u32", "buffer", "usize" ], result: "void", nonblocking: true }, sleep: { parameters: [ "f32" ], result: "void", nonblocking: false }, spawn: { parameters: [ "usize" ], result: "usize", nonblocking: false }, title: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, url: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, webview_inner_size: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, webview_print: { parameters: [ "usize" ], result: "void", nonblocking: false }, window: { parameters: [ "usize" ], result: "usize", nonblocking: false }, write_to_clipboard: { parameters: [ "buffer", "usize" ], result: "void", nonblocking: false }, zoom: { parameters: [ "usize", "f64" ], result: "void", nonblocking: false },
+  "set_content_protection": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
     "result": "void",
-    "nonblocking": true
-  },
-  "is_closable": {
-    "parameters": ["usize"],
-    "result": "bool"
-  },
-  "is_decorated": {
-    "parameters": ["usize"],
-    "result": "bool"
-  },
-  "is_focused": {
-    "parameters": ["usize"],
-    "result": "bool"
+    "nonBlocking": null
   },
   "is_maximizable": {
-    "parameters": ["usize"],
-    "result": "bool"
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
   },
   "is_maximized": {
-    "parameters": ["usize"],
-    "result": "bool"
-  },
-  "is_minimizable": {
-    "parameters": ["usize"],
-    "result": "bool"
-  },
-  "is_minimized": {
-    "parameters": ["usize"],
-    "result": "bool"
-  },
-  "is_resizable": {
-    "parameters": ["usize"],
-    "result": "bool"
-  },
-  "is_visible": {
-    "parameters": ["usize"],
-    "result": "bool"
-  },
-  "theme": {
-    "parameters": ["usize"],
-    "result": "bool"
-  },
-  "set_always_on_top": {
-    "parameters": ["usize","bool"],
-    "result": "void"
-  },
-  "set_always_on_bottom": {
-    "parameters": ["usize","bool"],
-    "result": "void"
-  },
-  "set_closable": {
-    "parameters": ["usize","bool"],
-    "result": "void"
-  },
-  "set_content_protection": {
-    "parameters": ["usize","bool"],
-    "result": "void"
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
   },
   "set_cursor_grab": {
-    "parameters": ["usize","bool"],
-    "result": "void"
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
   },
-  "set_cursor_position": {
-    "parameters": ["usize","i32","i32"],
-    "result": "void"
+  "set_closable": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
   },
-  "set_cursor_visible": {
-    "parameters": ["usize","bool"],
-    "result": "void"
+  "is_closable": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
   },
-  "set_decorations": {
-    "parameters": ["usize","bool"],
-    "result": "void"
+  "msg_dialog_show_confirm": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
   },
-  "set_ignore_cursor_events": {
-    "parameters": ["usize","bool"],
-    "result": "void"
+  "is_decorated": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
   },
-  "set_ime_position": {
-    "parameters": ["usize","i32","i32"],
-    "result": "void"
-  },
-  "set_inner_size": {
-    "parameters": ["usize","u32","u32"],
-    "result": "void"
-  },
-  "set_inner_size_constraints": {
-    "parameters": ["usize","i32","i32","i32","i32"],
-    "result": "void"
-  },
-  "set_max_inner_size": {
-    "parameters": ["usize","u32","u32"],
-    "result": "void"
-  },
-  "set_maximizable": {
-    "parameters": ["usize","bool"],
-    "result": "void"
-  },
-  "set_maximized": {
-    "parameters": ["usize","bool"],
-    "result": "void"
-  },
-  "set_min_inner_size": {
-    "parameters": ["usize","u32","u32"],
-    "result": "void"
-  },
-  "set_minimizable": {
-    "parameters": ["usize","bool"],
-    "result": "void"
-  },
-  "set_minimized": {
-    "parameters": ["usize","bool"],
-    "result": "void"
-  },
-  "set_outer_position": {
-    "parameters": ["usize","i32","i32"],
-    "result": "void"
+  "is_focused": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
   },
   "set_resizable": {
-    "parameters": ["usize","bool"],
-    "result": "void"
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
   },
-  "set_title": {
-    "parameters": ["usize","buffer"],
-    "result": "void"
+  "is_minimizable": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "set_decorations": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_always_on_bottom": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "is_minimized": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "set_maximized": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
   },
   "set_visible": {
-    "parameters": ["usize","bool"],
-    "result": "void"
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_cursor_visible": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_ignore_cursor_events": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
   },
   "set_visible_on_all_workspaces": {
-    "parameters": ["usize","bool"],
-    "result": "void"
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
   },
-  "is_panicking": {
-    "parameters": [],
-    "result": "bool"
+  "set_maximizable": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
   },
-  "set_throw": {
-    "parameters": ["function"],
-    "result": "void"
+  "set_always_on_top": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_minimized": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_minimizable": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "theme": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "is_visible": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "is_resizable": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
   }
 });
     
@@ -219,34 +262,10 @@ const fn=Deno.UnsafeCallback.threadSafe({
 fn.unref();
 symbols.set_throw(fn.pointer);
     
-export type AttentionType =   "Critical"  |
-  "Informational";
-export type FileDialogOptions = {
-    location: string;
-  filename: string;
-  typ: FileOpenerType;
-};
-export type FileOpenerType =   "SingleFile"  |
-  "SingleDir"  |
-  "MultipleFile";
-export type FullScreen =  { exclusive: {
-   exclusive: VidMode;
-} }  |
- { borderless: {
-   borderless: MonitorData | undefined | null;
-} }  |
-  "none";
 export type Img = {
     bytes: Array<number>;
   height: number;
   width: number;
-};
-export type MonitorData = {
-    name: string | undefined | null;
-  position: Position;
-  scaleFactor: number;
-  size: Size;
-  modes: Array<VidMode>;
 };
 export type Position = {
     x: number;
@@ -264,11 +283,6 @@ export type Size = {
 };
 export type Theme =   "Light"  |
   "Dark";
-export type VidMode = {
-    size: Size;
-  bitDepth: number;
-  refreshRate: number;
-};
 export type WebViewAttrs = {
     userAgent: string | undefined | null;
   visible: boolean;
@@ -283,7 +297,7 @@ export type WebViewAttrs = {
   incognito: boolean;
   autoplay: boolean;
   html: string | undefined | null;
-  url: string | undefined | null;
+  url: Box<string> | undefined | null;
   headers: Headers | undefined | null;
 };
 export type WindowAttrs = {
@@ -310,29 +324,6 @@ export type WindowAttrs = {
   visibleOnAllWorkspaces: boolean;
   position: Position | undefined | null;
 };
-export function alert(a0: string,a1: string,a2: number) {
-  const a0_buf=encode((a0));
-const a1_buf=encode((a1));
-
-  const rawResult=symbols.alert(a0_buf, a0_buf.byteLength, a1_buf, a1_buf.byteLength, a2);
-  const result=rawResult;;
-  return result;;
-}
-export function alert_sync(a0: string,a1: string,a2: number) {
-  const a0_buf=encode((a0));
-const a1_buf=encode((a1));
-
-  const rawResult=symbols.alert_sync(a0_buf, a0_buf.byteLength, a1_buf, a1_buf.byteLength, a2);
-  const result=rawResult;;
-  return result;;
-}
-export function available_monitors(a0: bigint) {
-  
-
-  const rawResult=symbols.available_monitors(a0);
-  const result=readPointer(rawResult);;
-  return decode(result);;
-}
 export function clear_all_browsing_data(a0: bigint) {
   
 
@@ -347,19 +338,19 @@ export function current() {
   const result=rawResult;;
   return result;;
 }
-export function current_monitor(a0: bigint) {
-  
-
-  const rawResult=symbols.current_monitor(a0);
-  const result=readPointer(rawResult);;
-  return decode(result);;
-}
 export function cursor_position(a0: bigint) {
   
 
   const rawResult=symbols.cursor_position(a0);
   const result=readPointer(rawResult);;
-  return decode(result);;
+  return result;;
+}
+export function drag_window(a0: bigint) {
+  
+
+  const rawResult=symbols.drag_window(a0);
+  const result=rawResult;;
+  return result;;
 }
 export function eval_script(a0: bigint,a1: string) {
   const a1_buf=encode((a1));
@@ -368,12 +359,97 @@ export function eval_script(a0: bigint,a1: string) {
   const result=rawResult;;
   return result;;
 }
-export function fullscreen(a0: bigint) {
+export function file_dialog_add_filter(a0: bigint,a1: string,a2: string) {
+  const a1_buf=encode((a1));
+const a2_buf=encode((a2));
+
+  const rawResult=symbols.file_dialog_add_filter(a0, a1_buf, a1_buf.byteLength, a2_buf, a2_buf.byteLength);
+  const result=rawResult;;
+  return result;;
+}
+export function file_dialog_remove_all_filters(a0: bigint) {
   
 
-  const rawResult=symbols.fullscreen(a0);
+  const rawResult=symbols.file_dialog_remove_all_filters(a0);
+  const result=rawResult;;
+  return result;;
+}
+export function file_dialog_reset_filename(a0: bigint) {
+  
+
+  const rawResult=symbols.file_dialog_reset_filename(a0);
+  const result=rawResult;;
+  return result;;
+}
+export function file_dialog_reset_location(a0: bigint) {
+  
+
+  const rawResult=symbols.file_dialog_reset_location(a0);
+  const result=rawResult;;
+  return result;;
+}
+export function file_dialog_reset_owner(a0: bigint) {
+  
+
+  const rawResult=symbols.file_dialog_reset_owner(a0);
+  const result=rawResult;;
+  return result;;
+}
+export function file_dialog_set_filename(a0: bigint,a1: string) {
+  const a1_buf=encode((a1));
+
+  const rawResult=symbols.file_dialog_set_filename(a0, a1_buf, a1_buf.byteLength);
+  const result=rawResult;;
+  return result;;
+}
+export function file_dialog_set_location(a0: bigint,a1: string) {
+  const a1_buf=encode((a1));
+
+  const rawResult=symbols.file_dialog_set_location(a0, a1_buf, a1_buf.byteLength);
+  const result=rawResult;;
+  return result;;
+}
+export function file_dialog_set_title(a0: bigint,a1: string) {
+  const a1_buf=encode((a1));
+
+  const rawResult=symbols.file_dialog_set_title(a0, a1_buf, a1_buf.byteLength);
+  const result=rawResult;;
+  return result;;
+}
+export function file_dialog_show_open_multiple_file(a0: bigint) {
+  
+
+  const rawResult=symbols.file_dialog_show_open_multiple_file(a0);
   const result=readPointer(rawResult);;
   return decode(result);;
+}
+export function file_dialog_show_open_single_dir(a0: bigint) {
+  
+
+  const rawResult=symbols.file_dialog_show_open_single_dir(a0);
+  const result=readPointer(rawResult);;
+  return decode(result);;
+}
+export function file_dialog_show_open_single_file(a0: bigint) {
+  
+
+  const rawResult=symbols.file_dialog_show_open_single_file(a0);
+  const result=readPointer(rawResult);;
+  return decode(result);;
+}
+export function file_dialog_show_save_single_file(a0: bigint) {
+  
+
+  const rawResult=symbols.file_dialog_show_save_single_file(a0);
+  const result=readPointer(rawResult);;
+  return decode(result);;
+}
+export function free(a0: bigint) {
+  
+
+  const rawResult=symbols.free(a0);
+  const result=rawResult;;
+  return result;;
 }
 export function init(a0: string,a1: string,a2: bigint) {
   const a0_buf=encode((a0));
@@ -388,7 +464,7 @@ export function inner_position(a0: bigint) {
 
   const rawResult=symbols.inner_position(a0);
   const result=readPointer(rawResult);;
-  return decode(result);;
+  return result;;
 }
 export function join(a0: bigint) {
   
@@ -419,40 +495,68 @@ const a2_buf=encode((a2));
   const result=rawResult;;
   return result;;
 }
-export function monitor_from_point(a0: bigint,a1: number,a2: number) {
+export function msg_dialog_reset_owner(a0: bigint) {
   
 
-  const rawResult=symbols.monitor_from_point(a0, a1, a2);
-  const result=readPointer(rawResult);;
-  return decode(result);;
+  const rawResult=symbols.msg_dialog_reset_owner(a0);
+  const result=rawResult;;
+  return result;;
 }
-export function open(a0: string) {
-  const a0_buf=encode((a0));
+export function msg_dialog_set_text(a0: bigint,a1: string) {
+  const a1_buf=encode((a1));
 
-  const rawResult=symbols.open(a0_buf, a0_buf.byteLength);
-  const result=rawResult.then(readPointer);;
-  return result.then(decode);;
+  const rawResult=symbols.msg_dialog_set_text(a0, a1_buf, a1_buf.byteLength);
+  const result=rawResult;;
+  return result;;
 }
-export function open_sync(a0: string) {
-  const a0_buf=encode((a0));
+export function msg_dialog_set_title(a0: bigint,a1: string) {
+  const a1_buf=encode((a1));
 
-  const rawResult=symbols.open_sync(a0_buf, a0_buf.byteLength);
-  const result=readPointer(rawResult);;
-  return decode(result);;
+  const rawResult=symbols.msg_dialog_set_title(a0, a1_buf, a1_buf.byteLength);
+  const result=rawResult;;
+  return result;;
+}
+export function msg_dialog_show_alert(a0: bigint) {
+  
+
+  const rawResult=symbols.msg_dialog_show_alert(a0);
+  const result=rawResult;;
+  return result;;
+}
+export function msg_dialog_xd(a0: bigint,a1: number) {
+  
+
+  const rawResult=symbols.msg_dialog_xd(a0, a1);
+  const result=rawResult;;
+  return result;;
+}
+export function new_file_dialog() {
+  
+
+  const rawResult=symbols.new_file_dialog();
+  const result=rawResult;;
+  return result;;
+}
+export function new_msg_dialog() {
+  
+
+  const rawResult=symbols.new_msg_dialog();
+  const result=rawResult;;
+  return result;;
 }
 export function outer_position(a0: bigint) {
   
 
   const rawResult=symbols.outer_position(a0);
   const result=readPointer(rawResult);;
-  return decode(result);;
+  return result;;
 }
 export function outer_size(a0: bigint) {
   
 
   const rawResult=symbols.outer_size(a0);
   const result=readPointer(rawResult);;
-  return decode(result);;
+  return result;;
 }
 export function park() {
   
@@ -468,13 +572,6 @@ export function park_timeout(a0: number) {
   const result=rawResult;;
   return result;;
 }
-export function primary_monitor(a0: bigint) {
-  
-
-  const rawResult=symbols.primary_monitor(a0);
-  const result=readPointer(rawResult);;
-  return decode(result);;
-}
 export function read_clipboard() {
   
 
@@ -489,26 +586,12 @@ export function request_redraw(a0: bigint) {
   const result=rawResult;;
   return result;;
 }
-export function request_user_attention(a0: bigint,a1: string) {
-  const a1_buf=encode((a1));
+export function request_user_attention(a0: bigint,a1: number) {
+  
 
-  const rawResult=symbols.request_user_attention(a0, a1_buf, a1_buf.byteLength);
+  const rawResult=symbols.request_user_attention(a0, a1);
   const result=rawResult;;
   return result;;
-}
-export function save(a0: string) {
-  const a0_buf=encode((a0));
-
-  const rawResult=symbols.save(a0_buf, a0_buf.byteLength);
-  const result=rawResult.then(readPointer);;
-  return result.then(decode);;
-}
-export function save_sync(a0: string) {
-  const a0_buf=encode((a0));
-
-  const rawResult=symbols.save_sync(a0_buf, a0_buf.byteLength);
-  const result=readPointer(rawResult);;
-  return decode(result);;
 }
 export function scale_factor(a0: bigint) {
   
@@ -538,10 +621,17 @@ export function set_background_color(a0: bigint,a1: number,a2: number,a3: number
   const result=rawResult;;
   return result;;
 }
-export function set_cursor_icon(a0: bigint,a1: string) {
-  const a1_buf=encode((a1));
+export function set_cursor_icon(a0: bigint,a1: number) {
+  
 
-  const rawResult=symbols.set_cursor_icon(a0, a1_buf, a1_buf.byteLength);
+  const rawResult=symbols.set_cursor_icon(a0, a1);
+  const result=rawResult;;
+  return result;;
+}
+export function set_cursor_position(a0: bigint,a1: number,a2: number) {
+  
+
+  const rawResult=symbols.set_cursor_position(a0, a1, a2);
   const result=rawResult;;
   return result;;
 }
@@ -559,12 +649,61 @@ export function set_fullscreen(a0: bigint,a1: string) {
   const result=readPointer(rawResult);;
   return decode(result);;
 }
+export function set_ime_position(a0: bigint,a1: number,a2: number) {
+  
+
+  const rawResult=symbols.set_ime_position(a0, a1, a2);
+  const result=rawResult;;
+  return result;;
+}
+export function set_inner_size(a0: bigint,a1: number,a2: number) {
+  
+
+  const rawResult=symbols.set_inner_size(a0, a1, a2);
+  const result=rawResult;;
+  return result;;
+}
+export function set_inner_size_constraints(a0: bigint,a1: number,a2: number,a3: number,a4: number) {
+  
+
+  const rawResult=symbols.set_inner_size_constraints(a0, a1, a2, a3, a4);
+  const result=rawResult;;
+  return result;;
+}
+export function set_max_inner_size(a0: bigint,a1: number,a2: number) {
+  
+
+  const rawResult=symbols.set_max_inner_size(a0, a1, a2);
+  const result=rawResult;;
+  return result;;
+}
+export function set_min_inner_size(a0: bigint,a1: number,a2: number) {
+  
+
+  const rawResult=symbols.set_min_inner_size(a0, a1, a2);
+  const result=rawResult;;
+  return result;;
+}
+export function set_outer_position(a0: bigint,a1: number,a2: number) {
+  
+
+  const rawResult=symbols.set_outer_position(a0, a1, a2);
+  const result=rawResult;;
+  return result;;
+}
 export function set_progress_bar(a0: bigint) {
   
 
   const rawResult=symbols.set_progress_bar(a0);
   const result=readPointer(rawResult);;
   return decode(result);;
+}
+export function set_title(a0: bigint,a1: string) {
+  const a1_buf=encode((a1));
+
+  const rawResult=symbols.set_title(a0, a1_buf, a1_buf.byteLength);
+  const result=rawResult;;
+  return result;;
 }
 export function set_window_icon(a0: bigint,a1: number,a2: number,a3: Uint8Array) {
   const a3_buf=encode((a3));
@@ -606,7 +745,7 @@ export function webview_inner_size(a0: bigint) {
 
   const rawResult=symbols.webview_inner_size(a0);
   const result=readPointer(rawResult);;
-  return decode(result);;
+  return result;;
 }
 export function webview_print(a0: bigint) {
   
