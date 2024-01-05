@@ -1,19 +1,5 @@
 {
-  "is_visible": {
-    "parameters": [
-      "usize"
-    ],
-    "result": "bool",
-    "nonBlocking": null
-  },
-  "is_decorated": {
-    "parameters": [
-      "usize"
-    ],
-    "result": "bool",
-    "nonBlocking": null
-  },
-  "is_focused": {
+  "theme": {
     "parameters": [
       "usize"
     ],
@@ -27,25 +13,121 @@
     "result": "bool",
     "nonBlocking": null
   },
-  "is_maximized": {
+  "set_always_on_bottom": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_minimizable": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_cursor_grab": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_visible_on_all_workspaces": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_decorations": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "is_closable": {
     "parameters": [
       "usize"
     ],
     "result": "bool",
     "nonBlocking": null
   },
-  "theme": {
+  "set_resizable": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "is_resizable": {
     "parameters": [
       "usize"
     ],
     "result": "bool",
     "nonBlocking": null
   },
-  "msg_dialog_show_confirm": {
+  "set_content_protection": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_cursor_visible": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_minimized": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_maximized": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "is_focused": {
     "parameters": [
       "usize"
     ],
     "result": "bool",
+    "nonBlocking": null
+  },
+  "set_ignore_cursor_events": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_visible": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
     "nonBlocking": null
   },
   "is_maximizable": {
@@ -62,7 +144,52 @@
     "result": "bool",
     "nonBlocking": null
   },
-  "is_resizable": {
+  "is_decorated": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "set_closable": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "msg_dialog_show_confirm": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "set_always_on_top": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_maximizable": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "is_visible": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "is_maximized": {
     "parameters": [
       "usize"
     ],

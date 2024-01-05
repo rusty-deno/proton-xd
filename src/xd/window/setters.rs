@@ -164,7 +164,7 @@ pub extern "C" fn set_visible_on_all_workspaces(this: &Window,visible: bool) {
   this.set_visible_on_all_workspaces(visible)
 }
 
-#[method]
+#[method(non_blocking)]
 pub fn set_window_icon(this: &Window,height: u32,width: u32,bytes: &[u8]) {
   this.set_window_icon(Icon::from_rgba(bytes.to_vec(),width,height).ok())
 }
