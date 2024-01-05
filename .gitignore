@@ -18,6 +18,7 @@ todo.md
 .hintrc
 compilation-time.txt
 bindings.json
+/bindings/bindings.prototype.json
 index.html
 commit.ts
 *.exe
