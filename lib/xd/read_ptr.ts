@@ -26,5 +26,12 @@ export function getU32Touple(ptr: Pointer): Touple<number> {
   return touple;
 }
 
+export function getF64Touple(ptr: Pointer): Touple<number> {
+  const arr=new Float64Array(readPtr(ptr,16));
+  const touple=[arr[0],arr[1]] satisfies Touple<number>;
+
+  allocator.free(ptr);
+  return touple;
+}
 
 
