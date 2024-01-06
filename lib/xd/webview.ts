@@ -6,6 +6,7 @@ import { WebViewAttributes } from "./types/window.ts";
 import { WindowXD,WindowTrait } from './window/mod.ts';
 import { Size } from "./types/dpi.ts";
 import { $resultSync,Result,Ok } from "../std/error/result/mod.ts";
+import { getU32Touple } from "./read_ptr.ts";
 
 
 
@@ -36,15 +37,9 @@ export class WebView {
 
   public webViewInnerSize(): Size {
     if(!this._ptr) return WindowTrait.defaultSize;
-    const ptr=lib.symbols.webview_inner_size(this._ptr)!;
-    const arr=new Uint32Array(Deno.UnsafePointerView.getArrayBuffer(ptr,8));
-    const size={
-      height: arr[0],
-      width: arr[1]
-    };
+    const [height,width]=getU32Touple(lib.symbols.webview_inner_size(this._ptr));
 
-    lib.free(BigInt(Deno.UnsafePointer.value(ptr)));
-    return size;
+    return { height,width };
   }
 
   public loadUrl(url: string|URL) {
