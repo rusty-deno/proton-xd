@@ -1,10 +1,10 @@
 import { symbols as rust } from "../../../bindings/bindings.ts";
 import * as lib from "../../../bindings/bindings.ts";
-import { $unimplemented,Option } from "../../mod.ts";
-import { encode } from "../../serde/encode.ts";
-import { CursorIcon } from '../types/window.ts';
+// import { CursorIcon } from '../types/window.ts';
 import { ImageBuffer } from '../image/image.ts';
-import { MinSize,SizeConstraints,WindowAttributes,MaxSize,MonitorInfo,Position,Size } from '../types/mod.ts';
+import { MinSize,SizeConstraints,WindowAttributes,MaxSize,Position,Size } from '../types/mod.ts';
+import { Result,$resultSync } from "../../std/error/result/mod.ts";
+import { getF64Touple, getI32Touple, getU32Touple } from "../read_ptr.ts";
 
 
 
@@ -19,29 +19,26 @@ export abstract class WindowTrait {
     Object.assign(this.windowAttrs,window);
   }
   
-  public availableMonitors(): MonitorInfo[] {
-    return this.ptr?JSON.parse(lib.available_monitors(this.ptr)):[];
+  #getPos<T extends number|bigint>(f: (ptr: number|bigint)=> Deno.PointerValue,reader: (ptr: Deno.PointerValue)=> [T,T]) {
+    return $resultSync(()=> {
+      if(!this.ptr) return WindowTrait.defaultPos;
+
+      const [x,y]=reader(f(this.ptr));
+      return { x,y };
+    });
   }
 
-  public currentMonitor(): Option<MonitorInfo> {
-    $unimplemented();
-    // return new Option(this.ptr && JSON.parse(lib.current_monitor(this.ptr)));
-  }
 
-  public cursorPos(): Position {
-    return this.ptr?JSON.parse(lib.cursor_position(this.ptr)):WindowTrait.defaultPos;
+  public cursorPos(): Result<Position,Error> {
+    return this.#getPos(rust.cursor_position,getF64Touple);
   }
 
   public async dragWindow() {
     this.ptr && await rust.drag_window(this.ptr);
   }
 
-  public fullscreen() {
-    $unimplemented()
-  }
-
-  public innerPosition(): Position {
-    return this.ptr?JSON.parse(lib.inner_position(this.ptr)):this.windowAttrs.innerSize??WindowTrait.defaultPos;
+  public innerPosition(): Result<Position,Error> {
+    return this.#getPos(rust.inner_position,getI32Touple);
   }
 
   public isClosable() {
@@ -80,25 +77,24 @@ export abstract class WindowTrait {
     return this.ptr?rust.is_visible(this.ptr):this.windowAttrs.visible!;
   }
 
-  public monitorFromPoint(_pos: Position): MonitorInfo {
-    $unimplemented();
+  public position(): Result<Position,Error> {
+    return this.#getPos(rust.outer_position,getI32Touple);
   }
 
-  public position(): Position {
-    return this.ptr?JSON.parse(lib.outer_position(this.ptr)):this.windowAttrs.position??WindowTrait.defaultPos;
-  }
+  public size(): Size {
+    if(!this.ptr) return WindowTrait.defaultSize;
+    const [height,width]=getU32Touple(rust.outer_size(this.ptr));
 
-  public outerSize(): lib.Size {
-    return this.ptr?JSON.parse(lib.outer_size(this.ptr)):WindowTrait.defaultSize;
+    return { height,width };
   }
 
   public requestRedraw() {
     this.ptr && lib.request_redraw(this.ptr);
   }
 
-  public requestUserAttention(requestType: lib.AttentionType="Informational") {
-    this.ptr && lib.request_user_attention(this.ptr,requestType);
-  }
+  // public requestUserAttention(requestType: lib.AttentionType="Informational") {
+  //   this.ptr && lib.request_user_attention(this.ptr,requestType);
+  // }
 
   public scaleFactor() {
     return this.ptr?lib.scale_factor(this.ptr):0;
@@ -132,9 +128,9 @@ export abstract class WindowTrait {
     this.ptr && rust.set_cursor_grab(this.ptr,grab);
   }
 
-  public setCursorIcon(icon: CursorIcon) {
-    this.ptr && lib.set_cursor_icon(this.ptr,icon);
-  }
+  // public setCursorIcon(icon: CursorIcon) {
+  //   this.ptr && lib.set_cursor_icon(this.ptr,icon);
+  // }
   
   public setCursorPosition(x: number,y: number) {
     this.ptr && rust.set_cursor_position(this.ptr,x,y);
@@ -150,10 +146,6 @@ export abstract class WindowTrait {
 
   public setFocus() {
     this.ptr?lib.set_focus(this.ptr):this.windowAttrs.focused=true;
-  }
-
-  public setFullscreen() {
-    $unimplemented();
   }
 
   public setIgnoreCursorEvents(ignore: boolean) {
@@ -209,16 +201,12 @@ export abstract class WindowTrait {
     this.ptr && rust.set_outer_position(this.ptr,x,y);
   }
 
-  public setProgressBar() {
-    $unimplemented();
-  }
-
   public setResizable(resizable: boolean) {
     this.ptr?rust.set_resizable(this.ptr,resizable):this.windowAttrs.resizable=resizable;
   }
   
   public setTitle(title: string) {
-    this.ptr?rust.set_title(this.ptr,encode(title)):this.windowAttrs.title=title;
+    this.ptr?lib.set_title(this.ptr,title):this.windowAttrs.title=title;
   }
   
   public setVisible(visible: boolean) {
