@@ -29,7 +29,7 @@ export class XD extends WebView {
     await init(
       JSON.stringify(this._window.windowAttrs),
       JSON.stringify(this.webviewAttrs),
-      Deno.UnsafePointer.value(Deno.UnsafePointer.of(this._addrs)) as bigint
+      BigInt(Deno.UnsafePointer.value(Deno.UnsafePointer.of(this._addrs)))
     );
   }
 

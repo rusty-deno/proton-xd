@@ -58,10 +58,7 @@ fn wry_lib() {
 }
 
 
-#[test]
-fn dialog() {
-  native_dialog::FileDialog::new().show_open_single_file().unwrap();
-}
+
 
 
 

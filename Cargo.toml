@@ -11,8 +11,8 @@ wry = "0.31.1"
 screenshoter = "0.1.1"
 xd-macro = { path = "./xd-macro" }
 serde = { version = "1", features = ["derive"] }
-tokio = { version = "1.35.0", features = ["full","mio","test-util","tracing","windows-sys"] }
-native-dialog = { version = "0.7.0",features = ["once_cell","windows_dpi_awareness","windows_visual_styles"] }
+# tokio = { version = "1.35.0", features = ["full","mio","test-util","tracing","windows-sys"] }
+# native-dialog = { version = "0.7.0",features = ["once_cell","windows_dpi_awareness","windows_visual_styles"] }
 deno_bindgen = "0.8.1"
 
 
