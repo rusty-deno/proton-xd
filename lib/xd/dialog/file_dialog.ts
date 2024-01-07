@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 import * as lib from "../../../bindings/bindings.ts";
 
 
@@ -10,9 +11,9 @@ export class FileDialog {
   }
 
   
-  private static ref(self: FileDialog,_name: PropertyKey,descriptor: PropertyDescriptor) {
+  private static ref(self: FileDialog,_: PropertyKey,descriptor: PropertyDescriptor) {
     const original=descriptor.value!;
-    // deno-lint-ignore no-explicit-any
+
     descriptor.value=function(...args: any[]) {
       if(self.#moved) self.#ptr=BigInt(lib.new_file_dialog());
       return original.apply(this,args);
@@ -20,6 +21,19 @@ export class FileDialog {
   
     return descriptor;
   }
+
+  private static move(self: FileDialog,_: PropertyKey,descriptor: PropertyDescriptor) {
+    const original=descriptor.value!;
+
+    descriptor.value=function(...args: any[]) {
+      self.#moved=true;
+      return original.apply(this,args);
+    };
+
+    return descriptor;
+  }
+
+
 
   @FileDialog.ref
   public addFilter(desc: string,extensions: string[]) {
