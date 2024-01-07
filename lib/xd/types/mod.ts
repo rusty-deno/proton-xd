@@ -1,5 +1,6 @@
 export * from "./dpi.ts";
 export * from "./window.ts";
+export * from "./dialog.ts";
 
 
 /**
