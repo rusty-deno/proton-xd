@@ -1,3 +1,4 @@
+import { Fn } from "../../types.ts";
 import { Option,None } from './option.ts';
 
 
@@ -37,6 +38,15 @@ export class AsyncOption<T> extends Promise<Option<T>> {
    */
   public andThen(f: (xd: T)=> Option<T>) {
     return new AsyncOption(this.then(val=> val.andThen(f)));
+  }
+  
+  /**
+   * Returns `None` if the option is `None`, otherwise calls predicate with the wrapped value and returns:
+   * * `Some` if predicate returns true (where t is the wrapped value), and
+   * * `None` if predicate returns false.
+   */
+  public filter(predicate: Fn<[val: T],boolean>) {
+    return new AsyncOption(this.then(opt=> opt.filter(predicate)));
   }
 
   /**
@@ -109,6 +119,7 @@ export class AsyncOption<T> extends Promise<Option<T>> {
     (await this).insert(val);
   }
 
+  /** Empties the current {@linkcode Option}. */
   public async empty() {
     (await this).empty();
   }
@@ -123,6 +134,31 @@ export class AsyncOption<T> extends Promise<Option<T>> {
    */
   public async getOrInsert(val: T) {
     return (await this).getOrInsert(val);
+  }
+  
+  /**
+   * Maps an {@linkcode Option<T>} to {@linkcode Option<U>} by applying a function to a contained value (if `Some`) or returns `None` (if `None`).
+   * 
+   * Kind of like `?.` notation
+   */
+  public map<U>(f: Fn<[val: T], U>) {
+    return new AsyncOption(this.then(opt=> opt.map(f)));
+  }
+
+  /**
+   * Returns the provided default result (if `None`), or applies a function to the contained value.
+   * 
+   * Arguments passed to {@linkcode mapOr} are eagerly evaluated; if you are passing the result of a function call, it is recommended to use {@linkcode mapOrElse}, which is lazily evaluated.
+   */
+  public async mapOr<U>(def: U,f: Fn<[val: T],U>) {
+    return (await this).mapOr(def,f);
+  }
+
+  /**
+   * Computes a default function result (if `None`), or applies a different function to the contained value.
+   */
+  public async mapOrElse<U>(def: Fn<[],U>,f: Fn<[val: T],U>) {
+    return (await this).mapOrElse(def,f);
   }
 
   /**
