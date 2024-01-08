@@ -87,7 +87,7 @@ export class FileDialog {
   }
 
   public showOpenMultipleFiles() {
-    return this.#move(lib.file_dialog_show_open_multiple_file);
+    return this.#move(lib.file_dialog_show_open_multiple_file).map((paths)=> paths.split(","));
   }
   
   public showOpenDir() {
