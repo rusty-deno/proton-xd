@@ -1,5 +1,8 @@
-// deno-lint-ignore-file no-explicit-any
+
+import { PathBuf } from "../../std/path.ts";
 import * as lib from "../../../bindings/bindings.ts";
+import { $resultSync } from "../../std/error/result/mod.ts";
+
 
 
 export class FileDialog {
@@ -7,61 +10,91 @@ export class FileDialog {
   #moved=false;
 
   constructor() {
-    this.#ptr=BigInt(lib.new_file_dialog());
+    this.#ptr=FileDialog.#alloc();
   }
 
-  
-  private static ref(self: FileDialog,_: PropertyKey,descriptor: PropertyDescriptor) {
+  static #alloc() {
+    return BigInt(lib.new_file_dialog());
+  }
+
+  static #borrow(self: FileDialog,_: PropertyKey,descriptor: PropertyDescriptor) {
     const original=descriptor.value!;
 
+    // deno-lint-ignore no-explicit-any
     descriptor.value=function(...args: any[]) {
-      if(self.#moved) self.#ptr=BigInt(lib.new_file_dialog());
+      if(self.#moved) self.#ptr=FileDialog.#alloc();
       return original.apply(this,args);
     };
   
     return descriptor;
   }
 
-  private static move(self: FileDialog,_: PropertyKey,descriptor: PropertyDescriptor) {
-    const original=descriptor.value!;
 
-    descriptor.value=function(...args: any[]) {
-      self.#moved=true;
-      return original.apply(this,args);
-    };
+  #move<T>(f: (ptr: bigint)=> T) {
+    const ptr=this.#moved?FileDialog.#alloc():this.#ptr;
+    this.#moved=true;
 
-    return descriptor;
+    return $resultSync(()=> f(ptr));
   }
 
 
 
-  @FileDialog.ref
+  @FileDialog.#borrow
   public addFilter(desc: string,extensions: string[]) {
-    lib.file_dialog_add_filter(this.#ptr,desc,JSON.stringify(extensions));
+    return $resultSync(()=> lib.file_dialog_add_filter(this.#ptr,desc,JSON.stringify(extensions)));
   }
 
-  @FileDialog.ref
+  @FileDialog.#borrow
   public removeAllFilters() {
     lib.file_dialog_remove_all_filters(this.#ptr);
   }
 
-  @FileDialog.ref
+  @FileDialog.#borrow
   public resetFilename() {
     lib.file_dialog_reset_filename(this.#ptr);
   }
 
-  @FileDialog.ref
+  @FileDialog.#borrow
   public resetLocation() {
     lib.file_dialog_reset_location(this.#ptr);
   }
 
-  @FileDialog.ref
+  @FileDialog.#borrow
   public resetOwner() {
     lib.file_dialog_reset_owner(this.#ptr);
   }
 
+  @FileDialog.#borrow
+  public setFilename(filename: PathBuf) {
+    return $resultSync(()=> lib.file_dialog_set_filename(this.#ptr,filename.toString()));
+  }
+
+  @FileDialog.#borrow
+  public setLocation(location: PathBuf) {
+    return $resultSync(()=> lib.file_dialog_set_location(this.#ptr,location.toString()));
+  }
+
+  @FileDialog.#borrow
+  public setTitle(title: string) {
+    lib.file_dialog_set_title(this.#ptr,title);
+  }
 
 
+  public showOpenFile() {
+    return this.#move(lib.file_dialog_show_open_single_file);
+  }
+
+  public showOpenMultipleFiles() {
+    return this.#move(lib.file_dialog_show_open_multiple_file);
+  }
+  
+  public showOpenDir() {
+    return this.#move(lib.file_dialog_show_open_single_dir);
+  }
+  
+  public showSaveFile() {
+    return this.#move(lib.file_dialog_show_save_single_file);
+  }
 }
 
 
