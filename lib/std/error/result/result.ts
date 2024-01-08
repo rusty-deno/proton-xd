@@ -3,6 +3,7 @@ import { Option,None,Some } from '../option/option.ts';
 import { Exception } from '../exception.ts';
 import { $panic } from "../../mod.ts";
 import { Res } from './mod.ts';
+import { Fn } from "../../types.ts";
 
 export type Ok<T>=T;
 export type Err<E=Error>=E;
@@ -166,6 +167,43 @@ export class Result<T,E> extends Exception<T,E> {
     if(this.isException) this._result={ ok };
     return (this._result as any).ok;
   }
+
+  /**
+   * Maps a {@linkcode Result<T,E>} to {@linkcode Result<U,E>} by applying a function to a contained `Ok` value, leaving an `Err` value untouched.
+   * 
+   * This function can be used to compose the results of two functions.
+   */
+  public override map<U>(f: Fn<[val: T], U>): Result<U,E> {
+    return this.match(ok=> Ok(f(ok)),err=> Err(err));
+  }
+
+  /**
+   * Maps a {@linkcode Result<T,E>} to {@linkcode Result<T,F>} by applying a function to a contained `Err` value, leaving an `Ok` value untouched.
+   * 
+   * This function can be used to pass through a successful result while handling an error.
+   */
+  public mapErr<F>(f: Fn<[err: E], F>) {
+    return this.match(ok=> Ok(ok),err=> Err(f(err)));
+  }
+
+  /**
+   * Returns the provided default `Err`, or applies a function to the contained value `Ok`.
+   * 
+   * Arguments passed to {@linkcode mapOr} are eagerly evaluated; if you are passing the result of a function call, it is recommended to use {@linkcode mapOrElse}, which is lazily evaluated.
+   */
+  public mapOr<U>(def: U,f: Fn<[val: T],U>) {
+    return this.match(f,_=> def);
+  }
+
+  /**
+   * Maps a {@linkcode Result<T,E>} to {@linkcode U} by applying fallback function default to a contained `Err` value, or function f to a contained `Ok` value.
+   * 
+   * This function can be used to unpack a successful result while handling an error.
+   */
+  public mapOrElse<U>(def: Fn<[err: E],U>,f: Fn<[val: T],U>) {
+    return this.match(f,def);
+  }
+
 
   /**
    * Returns the contained `Ok` value.
