@@ -1,3 +1,4 @@
+import { Fn } from "../../types.ts";
 import { Result } from "./result.ts";
 
 
@@ -139,6 +140,43 @@ export class AsyncResult<T,E> extends Promise<Result<T,E>> {
    */
   public async getOrInsert(ok: T) {
     return (await this).getOrInsert(ok);
+  }
+
+
+  /**
+   * Maps a {@linkcode AsyncResult<T,E>} to {@linkcode AsyncResult<U,E>} by applying a function to a contained `Ok` value, leaving an `Err` value untouched.
+   * 
+   * This function can be used to compose the results of two functions.
+   */
+  public map<U>(f: Fn<[val: T], U>) {
+    return new AsyncResult(this.then(res=> res.map(f)));
+  }
+
+  /**
+   * Maps a {@linkcode AsyncResult<T,E>} to {@linkcode AsyncResult<T,F>} by applying a function to a contained `Err` value, leaving an `Ok` value untouched.
+   * 
+   * This function can be used to pass through a successful result while handling an error.
+   */
+  public mapErr<F>(f: Fn<[err: E], F>) {
+    return new AsyncResult(this.then(res=> res.mapErr(f)));
+  }
+
+  /**
+   * Returns the provided default `Err`, or applies a function to the contained value `Ok`.
+   * 
+   * Arguments passed to {@linkcode mapOr} are eagerly evaluated; if you are passing the result of a function call, it is recommended to use {@linkcode mapOrElse}, which is lazily evaluated.
+   */
+  public async mapOr<U>(def: U,f: Fn<[val: T],U>) {
+    return (await this).mapOr(def,f);
+  }
+
+  /**
+   * Maps a {@linkcode AsyncResult<T,E>} to {@linkcode U} by applying fallback function default to a contained `Err` value, or function f to a contained `Ok` value.
+   * 
+   * This function can be used to unpack a successful result while handling an error.
+   */
+  public async mapOrElse<U>(def: Fn<[err: E],U>,f: Fn<[val: T],U>) {
+    return (await this).mapOrElse(def,f);
   }
 
   /**

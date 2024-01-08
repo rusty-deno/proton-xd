@@ -72,14 +72,14 @@ export abstract class Exception<T,E> implements Clone {
   /**
    * Returns the provided default {@linkcode E}, or applies a function to the contained value {@linkcode T}.
    * 
-   * Arguments passed to map_or are eagerly evaluated; if you are passing the result of a function call, it is recommended to use map_or_else, which is lazily evaluated.
+   * Arguments passed to {@linkcode mapOr} are eagerly evaluated; if you are passing the result of a function call, it is recommended to use {@linkcode mapOrElse}, which is lazily evaluated.
    */
   public mapOr<U>(def: U,f: Fn<[val: T],U>) {
     return this.match(f,_=> def);
   }
 
   /**
-   * Maps a {@linkcode Exception<T,E>} to U by applying fallback function default to a contained {@linkcode E} value, or function f to a contained {@linkcode T} value.
+   * Maps a {@linkcode Exception<T,E>} to {@linkcode U} by applying fallback function default to a contained {@linkcode E} value, or function f to a contained {@linkcode T} value.
    * 
    * This function can be used to unpack a successful result while handling an error.
    */
