@@ -63,13 +63,6 @@ export abstract class Exception<T,E> implements Clone {
   public abstract map<U>(f: Fn<[val: T],U>): unknown;
 
   /**
-   * Maps a {@linkcode Exception<T,E>} to {@linkcode Exception<T,F>} by applying a function to a contained {@linkcode E} value, leaving an {@linkcode T} value untouched.
-   * 
-   * This function can be used to pass through a successful result while handling an error.
-   */
-  public abstract mapErr<F>(f: Fn<[err: E],F>): unknown;
-
-  /**
    * Returns the provided default {@linkcode E}, or applies a function to the contained value {@linkcode T}.
    * 
    * Arguments passed to {@linkcode mapOr} are eagerly evaluated; if you are passing the result of a function call, it is recommended to use {@linkcode mapOrElse}, which is lazily evaluated.
@@ -83,7 +76,7 @@ export abstract class Exception<T,E> implements Clone {
    * 
    * This function can be used to unpack a successful result while handling an error.
    */
-  public mapOrElse<U>(def: Fn<[err: E],U>,f: Fn<[val: T],U>) {
+  public mapOrElse<U>(def: Fn<[err?: E],U>,f: Fn<[val: T],U>) {
     return this.match(f,def);
   }
 
