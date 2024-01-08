@@ -1,5 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 import { $panic } from '../../mod.ts';
+import { Fn } from "../../types.ts";
 import { Exception } from '../exception.ts';
 
 
@@ -15,7 +16,7 @@ export class Option<T> extends Exception<T,None> {
 
   protected match<S,N>(t: (t: T)=> S,e: (e: None)=> N): S|N {
     const res=this.res();
-    return this.isException?e(res):t(res);
+    return (this.isException?e:t)(res);
   }
 
   protected res(): any {
@@ -63,6 +64,15 @@ export class Option<T> extends Exception<T,None> {
    */
   public andThen(f: (xd: T)=> Option<T>): Option<T> {
     return this.match(f,_=> this.clone());
+  }
+
+  /**
+   * Returns `None` if the option is `None`, otherwise calls predicate with the wrapped value and returns:
+   * * `Some` if predicate returns true (where t is the wrapped value), and
+   * * `None` if predicate returns false.
+   */
+  public filter(predicate: Fn<[val: T],boolean>) {
+    return new Option(this.match(val=> predicate(val)?val:null,none=> none));
   }
 
   /**
@@ -147,6 +157,31 @@ export class Option<T> extends Exception<T,None> {
    */
   public getOrInsert(val: T) {
     return this.match(t=> t,_=> this.value=val);
+  }
+
+  /**
+   * Maps an {@linkcode Option<T>} to {@linkcode Option<U>} by applying a function to a contained value (if `Some`) or returns `None` (if `None`).
+   * 
+   * Kind of like `?.` notation
+   */
+  public map<U>(f: Fn<[val: T], U>) {
+    return new Option(this.match(val=> f(val),none=> none));
+  }
+
+  /**
+   * Returns the provided default result (if `None`), or applies a function to the contained value.
+   * 
+   * Arguments passed to {@linkcode mapOr} are eagerly evaluated; if you are passing the result of a function call, it is recommended to use {@linkcode mapOrElse}, which is lazily evaluated.
+   */
+  public mapOr<U>(def: U,f: Fn<[val: T],U>) {
+    return this.match(f,_=> def);
+  }
+
+  /**
+   * Computes a default function result (if `None`), or applies a different function to the contained value.
+   */
+  public mapOrElse<U>(def: Fn<[],U>,f: Fn<[val: T],U>) {
+    return this.match(f,def);
   }
 
   /**
