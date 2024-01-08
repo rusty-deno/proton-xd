@@ -1,5 +1,6 @@
 import { $panic } from '../mod.ts';
 import { Clone } from '../clone.ts';
+import { Fn } from "../types.ts";
 
 
 export abstract class Exception<T,E> implements Clone {
@@ -53,7 +54,40 @@ export abstract class Exception<T,E> implements Clone {
   public expect(msg: string): T {
     return this.match(t=> t,_=> $panic(msg));
   }
-  
+
+  /**
+   * Maps a {@linkcode Exception<T,E>} to {@linkcode Exception<U,E>} by applying a function to a contained {@linkcode T} value, leaving an {@linkcode E} value untouched.
+   * 
+   * This function can be used to compose the results of two functions.
+   */
+  public abstract map<U>(f: Fn<[val: T],U>): unknown;
+
+  /**
+   * Maps a {@linkcode Exception<T,E>} to {@linkcode Exception<T,F>} by applying a function to a contained {@linkcode E} value, leaving an {@linkcode T} value untouched.
+   * 
+   * This function can be used to pass through a successful result while handling an error.
+   */
+  public abstract mapErr<F>(f: Fn<[err: E],F>): unknown;
+
+  /**
+   * Returns the provided default {@linkcode E}, or applies a function to the contained value {@linkcode T}.
+   * 
+   * Arguments passed to map_or are eagerly evaluated; if you are passing the result of a function call, it is recommended to use map_or_else, which is lazily evaluated.
+   */
+  public mapOr<U>(def: U,f: Fn<[val: T],U>) {
+    return this.match(f,_=> def);
+  }
+
+  /**
+   * Maps a {@linkcode Exception<T,E>} to U by applying fallback function default to a contained {@linkcode E} value, or function f to a contained {@linkcode T} value.
+   * 
+   * This function can be used to unpack a successful result while handling an error.
+   */
+  public mapOrElse<U>(def: Fn<[err: E],U>,f: Fn<[val: T],U>) {
+    return this.match(f,def);
+  }
+
+
   /**
    * * Returns the contained non {@linkcode Exception} value or a provided default.
    * * Arguments passed to {@linkcode unwrapOr} are eagerly evaluated; if you are passing the result of a function call, it is recommended to use {@linkcode unwrapOrElse}.
