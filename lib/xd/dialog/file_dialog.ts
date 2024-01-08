@@ -17,7 +17,7 @@ export class FileDialog {
     return BigInt(lib.new_file_dialog());
   }
 
-  static #borrow(self: FileDialog,_: PropertyKey,descriptor: PropertyDescriptor) {
+  private static borrow(self: FileDialog,_: PropertyKey,descriptor: PropertyDescriptor) {
     const original=descriptor.value!;
 
     // deno-lint-ignore no-explicit-any
@@ -41,44 +41,42 @@ export class FileDialog {
     return $resultSync(()=> f(ptr));
   }
 
-
-
-  @FileDialog.#borrow
+  @FileDialog.borrow
   public addFilter(desc: string,extensions: string[]) {
     return $resultSync(()=> lib.file_dialog_add_filter(this.#ptr,desc,JSON.stringify(extensions)));
   }
 
-  @FileDialog.#borrow
+  @FileDialog.borrow
   public removeAllFilters() {
     lib.file_dialog_remove_all_filters(this.#ptr);
   }
 
-  @FileDialog.#borrow
+  @FileDialog.borrow
   public resetFilename() {
     lib.file_dialog_reset_filename(this.#ptr);
   }
 
-  @FileDialog.#borrow
+  @FileDialog.borrow
   public resetLocation() {
     lib.file_dialog_reset_location(this.#ptr);
   }
 
-  @FileDialog.#borrow
+  @FileDialog.borrow
   public resetOwner() {
     lib.file_dialog_reset_owner(this.#ptr);
   }
 
-  @FileDialog.#borrow
+  @FileDialog.borrow
   public setFilename(filename: PathBuf) {
     return $resultSync(()=> lib.file_dialog_set_filename(this.#ptr,filename.toString()));
   }
 
-  @FileDialog.#borrow
+  @FileDialog.borrow
   public setLocation(location: PathBuf) {
     return $resultSync(()=> lib.file_dialog_set_location(this.#ptr,location.toString()));
   }
 
-  @FileDialog.#borrow
+  @FileDialog.borrow
   public setTitle(title: string) {
     lib.file_dialog_set_title(this.#ptr,title);
   }

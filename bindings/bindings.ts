@@ -95,6 +95,10 @@ export const lib=Deno.dlopen(bindingsUri, {
     ],
     "result": "bool",
     "nonBlocking": null
+  },
+  set_throw: {
+    parameters: ["function"],
+    result: "void"
   }
 });
     
@@ -149,7 +153,7 @@ export type WebViewAttrs = {
   incognito: boolean;
   autoplay: boolean;
   html: string | undefined | null;
-  url: Box<string> | undefined | null;
+  url: string | undefined | null;
   headers: Headers | undefined | null;
 };
 export type WindowAttrs = {
