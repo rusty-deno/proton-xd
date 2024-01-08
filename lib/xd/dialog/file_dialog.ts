@@ -22,7 +22,11 @@ export class FileDialog {
 
     // deno-lint-ignore no-explicit-any
     descriptor.value=function(...args: any[]) {
-      if(self.#moved) self.#ptr=FileDialog.#alloc();
+      if(self.#moved) {
+        self.#ptr=FileDialog.#alloc();
+        self.#moved=false;
+      }
+
       return original.apply(this,args);
     };
   
