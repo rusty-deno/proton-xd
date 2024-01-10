@@ -26,12 +26,15 @@ use wry::application::{
   },
   event_loop::{
     ControlFlow,
-    EventLoopBuilder,
-    EventLoop
+    EventLoopBuilder
   },
   platform
 };
 
+#[cfg(any(target_os="linux",target_os="macos"))]
+use platform::unix::EventLoopBuilderExtUnix;
+#[cfg(target_os="windows")]
+use platform::windows::EventLoopBuilderExtWindows;
 
 
 
@@ -59,7 +62,8 @@ pub async fn init(window_atters: &str,webview_atters: &str,ptr: usize) {
 
 
 fn spawn_webview(window_attrs: WindowAttrs,webview_attrs: WebViewAttrs,ptr: *mut usize)-> wry::Result<()> {
-  let event_loop=EventLoop::new_thread_safe();
+  let mut event_loop_builder=EventLoopBuilder::new();
+  let event_loop=event_loop_builder.with_any_thread(true).build();
   let window=window_attrs.build(&event_loop)?;
   let webview=webview_attrs.build(window)?;
 
@@ -79,22 +83,4 @@ fn spawn_webview(window_attrs: WindowAttrs,webview_attrs: WebViewAttrs,ptr: *mut
   });
 }
 
-
-
-trait ThreadSafeEventLoop {
-  fn new_thread_safe()-> Self;
-}
-
-impl ThreadSafeEventLoop for EventLoop<()> {
-  fn new_thread_safe()-> Self {
-    let mut builder=EventLoopBuilder::new();
-
-    #[cfg(any(target_os="linux",target_os="macos"))]
-    use platform::unix::EventLoopBuilderExtUnix;
-    #[cfg(target_os="windows")]
-    use platform::windows::EventLoopBuilderExtWindows;
-
-    builder.with_any_thread(true).build()
-  }
-}
 
