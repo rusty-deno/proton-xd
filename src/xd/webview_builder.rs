@@ -7,13 +7,11 @@ use crate::{
 };
 
 use wry::{
-  application::window::Window,
-  webview::{
-    WebView,
-    WebViewBuilder,
-    WebViewAttributes,
-  }
+  WebView,
+  WebViewBuilder,
+  WebViewAttributes,
 };
+use tao::window::Window;
 
 
 
@@ -56,7 +54,7 @@ pub struct WebViewAttrs {
 
 
 impl WebViewAttrs {
-  pub fn build(self,window: Window)-> Result<WebView,wry::Error> {
+  pub fn build(self,window: &Window)-> wry::Result<WebView> {
     let WebViewAttrs {
       user_agent,
       visible,
@@ -93,11 +91,10 @@ impl WebViewAttrs {
       headers: headers.map(|h| header_map!(h)),
       ..Default::default()
     };
-    
-    let mut webview=WebViewBuilder::new(window)?;
-    webview.webview=_webview;
+    let mut builder=WebViewBuilder::new(window);
+    builder.attrs=_webview;
 
-    webview.build()
+    builder.build()
   }
 
 }

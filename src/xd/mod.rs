@@ -20,8 +20,8 @@ use deno_bindgen::{
   serde_json::from_str
 };
 
-use wry::application::{
-  clipboard::Clipboard,
+
+use tao::{
   event::{
     Event,
     WindowEvent
@@ -39,19 +39,6 @@ use platform::unix::EventLoopBuilderExtUnix;
 use platform::windows::EventLoopBuilderExtWindows;
 
 
-
-#[deno_bindgen]
-pub fn write_to_clipboard(str: &str) {
-  Clipboard::new().write_text(str)
-}
-
-
-#[deno_bindgen]
-pub fn read_clipboard()-> String {
-  Clipboard::new().read_text().unwrap_or_throw()
-}
-
-
 #[deno_bindgen(non_blocking)]
 pub async fn init(window_atters: &str,webview_atters: &str,ptr: usize) {
   let window_atters: WindowAttrs=from_str(window_atters).unwrap_or_throw();
@@ -63,11 +50,12 @@ pub async fn init(window_atters: &str,webview_atters: &str,ptr: usize) {
 
 fn spawn_webview(window_attrs: WindowAttrs,webview_attrs: WebViewAttrs,ptr: *mut usize)-> wry::Result<()> {
   let event_loop=EventLoopBuilder::new().with_any_thread(true).build();
-  let window=window_attrs.build(&event_loop)?;
-  let webview=webview_attrs.build(window)?;
+  let mut window=window_attrs.build(&event_loop).unwrap_or_throw();
+  let webview=webview_attrs.build(&window)?;
 
   unsafe {
-    (*ptr)=webview.window() as *const _ as _;
+    ptr.write(&mut window as *mut _ as _);
+    ptr.offset(1).write(&webview as *const _ as _);
   }
 
   event_loop.run(move |event, _, control_flow| {
@@ -79,7 +67,7 @@ fn spawn_webview(window_attrs: WindowAttrs,webview_attrs: WebViewAttrs,ptr: *mut
       }=> *control_flow=ControlFlow::Exit,
       _=> (),
     }
-  });
+  })
 }
 
 

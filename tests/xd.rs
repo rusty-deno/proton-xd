@@ -1,16 +1,26 @@
-use std::ptr;
-use wry::{application::{
+
+use wry::{
+  WebView,
+  WebViewBuilder,
+};
+use tao::{
   event_loop::{
-    EventLoop,
     EventLoopBuilder,
     ControlFlow
   },
-  window::Window,
+  window::{Window, WindowBuilder},
   event::{
     WindowEvent,
     Event
-  }
-}, webview::WebView};
+  },
+  platform
+};
+
+
+#[cfg(any(target_os="linux",target_os="macos"))]
+use platform::unix::EventLoopBuilderExtUnix;
+#[cfg(target_os="windows")]
+use platform::windows::EventLoopBuilderExtWindows;
 
 
 
@@ -21,43 +31,47 @@ macro_rules! dbg {
   };
 }
 
-
-trait ThredSafeEventLoop {
-  fn new_thread_safe()-> Self;
-}
-
-impl ThredSafeEventLoop for EventLoop<()> {
-  fn new_thread_safe()-> Self {
-    let mut builder=EventLoopBuilder::new();
-    unsafe {
-      ptr::write(ptr::addr_of_mut!(builder) as *mut bool,true);
-    }
-    builder.build()
+macro_rules! run_event_loop {
+  ($event_loop:expr)=> {
+    $event_loop.run(move |event, _, control_flow| {
+      *control_flow=ControlFlow::Wait;
+      match event {
+        Event::WindowEvent {
+          event: WindowEvent::CloseRequested,
+          ..
+        }=> *control_flow=ControlFlow::Exit,
+        _=> (),
+      }
+    })
   }
 }
 
+fn new_event_loop()-> tao::event_loop::EventLoop<()> {
+  EventLoopBuilder::new().with_any_thread(true).build()
+}
 
 #[test]
 fn wry_lib() {
-  let event_loop=EventLoop::new_thread_safe();
-  let window=Window::new(&event_loop).unwrap();
-  let _webview=WebView::new(window).unwrap();
+  let event_loop=new_event_loop();
+  let window=WindowBuilder::new().build(&event_loop).unwrap();
+  let _webview=WebViewBuilder::new(&window).attrs;
 
 
-
-  event_loop.run(move |event, _, control_flow| {
-    *control_flow=ControlFlow::Wait;
-    match event {
-      Event::WindowEvent {
-        event: WindowEvent::CloseRequested,
-        ..
-      }=> *control_flow=ControlFlow::Exit,
-      _=> (),
-    }
-  });
+  run_event_loop! {
+    event_loop
+  }
 }
 
+#[test]
+fn child_window() {
+  let event_loop=new_event_loop();
+  let window=Window::new(&event_loop).unwrap();
+  WebViewBuilder::new(&window);
 
+  run_event_loop! {
+    event_loop
+  }
+}
 
 
 

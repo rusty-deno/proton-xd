@@ -1,13 +1,12 @@
 
 use xd_macro::method;
-use wry::webview::WebView;
+use wry::WebView;
 
 
 use crate::{
   parse_json,
   header_map,
   exception::Exception,
-  dpi
 };
 
 use deno_bindgen::deno_bindgen;
@@ -20,12 +19,6 @@ pub fn clear_all_browsing_data(this: &WebView) {
 #[method]
 pub fn eval_script(this: &WebView,js: &str) {
   this.evaluate_script(js).unwrap_or_throw()
-}
-
-#[method]
-pub fn webview_inner_size(this: &WebView)-> *mut u8 {
-  let size=this.inner_size();
-  dpi![size.height,size.width]
 }
 
 #[method]
@@ -52,11 +45,6 @@ pub fn set_background_color(this: &WebView,r: u8,g: u8,b: u8,a: u8) {
 #[method]
 pub fn url(this: &WebView)-> String {
   this.url().to_string()
-}
-
-#[method]
-pub fn window(this: &WebView)-> usize {
-  this.window() as *const _ as _
 }
 
 #[method]

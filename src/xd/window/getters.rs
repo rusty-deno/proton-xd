@@ -7,7 +7,7 @@ use crate::{
   dpi
 };
 
-use wry::application::window::{
+use tao::window::{
   Window,
   UserAttentionType,
   Theme
