@@ -10,7 +10,6 @@ pub use window_builder::*;
 pub use webview_builder::*;
 
 mod macros;
-use std::ptr;
 use crate::exception::Exception;
 
 
@@ -29,7 +28,8 @@ use wry::application::{
     ControlFlow,
     EventLoopBuilder,
     EventLoop
-  }
+  },
+  platform
 };
 
 
@@ -88,10 +88,13 @@ trait ThreadSafeEventLoop {
 impl ThreadSafeEventLoop for EventLoop<()> {
   fn new_thread_safe()-> Self {
     let mut builder=EventLoopBuilder::new();
-    unsafe {
-      ptr::write(ptr::addr_of_mut!(builder) as *mut bool,true);
-    }
-    builder.build()
+
+    #[cfg(any(target_os="linux",target_os="macos"))]
+    use platform::unix::EventLoopBuilderExtUnix;
+    #[cfg(target_os="windows")]
+    use platform::windows::EventLoopBuilderExtWindows;
+
+    builder.with_any_thread(true).build()
   }
 }
 
