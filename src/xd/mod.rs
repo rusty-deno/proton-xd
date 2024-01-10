@@ -1,9 +1,11 @@
 
+mod dialog;
 mod window;
 mod webview;
 mod window_builder;
 mod webview_builder;
 
+pub use dialog::*;
 pub use window::*;
 pub use webview::*;
 pub use window_builder::*;
@@ -50,8 +52,6 @@ pub fn read_clipboard()-> String {
 }
 
 
-
-
 #[deno_bindgen(non_blocking)]
 pub async fn init(window_atters: &str,webview_atters: &str,ptr: usize) {
   let window_atters: WindowAttrs=from_str(window_atters).unwrap_or_throw();
@@ -62,8 +62,7 @@ pub async fn init(window_atters: &str,webview_atters: &str,ptr: usize) {
 
 
 fn spawn_webview(window_attrs: WindowAttrs,webview_attrs: WebViewAttrs,ptr: *mut usize)-> wry::Result<()> {
-  let mut event_loop_builder=EventLoopBuilder::new();
-  let event_loop=event_loop_builder.with_any_thread(true).build();
+  let event_loop=EventLoopBuilder::new().with_any_thread(true).build();
   let window=window_attrs.build(&event_loop)?;
   let webview=webview_attrs.build(window)?;
 
@@ -82,5 +81,8 @@ fn spawn_webview(window_attrs: WindowAttrs,webview_attrs: WebViewAttrs,ptr: *mut
     }
   });
 }
+
+
+
 
 
