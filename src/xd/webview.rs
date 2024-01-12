@@ -1,6 +1,6 @@
 
 use xd_macro::method;
-use wry::WebView;
+use wry::webview::WebView;
 
 
 use crate::{

@@ -1,19 +1,21 @@
 
 use wry::{
-  WebView,
-  WebViewBuilder,
-};
-use tao::{
-  event_loop::{
-    EventLoopBuilder,
-    ControlFlow
+  application::{
+    event_loop::{
+      EventLoopBuilder,
+      ControlFlow, EventLoop
+    },
+    window::{
+      Window,
+      WindowBuilder
+    },
+    event::{
+      WindowEvent,
+      Event
+    },
+    platform
   },
-  window::{Window, WindowBuilder},
-  event::{
-    WindowEvent,
-    Event
-  },
-  platform
+  webview::WebViewBuilder
 };
 
 
@@ -46,7 +48,7 @@ macro_rules! run_event_loop {
   }
 }
 
-fn new_event_loop()-> tao::event_loop::EventLoop<()> {
+fn new_event_loop()-> EventLoop<()> {
   EventLoopBuilder::new().with_any_thread(true).build()
 }
 
@@ -54,7 +56,7 @@ fn new_event_loop()-> tao::event_loop::EventLoop<()> {
 fn wry_lib() {
   let event_loop=new_event_loop();
   let window=WindowBuilder::new().build(&event_loop).unwrap();
-  let _webview=WebViewBuilder::new(&window).attrs;
+  let _webview=WebViewBuilder::new(window).unwrap().build().unwrap();
 
 
   run_event_loop! {
@@ -65,15 +67,28 @@ fn wry_lib() {
 #[test]
 fn child_window() {
   let event_loop=new_event_loop();
-  let window=Window::new(&event_loop).unwrap();
-  WebViewBuilder::new(&window);
+  let window=window(&event_loop);
+  let _xd=WebViewBuilder::new(window).unwrap()
+  .with_html("<html><body>hello wrld</body></html>").unwrap()
+  // .with_background_color((255,0,255,255))
+  .with_devtools(true)
+  .build().unwrap();
+
+
+
+
 
   run_event_loop! {
     event_loop
   }
 }
 
+fn window(event_loop: &EventLoop<()>)-> Window {
+  let mut builder=WindowBuilder::new();
+  builder.window.visible_on_all_workspaces=true;
 
+  builder.build(&event_loop).unwrap()
+}
 
 
 

@@ -4,9 +4,9 @@
 #[macro_export]
 macro_rules! to_constraints {
   ($($val:expr),*)=> {
-    tao::window::WindowSizeConstraints::new(
+    wry::application::window::WindowSizeConstraints::new(
       $(
-        $val.map(|w| tao::dpi::PixelUnit::Physical(tao::dpi::PhysicalPixel::new(w)))
+        $val.map(|w| wry::application::dpi::PixelUnit::Physical(wry::application::dpi::PhysicalPixel::new(w)))
       ),*
     )
   };

@@ -21,7 +21,7 @@ use deno_bindgen::{
 };
 
 
-use tao::{
+use wry::application::{
   event::{
     Event,
     WindowEvent
@@ -50,11 +50,11 @@ pub async fn init(window_atters: &str,webview_atters: &str,ptr: usize) {
 
 fn spawn_webview(window_attrs: WindowAttrs,webview_attrs: WebViewAttrs,ptr: *mut usize)-> wry::Result<()> {
   let event_loop=EventLoopBuilder::new().with_any_thread(true).build();
-  let mut window=window_attrs.build(&event_loop).unwrap_or_throw();
-  let webview=webview_attrs.build(&window)?;
+  let window=window_attrs.build(&event_loop).unwrap_or_throw();
+  let webview=webview_attrs.build(window)?;
 
   unsafe {
-    ptr.write(&mut window as *mut _ as _);
+    ptr.write(webview.window() as *const _ as _);
     ptr.offset(1).write(&webview as *const _ as _);
   }
 

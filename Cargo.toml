@@ -7,14 +7,14 @@ edition = "2021"
 crate-type = ["cdylib"]
 
 [dependencies]
-wry = { version = "0.35.2", features = ["devtools","fullscreen","linux-body","transparent"] }
+wry = { version = "0.31.0", default-features = false, features = ["file-drop","protocol"] }
 screenshoter = "0.1.1"
 xd-macro = { path = "./xd-macro" }
 serde = { version = "1", features = ["derive"] }
 # tokio = { version = "1.35.0", features = ["full","mio","test-util","tracing","windows-sys"] }
 native-dialog = { version = "0.7.0",features = ["once_cell","windows_dpi_awareness","windows_visual_styles"] }
 deno_bindgen = "0.8.1"
-tao = { version = "0.24.0", features = ["rwh_04","rwh_05","serde"] }
+# tao = { version = "0.24.0", default-features = false,  features = ["rwh_05"] }
 
 
 [profile.release]

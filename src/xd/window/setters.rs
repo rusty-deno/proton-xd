@@ -7,7 +7,7 @@ use crate::{
   exception::Exception
 };
 
-use tao::{
+use wry::application::{
   dpi::{
     PhysicalPosition,
     PhysicalSize

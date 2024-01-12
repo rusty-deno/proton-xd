@@ -6,7 +6,7 @@ use crate::{
   optional_into
 };
 
-use tao::{
+use wry::application::{
   event_loop::EventLoop,
   window::{
     Window,
