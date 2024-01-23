@@ -44,18 +44,17 @@ pub async fn init(window_atters: &str,webview_atters: &str,ptr: usize) {
   let window_atters: WindowAttrs=from_str(window_atters).unwrap_or_throw();
   let webview_atters: WebViewAttrs=from_str(webview_atters).unwrap_or_throw();
 
-  spawn_webview(window_atters,webview_atters,ptr as *mut usize).unwrap_or_throw();
+  spawn_webview(window_atters,webview_atters,ptr as _).unwrap_or_throw();
 }
 
 
-fn spawn_webview(window_attrs: WindowAttrs,webview_attrs: WebViewAttrs,ptr: *mut usize)-> wry::Result<()> {
+fn spawn_webview(window_attrs: WindowAttrs,webview_attrs: WebViewAttrs,ptr: *mut u64)-> wry::Result<()> {
   let event_loop=EventLoopBuilder::new().with_any_thread(true).build();
-  let window=window_attrs.build(&event_loop).unwrap_or_throw();
-  let webview=webview_attrs.build(window)?;
+  let window=window_attrs.build(&event_loop)?;
+  let webview=Box::new(webview_attrs.build(window)?);
 
   unsafe {
-    ptr.write(webview.window() as *const _ as _);
-    ptr.offset(1).write(&webview as *const _ as _);
+    ptr.write(&webview as *const _ as _);
   }
 
   event_loop.run(move |event, _, control_flow| {
@@ -69,8 +68,4 @@ fn spawn_webview(window_attrs: WindowAttrs,webview_attrs: WebViewAttrs,ptr: *mut
     }
   })
 }
-
-
-
-
 

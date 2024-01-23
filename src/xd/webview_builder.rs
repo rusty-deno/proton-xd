@@ -50,7 +50,7 @@ pub struct WebViewAttrs {
   pub incognito: bool,
   pub autoplay: bool,
   pub html: Option<String>,
-  pub url: Option<Box<str>>,
+  pub url: Option<String>,
   pub headers: Option<Headers>
 }
 

@@ -12,8 +12,8 @@ pub fn new_file_dialog()-> usize {
   Box::into_raw(Box::new(FileDialog::new())) as _
 }
 
-#[method]
-pub fn file_dialog_add_filter(this: &mut FileDialog,description: &str,extensions: &str) {
+#[method(non_blocking)]
+pub async fn file_dialog_add_filter(this: &mut FileDialog,description: &str,extensions: &str) {
   let extensions=serde_json::from_str::<Box<[&str]>>(extensions).unwrap_or_throw();
   *this=mem::take(this).add_filter(description,&extensions);
 }
@@ -54,8 +54,8 @@ pub fn file_dialog_set_title(this: &mut FileDialog,title: &str) {
   *this=mem::take(this).set_title(title);
 }
 
-#[method]
-pub fn file_dialog_show_open_multiple_file(this: FileDialog)-> String {
+#[method(non_blocking)]
+pub async fn file_dialog_show_open_multiple_file(this: FileDialog)-> String {
   this.show_open_multiple_file().unwrap_or_throw()
   .into_iter()
   .map(|path| path.to_string_lossy().to_string())
@@ -63,8 +63,8 @@ pub fn file_dialog_show_open_multiple_file(this: FileDialog)-> String {
   .join(",")
 }
 
-#[method]
-pub fn file_dialog_show_open_single_dir(this: FileDialog)-> String {
+#[method(non_blocking)]
+pub async fn file_dialog_show_open_single_dir(this: FileDialog)-> String {
   this.show_open_single_dir()
   .unwrap_or_throw()
   .unwrap_or_throw()
@@ -72,16 +72,16 @@ pub fn file_dialog_show_open_single_dir(this: FileDialog)-> String {
   .to_string()
 }
 
-#[method]
-pub fn file_dialog_show_open_single_file(this: FileDialog)-> String {
+#[method(non_blocking)]
+pub async fn file_dialog_show_open_single_file(this: FileDialog)-> String {
   this.show_open_single_file().unwrap_or_throw()
   .unwrap_or_throw()
   .to_string_lossy()
   .to_string()
 }
 
-#[method]
-pub fn file_dialog_show_save_single_file(this: FileDialog)-> String {
+#[method(non_blocking)]
+pub async fn file_dialog_show_save_single_file(this: FileDialog)-> String {
   this.show_save_single_file().unwrap_or_throw()
   .unwrap_or_throw()
   .to_string_lossy()

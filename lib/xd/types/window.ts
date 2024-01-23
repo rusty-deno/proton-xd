@@ -3,6 +3,13 @@ import { RGBAImage } from '../image/image.ts';
 import { ImageBuffer } from '../image/image.ts';
 
 
+export interface Options {
+  window?: WindowAttributes;
+  webview?: WebViewAttributes;
+}
+
+
+
 export type Icon=string|URL|RGBAImage;
 export interface WindowAttributes {
   innerSize?: Size;

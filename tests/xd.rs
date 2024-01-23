@@ -1,4 +1,5 @@
 
+
 use wry::{
   application::{
     event_loop::{
@@ -75,9 +76,6 @@ fn child_window() {
   .build().unwrap();
 
 
-
-
-
   run_event_loop! {
     event_loop
   }
@@ -90,6 +88,16 @@ fn window(event_loop: &EventLoop<()>)-> Window {
   builder.build(&event_loop).unwrap()
 }
 
+
+#[test]
+fn init_test() {
+  // let window_attrs=r#"{"resizable":true,"minimizable":true,"maximizable":true,"closable":true,"title":"untitled","maximized":false,"visible":true,"transparent":false,"decorations":true,"alwaysOnTop":false,"alwaysOnBottom":false,"theme":"Dark","focused":true,"contentProtection":false,"visibleOnAllWorkspaces":false}"#;
+  // let webview_attrs=r#"{"visible":true,"transparent":false,"zoomHotkeysEnabled":false,"initializationScripts":[],"clipboard":false,"devtools":false,"acceptFirstMouse":false,"backForwardNavigationGestures":false,"incognito":false,"autoplay":true}"#;
+  println!("xd");
+  
+
+  // xd::init(window_attrs.as_ptr(),window_attrs.len(),webview_attrs.as_ptr(),webview_attrs.len(),0);
+}
 
 
 

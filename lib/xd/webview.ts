@@ -3,10 +3,8 @@ import { Color,$rgba } from "./types/image.ts";
 import { Option } from '../mod.ts';
 
 import { WebViewAttributes } from "./types/window.ts";
-import { WindowXD,WindowTrait } from './window/mod.ts';
-import { Size } from "./types/dpi.ts";
+import { WindowXD } from './window/mod.ts';
 import { $resultSync,Result,Ok } from "../std/error/result/mod.ts";
-import { getU32Touple } from "./read_ptr.ts";
 
 
 
@@ -33,13 +31,6 @@ export class WebView {
 
   public eval(js: string) {
     return this.#call(lib.eval_script,js);
-  }
-
-  public webViewInnerSize(): Size {
-    if(!this._ptr) return WindowTrait.defaultSize;
-    const [height,width]=getU32Touple(lib.symbols.webview_inner_size(this._ptr));
-
-    return { height,width };
   }
 
   public loadUrl(url: string|URL) {

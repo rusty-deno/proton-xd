@@ -1,9 +1,10 @@
-import { FileDialog } from "./mod/mod.ts";
-
-
-const xd=new FileDialog;
-
-console.log(xd.showOpenFile().unwrap());
-
+import { XD } from "./mod/mod.ts"; 
+ 
+ 
+XD.instantiate("<html><body>hello wrld</body></html>",{ 
+  window: {
+    title: "idk"
+  }
+});
 
 

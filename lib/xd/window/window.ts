@@ -26,8 +26,8 @@ export class WindowXD extends WindowTrait {
     const ptr=Deno.UnsafePointer.of(size);
     return new Screenshot(await lib.screenshot(x,y,delay,Deno.UnsafePointer.value(ptr) as bigint),size[0],size[1]);
   }
-  
-  
+
+
   /**
    * Captures a screenshot of the screen relative to provided x and y axis syncronyously.
    * 

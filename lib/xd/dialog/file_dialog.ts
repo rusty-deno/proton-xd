@@ -1,8 +1,8 @@
 
 import { PathBuf } from "../../std/path.ts";
 import * as lib from "../../../bindings/bindings.ts";
-import { $resultSync } from "../../std/error/result/mod.ts";
-
+import { $resultSync,$result } from "../../std/error/result/mod.ts";
+import { AsyncFn } from "../../std/types.ts";
 
 
 export class FileDialog {
@@ -34,16 +34,16 @@ export class FileDialog {
   }
 
 
-  #move<T>(f: (ptr: bigint)=> T) {
+  #move<T>(f: AsyncFn<[ptr: bigint],T>) {
     const ptr=this.#moved?FileDialog.#alloc():this.#ptr;
     this.#moved=true;
 
-    return $resultSync(()=> f(ptr));
+    return $result(()=> f(ptr));
   }
 
   @FileDialog.borrow
   public addFilter(desc: string,extensions: string[]) {
-    return $resultSync(()=> lib.file_dialog_add_filter(this.#ptr,desc,JSON.stringify(extensions)));
+    return $result(()=> lib.file_dialog_add_filter(this.#ptr,desc,JSON.stringify(extensions)));
   }
 
   @FileDialog.borrow
@@ -87,7 +87,7 @@ export class FileDialog {
   }
 
   public showOpenMultipleFiles() {
-    return this.#move(lib.file_dialog_show_open_multiple_file).map((paths)=> paths.split(","));
+    return this.#move(lib.file_dialog_show_open_multiple_file).map(paths=> paths.split(","));
   }
   
   public showOpenDir() {

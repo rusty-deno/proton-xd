@@ -17,7 +17,7 @@ export function canonicalizeSync(path: PathBuf) {
 }
 
 export function copy(from: PathBuf,to: PathBuf) {
-  return $result<void>(()=> Deno.copyFile(from,to));
+  return $result(()=> Deno.copyFile(from,to));
 }
 
 export function copySync(from: PathBuf,to: PathBuf) {

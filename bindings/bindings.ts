@@ -46,43 +46,15 @@ if (Deno.build.os==="windows") {
 }
 
 export const lib=Deno.dlopen(bindingsUri, {
-  clear_all_browsing_data: { parameters: [ "usize" ], result: "void", nonblocking: false }, current: { parameters: [  ], result: "void", nonblocking: false }, cursor_position: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, drag_window: { parameters: [ "usize" ], result: "void", nonblocking: false }, eval_script: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, file_dialog_add_filter: { parameters: [ "usize", "buffer", "usize", "buffer", "usize" ], result: "void", nonblocking: false }, file_dialog_remove_all_filters: { parameters: [ "usize" ], result: "void", nonblocking: false }, file_dialog_reset_filename: { parameters: [ "usize" ], result: "void", nonblocking: false }, file_dialog_reset_location: { parameters: [ "usize" ], result: "void", nonblocking: false }, file_dialog_reset_owner: { parameters: [ "usize" ], result: "void", nonblocking: false }, file_dialog_set_filename: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, file_dialog_set_location: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, file_dialog_set_title: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, file_dialog_show_open_multiple_file: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, file_dialog_show_open_single_dir: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, file_dialog_show_open_single_file: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, file_dialog_show_save_single_file: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, init: { parameters: [ "buffer", "usize", "buffer", "usize", "usize" ], result: "void", nonblocking: true }, inner_position: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, join: { parameters: [ "usize" ], result: "void", nonblocking: false }, join_async: { parameters: [ "usize" ], result: "void", nonblocking: true }, load_url: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, load_url_with_headers: { parameters: [ "usize", "buffer", "usize", "buffer", "usize" ], result: "void", nonblocking: false }, msg_dialog_reset_owner: { parameters: [ "usize" ], result: "void", nonblocking: false }, msg_dialog_set_text: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, msg_dialog_set_title: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, msg_dialog_show_alert: { parameters: [ "usize" ], result: "void", nonblocking: false }, msg_dialog_xd: { parameters: [ "usize", "u8" ], result: "void", nonblocking: false }, new_file_dialog: { parameters: [  ], result: "usize", nonblocking: false }, new_msg_dialog: { parameters: [  ], result: "usize", nonblocking: false }, outer_position: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, outer_size: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, park: { parameters: [  ], result: "void", nonblocking: false }, park_timeout: { parameters: [ "f64" ], result: "void", nonblocking: false }, read_clipboard: { parameters: [  ], result: "buffer", nonblocking: false }, request_redraw: { parameters: [ "usize" ], result: "void", nonblocking: false }, request_user_attention: { parameters: [ "usize", "u8" ], result: "void", nonblocking: false }, scale_factor: { parameters: [ "usize" ], result: "f64", nonblocking: false }, screenshot: { parameters: [ "i32", "i32", "f32", "usize" ], result: "buffer", nonblocking: true }, screenshot_sync: { parameters: [ "i32", "i32", "f32", "usize" ], result: "buffer", nonblocking: false }, set_background_color: { parameters: [ "usize", "u8", "u8", "u8", "u8" ], result: "void", nonblocking: false }, set_cursor_icon: { parameters: [ "usize", "u8" ], result: "void", nonblocking: false }, set_cursor_position: { parameters: [ "usize", "i32", "i32" ], result: "void", nonblocking: false }, set_focus: { parameters: [ "usize" ], result: "void", nonblocking: false }, set_fullscreen: { parameters: [ "usize", "buffer", "usize" ], result: "buffer", nonblocking: false }, set_ime_position: { parameters: [ "usize", "i32", "i32" ], result: "void", nonblocking: false }, set_inner_size: { parameters: [ "usize", "u32", "u32" ], result: "void", nonblocking: false }, set_inner_size_constraints: { parameters: [ "usize", "i32", "i32", "i32", "i32" ], result: "void", nonblocking: false }, set_max_inner_size: { parameters: [ "usize", "u32", "u32" ], result: "void", nonblocking: false }, set_min_inner_size: { parameters: [ "usize", "u32", "u32" ], result: "void", nonblocking: false }, set_outer_position: { parameters: [ "usize", "i32", "i32" ], result: "void", nonblocking: false }, set_progress_bar: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, set_title: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, set_window_icon: { parameters: [ "usize", "u32", "u32", "buffer", "usize" ], result: "void", nonblocking: true }, sleep: { parameters: [ "f32" ], result: "void", nonblocking: false }, spawn: { parameters: [ "usize" ], result: "usize", nonblocking: false }, title: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, url: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, webview_inner_size: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, webview_print: { parameters: [ "usize" ], result: "void", nonblocking: false }, window: { parameters: [ "usize" ], result: "usize", nonblocking: false }, write_to_clipboard: { parameters: [ "buffer", "usize" ], result: "void", nonblocking: false }, zoom: { parameters: [ "usize", "f64" ], result: "void", nonblocking: false },
-  "msg_dialog_show_confirm": {
+  clear_all_browsing_data: { parameters: [ "usize" ], result: "void", nonblocking: false }, current: { parameters: [  ], result: "void", nonblocking: false }, cursor_position: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, drag_window: { parameters: [ "usize" ], result: "void", nonblocking: false }, eval_script: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, file_dialog_add_filter: { parameters: [ "usize", "buffer", "usize", "buffer", "usize" ], result: "void", nonblocking: true }, file_dialog_remove_all_filters: { parameters: [ "usize" ], result: "void", nonblocking: false }, file_dialog_reset_filename: { parameters: [ "usize" ], result: "void", nonblocking: false }, file_dialog_reset_location: { parameters: [ "usize" ], result: "void", nonblocking: false }, file_dialog_reset_owner: { parameters: [ "usize" ], result: "void", nonblocking: false }, file_dialog_set_filename: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, file_dialog_set_location: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, file_dialog_set_title: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, file_dialog_show_open_multiple_file: { parameters: [ "usize" ], result: "buffer", nonblocking: true }, file_dialog_show_open_single_dir: { parameters: [ "usize" ], result: "buffer", nonblocking: true }, file_dialog_show_open_single_file: { parameters: [ "usize" ], result: "buffer", nonblocking: true }, file_dialog_show_save_single_file: { parameters: [ "usize" ], result: "buffer", nonblocking: true }, init: { parameters: [ "buffer", "usize", "buffer", "usize", "usize" ], result: "void", nonblocking: true }, inner_position: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, join: { parameters: [ "usize" ], result: "void", nonblocking: false }, join_async: { parameters: [ "usize" ], result: "void", nonblocking: true }, load_url: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, load_url_with_headers: { parameters: [ "usize", "buffer", "usize", "buffer", "usize" ], result: "void", nonblocking: false }, msg_dialog_reset_owner: { parameters: [ "usize" ], result: "void", nonblocking: false }, msg_dialog_set_text: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, msg_dialog_set_title: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, msg_dialog_show_alert: { parameters: [ "usize" ], result: "void", nonblocking: false }, msg_dialog_xd: { parameters: [ "usize", "u8" ], result: "void", nonblocking: false }, new_file_dialog: { parameters: [  ], result: "usize", nonblocking: false }, new_msg_dialog: { parameters: [  ], result: "usize", nonblocking: false }, outer_position: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, outer_size: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, park: { parameters: [  ], result: "void", nonblocking: false }, park_timeout: { parameters: [ "f64" ], result: "void", nonblocking: false }, request_redraw: { parameters: [ "usize" ], result: "void", nonblocking: false }, request_user_attention: { parameters: [ "usize", "u8" ], result: "void", nonblocking: false }, scale_factor: { parameters: [ "usize" ], result: "f64", nonblocking: false }, screenshot: { parameters: [ "i32", "i32", "f32", "usize" ], result: "buffer", nonblocking: true }, screenshot_sync: { parameters: [ "i32", "i32", "f32", "usize" ], result: "buffer", nonblocking: false }, set_background_color: { parameters: [ "usize", "u8", "u8", "u8", "u8" ], result: "void", nonblocking: false }, set_cursor_icon: { parameters: [ "usize", "u8" ], result: "void", nonblocking: false }, set_cursor_position: { parameters: [ "usize", "i32", "i32" ], result: "void", nonblocking: false }, set_focus: { parameters: [ "usize" ], result: "void", nonblocking: false }, set_fullscreen: { parameters: [ "usize", "buffer", "usize" ], result: "buffer", nonblocking: false }, set_ime_position: { parameters: [ "usize", "i32", "i32" ], result: "void", nonblocking: false }, set_inner_size: { parameters: [ "usize", "u32", "u32" ], result: "void", nonblocking: false }, set_inner_size_constraints: { parameters: [ "usize", "i32", "i32", "i32", "i32" ], result: "void", nonblocking: false }, set_max_inner_size: { parameters: [ "usize", "u32", "u32" ], result: "void", nonblocking: false }, set_min_inner_size: { parameters: [ "usize", "u32", "u32" ], result: "void", nonblocking: false }, set_outer_position: { parameters: [ "usize", "i32", "i32" ], result: "void", nonblocking: false }, set_progress_bar: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, set_title: { parameters: [ "usize", "buffer", "usize" ], result: "void", nonblocking: false }, set_window_icon: { parameters: [ "usize", "u32", "u32", "buffer", "usize" ], result: "void", nonblocking: true }, sleep: { parameters: [ "f32" ], result: "void", nonblocking: false }, spawn: { parameters: [ "usize" ], result: "usize", nonblocking: false }, title: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, url: { parameters: [ "usize" ], result: "buffer", nonblocking: false }, webview_print: { parameters: [ "usize" ], result: "void", nonblocking: false }, zoom: { parameters: [ "usize", "f64" ], result: "void", nonblocking: false },
+  "is_closable": {
     "parameters": [
       "usize"
     ],
     "result": "bool",
     "nonBlocking": null
   },
-  "is_minimized": {
-    "parameters": [
-      "usize"
-    ],
-    "result": "bool",
-    "nonBlocking": null
-  },
-  "theme": {
-    "parameters": [
-      "usize"
-    ],
-    "result": "bool",
-    "nonBlocking": null
-  },
-  "is_minimizable": {
-    "parameters": [
-      "usize"
-    ],
-    "result": "bool",
-    "nonBlocking": null
-  },
-  "is_resizable": {
-    "parameters": [
-      "usize"
-    ],
-    "result": "bool",
-    "nonBlocking": null
-  },
-  "is_visible": {
+  "is_focused": {
     "parameters": [
       "usize"
     ],
@@ -96,9 +68,189 @@ export const lib=Deno.dlopen(bindingsUri, {
     "result": "bool",
     "nonBlocking": null
   },
-  set_throw: {
-    parameters: ["function"],
-    result: "void"
+  "set_closable": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_visible": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_cursor_grab": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_cursor_visible": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "is_maximizable": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "set_visible_on_all_workspaces": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "is_decorated": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "is_minimizable": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "set_decorations": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_minimizable": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "is_resizable": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "set_minimized": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "is_visible": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "msg_dialog_show_confirm": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "set_always_on_bottom": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_resizable": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_ignore_cursor_events": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "is_minimized": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "set_always_on_top": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "theme": {
+    "parameters": [
+      "usize"
+    ],
+    "result": "bool",
+    "nonBlocking": null
+  },
+  "set_maximized": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_content_protection": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "set_maximizable": {
+    "parameters": [
+      "usize",
+      "bool"
+    ],
+    "result": "void",
+    "nonBlocking": null
+  },
+  "free": {
+    "parameters": ["pointer"],
+    "result": "void"
+  },
+  "set_throw": {
+    "parameters": ["function"],
+    "result": "void",
   }
 });
     
@@ -276,29 +428,29 @@ export function file_dialog_show_open_multiple_file(a0: bigint) {
   
 
   const rawResult=symbols.file_dialog_show_open_multiple_file(a0);
-  const result=readPointer(rawResult);;
-  return decode(result);;
+  const result=rawResult.then(readPointer);;
+  return result.then(decode);;
 }
 export function file_dialog_show_open_single_dir(a0: bigint) {
   
 
   const rawResult=symbols.file_dialog_show_open_single_dir(a0);
-  const result=readPointer(rawResult);;
-  return decode(result);;
+  const result=rawResult.then(readPointer);;
+  return result.then(decode);;
 }
 export function file_dialog_show_open_single_file(a0: bigint) {
   
 
   const rawResult=symbols.file_dialog_show_open_single_file(a0);
-  const result=readPointer(rawResult);;
-  return decode(result);;
+  const result=rawResult.then(readPointer);;
+  return result.then(decode);;
 }
 export function file_dialog_show_save_single_file(a0: bigint) {
   
 
   const rawResult=symbols.file_dialog_show_save_single_file(a0);
-  const result=readPointer(rawResult);;
-  return decode(result);;
+  const result=rawResult.then(readPointer);;
+  return result.then(decode);;
 }
 export function init(a0: string,a1: string,a2: bigint) {
   const a0_buf=encode((a0));
@@ -420,13 +572,6 @@ export function park_timeout(a0: number) {
   const rawResult=symbols.park_timeout(a0);
   const result=rawResult;;
   return result;;
-}
-export function read_clipboard() {
-  
-
-  const rawResult=symbols.read_clipboard();
-  const result=readPointer(rawResult);;
-  return decode(result);;
 }
 export function request_redraw(a0: bigint) {
   
@@ -589,31 +734,10 @@ export function url(a0: bigint) {
   const result=readPointer(rawResult);;
   return decode(result);;
 }
-export function webview_inner_size(a0: bigint) {
-  
-
-  const rawResult=symbols.webview_inner_size(a0);
-  const result=readPointer(rawResult);;
-  return result;;
-}
 export function webview_print(a0: bigint) {
   
 
   const rawResult=symbols.webview_print(a0);
-  const result=rawResult;;
-  return result;;
-}
-export function window(a0: bigint) {
-  
-
-  const rawResult=symbols.window(a0);
-  const result=rawResult;;
-  return result;;
-}
-export function write_to_clipboard(a0: string) {
-  const a0_buf=encode((a0));
-
-  const rawResult=symbols.write_to_clipboard(a0_buf, a0_buf.byteLength);
   const result=rawResult;;
   return result;;
 }

@@ -1,32 +1,32 @@
-import { read_clipboard,write_to_clipboard,init } from "../../bindings/bindings.ts";
+import { init } from "../../bindings/bindings.ts";
 import { defaultWindowAttrs as dwa,defaultWebViewAttrs as dweba } from "./default.ts";
-import { WebViewAttributes,WindowAttributes } from './types/window.ts';
+import { Options } from './types/window.ts';
 import { isURL,Content } from "./types/mod.ts";
 import { WebView } from "./webview.ts";
 
 
 /**
- * @class XD handles the webview and the window
+ * @class {@linkcode XD} handles the webview and the window
  */
 export class XD extends WebView {
-  constructor(content: Content,webviewAttrs: WebViewAttributes={},windowAttrs: WindowAttributes={}) {
+  constructor(content: Content,{webview,window}: Options={}) {
     super();
     this._window.windowAttrs={
       ...dwa,
-      ...windowAttrs
+      ...window
     };
     this.webviewAttrs={
       ...dweba,
-      ...webviewAttrs
+      ...webview
     };
     this.webviewAttrs[isURL(content)?"url":"html"]=content.toString();
   }
   
   /**
-   * Spawns the webview.
+   * Spawns the webview on a different `thread`.
    */
-  public async spawn() {
-    await init(
+  public spawn() {
+    init(
       JSON.stringify(this._window.windowAttrs),
       JSON.stringify(this.webviewAttrs),
       BigInt(Deno.UnsafePointer.value(Deno.UnsafePointer.of(this._addrs)))
@@ -41,27 +41,9 @@ export class XD extends WebView {
    * @param {WindowAttributes} windowAttrs defines the window's properties
    * @param {WebViewAttributes} webviewAttrs defines the webview's propoerties
    */
-  public static instantiate(content: Content,windowAttrs: WindowAttributes={},webviewAttrs: WebViewAttributes={}) {
-    new XD(content,windowAttrs,webviewAttrs).spawn();
+  public static instantiate(content: Content,options: Options={}) {
+    new XD(content,options).spawn();
   }
 }
 
-
-/**
- * Writes the given string to the clipboard.
- * 
- * just like copy
- */
-export function writeToClipboard(str: string) {
-  write_to_clipboard(str);
-}
-
-/**
- * Reads the stored string from the clipboard.
- * 
- * just like paste
- */
-export function readClipboard() {
-  return read_clipboard();
-}
 
